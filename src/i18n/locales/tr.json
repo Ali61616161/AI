@@ -1,7 +1,167 @@
 {
-  "app": { "tagline": "Seninle birlikte düşünen yolculuk" },
-  "common": { "continue": "Devam", "cancel": "Vazgeç", "save": "Kaydet", "back": "Geri", "loading": "Yükleniyor…", "error": "Bir şeyler ters gitti", "retry": "Tekrar dene" },
-  "welcome": { "title": "Bir sonraki yolculuğun burada başlıyor", "subtitle": "Biletini yükle, gerisini Yola planlasın.", "getStarted": "Başlayalım" },
-  "language": { "title": "Dil", "subtitle": "Uygulama dilini seç", "restartTitle": "Yeniden başlatma gerekli", "restartMessage": "Yazı yönünün değişmesi için uygulama yeniden başlatılacak.", "restartNow": "Şimdi başlat", "later": "Sonra" },
-  "tabs": { "today": "Bugün", "trips": "Seyahatlerim", "assistant": "Asistan", "social": "Sosyal", "profile": "Profil" }
+  "app": {
+    "tagline": "Seninle birlikte düşünen yolculuk"
+  },
+  "common": {
+    "continue": "Devam",
+    "cancel": "Vazgeç",
+    "save": "Kaydet",
+    "back": "Geri",
+    "loading": "Yükleniyor…",
+    "error": "Bir şeyler ters gitti",
+    "retry": "Tekrar dene",
+    "comingSoon": "Yakında",
+    "stepSoon": "{{step}}. adımda geliyor",
+    "edit": "Düzenle",
+    "done": "Tamam"
+  },
+  "welcome": {
+    "title": "Bir sonraki yolculuğun burada başlıyor",
+    "subtitle": "Biletini yükle, gerisini Yola planlasın.",
+    "getStarted": "Başlayalım"
+  },
+  "language": {
+    "title": "Dil",
+    "subtitle": "Uygulama dilini seç",
+    "restartTitle": "Yeniden başlatma gerekli",
+    "restartMessage": "Yazı yönünün değişmesi için uygulama yeniden başlatılacak.",
+    "restartNow": "Şimdi başlat",
+    "later": "Sonra"
+  },
+  "tabs": {
+    "today": "Bugün",
+    "trips": "Seyahatlerim",
+    "assistant": "Asistan",
+    "social": "Sosyal",
+    "profile": "Profil"
+  },
+  "auth": {
+    "signInTitle": "Hesabına giriş yap",
+    "signInSubtitle": "E-posta adresine 6 haneli bir giriş kodu göndereceğiz. Şifre yok.",
+    "emailLabel": "E-posta",
+    "emailPlaceholder": "ornek@mail.com",
+    "sendCode": "Kod gönder",
+    "invalidEmail": "Geçerli bir e-posta adresi yaz.",
+    "codeTitle": "Kodu gir",
+    "codeSubtitle": "{{email}} adresine gönderilen 6 haneli kodu yaz.",
+    "codeLabel": "Giriş kodu",
+    "verify": "Doğrula",
+    "resend": "Kodu tekrar gönder",
+    "invalidCode": "Kod hatalı veya süresi dolmuş. Tekrar dene.",
+    "guest": "Hesapsız devam et",
+    "guestHint": "Verilerin sadece bu telefonda saklanır. İstediğin zaman hesap açabilirsin.",
+    "notConfigured": "Sunucu bağlantısı henüz ayarlanmadı. Şimdilik hesapsız devam edebilirsin."
+  },
+  "onboarding": {
+    "companionTitle": "Kiminle seyahat ediyorsun?",
+    "companionSubtitle": "Rotaları, tempoyu ve mekanları buna göre seçeceğim.",
+    "budgetTitle": "Bütçe tipin ne?",
+    "budgetSubtitle": "Yemek, konaklama ve aktivite önerileri buna göre değişir.",
+    "interestsTitle": "Neleri seversin?",
+    "interestsSubtitle": "En az bir tane seç. Sonradan profilinden değiştirebilirsin.",
+    "finish": "Bitir"
+  },
+  "companion": {
+    "solo": "Tek başıma",
+    "solo_desc": "Esnek tempo, hostel ve sosyal ortamlar",
+    "couple": "Çift / Sevgili",
+    "couple_desc": "Romantik akşamlar, manzaralı yerler",
+    "family": "Aile / Çocuklu",
+    "family_desc": "Çocuk dostu yerler, sakin tempo",
+    "friends": "Arkadaşlarla",
+    "friends_desc": "Grup aktiviteleri ve gece hayatı"
+  },
+  "budget": {
+    "low": "Düşük (Backpacker)",
+    "low_desc": "Hostel, yerel market, ücretsiz müzeler",
+    "mid": "Orta (Smart-Casual)",
+    "mid_desc": "Uygun oteller, yerel restoranlar, birkaç ücretli aktivite",
+    "lux": "Yüksek (Lüks)",
+    "lux_desc": "Butik oteller, iyi restoranlar, özel turlar"
+  },
+  "interest": {
+    "art": "Sanat",
+    "history": "Tarih",
+    "food": "Yemek",
+    "nightlife": "Gece hayatı",
+    "nature": "Doğa",
+    "cars": "Otomobil",
+    "shopping": "Alışveriş",
+    "architecture": "Mimari",
+    "beach": "Plaj",
+    "sports": "Spor",
+    "photography": "Fotoğraf",
+    "music": "Müzik"
+  },
+  "today": {
+    "greetingMorning": "Günaydın",
+    "greetingAfternoon": "İyi günler",
+    "greetingEvening": "İyi akşamlar",
+    "greetingNight": "İyi geceler",
+    "noTripTitle": "Henüz planlanmış bir seyahatin yok",
+    "noTripDescription": "Uçak biletini veya otel rezervasyonunu yükle, seyahatinin iskeletini ben çıkarayım.",
+    "uploadTicket": "Bilet veya otel yükle",
+    "createManually": "Elle seyahat oluştur",
+    "yourProfile": "Seyahat profilin",
+    "featuresTitle": "Yola neler yapar?",
+    "featureReplan": "Yağmur, rötar, yorgunluk: planı anında değiştirir.",
+    "featureOffline": "Rotan ve biletlerin internetsiz de yanında olur.",
+    "featureMenu": "Menünün fotoğrafını çek, ne olduğunu ve fiyat seviyesini öğren."
+  },
+  "trips": {
+    "title": "Seyahatlerim",
+    "upcoming": "Yaklaşan",
+    "past": "Geçmiş",
+    "emptyUpcomingTitle": "Yaklaşan seyahat yok",
+    "emptyUpcomingDescription": "Bir bilet veya otel rezervasyonu yükleyerek ilk seyahatini oluştur.",
+    "emptyPastTitle": "Henüz tamamlanan seyahat yok",
+    "emptyPastDescription": "Seyahatin bitince özetini ve puanlarını burada göreceksin."
+  },
+  "social": {
+    "title": "Gezgin eşleşmesi",
+    "subtitle": "Aynı şehirdeki gezginlerle halka açık bir yerde kahve iç ya da birlikte gez.",
+    "enable": "Sosyal modu aç",
+    "safetyTitle": "Güvenliğin için",
+    "safetyLocation": "Konumun yaklaşık 1 km hassasiyetle gösterilir, tam yerin asla paylaşılmaz.",
+    "safetyPublic": "Buluşmalar sadece müze, kafe gibi halka açık yerler için önerilebilir.",
+    "safetyBlock": "İstediğin kişiyi engelleyebilir ve şikayet edebilirsin.",
+    "safetyWomen": "İstersen sadece kadın gezginlerle eşleşebilirsin."
+  },
+  "profile": {
+    "title": "Profil",
+    "guest": "Misafir",
+    "guestNote": "Hesap açarsan seyahatlerin tüm cihazlarında saklanır.",
+    "createAccount": "Hesap oluştur",
+    "preferences": "Seyahat tercihleri",
+    "companion": "Kiminle",
+    "budget": "Bütçe",
+    "interests": "İlgi alanları",
+    "language": "Dil",
+    "account": "Hesap",
+    "signOut": "Çıkış yap",
+    "version": "Sürüm {{version}}",
+    "notSet": "Seçilmedi",
+    "editPreferences": "Tercihleri düzenle"
+  },
+  "assistant": {
+    "title": "Planı Değiştir",
+    "subtitle": "Ne oldu? Konumunu ve planını bilerek yeni bir öneri sunarım.",
+    "placeholder": "Örn: Yağmur başladı, yakında kapalı bir yer bul",
+    "send": "Gönder",
+    "suggestionRain": "Yağmur başladı, 1 km içinde kapalı bir yer bul",
+    "suggestionDelay": "Trenim rötar yaptı, 2 saat boşluğum var",
+    "suggestionTired": "Yoruldum, yakında sakin bir kafe öner",
+    "suggestionBudget": "Bugün bütçeyi aştım, ücretsiz bir şey öner",
+    "notReady": "İsteğini aldım: \"{{message}}\". AI asistanı 6. adımda bağlanacak; o zaman konumuna göre gerçek öneriler sunacağım.",
+    "quickActions": "Hızlı işlemler",
+    "menuScan": "Menü çevir",
+    "addTicket": "Bilet ekle",
+    "sos": "Acil durum",
+    "openAssistant": "AI asistanı aç"
+  },
+  "ticket": {
+    "title": "Bilet veya otel yükle",
+    "subtitle": "Ekran görüntüsü veya PDF yükle; kalkış, varış, tarih ve otel bilgilerini AI okusun.",
+    "notice": "Yükleme ve AI ile okuma 4. adımda geliyor."
+  }
 }

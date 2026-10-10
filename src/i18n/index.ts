@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getLocales } from 'expo-localization';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { DevSettings, I18nManager } from 'react-native';
+import { DevSettings, I18nManager, Platform } from 'react-native';
 
 import ar from './locales/ar.json';
 import de from './locales/de.json';
@@ -47,9 +47,20 @@ async function readStoredLanguage(): Promise<LanguageCode | null> {
   }
 }
 
-/** Yazı yönü dil ile uyuşmuyorsa düzeltir. Değişiklik yeniden başlatmadan sonra etkili olur. */
+/**
+ * Yazı yönü dil ile uyuşmuyorsa düzeltir ve yeniden başlatma gerekiyorsa true döner.
+ * Telefonda yön değişikliği yeniden başlatmadan sonra etkili olur; web'de sayfanın
+ * dir özelliği anında değiştirilir.
+ */
 function applyDirection(language: LanguageCode): boolean {
   const shouldBeRTL = isRTL(language);
+  if (Platform.OS === 'web') {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dir = shouldBeRTL ? 'rtl' : 'ltr';
+      document.documentElement.lang = language;
+    }
+    return false;
+  }
   I18nManager.allowRTL(shouldBeRTL);
   if (I18nManager.isRTL !== shouldBeRTL) {
     I18nManager.forceRTL(shouldBeRTL);

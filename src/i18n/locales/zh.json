@@ -1,7 +1,167 @@
 {
-  "app": { "tagline": "与你一同思考的旅程" },
-  "common": { "continue": "继续", "cancel": "取消", "save": "保存", "back": "返回", "loading": "加载中…", "error": "出了点问题", "retry": "重试" },
-  "welcome": { "title": "你的下一段旅程从这里开始", "subtitle": "上传机票，其余交给 Yola 来规划。", "getStarted": "开始" },
-  "language": { "title": "语言", "subtitle": "选择应用语言", "restartTitle": "需要重新启动", "restartMessage": "应用将重新启动以更改文字方向。", "restartNow": "立即重启", "later": "稍后" },
-  "tabs": { "today": "今天", "trips": "我的旅行", "assistant": "助手", "social": "社交", "profile": "我的" }
+  "app": {
+    "tagline": "与你一同思考的旅程"
+  },
+  "common": {
+    "continue": "继续",
+    "cancel": "取消",
+    "save": "保存",
+    "back": "返回",
+    "loading": "加载中…",
+    "error": "出了点问题",
+    "retry": "重试",
+    "comingSoon": "即将推出",
+    "stepSoon": "将在第 {{step}} 步推出",
+    "edit": "编辑",
+    "done": "完成"
+  },
+  "welcome": {
+    "title": "你的下一段旅程从这里开始",
+    "subtitle": "上传机票，其余交给 Yola 来规划。",
+    "getStarted": "开始"
+  },
+  "language": {
+    "title": "语言",
+    "subtitle": "选择应用语言",
+    "restartTitle": "需要重新启动",
+    "restartMessage": "应用将重新启动以更改文字方向。",
+    "restartNow": "立即重启",
+    "later": "稍后"
+  },
+  "tabs": {
+    "today": "今天",
+    "trips": "我的旅行",
+    "assistant": "助手",
+    "social": "社交",
+    "profile": "我的"
+  },
+  "auth": {
+    "signInTitle": "登录你的账户",
+    "signInSubtitle": "我们会向你的邮箱发送 6 位登录码，无需密码。",
+    "emailLabel": "邮箱",
+    "emailPlaceholder": "you@example.com",
+    "sendCode": "发送验证码",
+    "invalidEmail": "请输入有效的邮箱地址。",
+    "codeTitle": "输入验证码",
+    "codeSubtitle": "请输入发送到 {{email}} 的 6 位验证码。",
+    "codeLabel": "登录码",
+    "verify": "验证",
+    "resend": "重新发送验证码",
+    "invalidCode": "验证码错误或已过期，请重试。",
+    "guest": "不注册继续",
+    "guestHint": "你的数据只保存在这部手机上，随时可以创建账户。",
+    "notConfigured": "服务器连接尚未设置，目前可以不注册继续使用。"
+  },
+  "onboarding": {
+    "companionTitle": "你和谁一起旅行？",
+    "companionSubtitle": "我会据此安排路线、节奏和地点。",
+    "budgetTitle": "你的预算类型是？",
+    "budgetSubtitle": "餐饮、住宿和活动建议会随之调整。",
+    "interestsTitle": "你喜欢什么？",
+    "interestsSubtitle": "至少选一项，之后可以在个人资料中修改。",
+    "finish": "完成"
+  },
+  "companion": {
+    "solo": "独自出行",
+    "solo_desc": "节奏灵活，青旅和社交场所",
+    "couple": "情侣出行",
+    "couple_desc": "浪漫夜晚，景观好的地方",
+    "family": "带孩子的家庭",
+    "family_desc": "适合孩子的地方，节奏轻松",
+    "friends": "和朋友一起",
+    "friends_desc": "团体活动和夜生活"
+  },
+  "budget": {
+    "low": "低（背包客）",
+    "low_desc": "青旅、本地超市、免费博物馆",
+    "mid": "中（精明休闲）",
+    "mid_desc": "实惠酒店、本地餐厅、少量付费活动",
+    "lux": "高（奢华）",
+    "lux_desc": "精品酒店、高级餐厅、私人导览"
+  },
+  "interest": {
+    "art": "艺术",
+    "history": "历史",
+    "food": "美食",
+    "nightlife": "夜生活",
+    "nature": "自然",
+    "cars": "汽车",
+    "shopping": "购物",
+    "architecture": "建筑",
+    "beach": "海滩",
+    "sports": "运动",
+    "photography": "摄影",
+    "music": "音乐"
+  },
+  "today": {
+    "greetingMorning": "早上好",
+    "greetingAfternoon": "下午好",
+    "greetingEvening": "晚上好",
+    "greetingNight": "晚安",
+    "noTripTitle": "还没有计划中的旅行",
+    "noTripDescription": "上传机票或酒店预订，我来为你搭好行程框架。",
+    "uploadTicket": "上传机票或酒店",
+    "createManually": "手动创建旅行",
+    "yourProfile": "你的旅行偏好",
+    "featuresTitle": "Yola 能做什么",
+    "featureReplan": "下雨、延误、累了：随时调整计划。",
+    "featureOffline": "路线和票据离线也能查看。",
+    "featureMenu": "拍下菜单，了解每道菜是什么以及价格水平。"
+  },
+  "trips": {
+    "title": "我的旅行",
+    "upcoming": "即将出发",
+    "past": "已结束",
+    "emptyUpcomingTitle": "没有即将出发的旅行",
+    "emptyUpcomingDescription": "上传机票或酒店预订，创建你的第一次旅行。",
+    "emptyPastTitle": "还没有已完成的旅行",
+    "emptyPastDescription": "旅行结束后，这里会显示总结和你的评分。"
+  },
+  "social": {
+    "title": "旅伴匹配",
+    "subtitle": "和同城的旅行者一起喝咖啡或结伴游览，始终在公共场所见面。",
+    "enable": "开启社交模式",
+    "safetyTitle": "为了你的安全",
+    "safetyLocation": "你的位置只精确到约 1 公里，绝不会分享准确位置。",
+    "safetyPublic": "只能约在博物馆、咖啡馆等公共场所见面。",
+    "safetyBlock": "你可以屏蔽和举报任何人。",
+    "safetyWomen": "你可以选择只与女性旅行者匹配。"
+  },
+  "profile": {
+    "title": "我的",
+    "guest": "访客",
+    "guestNote": "创建账户后，你的旅行会在所有设备上同步。",
+    "createAccount": "创建账户",
+    "preferences": "旅行偏好",
+    "companion": "同行人",
+    "budget": "预算",
+    "interests": "兴趣",
+    "language": "语言",
+    "account": "账户",
+    "signOut": "退出登录",
+    "version": "版本 {{version}}",
+    "notSet": "未设置",
+    "editPreferences": "编辑偏好"
+  },
+  "assistant": {
+    "title": "调整计划",
+    "subtitle": "发生了什么？我会根据你的位置和计划给出新建议。",
+    "placeholder": "例如：下雨了，帮我找附近的室内场所",
+    "send": "发送",
+    "suggestionRain": "下雨了，找 1 公里内的室内场所",
+    "suggestionDelay": "火车晚点了，我有 2 小时空闲",
+    "suggestionTired": "我累了，推荐附近安静的咖啡馆",
+    "suggestionBudget": "今天超预算了，推荐免费的活动",
+    "notReady": "收到：“{{message}}”。AI 助手将在第 6 步接入，届时我会根据你的位置给出真实建议。",
+    "quickActions": "快捷操作",
+    "menuScan": "翻译菜单",
+    "addTicket": "添加票据",
+    "sos": "紧急求助",
+    "openAssistant": "打开 AI 助手"
+  },
+  "ticket": {
+    "title": "上传机票或酒店",
+    "subtitle": "上传截图或 PDF，让 AI 读取出发、到达、日期和酒店信息。",
+    "notice": "上传和 AI 识别将在第 4 步推出。"
+  }
 }

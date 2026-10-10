@@ -1,7 +1,167 @@
 {
-  "app": { "tagline": "Il tuo viaggio, che pensa con te" },
-  "common": { "continue": "Continua", "cancel": "Annulla", "save": "Salva", "back": "Indietro", "loading": "Caricamento…", "error": "Qualcosa è andato storto", "retry": "Riprova" },
-  "welcome": { "title": "Il tuo prossimo viaggio inizia qui", "subtitle": "Carica il biglietto e lascia che Yola pianifichi il resto.", "getStarted": "Iniziamo" },
-  "language": { "title": "Lingua", "subtitle": "Scegli la lingua dell'app", "restartTitle": "Riavvio necessario", "restartMessage": "L'app verrà riavviata per cambiare la direzione del testo.", "restartNow": "Riavvia ora", "later": "Più tardi" },
-  "tabs": { "today": "Oggi", "trips": "I miei viaggi", "assistant": "Assistente", "social": "Social", "profile": "Profilo" }
+  "app": {
+    "tagline": "Il tuo viaggio, che pensa con te"
+  },
+  "common": {
+    "continue": "Continua",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "back": "Indietro",
+    "loading": "Caricamento…",
+    "error": "Qualcosa è andato storto",
+    "retry": "Riprova",
+    "comingSoon": "In arrivo",
+    "stepSoon": "Arriva al passo {{step}}",
+    "edit": "Modifica",
+    "done": "Fatto"
+  },
+  "welcome": {
+    "title": "Il tuo prossimo viaggio inizia qui",
+    "subtitle": "Carica il biglietto e lascia che Yola pianifichi il resto.",
+    "getStarted": "Iniziamo"
+  },
+  "language": {
+    "title": "Lingua",
+    "subtitle": "Scegli la lingua dell'app",
+    "restartTitle": "Riavvio necessario",
+    "restartMessage": "L'app verrà riavviata per cambiare la direzione del testo.",
+    "restartNow": "Riavvia ora",
+    "later": "Più tardi"
+  },
+  "tabs": {
+    "today": "Oggi",
+    "trips": "I miei viaggi",
+    "assistant": "Assistente",
+    "social": "Social",
+    "profile": "Profilo"
+  },
+  "auth": {
+    "signInTitle": "Accedi al tuo account",
+    "signInSubtitle": "Ti invieremo via email un codice di accesso a 6 cifre. Nessuna password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "tu@esempio.it",
+    "sendCode": "Invia codice",
+    "invalidEmail": "Inserisci un indirizzo email valido.",
+    "codeTitle": "Inserisci il codice",
+    "codeSubtitle": "Scrivi il codice a 6 cifre inviato a {{email}}.",
+    "codeLabel": "Codice di accesso",
+    "verify": "Verifica",
+    "resend": "Invia di nuovo il codice",
+    "invalidCode": "Il codice è errato o scaduto. Riprova.",
+    "guest": "Continua senza account",
+    "guestHint": "I tuoi dati restano solo su questo telefono. Puoi creare un account quando vuoi.",
+    "notConfigured": "La connessione al server non è ancora configurata. Per ora puoi continuare senza account."
+  },
+  "onboarding": {
+    "companionTitle": "Con chi viaggi?",
+    "companionSubtitle": "Sceglierò percorsi, ritmo e luoghi di conseguenza.",
+    "budgetTitle": "Qual è il tuo budget?",
+    "budgetSubtitle": "I suggerimenti su cibo, alloggi e attività cambiano in base a questo.",
+    "interestsTitle": "Cosa ti piace?",
+    "interestsSubtitle": "Scegline almeno uno. Potrai cambiarlo dal profilo.",
+    "finish": "Fine"
+  },
+  "companion": {
+    "solo": "Da solo",
+    "solo_desc": "Ritmo flessibile, ostelli e luoghi conviviali",
+    "couple": "In coppia",
+    "couple_desc": "Serate romantiche, luoghi panoramici",
+    "family": "Famiglia con bambini",
+    "family_desc": "Luoghi adatti ai bambini, ritmo tranquillo",
+    "friends": "Con amici",
+    "friends_desc": "Attività di gruppo e vita notturna"
+  },
+  "budget": {
+    "low": "Basso (Backpacker)",
+    "low_desc": "Ostelli, supermercati locali, musei gratuiti",
+    "mid": "Medio (Smart-Casual)",
+    "mid_desc": "Hotel convenienti, ristoranti locali, alcune attività a pagamento",
+    "lux": "Alto (Lusso)",
+    "lux_desc": "Hotel boutique, alta cucina, tour privati"
+  },
+  "interest": {
+    "art": "Arte",
+    "history": "Storia",
+    "food": "Cibo",
+    "nightlife": "Vita notturna",
+    "nature": "Natura",
+    "cars": "Auto",
+    "shopping": "Shopping",
+    "architecture": "Architettura",
+    "beach": "Spiaggia",
+    "sports": "Sport",
+    "photography": "Fotografia",
+    "music": "Musica"
+  },
+  "today": {
+    "greetingMorning": "Buongiorno",
+    "greetingAfternoon": "Buon pomeriggio",
+    "greetingEvening": "Buonasera",
+    "greetingNight": "Buonanotte",
+    "noTripTitle": "Nessun viaggio pianificato",
+    "noTripDescription": "Carica il biglietto aereo o la prenotazione dell'hotel e preparerò lo schema del tuo viaggio.",
+    "uploadTicket": "Carica biglietto o hotel",
+    "createManually": "Crea un viaggio manualmente",
+    "yourProfile": "Il tuo profilo di viaggio",
+    "featuresTitle": "Cosa fa Yola",
+    "featureReplan": "Pioggia, ritardi, stanchezza: cambia il piano all'istante.",
+    "featureOffline": "Percorso e biglietti sono sempre con te, anche offline.",
+    "featureMenu": "Fotografa un menu per scoprire cos'è ogni piatto e quanto costa."
+  },
+  "trips": {
+    "title": "I miei viaggi",
+    "upcoming": "In programma",
+    "past": "Passati",
+    "emptyUpcomingTitle": "Nessun viaggio in programma",
+    "emptyUpcomingDescription": "Carica un biglietto o una prenotazione d'hotel per creare il tuo primo viaggio.",
+    "emptyPastTitle": "Nessun viaggio concluso",
+    "emptyPastDescription": "A fine viaggio qui troverai il riepilogo e le tue valutazioni."
+  },
+  "social": {
+    "title": "Incontri tra viaggiatori",
+    "subtitle": "Prendi un caffè o esplora la città con altri viaggiatori, sempre in un luogo pubblico.",
+    "enable": "Attiva la modalità social",
+    "safetyTitle": "Per la tua sicurezza",
+    "safetyLocation": "La tua posizione è mostrata con una precisione di circa 1 km. Il punto esatto non viene mai condiviso.",
+    "safetyPublic": "Gli incontri si possono proporre solo in luoghi pubblici come musei e caffè.",
+    "safetyBlock": "Puoi bloccare e segnalare chiunque.",
+    "safetyWomen": "Puoi scegliere di incontrare solo viaggiatrici."
+  },
+  "profile": {
+    "title": "Profilo",
+    "guest": "Ospite",
+    "guestNote": "Crea un account per avere i tuoi viaggi su tutti i dispositivi.",
+    "createAccount": "Crea account",
+    "preferences": "Preferenze di viaggio",
+    "companion": "Viaggio con",
+    "budget": "Budget",
+    "interests": "Interessi",
+    "language": "Lingua",
+    "account": "Account",
+    "signOut": "Esci",
+    "version": "Versione {{version}}",
+    "notSet": "Non impostato",
+    "editPreferences": "Modifica preferenze"
+  },
+  "assistant": {
+    "title": "Cambia il piano",
+    "subtitle": "Cos'è successo? Ti propongo qualcosa di nuovo in base a dove sei e al tuo piano.",
+    "placeholder": "Es.: Ha iniziato a piovere, trova un posto al chiuso vicino",
+    "send": "Invia",
+    "suggestionRain": "Piove, trova un posto al chiuso entro 1 km",
+    "suggestionDelay": "Il mio treno è in ritardo, ho 2 ore libere",
+    "suggestionTired": "Sono stanco, suggerisci un caffè tranquillo qui vicino",
+    "suggestionBudget": "Oggi ho sforato il budget, suggerisci qualcosa di gratuito",
+    "notReady": "Ricevuto: «{{message}}». L'assistente IA verrà collegato al passo 6; allora ti darò suggerimenti reali in base alla tua posizione.",
+    "quickActions": "Azioni rapide",
+    "menuScan": "Traduci un menu",
+    "addTicket": "Aggiungi biglietto",
+    "sos": "Emergenza",
+    "openAssistant": "Apri l'assistente IA"
+  },
+  "ticket": {
+    "title": "Carica biglietto o hotel",
+    "subtitle": "Carica uno screenshot o un PDF e lascia che l'IA legga partenza, arrivo, date e dati dell'hotel.",
+    "notice": "Caricamento e lettura con IA arrivano al passo 4."
+  }
 }

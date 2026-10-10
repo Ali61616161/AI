@@ -9,6 +9,11 @@ const publishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 let client: SupabaseClient<Database> | null = null;
 
+/** Ortam değişkenleri girilmemişse uygulama "misafir modunda" çalışır. */
+export function isSupabaseConfigured(): boolean {
+  return Boolean(url && publishableKey);
+}
+
 /**
  * Supabase istemcisini ilk kullanımda oluşturur. Ortam değişkenleri eksikse
  * uygulama açılışta çökmez; yalnızca Supabase gerçekten kullanıldığında net bir hata verir.

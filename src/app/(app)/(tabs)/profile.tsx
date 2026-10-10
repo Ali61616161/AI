@@ -1,0 +1,123 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
+import Constants from 'expo-constants';
+import { router } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
+import { LanguagePicker } from '@/components/settings/language-picker';
+import { Button } from '@/components/ui/button';
+import { Screen } from '@/components/ui/screen';
+import { Text } from '@/components/ui/text';
+import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
+import { useSessionStore } from '@/stores/session-store';
+import { Radius, Spacing } from '@/theme/tokens';
+import { useTheme } from '@/theme/use-theme';
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <View style={styles.row}>
+      <Text variant="body" color="textSecondary">
+        {label}
+      </Text>
+      <Text variant="bodyStrong" style={styles.rowValue}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
+export default function ProfileScreen() {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const session = useSessionStore((s) => s.session);
+  const preferences = useSessionStore((s) => s.preferences);
+  const signOut = useSessionStore((s) => s.signOut);
+
+  const email = session?.user.email;
+  const initial = email?.[0]?.toUpperCase();
+  const notSet = t('profile.notSet');
+
+  async function handleSignOut() {
+    if (session && isSupabaseConfigured()) await getSupabase().auth.signOut();
+    signOut();
+  }
+
+  return (
+    <Screen edges={['top']}>
+      <Text variant="display">{t('profile.title')}</Text>
+
+      <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={styles.identity}>
+          <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
+            {initial ? (
+              <Text variant="title" style={{ color: colors.onPrimary }}>
+                {initial}
+              </Text>
+            ) : (
+              <Ionicons name="person" size={28} color={colors.onPrimary} />
+            )}
+          </View>
+          <View style={styles.identityText}>
+            <Text variant="subtitle">{email ?? t('profile.guest')}</Text>
+            {!session && (
+              <Text variant="caption" color="textSecondary">
+                {t('profile.guestNote')}
+              </Text>
+            )}
+          </View>
+        </View>
+        {!session && isSupabaseConfigured() && (
+          <Button title={t('profile.createAccount')} variant="secondary" onPress={() => router.push('/sign-in')} />
+        )}
+      </View>
+
+      <View style={styles.section}>
+        <Text variant="subtitle">{t('profile.preferences')}</Text>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Row
+            label={t('profile.companion')}
+            value={preferences.companion ? t(`companion.${preferences.companion}`) : notSet}
+          />
+          <Row label={t('profile.budget')} value={preferences.budget ? t(`budget.${preferences.budget}`) : notSet} />
+          <Row
+            label={t('profile.interests')}
+            value={
+              preferences.interests.length
+                ? preferences.interests.map((i) => t(`interest.${i}` as 'interest.art')).join(', ')
+                : notSet
+            }
+          />
+          <Button
+            title={t('profile.editPreferences')}
+            variant="secondary"
+            onPress={() => router.push('/preferences')}
+          />
+        </View>
+      </View>
+
+      <View style={styles.section}>
+        <Text variant="subtitle">{t('profile.language')}</Text>
+        <LanguagePicker />
+      </View>
+
+      <View style={styles.section}>
+        <Text variant="subtitle">{t('profile.account')}</Text>
+        <Button title={t('profile.signOut')} variant="ghost" onPress={handleSignOut} />
+        <Text variant="caption" color="textMuted" style={styles.center}>
+          {t('profile.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}
+        </Text>
+      </View>
+    </Screen>
+  );
+}
+
+const styles = StyleSheet.create({
+  section: { gap: Spacing.md },
+  card: { gap: Spacing.lg, padding: Spacing.xl, borderRadius: Radius.xl, borderWidth: 1 },
+  identity: { flexDirection: 'row', alignItems: 'center', gap: Spacing.lg },
+  identityText: { flex: 1, gap: Spacing.xxs },
+  avatar: { width: 56, height: 56, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center' },
+  row: { flexDirection: 'row', justifyContent: 'space-between', gap: Spacing.lg },
+  rowValue: { flex: 1, textAlign: 'right' },
+  center: { textAlign: 'center' },
+});

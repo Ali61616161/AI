@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~57.0.22",
+    "@expo/vector-icons": "^15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@supabase/supabase-js": "^2.117.3",
     "@tanstack/react-query": "^5.104.1",
@@ -53,7 +54,8 @@
     "typecheck": "tsc --noEmit",
     "check:locales": "node scripts/check-locales.js",
     "db:test": "scripts/test-db.sh",
-    "db:types": "supabase gen types typescript --linked --schema public > src/types/database.ts && prettier --single-quote --print-width 110 --write src/types/database.ts"
+    "db:types": "supabase gen types typescript --linked --schema public > src/types/database.ts && prettier --single-quote --print-width 110 --write src/types/database.ts",
+    "preview:web": "EXPO_WEB_OUTPUT=single expo export --platform web --output-dir dist-preview && node scripts/build-web-preview.mjs dist-preview dist-preview/yola-preview.html"
   },
   "private": true
 }

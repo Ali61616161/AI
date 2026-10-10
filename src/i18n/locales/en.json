@@ -1,7 +1,167 @@
 {
-  "app": { "tagline": "Your trip, thinking with you" },
-  "common": { "continue": "Continue", "cancel": "Cancel", "save": "Save", "back": "Back", "loading": "Loading…", "error": "Something went wrong", "retry": "Try again" },
-  "welcome": { "title": "Your next journey starts here", "subtitle": "Upload your ticket and let Yola plan the rest.", "getStarted": "Get started" },
-  "language": { "title": "Language", "subtitle": "Choose the app language", "restartTitle": "Restart required", "restartMessage": "The app will restart to change the text direction.", "restartNow": "Restart now", "later": "Later" },
-  "tabs": { "today": "Today", "trips": "My Trips", "assistant": "Assistant", "social": "Social", "profile": "Profile" }
+  "app": {
+    "tagline": "Your trip, thinking with you"
+  },
+  "common": {
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "save": "Save",
+    "back": "Back",
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "comingSoon": "Coming soon",
+    "stepSoon": "Coming in step {{step}}",
+    "edit": "Edit",
+    "done": "Done"
+  },
+  "welcome": {
+    "title": "Your next journey starts here",
+    "subtitle": "Upload your ticket and let Yola plan the rest.",
+    "getStarted": "Get started"
+  },
+  "language": {
+    "title": "Language",
+    "subtitle": "Choose the app language",
+    "restartTitle": "Restart required",
+    "restartMessage": "The app will restart to change the text direction.",
+    "restartNow": "Restart now",
+    "later": "Later"
+  },
+  "tabs": {
+    "today": "Today",
+    "trips": "My Trips",
+    "assistant": "Assistant",
+    "social": "Social",
+    "profile": "Profile"
+  },
+  "auth": {
+    "signInTitle": "Sign in to your account",
+    "signInSubtitle": "We'll email you a 6-digit sign-in code. No password needed.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "sendCode": "Send code",
+    "invalidEmail": "Enter a valid email address.",
+    "codeTitle": "Enter the code",
+    "codeSubtitle": "Type the 6-digit code we sent to {{email}}.",
+    "codeLabel": "Sign-in code",
+    "verify": "Verify",
+    "resend": "Resend code",
+    "invalidCode": "The code is wrong or has expired. Try again.",
+    "guest": "Continue without an account",
+    "guestHint": "Your data stays on this phone. You can create an account any time.",
+    "notConfigured": "The server connection isn't set up yet. You can continue without an account for now."
+  },
+  "onboarding": {
+    "companionTitle": "Who are you traveling with?",
+    "companionSubtitle": "I'll pick routes, pace and places to match.",
+    "budgetTitle": "What's your budget style?",
+    "budgetSubtitle": "Food, stays and activity suggestions change with it.",
+    "interestsTitle": "What do you enjoy?",
+    "interestsSubtitle": "Pick at least one. You can change this later in your profile.",
+    "finish": "Finish"
+  },
+  "companion": {
+    "solo": "Solo",
+    "solo_desc": "Flexible pace, hostels and social spots",
+    "couple": "Couple",
+    "couple_desc": "Romantic evenings, places with a view",
+    "family": "Family with kids",
+    "family_desc": "Kid-friendly places, a relaxed pace",
+    "friends": "With friends",
+    "friends_desc": "Group activities and nightlife"
+  },
+  "budget": {
+    "low": "Low (Backpacker)",
+    "low_desc": "Hostels, local supermarkets, free museums",
+    "mid": "Mid (Smart-Casual)",
+    "mid_desc": "Good-value hotels, local restaurants, a few paid activities",
+    "lux": "High (Luxury)",
+    "lux_desc": "Boutique hotels, fine dining, private tours"
+  },
+  "interest": {
+    "art": "Art",
+    "history": "History",
+    "food": "Food",
+    "nightlife": "Nightlife",
+    "nature": "Nature",
+    "cars": "Cars",
+    "shopping": "Shopping",
+    "architecture": "Architecture",
+    "beach": "Beach",
+    "sports": "Sports",
+    "photography": "Photography",
+    "music": "Music"
+  },
+  "today": {
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "greetingNight": "Good night",
+    "noTripTitle": "No trip planned yet",
+    "noTripDescription": "Upload your flight ticket or hotel booking and I'll sketch out your trip.",
+    "uploadTicket": "Upload ticket or hotel",
+    "createManually": "Create a trip manually",
+    "yourProfile": "Your travel profile",
+    "featuresTitle": "What Yola does",
+    "featureReplan": "Rain, delays, tired feet: it changes the plan on the spot.",
+    "featureOffline": "Your route and tickets stay with you, even offline.",
+    "featureMenu": "Snap a menu to learn what each dish is and how pricey it is."
+  },
+  "trips": {
+    "title": "My trips",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "emptyUpcomingTitle": "No upcoming trips",
+    "emptyUpcomingDescription": "Upload a ticket or hotel booking to create your first trip.",
+    "emptyPastTitle": "No completed trips yet",
+    "emptyPastDescription": "When a trip ends, its summary and ratings will appear here."
+  },
+  "social": {
+    "title": "Traveler matching",
+    "subtitle": "Grab a coffee or explore together with travelers in the same city, always in a public place.",
+    "enable": "Turn on social mode",
+    "safetyTitle": "For your safety",
+    "safetyLocation": "Your location is shown to within about 1 km. Your exact spot is never shared.",
+    "safetyPublic": "Meetups can only be suggested at public places like museums and cafés.",
+    "safetyBlock": "You can block and report anyone.",
+    "safetyWomen": "You can choose to match only with women travelers."
+  },
+  "profile": {
+    "title": "Profile",
+    "guest": "Guest",
+    "guestNote": "Create an account to keep your trips on all your devices.",
+    "createAccount": "Create account",
+    "preferences": "Travel preferences",
+    "companion": "Traveling with",
+    "budget": "Budget",
+    "interests": "Interests",
+    "language": "Language",
+    "account": "Account",
+    "signOut": "Sign out",
+    "version": "Version {{version}}",
+    "notSet": "Not set",
+    "editPreferences": "Edit preferences"
+  },
+  "assistant": {
+    "title": "Change the plan",
+    "subtitle": "What happened? I'll suggest something new based on where you are and your plan.",
+    "placeholder": "e.g. It started raining, find somewhere indoors nearby",
+    "send": "Send",
+    "suggestionRain": "It's raining, find an indoor place within 1 km",
+    "suggestionDelay": "My train is delayed, I have 2 hours to fill",
+    "suggestionTired": "I'm tired, suggest a quiet café nearby",
+    "suggestionBudget": "I'm over budget today, suggest something free",
+    "notReady": "Got it: \"{{message}}\". The AI assistant gets connected in step 6; then I'll give real suggestions based on your location.",
+    "quickActions": "Quick actions",
+    "menuScan": "Translate a menu",
+    "addTicket": "Add a ticket",
+    "sos": "Emergency",
+    "openAssistant": "Open AI assistant"
+  },
+  "ticket": {
+    "title": "Upload ticket or hotel",
+    "subtitle": "Upload a screenshot or PDF and let AI read departure, arrival, dates and hotel details.",
+    "notice": "Uploading and AI reading arrive in step 4."
+  }
 }

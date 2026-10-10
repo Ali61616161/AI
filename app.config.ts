@@ -26,7 +26,8 @@ const config: ExpoConfig = {
     predictiveBackGestureEnabled: false,
   },
   web: {
-    output: 'static',
+    // Önizleme derlemesi tek sayfalık (single) çıktı kullanır: npm run preview:web
+    output: process.env.EXPO_WEB_OUTPUT === 'single' ? 'single' : 'static',
     favicon: './assets/images/favicon.png',
   },
   plugins: [
