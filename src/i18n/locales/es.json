@@ -106,7 +106,8 @@
     "featuresTitle": "Qué hace Yola",
     "featureReplan": "Lluvia, retrasos, cansancio: cambia el plan al instante.",
     "featureOffline": "Tu ruta y tus billetes te acompañan incluso sin conexión.",
-    "featureMenu": "Haz una foto al menú y descubre qué es cada plato y cuánto cuesta."
+    "featureMenu": "Haz una foto al menú y descubre qué es cada plato y cuánto cuesta.",
+    "nextTrip": "Tu próximo viaje"
   },
   "trips": {
     "title": "Mis viajes",
@@ -115,7 +116,14 @@
     "emptyUpcomingTitle": "No hay viajes próximos",
     "emptyUpcomingDescription": "Sube un billete o una reserva de hotel para crear tu primer viaje.",
     "emptyPastTitle": "Aún no hay viajes completados",
-    "emptyPastDescription": "Cuando termine un viaje, verás aquí su resumen y tus valoraciones."
+    "emptyPastDescription": "Cuando termine un viaje, verás aquí su resumen y tus valoraciones.",
+    "reservationCount_one": "{{count}} reserva",
+    "reservationCount_other": "{{count}} reservas",
+    "daysLeft_one": "Falta {{count}} día",
+    "daysLeft_other": "Faltan {{count}} días",
+    "startsToday": "Empieza hoy",
+    "ongoing": "En curso",
+    "loadFailed": "No se pudieron cargar tus viajes."
   },
   "social": {
     "title": "Encuentros entre viajeros",
@@ -162,6 +170,71 @@
   "ticket": {
     "title": "Subir billete u hotel",
     "subtitle": "Sube una captura o un PDF y deja que la IA lea salida, llegada, fechas y datos del hotel.",
-    "notice": "La subida y la lectura con IA llegan en el paso 4."
+    "sourceCamera": "Hacer una foto",
+    "sourceLibrary": "Elegir de la galería",
+    "sourceFile": "PDF o archivo",
+    "supported": "PDF, JPG, PNG o HEIC · hasta 10 MB · puedes elegir varios",
+    "selected": "Documentos seleccionados",
+    "read": "Leer con IA",
+    "statusQueued": "Esperando lectura",
+    "statusUploading": "Subiendo…",
+    "statusReading": "La IA está leyendo…",
+    "statusDone_one": "{{count}} reserva encontrada",
+    "statusDone_other": "{{count}} reservas encontradas",
+    "statusFailed": "No se pudo leer",
+    "remove": "Quitar",
+    "review": "Revisar y confirmar",
+    "accountRequiredTitle": "Se necesita una cuenta",
+    "accountRequiredBody": "Necesitas una cuenta para que tus documentos se guarden de forma segura y la IA pueda leerlos.",
+    "serverMissingTitle": "Aún no hay conexión con el servidor",
+    "serverMissingBody": "La lectura de documentos se hace en el servidor. El servidor y las claves de IA se conectan en el paso 15; hasta entonces esta pantalla puede elegir documentos pero no leerlos.",
+    "errors": {
+      "permission_denied": "No se dio permiso para la cámara. Puedes activarlo en los ajustes del teléfono.",
+      "unsupported_file": "Este tipo de archivo no es compatible. Sube un PDF, JPG, PNG o HEIC.",
+      "file_too_large": "El archivo supera los 10 MB.",
+      "quota_exceeded": "Has usado todas las lecturas de documentos del plan gratuito.",
+      "not_configured": "El servidor aún no está configurado.",
+      "ai_failed": "La IA no pudo leer el documento. Inténtalo con una foto más nítida.",
+      "no_reservations": "No se encontraron datos de reserva en este documento.",
+      "network": "Error de conexión. Revisa tu internet e inténtalo de nuevo."
+    }
+  },
+  "review": {
+    "title": "Revisa los datos",
+    "subtitle": "Revisa lo que leyó la IA. No está segura de los campos marcados en amarillo.",
+    "lowConfidence": "Revisar",
+    "include": "Añadir al viaje",
+    "fieldTitle": "Título",
+    "fieldReference": "Código de reserva",
+    "fieldStart": "Inicio",
+    "fieldEnd": "Fin",
+    "fieldFrom": "Desde",
+    "fieldTo": "Hasta",
+    "fieldCity": "Ciudad",
+    "fieldAddress": "Dirección",
+    "dateHint": "Formato: 2026-11-01 14:30",
+    "invalidDate": "Escribe la fecha como 2026-11-01 14:30.",
+    "create": "Crear el esquema del viaje",
+    "createFailed": "No se pudo crear el viaje: {{message}}",
+    "nothingSelected": "Elige al menos una reserva.",
+    "fixDates": "Corrige las fechas no válidas.",
+    "summary": "{{dates}} · {{cities}}"
+  },
+  "reservationType": {
+    "flight": "Vuelo",
+    "hotel": "Alojamiento",
+    "train": "Tren",
+    "bus": "Autobús",
+    "car_rental": "Alquiler de coche",
+    "event": "Evento",
+    "other": "Otro"
+  },
+  "trip": {
+    "destinations": "Paradas",
+    "reservations": "Reservas",
+    "addDocument": "Añadir documento",
+    "planSoon": "La ruta día a día llega en el paso 5.",
+    "notFound": "Viaje no encontrado.",
+    "reference": "Código: {{code}}"
   }
 }

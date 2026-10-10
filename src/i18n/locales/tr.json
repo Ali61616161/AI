@@ -106,7 +106,8 @@
     "featuresTitle": "Yola neler yapar?",
     "featureReplan": "Yağmur, rötar, yorgunluk: planı anında değiştirir.",
     "featureOffline": "Rotan ve biletlerin internetsiz de yanında olur.",
-    "featureMenu": "Menünün fotoğrafını çek, ne olduğunu ve fiyat seviyesini öğren."
+    "featureMenu": "Menünün fotoğrafını çek, ne olduğunu ve fiyat seviyesini öğren.",
+    "nextTrip": "Sıradaki seyahatin"
   },
   "trips": {
     "title": "Seyahatlerim",
@@ -115,7 +116,14 @@
     "emptyUpcomingTitle": "Yaklaşan seyahat yok",
     "emptyUpcomingDescription": "Bir bilet veya otel rezervasyonu yükleyerek ilk seyahatini oluştur.",
     "emptyPastTitle": "Henüz tamamlanan seyahat yok",
-    "emptyPastDescription": "Seyahatin bitince özetini ve puanlarını burada göreceksin."
+    "emptyPastDescription": "Seyahatin bitince özetini ve puanlarını burada göreceksin.",
+    "reservationCount_one": "{{count}} rezervasyon",
+    "reservationCount_other": "{{count}} rezervasyon",
+    "daysLeft_one": "{{count}} gün kaldı",
+    "daysLeft_other": "{{count}} gün kaldı",
+    "startsToday": "Bugün başlıyor",
+    "ongoing": "Devam ediyor",
+    "loadFailed": "Seyahatler yüklenemedi."
   },
   "social": {
     "title": "Gezgin eşleşmesi",
@@ -162,6 +170,71 @@
   "ticket": {
     "title": "Bilet veya otel yükle",
     "subtitle": "Ekran görüntüsü veya PDF yükle; kalkış, varış, tarih ve otel bilgilerini AI okusun.",
-    "notice": "Yükleme ve AI ile okuma 4. adımda geliyor."
+    "sourceCamera": "Fotoğraf çek",
+    "sourceLibrary": "Galeriden seç",
+    "sourceFile": "PDF veya dosya",
+    "supported": "PDF, JPG, PNG veya HEIC · en fazla 10 MB · birden fazla seçebilirsin",
+    "selected": "Seçilen belgeler",
+    "read": "AI ile oku",
+    "statusQueued": "Okunmayı bekliyor",
+    "statusUploading": "Yükleniyor…",
+    "statusReading": "AI okuyor…",
+    "statusDone_one": "{{count}} rezervasyon bulundu",
+    "statusDone_other": "{{count}} rezervasyon bulundu",
+    "statusFailed": "Okunamadı",
+    "remove": "Kaldır",
+    "review": "İncele ve onayla",
+    "accountRequiredTitle": "Hesap gerekli",
+    "accountRequiredBody": "Belgelerinin güvenle saklanıp AI ile okunabilmesi için bir hesap gerekiyor.",
+    "serverMissingTitle": "Sunucu bağlantısı henüz yok",
+    "serverMissingBody": "Belge okuma sunucuda çalışır. Sunucu ve AI anahtarları 15. adımda bağlanacak; o zamana kadar bu ekran belge seçmeye hazır ama okuma yapamaz.",
+    "errors": {
+      "permission_denied": "Kamera izni verilmedi. Telefonun ayarlarından izin verebilirsin.",
+      "unsupported_file": "Bu dosya türü desteklenmiyor. PDF, JPG, PNG veya HEIC yükle.",
+      "file_too_large": "Dosya 10 MB'tan büyük.",
+      "quota_exceeded": "Ücretsiz plandaki belge okuma hakkın doldu.",
+      "not_configured": "Sunucu henüz yapılandırılmadı.",
+      "ai_failed": "AI belgeyi okuyamadı. Daha net bir fotoğrafla tekrar dene.",
+      "no_reservations": "Bu belgede rezervasyon bilgisi bulunamadı.",
+      "network": "Bağlantı hatası. İnternetini kontrol edip tekrar dene."
+    }
+  },
+  "review": {
+    "title": "Bilgileri kontrol et",
+    "subtitle": "AI'ın okuduklarını kontrol et. Sarı işaretli alanlardan emin değil.",
+    "lowConfidence": "Kontrol et",
+    "include": "Seyahate ekle",
+    "fieldTitle": "Başlık",
+    "fieldReference": "Rezervasyon kodu",
+    "fieldStart": "Başlangıç",
+    "fieldEnd": "Bitiş",
+    "fieldFrom": "Nereden",
+    "fieldTo": "Nereye",
+    "fieldCity": "Şehir",
+    "fieldAddress": "Adres",
+    "dateHint": "Biçim: 2026-11-01 14:30",
+    "invalidDate": "Tarihi 2026-11-01 14:30 biçiminde yaz.",
+    "create": "Seyahat iskeletini oluştur",
+    "createFailed": "Seyahat oluşturulamadı: {{message}}",
+    "nothingSelected": "En az bir rezervasyon seç.",
+    "fixDates": "Hatalı tarihleri düzelt.",
+    "summary": "{{dates}} · {{cities}}"
+  },
+  "reservationType": {
+    "flight": "Uçuş",
+    "hotel": "Konaklama",
+    "train": "Tren",
+    "bus": "Otobüs",
+    "car_rental": "Araç kiralama",
+    "event": "Etkinlik",
+    "other": "Diğer"
+  },
+  "trip": {
+    "destinations": "Duraklar",
+    "reservations": "Rezervasyonlar",
+    "addDocument": "Belge ekle",
+    "planSoon": "Gün gün rota 5. adımda gelecek.",
+    "notFound": "Seyahat bulunamadı.",
+    "reference": "Kod: {{code}}"
   }
 }

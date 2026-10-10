@@ -106,7 +106,8 @@
     "featuresTitle": "Yola 能做什么",
     "featureReplan": "下雨、延误、累了：随时调整计划。",
     "featureOffline": "路线和票据离线也能查看。",
-    "featureMenu": "拍下菜单，了解每道菜是什么以及价格水平。"
+    "featureMenu": "拍下菜单，了解每道菜是什么以及价格水平。",
+    "nextTrip": "你的下一次旅行"
   },
   "trips": {
     "title": "我的旅行",
@@ -115,7 +116,12 @@
     "emptyUpcomingTitle": "没有即将出发的旅行",
     "emptyUpcomingDescription": "上传机票或酒店预订，创建你的第一次旅行。",
     "emptyPastTitle": "还没有已完成的旅行",
-    "emptyPastDescription": "旅行结束后，这里会显示总结和你的评分。"
+    "emptyPastDescription": "旅行结束后，这里会显示总结和你的评分。",
+    "reservationCount_other": "{{count}} 项预订",
+    "daysLeft_other": "还有 {{count}} 天",
+    "startsToday": "今天出发",
+    "ongoing": "进行中",
+    "loadFailed": "无法加载你的行程。"
   },
   "social": {
     "title": "旅伴匹配",
@@ -162,6 +168,70 @@
   "ticket": {
     "title": "上传机票或酒店",
     "subtitle": "上传截图或 PDF，让 AI 读取出发、到达、日期和酒店信息。",
-    "notice": "上传和 AI 识别将在第 4 步推出。"
+    "sourceCamera": "拍照",
+    "sourceLibrary": "从相册选择",
+    "sourceFile": "PDF 或文件",
+    "supported": "PDF、JPG、PNG 或 HEIC · 最大 10 MB · 可多选",
+    "selected": "已选文件",
+    "read": "用 AI 识别",
+    "statusQueued": "等待识别",
+    "statusUploading": "正在上传…",
+    "statusReading": "AI 正在识别…",
+    "statusDone_other": "找到 {{count}} 项预订",
+    "statusFailed": "无法识别",
+    "remove": "移除",
+    "review": "检查并确认",
+    "accountRequiredTitle": "需要账户",
+    "accountRequiredBody": "需要账户才能安全保存文件并由 AI 识别。",
+    "serverMissingTitle": "尚未连接服务器",
+    "serverMissingBody": "文件识别在服务器上运行。服务器和 AI 密钥将在第 15 步接入；在此之前，此页面可以选择文件，但无法识别。",
+    "errors": {
+      "permission_denied": "相机权限被拒绝。可以在手机设置中开启。",
+      "unsupported_file": "不支持此文件类型。请上传 PDF、JPG、PNG 或 HEIC。",
+      "file_too_large": "文件超过 10 MB。",
+      "quota_exceeded": "免费版的文件识别次数已用完。",
+      "not_configured": "服务器尚未配置。",
+      "ai_failed": "AI 无法识别该文件，请换一张更清晰的照片再试。",
+      "no_reservations": "该文件中未找到预订信息。",
+      "network": "连接错误，请检查网络后重试。"
+    }
+  },
+  "review": {
+    "title": "核对信息",
+    "subtitle": "请核对 AI 识别的内容。黄色标记的字段 AI 不太确定。",
+    "lowConfidence": "请核对",
+    "include": "加入行程",
+    "fieldTitle": "标题",
+    "fieldReference": "预订码",
+    "fieldStart": "开始",
+    "fieldEnd": "结束",
+    "fieldFrom": "出发地",
+    "fieldTo": "目的地",
+    "fieldCity": "城市",
+    "fieldAddress": "地址",
+    "dateHint": "格式：2026-11-01 14:30",
+    "invalidDate": "请按 2026-11-01 14:30 的格式填写日期。",
+    "create": "生成行程框架",
+    "createFailed": "无法创建行程：{{message}}",
+    "nothingSelected": "请至少选择一项预订。",
+    "fixDates": "请修正无效日期。",
+    "summary": "{{dates}} · {{cities}}"
+  },
+  "reservationType": {
+    "flight": "航班",
+    "hotel": "住宿",
+    "train": "火车",
+    "bus": "巴士",
+    "car_rental": "租车",
+    "event": "活动",
+    "other": "其他"
+  },
+  "trip": {
+    "destinations": "站点",
+    "reservations": "预订",
+    "addDocument": "添加文件",
+    "planSoon": "逐日路线将在第 5 步推出。",
+    "notFound": "未找到行程。",
+    "reference": "预订码：{{code}}"
   }
 }

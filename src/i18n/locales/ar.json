@@ -106,7 +106,8 @@
     "featuresTitle": "ماذا يفعل Yola",
     "featureReplan": "مطر، تأخير، تعب: يغيّر الخطة فورًا.",
     "featureOffline": "مسارك وتذاكرك معك حتى بدون إنترنت.",
-    "featureMenu": "صوّر قائمة الطعام لتعرف كل طبق ومستوى سعره."
+    "featureMenu": "صوّر قائمة الطعام لتعرف كل طبق ومستوى سعره.",
+    "nextTrip": "رحلتك القادمة"
   },
   "trips": {
     "title": "رحلاتي",
@@ -115,7 +116,22 @@
     "emptyUpcomingTitle": "لا توجد رحلات قادمة",
     "emptyUpcomingDescription": "حمّل تذكرة أو حجز فندق لإنشاء رحلتك الأولى.",
     "emptyPastTitle": "لا توجد رحلات مكتملة بعد",
-    "emptyPastDescription": "عند انتهاء الرحلة ستجد ملخصها وتقييماتك هنا."
+    "emptyPastDescription": "عند انتهاء الرحلة ستجد ملخصها وتقييماتك هنا.",
+    "reservationCount_zero": "لا حجوزات",
+    "reservationCount_one": "حجز واحد",
+    "reservationCount_two": "حجزان",
+    "reservationCount_few": "{{count}} حجوزات",
+    "reservationCount_many": "{{count}} حجزًا",
+    "reservationCount_other": "{{count}} حجز",
+    "daysLeft_zero": "يبدأ اليوم",
+    "daysLeft_one": "بقي يوم واحد",
+    "daysLeft_two": "بقي يومان",
+    "daysLeft_few": "بقيت {{count}} أيام",
+    "daysLeft_many": "بقي {{count}} يومًا",
+    "daysLeft_other": "بقي {{count}} يوم",
+    "startsToday": "تبدأ اليوم",
+    "ongoing": "جارية الآن",
+    "loadFailed": "تعذّر تحميل رحلاتك."
   },
   "social": {
     "title": "تعارف المسافرين",
@@ -162,6 +178,75 @@
   "ticket": {
     "title": "تحميل تذكرة أو فندق",
     "subtitle": "حمّل لقطة شاشة أو ملف PDF ودَع الذكاء الاصطناعي يقرأ المغادرة والوصول والتواريخ وبيانات الفندق.",
-    "notice": "التحميل والقراءة بالذكاء الاصطناعي في الخطوة 4."
+    "sourceCamera": "التقاط صورة",
+    "sourceLibrary": "اختيار من المعرض",
+    "sourceFile": "PDF أو ملف",
+    "supported": "PDF أو JPG أو PNG أو HEIC · حتى 10 ميغابايت · يمكنك اختيار عدة ملفات",
+    "selected": "المستندات المختارة",
+    "read": "قراءة بالذكاء الاصطناعي",
+    "statusQueued": "بانتظار القراءة",
+    "statusUploading": "جارٍ الرفع…",
+    "statusReading": "الذكاء الاصطناعي يقرأ…",
+    "statusDone_zero": "لم يُعثر على حجوزات",
+    "statusDone_one": "تم العثور على حجز واحد",
+    "statusDone_two": "تم العثور على حجزين",
+    "statusDone_few": "تم العثور على {{count}} حجوزات",
+    "statusDone_many": "تم العثور على {{count}} حجزًا",
+    "statusDone_other": "تم العثور على {{count}} حجز",
+    "statusFailed": "تعذّرت القراءة",
+    "remove": "إزالة",
+    "review": "مراجعة وتأكيد",
+    "accountRequiredTitle": "الحساب مطلوب",
+    "accountRequiredBody": "تحتاج إلى حساب لتُحفظ مستنداتك بأمان ويقرأها الذكاء الاصطناعي.",
+    "serverMissingTitle": "لا يوجد اتصال بالخادم بعد",
+    "serverMissingBody": "تتم قراءة المستندات على الخادم. سيتم ربط الخادم ومفاتيح الذكاء الاصطناعي في الخطوة 15، وحتى ذلك الحين يمكن لهذه الشاشة اختيار المستندات دون قراءتها.",
+    "errors": {
+      "permission_denied": "تم رفض الوصول إلى الكاميرا. يمكنك السماح به من إعدادات الهاتف.",
+      "unsupported_file": "نوع الملف غير مدعوم. حمّل ملف PDF أو JPG أو PNG أو HEIC.",
+      "file_too_large": "حجم الملف أكبر من 10 ميغابايت.",
+      "quota_exceeded": "استنفدت عمليات قراءة المستندات في الخطة المجانية.",
+      "not_configured": "لم يتم إعداد الخادم بعد.",
+      "ai_failed": "لم يتمكن الذكاء الاصطناعي من قراءة المستند. حاول بصورة أوضح.",
+      "no_reservations": "لم يتم العثور على بيانات حجز في هذا المستند.",
+      "network": "خطأ في الاتصال. تحقق من الإنترنت وحاول مرة أخرى."
+    }
+  },
+  "review": {
+    "title": "تحقّق من البيانات",
+    "subtitle": "راجع ما قرأه الذكاء الاصطناعي. الحقول المميزة بالأصفر غير مؤكدة.",
+    "lowConfidence": "تحقّق",
+    "include": "إضافة إلى الرحلة",
+    "fieldTitle": "العنوان",
+    "fieldReference": "رمز الحجز",
+    "fieldStart": "البداية",
+    "fieldEnd": "النهاية",
+    "fieldFrom": "من",
+    "fieldTo": "إلى",
+    "fieldCity": "المدينة",
+    "fieldAddress": "العنوان التفصيلي",
+    "dateHint": "الصيغة: 2026-11-01 14:30",
+    "invalidDate": "اكتب التاريخ بصيغة 2026-11-01 14:30.",
+    "create": "إنشاء هيكل الرحلة",
+    "createFailed": "تعذّر إنشاء الرحلة: {{message}}",
+    "nothingSelected": "اختر حجزًا واحدًا على الأقل.",
+    "fixDates": "صحّح التواريخ غير الصالحة.",
+    "summary": "{{dates}} · {{cities}}"
+  },
+  "reservationType": {
+    "flight": "رحلة جوية",
+    "hotel": "إقامة",
+    "train": "قطار",
+    "bus": "حافلة",
+    "car_rental": "استئجار سيارة",
+    "event": "فعالية",
+    "other": "أخرى"
+  },
+  "trip": {
+    "destinations": "المحطات",
+    "reservations": "الحجوزات",
+    "addDocument": "إضافة مستند",
+    "planSoon": "المسار اليومي يتوفر في الخطوة 5.",
+    "notFound": "الرحلة غير موجودة.",
+    "reference": "الرمز: {{code}}"
   }
 }

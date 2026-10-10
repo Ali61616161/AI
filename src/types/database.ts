@@ -1197,6 +1197,16 @@ export type Database = {
           remaining: number;
         }[];
       };
+      create_trip_from_documents: {
+        Args: {
+          p_destinations: Json;
+          p_document_ids: string[];
+          p_reservations: Json;
+          p_trip: Json;
+          p_trip_id?: string;
+        };
+        Returns: string;
+      };
       current_plan: {
         Args: { p_trip_id?: string };
         Returns: Database['public']['Enums']['subscription_plan'];

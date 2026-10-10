@@ -18,6 +18,8 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run check:locales
+      - run: npm run functions:check
+      - run: npm run functions:test
 
   database:
     runs-on: ubuntu-latest

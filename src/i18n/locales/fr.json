@@ -106,7 +106,8 @@
     "featuresTitle": "Ce que fait Yola",
     "featureReplan": "Pluie, retard, fatigue : le plan change sur-le-champ.",
     "featureOffline": "Votre itinéraire et vos billets restent disponibles, même hors ligne.",
-    "featureMenu": "Photographiez un menu pour savoir ce qu'est chaque plat et son niveau de prix."
+    "featureMenu": "Photographiez un menu pour savoir ce qu'est chaque plat et son niveau de prix.",
+    "nextTrip": "Votre prochain voyage"
   },
   "trips": {
     "title": "Mes voyages",
@@ -115,7 +116,14 @@
     "emptyUpcomingTitle": "Aucun voyage à venir",
     "emptyUpcomingDescription": "Importez un billet ou une réservation d'hôtel pour créer votre premier voyage.",
     "emptyPastTitle": "Aucun voyage terminé",
-    "emptyPastDescription": "À la fin d'un voyage, son résumé et vos notes apparaîtront ici."
+    "emptyPastDescription": "À la fin d'un voyage, son résumé et vos notes apparaîtront ici.",
+    "reservationCount_one": "{{count}} réservation",
+    "reservationCount_other": "{{count}} réservations",
+    "daysLeft_one": "Plus que {{count}} jour",
+    "daysLeft_other": "Plus que {{count}} jours",
+    "startsToday": "Commence aujourd'hui",
+    "ongoing": "En cours",
+    "loadFailed": "Impossible de charger vos voyages."
   },
   "social": {
     "title": "Rencontres entre voyageurs",
@@ -162,6 +170,71 @@
   "ticket": {
     "title": "Importer un billet ou un hôtel",
     "subtitle": "Importez une capture d'écran ou un PDF et laissez l'IA lire départ, arrivée, dates et informations d'hôtel.",
-    "notice": "L'import et la lecture par IA arrivent à l'étape 4."
+    "sourceCamera": "Prendre une photo",
+    "sourceLibrary": "Choisir dans la galerie",
+    "sourceFile": "PDF ou fichier",
+    "supported": "PDF, JPG, PNG ou HEIC · 10 Mo max · sélection multiple possible",
+    "selected": "Documents sélectionnés",
+    "read": "Lire avec l'IA",
+    "statusQueued": "En attente de lecture",
+    "statusUploading": "Envoi…",
+    "statusReading": "L'IA lit…",
+    "statusDone_one": "{{count}} réservation trouvée",
+    "statusDone_other": "{{count}} réservations trouvées",
+    "statusFailed": "Lecture impossible",
+    "remove": "Retirer",
+    "review": "Vérifier et confirmer",
+    "accountRequiredTitle": "Compte nécessaire",
+    "accountRequiredBody": "Un compte est nécessaire pour stocker vos documents en sécurité et les faire lire par l'IA.",
+    "serverMissingTitle": "Pas encore de connexion au serveur",
+    "serverMissingBody": "La lecture des documents se fait sur le serveur. Le serveur et les clés IA seront connectés à l'étape 15 ; d'ici là, cet écran permet de choisir des documents mais pas de les lire.",
+    "errors": {
+      "permission_denied": "L'accès à l'appareil photo a été refusé. Vous pouvez l'autoriser dans les réglages du téléphone.",
+      "unsupported_file": "Ce type de fichier n'est pas pris en charge. Importez un PDF, JPG, PNG ou HEIC.",
+      "file_too_large": "Le fichier dépasse 10 Mo.",
+      "quota_exceeded": "Vous avez utilisé toutes les lectures de documents du forfait gratuit.",
+      "not_configured": "Le serveur n'est pas encore configuré.",
+      "ai_failed": "L'IA n'a pas pu lire le document. Réessayez avec une photo plus nette.",
+      "no_reservations": "Aucune réservation n'a été trouvée dans ce document.",
+      "network": "Erreur de connexion. Vérifiez votre connexion et réessayez."
+    }
+  },
+  "review": {
+    "title": "Vérifiez les informations",
+    "subtitle": "Vérifiez ce que l'IA a lu. Elle n'est pas sûre des champs marqués en jaune.",
+    "lowConfidence": "À vérifier",
+    "include": "Ajouter au voyage",
+    "fieldTitle": "Titre",
+    "fieldReference": "Code de réservation",
+    "fieldStart": "Début",
+    "fieldEnd": "Fin",
+    "fieldFrom": "De",
+    "fieldTo": "À",
+    "fieldCity": "Ville",
+    "fieldAddress": "Adresse",
+    "dateHint": "Format : 2026-11-01 14:30",
+    "invalidDate": "Écrivez la date au format 2026-11-01 14:30.",
+    "create": "Créer la trame du voyage",
+    "createFailed": "Impossible de créer le voyage : {{message}}",
+    "nothingSelected": "Sélectionnez au moins une réservation.",
+    "fixDates": "Corrigez les dates invalides.",
+    "summary": "{{dates}} · {{cities}}"
+  },
+  "reservationType": {
+    "flight": "Vol",
+    "hotel": "Hébergement",
+    "train": "Train",
+    "bus": "Bus",
+    "car_rental": "Location de voiture",
+    "event": "Événement",
+    "other": "Autre"
+  },
+  "trip": {
+    "destinations": "Étapes",
+    "reservations": "Réservations",
+    "addDocument": "Ajouter un document",
+    "planSoon": "L'itinéraire jour par jour arrive à l'étape 5.",
+    "notFound": "Voyage introuvable.",
+    "reference": "Code : {{code}}"
   }
 }

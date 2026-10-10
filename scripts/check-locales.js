@@ -8,7 +8,11 @@ const flatten = (obj, prefix = '') =>
   Object.entries(obj).flatMap(([k, v]) =>
     v && typeof v === 'object' ? flatten(v, `${prefix}${k}.`) : [`${prefix}${k}`],
   );
-const keysOf = (file) => new Set(flatten(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'))));
+// Çoğul biçimleri dile göre değişir (en: _one/_other, ru: _one/_few/_many/_other,
+// ar: _zero.._other); karşılaştırmada temel anahtar kullanılır.
+const PLURAL_SUFFIX = /_(zero|one|two|few|many|other)$/;
+const keysOf = (file) =>
+  new Set(flatten(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'))).map((k) => k.replace(PLURAL_SUFFIX, '')));
 
 const reference = keysOf('en.json');
 let failed = false;

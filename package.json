@@ -11,10 +11,14 @@
     "eslint-config-expo": "~57.0.2",
     "expo": "~57.0.27",
     "expo-constants": "~57.0.21",
+    "expo-crypto": "~57.0.3",
     "expo-device": "~57.0.2",
+    "expo-document-picker": "~57.0.3",
+    "expo-file-system": "~57.0.7",
     "expo-font": "~57.0.4",
     "expo-glass-effect": "~57.0.4",
     "expo-image": "~57.0.5",
+    "expo-image-picker": "~57.0.20",
     "expo-linking": "~57.0.12",
     "expo-localization": "~57.0.2",
     "expo-router": "~57.0.25",
@@ -40,6 +44,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "deno": "^2.9.6",
     "eslint": "^9.39.5",
     "prettier": "^3.6.2",
     "supabase": "^2.120.0",
@@ -55,7 +60,9 @@
     "check:locales": "node scripts/check-locales.js",
     "db:test": "scripts/test-db.sh",
     "db:types": "supabase gen types typescript --linked --schema public > src/types/database.ts && prettier --single-quote --print-width 110 --write src/types/database.ts",
-    "preview:web": "EXPO_WEB_OUTPUT=single expo export --platform web --output-dir dist-preview && node scripts/build-web-preview.mjs dist-preview dist-preview/yola-preview.html"
+    "preview:web": "EXPO_WEB_OUTPUT=single expo export --platform web --output-dir dist-preview && node scripts/build-web-preview.mjs dist-preview dist-preview/yola-preview.html",
+    "functions:check": "cd supabase/functions && deno check */index.ts && deno lint",
+    "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features"
   },
   "private": true
 }

@@ -106,7 +106,8 @@
     "featuresTitle": "What Yola does",
     "featureReplan": "Rain, delays, tired feet: it changes the plan on the spot.",
     "featureOffline": "Your route and tickets stay with you, even offline.",
-    "featureMenu": "Snap a menu to learn what each dish is and how pricey it is."
+    "featureMenu": "Snap a menu to learn what each dish is and how pricey it is.",
+    "nextTrip": "Your next trip"
   },
   "trips": {
     "title": "My trips",
@@ -115,7 +116,14 @@
     "emptyUpcomingTitle": "No upcoming trips",
     "emptyUpcomingDescription": "Upload a ticket or hotel booking to create your first trip.",
     "emptyPastTitle": "No completed trips yet",
-    "emptyPastDescription": "When a trip ends, its summary and ratings will appear here."
+    "emptyPastDescription": "When a trip ends, its summary and ratings will appear here.",
+    "reservationCount_one": "{{count}} reservation",
+    "reservationCount_other": "{{count}} reservations",
+    "daysLeft_one": "{{count}} day to go",
+    "daysLeft_other": "{{count}} days to go",
+    "startsToday": "Starts today",
+    "ongoing": "In progress",
+    "loadFailed": "Couldn't load your trips."
   },
   "social": {
     "title": "Traveler matching",
@@ -162,6 +170,71 @@
   "ticket": {
     "title": "Upload ticket or hotel",
     "subtitle": "Upload a screenshot or PDF and let AI read departure, arrival, dates and hotel details.",
-    "notice": "Uploading and AI reading arrive in step 4."
+    "sourceCamera": "Take a photo",
+    "sourceLibrary": "Choose from gallery",
+    "sourceFile": "PDF or file",
+    "supported": "PDF, JPG, PNG or HEIC · up to 10 MB · you can pick several",
+    "selected": "Selected documents",
+    "read": "Read with AI",
+    "statusQueued": "Waiting to be read",
+    "statusUploading": "Uploading…",
+    "statusReading": "AI is reading…",
+    "statusDone_one": "{{count}} reservation found",
+    "statusDone_other": "{{count}} reservations found",
+    "statusFailed": "Couldn't read",
+    "remove": "Remove",
+    "review": "Review and confirm",
+    "accountRequiredTitle": "Account required",
+    "accountRequiredBody": "You need an account so your documents can be stored safely and read by AI.",
+    "serverMissingTitle": "No server connection yet",
+    "serverMissingBody": "Document reading runs on the server. The server and AI keys get connected in step 15; until then this screen can pick documents but can't read them.",
+    "errors": {
+      "permission_denied": "Camera access was denied. You can allow it in your phone's settings.",
+      "unsupported_file": "This file type isn't supported. Upload a PDF, JPG, PNG or HEIC.",
+      "file_too_large": "The file is larger than 10 MB.",
+      "quota_exceeded": "You've used all document scans on the free plan.",
+      "not_configured": "The server isn't configured yet.",
+      "ai_failed": "AI couldn't read the document. Try again with a sharper photo.",
+      "no_reservations": "No reservation details were found in this document.",
+      "network": "Connection error. Check your internet and try again."
+    }
+  },
+  "review": {
+    "title": "Check the details",
+    "subtitle": "Check what AI read. It isn't sure about the fields marked in yellow.",
+    "lowConfidence": "Check",
+    "include": "Add to trip",
+    "fieldTitle": "Title",
+    "fieldReference": "Booking code",
+    "fieldStart": "Start",
+    "fieldEnd": "End",
+    "fieldFrom": "From",
+    "fieldTo": "To",
+    "fieldCity": "City",
+    "fieldAddress": "Address",
+    "dateHint": "Format: 2026-11-01 14:30",
+    "invalidDate": "Write the date as 2026-11-01 14:30.",
+    "create": "Create trip outline",
+    "createFailed": "Couldn't create the trip: {{message}}",
+    "nothingSelected": "Select at least one reservation.",
+    "fixDates": "Fix the invalid dates.",
+    "summary": "{{dates}} · {{cities}}"
+  },
+  "reservationType": {
+    "flight": "Flight",
+    "hotel": "Stay",
+    "train": "Train",
+    "bus": "Bus",
+    "car_rental": "Car rental",
+    "event": "Event",
+    "other": "Other"
+  },
+  "trip": {
+    "destinations": "Stops",
+    "reservations": "Reservations",
+    "addDocument": "Add a document",
+    "planSoon": "The day-by-day route arrives in step 5.",
+    "notFound": "Trip not found.",
+    "reference": "Code: {{code}}"
   }
 }

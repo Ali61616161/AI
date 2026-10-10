@@ -34,6 +34,14 @@ const config: ExpoConfig = {
     'expo-router',
     'expo-secure-store',
     [
+      'expo-image-picker',
+      {
+        photosPermission: `${brand.name} uses your photos so you can upload ticket and booking screenshots.`,
+        cameraPermission: `${brand.name} uses the camera so you can photograph tickets, bookings and menus.`,
+        microphonePermission: false,
+      },
+    ],
+    [
       'expo-localization',
       {
         supportsRTL: true,

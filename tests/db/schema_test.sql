@@ -250,7 +250,89 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '9. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '9. Belgelerden seyahat: tek işlem, mevcut seyahate ekleme, başkasının belgesi reddedilir'
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+insert into public.documents (id, storage_path, mime_type, status) values
+  ('40000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-00000000000b/flight.pdf', 'application/pdf', 'parsed'),
+  ('40000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-00000000000b/hotel.png', 'image/png', 'parsed'),
+  ('40000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-00000000000b/return.pdf', 'application/pdf', 'parsed');
+
+do $$
+declare
+  v_trip uuid;
+  v_trips_before int := (select count(*) from public.trips);
+begin
+  v_trip := public.create_trip_from_documents(
+    '{"title": "Rome · Florence", "start_date": "2026-11-01", "end_date": "2026-11-04", "budget_tier": "low", "interests": ["art", "food"]}',
+    '[{"city": "Rome", "country_code": "IT", "arrive_on": "2026-11-01", "depart_on": "2026-11-02"},
+      {"city": "Florence", "country_code": "IT", "arrive_on": "2026-11-02", "depart_on": "2026-11-04"}]',
+    '[{"document_id": "40000000-0000-0000-0000-000000000001", "type": "flight", "title": "TK1865 IST → FCO",
+       "starts_at": "2026-11-01T05:10:00Z", "ends_at": "2026-11-01T08:45:00Z", "origin_code": "IST", "destination_code": "FCO",
+       "details": {"seat": "14C"}},
+      {"document_id": "40000000-0000-0000-0000-000000000002", "type": "hotel", "title": "Hotel Santa Maria Novella",
+       "starts_at": "2026-11-02T14:00:00Z", "ends_at": "2026-11-04T10:00:00Z", "details": {"breakfast_included": true}}]',
+    array['40000000-0000-0000-0000-000000000001', '40000000-0000-0000-0000-000000000002']::uuid[]
+  );
+  assert (select title from public.trips where id = v_trip) = 'Rome · Florence';
+  assert (select status from public.trips where id = v_trip) = 'planned';
+  assert (select interests from public.trips where id = v_trip) = '{art,food}';
+  assert (select count(*) from public.trip_destinations where trip_id = v_trip) = 2;
+  assert (select count(*) from public.reservations where trip_id = v_trip) = 2;
+  assert (select details ->> 'seat' from public.reservations where trip_id = v_trip and type = 'flight') = '14C';
+  assert (select count(*) from public.documents where trip_id = v_trip and status = 'confirmed') = 2;
+
+  -- Dönüş uçuşunu sonradan aynı seyahate ekle: bitiş tarihi uzar, Floransa tekrar eklenmez.
+  perform public.create_trip_from_documents(
+    '{"start_date": "2026-11-05", "end_date": "2026-11-05"}',
+    '[{"city": "florence", "arrive_on": "2026-11-02"}]',
+    '[{"document_id": "40000000-0000-0000-0000-000000000003", "type": "flight", "title": "TK1866 FLR → IST",
+       "starts_at": "2026-11-05T16:00:00Z"}]',
+    array['40000000-0000-0000-0000-000000000003']::uuid[],
+    v_trip
+  );
+  assert (select end_date from public.trips where id = v_trip) = '2026-11-05';
+  assert (select start_date from public.trips where id = v_trip) = '2026-11-01', 'başlangıç tarihi daralmamalı';
+  assert (select count(*) from public.trip_destinations where trip_id = v_trip) = 2;
+  assert (select count(*) from public.reservations where trip_id = v_trip) = 3;
+  assert (select count(*) from public.trips) = v_trips_before + 1, 'eklemede yeni seyahat açılmamalı';
+
+  -- Rezervasyonsuz çağrı reddedilir.
+  assert tests.throws($q$ select public.create_trip_from_documents('{}', '[]', '[]', '{}') $q$);
+end $$;
+
+-- Ayşe'nin bir belgesi (sahibi Ayşe, Bea göremez).
+reset role;
+insert into public.documents (id, user_id, storage_path, mime_type, status) values
+  ('40000000-0000-0000-0000-0000000000aa', '00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000a/x.pdf', 'application/pdf', 'parsed');
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+
+do $$
+declare v_before int := (select count(*) from public.trips);
+begin
+  assert tests.throws($q$ select public.create_trip_from_documents(
+    '{"title": "Hack"}', '[]',
+    '[{"type": "other", "title": "x", "starts_at": "2026-11-01T00:00:00Z"}]',
+    array['40000000-0000-0000-0000-0000000000aa']::uuid[]) $q$),
+    'başkasının belgesiyle seyahat oluşturulamamalı';
+  assert (select count(*) from public.trips) = v_before, 'başarısız işlem hiçbir şey bırakmamalı';
+end $$;
+
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$
+declare v_trip uuid;
+begin
+  reset role;
+  select id into v_trip from public.trips where title = 'Rome · Florence';
+  set role authenticated;
+  assert tests.throws(format($q$ select public.create_trip_from_documents('{}', '[]',
+    '[{"type": "other", "title": "x", "starts_at": "2026-11-01T00:00:00Z"}]', '{}', %L) $q$, v_trip)),
+    'Can, Bea''nın seyahatine ekleme yapamamalı';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '10. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

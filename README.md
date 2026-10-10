@@ -27,6 +27,22 @@ npm run typecheck       # TypeScript
 npm run check:locales   # 9 dil dosyasında eksik çeviri anahtarı var mı
 npm run db:test         # Şemayı boş bir PostgreSQL + PostGIS'e uygulayıp testleri çalıştırır
 npm run db:types        # Bağlı Supabase projesinden TypeScript tiplerini yeniden üretir
+npm run functions:check # Edge Function'ları Deno ile tip ve lint kontrolünden geçirir
+npm run functions:test  # Paylaşılan modüllerin birim testleri (Deno)
+npm run preview:web     # Tek dosyalık web önizlemesi üretir (dist-preview/yola-preview.html)
+```
+
+## Edge Functions
+
+| Fonksiyon | Görev | Gerekli sırlar |
+|---|---|---|
+| `parse-document` | Yüklenen bilet/otel belgesini Gemini ile okur, `documents` tablosuna yazar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
+
+Uygulama ile fonksiyonların paylaştığı kod `supabase/functions/_shared/` altındadır (dış paket kullanmaz). Dağıtım:
+
+```bash
+npx supabase secrets set GEMINI_API_KEY=...
+npx supabase functions deploy parse-document
 ```
 
 ## Veritabanı (Supabase)

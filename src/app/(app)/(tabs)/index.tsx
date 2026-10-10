@@ -10,6 +10,9 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { BUDGETS, COMPANIONS } from '@/features/profile/options';
+import { useTrips } from '@/features/trips/queries';
+import { TripCard } from '@/features/trips/trip-card';
+import { todayIsoDate } from '@/lib/format';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -33,15 +36,25 @@ export default function TodayScreen() {
   const preferences = useSessionStore((s) => s.preferences);
   const companion = COMPANIONS.find((c) => c.value === preferences.companion);
   const budget = BUDGETS.find((b) => b.value === preferences.budget);
+  const { data: trips } = useTrips();
+  const today = todayIsoDate();
+  const nextTrip = trips?.find((trip) => !trip.end_date || trip.end_date >= today);
 
   return (
     <Screen edges={['top']}>
       <Text variant="display">{t(greetingKey(new Date().getHours()))}</Text>
 
-      <EmptyState icon="airplane-outline" title={t('today.noTripTitle')} description={t('today.noTripDescription')}>
-        <Button title={t('today.uploadTicket')} onPress={() => router.push('/ticket')} />
-        <Button title={t('today.createManually')} variant="secondary" disabled />
-      </EmptyState>
+      {nextTrip ? (
+        <View style={styles.section}>
+          <Text variant="subtitle">{t('today.nextTrip')}</Text>
+          <TripCard trip={nextTrip} highlight />
+        </View>
+      ) : (
+        <EmptyState icon="airplane-outline" title={t('today.noTripTitle')} description={t('today.noTripDescription')}>
+          <Button title={t('today.uploadTicket')} onPress={() => router.push('/ticket')} />
+          <Button title={t('today.createManually')} variant="secondary" disabled />
+        </EmptyState>
+      )}
 
       {(companion || budget) && (
         <View style={styles.section}>

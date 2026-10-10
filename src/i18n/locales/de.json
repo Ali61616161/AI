@@ -106,7 +106,8 @@
     "featuresTitle": "Was Yola kann",
     "featureReplan": "Regen, Verspätung, müde Füße: Der Plan ändert sich sofort.",
     "featureOffline": "Route und Tickets sind auch offline dabei.",
-    "featureMenu": "Fotografiere eine Speisekarte und erfahre, was jedes Gericht ist und wie teuer es ist."
+    "featureMenu": "Fotografiere eine Speisekarte und erfahre, was jedes Gericht ist und wie teuer es ist.",
+    "nextTrip": "Deine nächste Reise"
   },
   "trips": {
     "title": "Meine Reisen",
@@ -115,7 +116,14 @@
     "emptyUpcomingTitle": "Keine bevorstehenden Reisen",
     "emptyUpcomingDescription": "Lade ein Ticket oder eine Hotelbuchung hoch, um deine erste Reise anzulegen.",
     "emptyPastTitle": "Noch keine abgeschlossenen Reisen",
-    "emptyPastDescription": "Nach einer Reise findest du hier die Zusammenfassung und deine Bewertungen."
+    "emptyPastDescription": "Nach einer Reise findest du hier die Zusammenfassung und deine Bewertungen.",
+    "reservationCount_one": "{{count}} Buchung",
+    "reservationCount_other": "{{count}} Buchungen",
+    "daysLeft_one": "Noch {{count}} Tag",
+    "daysLeft_other": "Noch {{count}} Tage",
+    "startsToday": "Beginnt heute",
+    "ongoing": "Läuft gerade",
+    "loadFailed": "Deine Reisen konnten nicht geladen werden."
   },
   "social": {
     "title": "Reisende treffen",
@@ -162,6 +170,71 @@
   "ticket": {
     "title": "Ticket oder Hotel hochladen",
     "subtitle": "Lade einen Screenshot oder ein PDF hoch und lass die KI Abflug, Ankunft, Daten und Hoteldetails lesen.",
-    "notice": "Hochladen und KI-Auslesen kommen in Schritt 4."
+    "sourceCamera": "Foto aufnehmen",
+    "sourceLibrary": "Aus Galerie wählen",
+    "sourceFile": "PDF oder Datei",
+    "supported": "PDF, JPG, PNG oder HEIC · bis 10 MB · mehrere möglich",
+    "selected": "Ausgewählte Dokumente",
+    "read": "Mit KI auslesen",
+    "statusQueued": "Wartet auf Auslesen",
+    "statusUploading": "Wird hochgeladen…",
+    "statusReading": "KI liest…",
+    "statusDone_one": "{{count}} Buchung gefunden",
+    "statusDone_other": "{{count}} Buchungen gefunden",
+    "statusFailed": "Nicht lesbar",
+    "remove": "Entfernen",
+    "review": "Prüfen und bestätigen",
+    "accountRequiredTitle": "Konto erforderlich",
+    "accountRequiredBody": "Du brauchst ein Konto, damit deine Dokumente sicher gespeichert und von der KI gelesen werden können.",
+    "serverMissingTitle": "Noch keine Serververbindung",
+    "serverMissingBody": "Das Auslesen läuft auf dem Server. Server und KI-Schlüssel werden in Schritt 15 verbunden; bis dahin kann dieser Bildschirm Dokumente auswählen, aber nicht auslesen.",
+    "errors": {
+      "permission_denied": "Der Kamerazugriff wurde verweigert. Du kannst ihn in den Handy-Einstellungen erlauben.",
+      "unsupported_file": "Dieser Dateityp wird nicht unterstützt. Lade ein PDF, JPG, PNG oder HEIC hoch.",
+      "file_too_large": "Die Datei ist größer als 10 MB.",
+      "quota_exceeded": "Du hast alle Dokument-Scans im kostenlosen Tarif aufgebraucht.",
+      "not_configured": "Der Server ist noch nicht eingerichtet.",
+      "ai_failed": "Die KI konnte das Dokument nicht lesen. Versuch es mit einem schärferen Foto.",
+      "no_reservations": "In diesem Dokument wurden keine Buchungsdaten gefunden.",
+      "network": "Verbindungsfehler. Prüfe deine Internetverbindung und versuch es erneut."
+    }
+  },
+  "review": {
+    "title": "Angaben prüfen",
+    "subtitle": "Prüfe, was die KI gelesen hat. Bei gelb markierten Feldern ist sie unsicher.",
+    "lowConfidence": "Prüfen",
+    "include": "Zur Reise hinzufügen",
+    "fieldTitle": "Titel",
+    "fieldReference": "Buchungscode",
+    "fieldStart": "Beginn",
+    "fieldEnd": "Ende",
+    "fieldFrom": "Von",
+    "fieldTo": "Nach",
+    "fieldCity": "Stadt",
+    "fieldAddress": "Adresse",
+    "dateHint": "Format: 2026-11-01 14:30",
+    "invalidDate": "Schreib das Datum als 2026-11-01 14:30.",
+    "create": "Reisegerüst erstellen",
+    "createFailed": "Reise konnte nicht erstellt werden: {{message}}",
+    "nothingSelected": "Wähle mindestens eine Buchung aus.",
+    "fixDates": "Korrigiere die ungültigen Daten.",
+    "summary": "{{dates}} · {{cities}}"
+  },
+  "reservationType": {
+    "flight": "Flug",
+    "hotel": "Unterkunft",
+    "train": "Zug",
+    "bus": "Bus",
+    "car_rental": "Mietwagen",
+    "event": "Veranstaltung",
+    "other": "Sonstiges"
+  },
+  "trip": {
+    "destinations": "Stationen",
+    "reservations": "Buchungen",
+    "addDocument": "Dokument hinzufügen",
+    "planSoon": "Die Route Tag für Tag kommt in Schritt 5.",
+    "notFound": "Reise nicht gefunden.",
+    "reference": "Code: {{code}}"
   }
 }
