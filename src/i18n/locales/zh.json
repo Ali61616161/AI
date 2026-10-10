@@ -1,0 +1,7 @@
+{
+  "app": { "tagline": "与你一同思考的旅程" },
+  "common": { "continue": "继续", "cancel": "取消", "save": "保存", "back": "返回", "loading": "加载中…", "error": "出了点问题", "retry": "重试" },
+  "welcome": { "title": "你的下一段旅程从这里开始", "subtitle": "上传机票，其余交给 Yola 来规划。", "getStarted": "开始" },
+  "language": { "title": "语言", "subtitle": "选择应用语言", "restartTitle": "需要重新启动", "restartMessage": "应用将重新启动以更改文字方向。", "restartNow": "立即重启", "later": "稍后" },
+  "tabs": { "today": "今天", "trips": "我的旅行", "assistant": "助手", "social": "社交", "profile": "我的" }
+}

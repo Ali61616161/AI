@@ -1,0 +1,13 @@
+{
+  "name": "Yola",
+  "storeName": "Yola: AI Travel Planner",
+  "slug": "yola",
+  "scheme": "yola",
+  "bundleId": "app.yola",
+  "colors": {
+    "coral": "#FF6B4A",
+    "coralSoft": "#FF8A5C",
+    "midnight": "#0B1220",
+    "aqua": "#2EC4B6"
+  }
+}

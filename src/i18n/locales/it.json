@@ -1,0 +1,7 @@
+{
+  "app": { "tagline": "Il tuo viaggio, che pensa con te" },
+  "common": { "continue": "Continua", "cancel": "Annulla", "save": "Salva", "back": "Indietro", "loading": "Caricamento…", "error": "Qualcosa è andato storto", "retry": "Riprova" },
+  "welcome": { "title": "Il tuo prossimo viaggio inizia qui", "subtitle": "Carica il biglietto e lascia che Yola pianifichi il resto.", "getStarted": "Iniziamo" },
+  "language": { "title": "Lingua", "subtitle": "Scegli la lingua dell'app", "restartTitle": "Riavvio necessario", "restartMessage": "L'app verrà riavviata per cambiare la direzione del testo.", "restartNow": "Riavvia ora", "later": "Più tardi" },
+  "tabs": { "today": "Oggi", "trips": "I miei viaggi", "assistant": "Assistente", "social": "Social", "profile": "Profilo" }
+}

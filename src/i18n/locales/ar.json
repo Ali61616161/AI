@@ -1,0 +1,7 @@
+{
+  "app": { "tagline": "رحلتك، تفكّر معك" },
+  "common": { "continue": "متابعة", "cancel": "إلغاء", "save": "حفظ", "back": "رجوع", "loading": "جارٍ التحميل…", "error": "حدث خطأ ما", "retry": "إعادة المحاولة" },
+  "welcome": { "title": "رحلتك القادمة تبدأ من هنا", "subtitle": "حمّل تذكرتك ودَع Yola تخطط للباقي.", "getStarted": "لنبدأ" },
+  "language": { "title": "اللغة", "subtitle": "اختر لغة التطبيق", "restartTitle": "إعادة التشغيل مطلوبة", "restartMessage": "سيُعاد تشغيل التطبيق لتغيير اتجاه النص.", "restartNow": "إعادة التشغيل الآن", "later": "لاحقًا" },
+  "tabs": { "today": "اليوم", "trips": "رحلاتي", "assistant": "المساعد", "social": "اجتماعي", "profile": "الملف الشخصي" }
+}

@@ -1,0 +1,7 @@
+{
+  "app": { "tagline": "Your trip, thinking with you" },
+  "common": { "continue": "Continue", "cancel": "Cancel", "save": "Save", "back": "Back", "loading": "Loading…", "error": "Something went wrong", "retry": "Try again" },
+  "welcome": { "title": "Your next journey starts here", "subtitle": "Upload your ticket and let Yola plan the rest.", "getStarted": "Get started" },
+  "language": { "title": "Language", "subtitle": "Choose the app language", "restartTitle": "Restart required", "restartMessage": "The app will restart to change the text direction.", "restartNow": "Restart now", "later": "Later" },
+  "tabs": { "today": "Today", "trips": "My Trips", "assistant": "Assistant", "social": "Social", "profile": "Profile" }
+}

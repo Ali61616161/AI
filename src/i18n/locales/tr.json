@@ -1,0 +1,7 @@
+{
+  "app": { "tagline": "Seninle birlikte düşünen yolculuk" },
+  "common": { "continue": "Devam", "cancel": "Vazgeç", "save": "Kaydet", "back": "Geri", "loading": "Yükleniyor…", "error": "Bir şeyler ters gitti", "retry": "Tekrar dene" },
+  "welcome": { "title": "Bir sonraki yolculuğun burada başlıyor", "subtitle": "Biletini yükle, gerisini Yola planlasın.", "getStarted": "Başlayalım" },
+  "language": { "title": "Dil", "subtitle": "Uygulama dilini seç", "restartTitle": "Yeniden başlatma gerekli", "restartMessage": "Yazı yönünün değişmesi için uygulama yeniden başlatılacak.", "restartNow": "Şimdi başlat", "later": "Sonra" },
+  "tabs": { "today": "Bugün", "trips": "Seyahatlerim", "assistant": "Asistan", "social": "Sosyal", "profile": "Profil" }
+}
