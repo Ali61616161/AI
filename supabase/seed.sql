@@ -1,0 +1,2 @@
+-- Yerel geliştirme için örnek veri (supabase db reset ile yüklenir).
+-- Plan limitleri migration içinde tanımlıdır; burada sadece geliştirme verisi olur.

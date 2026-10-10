@@ -25,7 +25,24 @@ npm start
 npm run lint            # ESLint
 npm run typecheck       # TypeScript
 npm run check:locales   # 9 dil dosyasında eksik çeviri anahtarı var mı
+npm run db:test         # Şemayı boş bir PostgreSQL + PostGIS'e uygulayıp testleri çalıştırır
+npm run db:types        # Bağlı Supabase projesinden TypeScript tiplerini yeniden üretir
 ```
+
+## Veritabanı (Supabase)
+
+Şema `supabase/migrations/` altındadır. Tüm tablolarda satır düzeyinde güvenlik (RLS) açıktır.
+
+İlk kurulum:
+
+```bash
+npx supabase login
+npx supabase link --project-ref <proje-ref>
+npx supabase db push        # migration'ları uygular
+npm run db:types            # tipleri günceller
+```
+
+`npm run db:test` için yerelde PostGIS'li bir PostgreSQL gerekir (`PGHOST`, `PGPORT`, `PGUSER` ile ayarlanır). Aynı testler GitHub Actions'ta her push'ta çalışır.
 
 ## Dizin yapısı
 
@@ -37,7 +54,12 @@ src/
 ├── i18n/           # Dil altyapısı ve locales/*.json çevirileri
 ├── lib/            # Supabase istemcisi
 ├── theme/          # Renk, boşluk, köşe ve yazı tokenları
+├── types/          # database.ts: şemadan üretilen tipler
 └── hooks/
+supabase/
+├── migrations/     # SQL şeması
+└── config.toml
+tests/db/           # Şema testleri
 assets/
 ├── brand/          # Logo kaynak dosyası (SVG)
 └── images/         # Uygulama ikonu, açılış ekranı, favicon

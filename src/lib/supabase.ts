@@ -2,10 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { AppState, Platform } from 'react-native';
 
+import type { Database } from '@/types/database';
+
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const publishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-let client: SupabaseClient | null = null;
+let client: SupabaseClient<Database> | null = null;
 
 /**
  * Supabase istemcisini ilk kullanımda oluşturur. Ortam değişkenleri eksikse
@@ -14,7 +16,7 @@ let client: SupabaseClient | null = null;
  * Not: Uygulamaya sadece "publishable" anahtar konur. AI ve Places API anahtarları
  * asla burada değil, Supabase Edge Functions içinde tutulur.
  */
-export function getSupabase(): SupabaseClient {
+export function getSupabase(): SupabaseClient<Database> {
   if (client) return client;
   if (!url || !publishableKey) {
     throw new Error(
@@ -22,7 +24,7 @@ export function getSupabase(): SupabaseClient {
     );
   }
 
-  client = createClient(url, publishableKey, {
+  client = createClient<Database>(url, publishableKey, {
     auth: {
       storage: Platform.OS === 'web' ? undefined : AsyncStorage,
       autoRefreshToken: true,
