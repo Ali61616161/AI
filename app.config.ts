@@ -42,6 +42,14 @@ const config: ExpoConfig = {
       },
     ],
     [
+      'expo-location',
+      {
+        locationWhenInUsePermission: `${brand.name} uses your location to suggest places near you when you change your plan.`,
+        locationAlwaysAndWhenInUsePermission: false,
+        isAndroidBackgroundLocationEnabled: false,
+      },
+    ],
+    [
       'expo-localization',
       {
         supportsRTL: true,

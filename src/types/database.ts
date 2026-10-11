@@ -616,7 +616,9 @@ export type Database = {
           is_active: boolean;
           reason: Database['public']['Enums']['plan_change_reason'];
           summary: string | null;
+          trip_end_date: string | null;
           trip_id: string;
+          trip_start_date: string | null;
           user_prompt: string | null;
           version: number;
         };
@@ -628,7 +630,9 @@ export type Database = {
           is_active?: boolean;
           reason: Database['public']['Enums']['plan_change_reason'];
           summary?: string | null;
+          trip_end_date?: string | null;
           trip_id: string;
+          trip_start_date?: string | null;
           user_prompt?: string | null;
           version: number;
         };
@@ -639,7 +643,9 @@ export type Database = {
           is_active?: boolean;
           reason?: Database['public']['Enums']['plan_change_reason'];
           summary?: string | null;
+          trip_end_date?: string | null;
           trip_id?: string;
+          trip_start_date?: string | null;
           user_prompt?: string | null;
           version?: number;
         };
@@ -1197,6 +1203,10 @@ export type Database = {
     };
     Functions: {
       activate_plan_version: { Args: { p_version_id: string }; Returns: undefined };
+      apply_trip_dates: {
+        Args: { p_days: Json; p_end: string; p_start: string; p_summary?: string; p_trip_id: string };
+        Returns: string;
+      };
       can_edit_trip: { Args: { p_trip_id: string }; Returns: boolean };
       consume_quota: {
         Args: { p_feature: Database['public']['Enums']['quota_feature']; p_trip_id?: string };
@@ -1244,6 +1254,7 @@ export type Database = {
         Args: { p_invite_id: string; p_status: Database['public']['Enums']['invite_status'] };
         Returns: undefined;
       };
+      restore_plan_version: { Args: { p_version_id: string }; Returns: undefined };
       save_plan_version: {
         Args: {
           p_days: Json;

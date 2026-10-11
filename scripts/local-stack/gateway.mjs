@@ -3,7 +3,7 @@
 // Function'lar gerçek Supabase projesi olmadan uçtan uca denenebilsin.
 //
 //   /rest/v1/*       → PostgREST (gerçek sorgular, gerçek RLS)
-//   /functions/v1/*  → yerelde çalışan Edge Function (deno)
+//   /functions/v1/*  → yerelde çalışan Edge Function'lar (functions-router.ts)
 //   /auth/v1/*       → basit giriş: her e-posta kabul edilir, kod LOCAL_OTP_CODE
 //
 // SADECE yerel geliştirme ve test içindir; gerçek kimlik doğrulama yapmaz.
@@ -114,7 +114,7 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
 
     if (url.pathname.startsWith('/rest/v1/')) return proxy(req, res, POSTGREST + url.pathname.slice('/rest/v1'.length) + url.search);
-    if (url.pathname.startsWith('/functions/v1/')) return proxy(req, res, FUNCTIONS + '/');
+    if (url.pathname.startsWith('/functions/v1/')) return proxy(req, res, FUNCTIONS + url.pathname.slice('/functions/v1'.length));
 
     if (url.pathname === '/auth/v1/otp') return send(res, 200, {});
     if (url.pathname === '/auth/v1/verify') {

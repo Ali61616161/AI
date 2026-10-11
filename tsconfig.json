@@ -22,7 +22,8 @@
     "node_modules",
     "dist",
     "dist-preview",
-    "supabase/functions/*/index.ts",
+    "supabase/functions/**",
+    "scripts/local-stack/**",
     "**/*.test.ts"
   ]
 }

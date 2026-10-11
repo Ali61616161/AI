@@ -102,7 +102,7 @@ export function normalizeTime(value: unknown): string | null {
   return `${String(h).padStart(2, '0')}:${m[2]}`;
 }
 
-const toMinutes = (time: string) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3, 5));
+export const toMinutes = (time: string) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3, 5));
 
 // ---------------------------------------------------------------------------
 // Rezervasyonlardan sabit duraklar ve günlük saat dilimi
@@ -217,7 +217,7 @@ const formatMinutes = (m: number) => {
 // İstem ve çıktı şeması
 // ---------------------------------------------------------------------------
 
-const BUDGET_RULES: Record<BudgetTier, string> = {
+export const BUDGET_RULES: Record<BudgetTier, string> = {
   low:
     'Backpacker budget. Prefer free sights, free museum days, viewpoints, parks and walking. Use public transport. ' +
     'For most meals suggest supermarkets, local markets, bakeries and street food (for example Coop, Carrefour, Lidl, ' +
@@ -231,14 +231,14 @@ const BUDGET_RULES: Record<BudgetTier, string> = {
     'transfers, rooftop bars, spas and premium experiences.',
 };
 
-const COMPANION_RULES: Record<Companion, string> = {
+export const COMPANION_RULES: Record<Companion, string> = {
   solo: 'Solo traveler: flexible pace, social places (free walking tours, food markets, lively cafés), avoid isolated areas late at night.',
   couple: 'Couple: romantic viewpoints, sunset spots, relaxed dinners, a balanced pace.',
   family: 'Family with children: kid-friendly places, shorter days with breaks, playgrounds or parks, early dinners, no nightlife.',
   friends: 'Group of friends: group activities, shared meals, nightlife only if it matches their interests.',
 };
 
-const LANGUAGE_NAMES: Record<string, string> = {
+export const LANGUAGE_NAMES: Record<string, string> = {
   tr: 'Turkish', en: 'English', es: 'Spanish', fr: 'French', de: 'German', it: 'Italian', ru: 'Russian', ar: 'Arabic', zh: 'Simplified Chinese',
 };
 
@@ -247,6 +247,8 @@ export function buildItineraryPrompt(
   dates: string[],
   fixed: Record<string, PlanItem[]>,
   timezones: Record<string, string>,
+  /** Yeniden planlamada eklenen kurallar (ör. korunacak yerler, mevcut plan). */
+  extraRules: string[] = [],
 ): string {
   const stops = ctx.destinations
     .map((d) => `- ${d.city}${d.country_code ? ` (${d.country_code})` : ''}: ${d.arrive_on ?? '?'} → ${d.depart_on ?? '?'}`)
@@ -294,7 +296,7 @@ Rules:
 - priority: 5 = must-see highlight, 1 = optional filler. Mark is_indoor for each item.
 - booking: "getyourguide" or "tiqets" only for attractions or tours usually booked online, otherwise "none".
 - estimated_cost: per person in the local currency of that city, 0 when free; put its ISO 4217 code in currency.
-- Write title, description, day title, notes and summary in ${LANGUAGE_NAMES[ctx.language] ?? 'English'}. Keep place_name in its local official name.`;
+- Write title, description, day title, notes and summary in ${LANGUAGE_NAMES[ctx.language] ?? 'English'}. Keep place_name in its local official name.${extraRules.length ? '\n\nAlso:\n' + extraRules.map((r) => `- ${r}`).join('\n') : ''}`;
 }
 
 export const ITINERARY_RESPONSE_SCHEMA = {
@@ -351,7 +353,7 @@ function str(value: unknown, max = 300): string | null {
   return t ? t.slice(0, max) : null;
 }
 
-function aiItem(raw: unknown, currency: string): PlanItem | null {
+export function aiItem(raw: unknown, currency: string): PlanItem | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Record<string, unknown>;
   const start = normalizeTime(r.start_time);
@@ -383,16 +385,19 @@ function aiItem(raw: unknown, currency: string): PlanItem | null {
   };
 }
 
-/** Sabit durağın günün saat dilimindeki zaman aralığı (dakika). Bitişi yoksa 60 dk varsayılır. */
-function window(date: string, item: PlanItem, dayTz: string): [number, number] {
+/** Bitiş saati olmayan sabit durağın varsayılan süresi (dk): otel giriş-çıkışı kısa sürer. */
+export const defaultFixedDuration = (kind: PlanItem['kind']) => (kind === 'accommodation' ? 30 : 60);
+
+/** Sabit durağın günün saat dilimindeki zaman aralığı (dakika). */
+export function window(date: string, item: PlanItem, dayTz: string): [number, number] {
   const start = minutesInDay(date, item.start_time, item.timezone, dayTz);
-  const end = item.end_time ? minutesInDay(date, item.end_time, item.timezone, dayTz) : start + 60;
+  const end = item.end_time ? minutesInDay(date, item.end_time, item.timezone, dayTz) : start + defaultFixedDuration(item.kind);
   // Uçuştan önce havalimanına gitme süresi.
   const before = item.kind === 'transport' ? 120 : 0;
   return [start - before, end];
 }
 
-const overlaps = (a: [number, number], b: [number, number]) => a[0] < b[1] && b[0] < a[1];
+export const overlaps = (a: [number, number], b: [number, number]) => a[0] < b[1] && b[0] < a[1];
 
 /**
  * AI çıktısını doğrular, istenmeyen günleri atar, sabit duraklarla birleştirir

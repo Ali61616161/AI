@@ -165,7 +165,14 @@
     "menuScan": "Speisekarte übersetzen",
     "addTicket": "Ticket hinzufügen",
     "sos": "Notfall",
-    "openAssistant": "KI-Assistent öffnen"
+    "openAssistant": "KI-Assistent öffnen",
+    "thinking": "Ich schaue mir deinen Standort und Plan an…",
+    "planUpdated": "Der heutige Plan wurde aktualisiert.",
+    "viewPlan": "Plan ansehen",
+    "undo": "Rückgängig",
+    "undone": "Zurück zum vorherigen Plan.",
+    "noTrip": "Du hast gerade keine laufende Reise, die Vorschläge sind allgemein.",
+    "suggestionsTitle": "Vorschläge"
   },
   "ticket": {
     "title": "Ticket oder Hotel hochladen",
@@ -235,7 +242,9 @@
     "addDocument": "Dokument hinzufügen",
     "planSoon": "Die Route Tag für Tag kommt in Schritt 5.",
     "notFound": "Reise nicht gefunden.",
-    "reference": "Code: {{code}}"
+    "reference": "Code: {{code}}",
+    "changeDates": "Daten ändern",
+    "versions": "Planverlauf"
   },
   "plan": {
     "title": "Route",
@@ -267,5 +276,46 @@
       "no_dates": "Diese Reise hat kein Start- und Enddatum.",
       "network": "Verbindungsfehler. Prüfe deine Internetverbindung und versuch es erneut."
     }
+  },
+  "dates": {
+    "title": "Daten ändern",
+    "subtitle": "Verkürze oder verlängere deine Reise. Deine Buchungen werden nie gelöscht.",
+    "start": "Beginn",
+    "end": "Ende",
+    "hint": "Format: 2026-11-12",
+    "invalid": "Gib einen gültigen Zeitraum ein.",
+    "impactTitle": "Was sich ändert",
+    "removedDays_one": "{{count}} Tag fällt weg",
+    "removedDays_other": "{{count}} Tage fallen weg",
+    "addedDays_one": "{{count}} Tag kommt dazu",
+    "addedDays_other": "{{count}} Tage kommen dazu",
+    "outside": "Buchungen außerhalb der neuen Daten: {{list}}",
+    "uncovered": "Du brauchst eine Unterkunft: Für die Nächte am {{list}} gibt es keine Hotelbuchung.",
+    "highlights": "Ich versuche, diese Highlights der weggefallenen Tage in die übrigen Tage einzuplanen: {{list}}",
+    "noChange": "Die Daten sind unverändert.",
+    "apply": "Übernehmen",
+    "resultTitle": "Plan aktualisiert",
+    "removedTitle": "Aus dem Plan entfernt",
+    "nothingRemoved": "Nichts wurde aus dem Plan entfernt.",
+    "undo": "Rückgängig"
+  },
+  "versions": {
+    "title": "Planverlauf",
+    "subtitle": "Jede Änderung wird als neue Version gespeichert. Du kannst zu jeder zurückkehren.",
+    "active": "Aktiv",
+    "reason": {
+      "initial": "Erster Plan",
+      "dates_changed": "Daten geändert",
+      "replan": "Neu erstellt",
+      "crisis": "Plan ändern",
+      "manual_edit": "Manuell bearbeitet"
+    },
+    "compare": "Unterschiede zum aktiven Plan",
+    "added": "Hinzugefügt",
+    "removed": "Entfernt",
+    "noDiff": "Gleich wie der aktive Plan.",
+    "restore": "Zu dieser Version zurück",
+    "restored": "Zu dieser Version gewechselt.",
+    "dates": "Daten: {{dates}}"
   }
 }

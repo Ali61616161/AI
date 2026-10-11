@@ -37,6 +37,7 @@ npm run preview:web     # Tek dosyalık web önizlemesi üretir (dist-preview/yo
 | Fonksiyon | Görev | Gerekli sırlar |
 |---|---|---|
 | `parse-document` | Yüklenen bilet/otel belgesini Gemini ile okur, `documents` tablosuna yazar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
+| `replan` | "Planı Değiştir": konum ve saate göre günün kalanını yeniden planlar; tarih değişince planı yeni tarihlere uyarlar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
 | `generate-itinerary` | Bütçe, yol arkadaşı ve ilgi alanlarına göre gün gün rota üretir; rezervasyonlar kilitli durak olur; yeni plan sürümü kaydeder (ücretsiz planda ilk 3 gün) | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
 
 Uygulama ile fonksiyonların paylaştığı kod `supabase/functions/_shared/` altındadır (dış paket kullanmaz). Dağıtım:
@@ -45,6 +46,7 @@ Uygulama ile fonksiyonların paylaştığı kod `supabase/functions/_shared/` al
 npx supabase secrets set GEMINI_API_KEY=...
 npx supabase functions deploy parse-document
 npx supabase functions deploy generate-itinerary
+npx supabase functions deploy replan
 ```
 
 ## Yerel test ortamı
@@ -55,7 +57,13 @@ Supabase projesi olmadan uygulamayı gerçek sorgularla denemek için: PostgreSQ
 POSTGREST_BIN=/yol/postgrest PGHOST=/tmp PGPORT=5432 PGUSER=postgres scripts/local-stack/start.sh generate-itinerary
 ```
 
-Betik boş bir `yola_dev` veritabanına migration'ları uygular; PostgREST'i, verilen Edge Function'ı ve Supabase adreslerini taklit eden geçidi (`scripts/local-stack/gateway.mjs`) başlatır, uygulamanın kullanacağı `EXPO_PUBLIC_*` değerlerini yazdırır. Girişte her e-posta kabul edilir, kod `123456`'dır. Sadece yerel geliştirme içindir.
+Betik boş bir `yola_dev` veritabanına migration'ları uygular; PostgREST'i, tüm Edge Function'ları (`functions-router.ts`) ve Supabase adreslerini taklit eden geçidi (`gateway.mjs`) başlatır, uygulamanın kullanacağı `EXPO_PUBLIC_*` değerlerini yazdırır. Girişte her e-posta kabul edilir, kod `123456`'dır. Durdurmak için `LOG_DIR=... scripts/local-stack/stop.sh`. Sadece yerel geliştirme içindir.
+
+`FAKE_GEMINI=1` verilirse Gemini yerine öngörülebilir cevap veren test ikizi (`fake-gemini.mjs`) kullanılır. Uçtan uca test bu modda çalışır ve CI'da her push'ta koşar:
+
+```bash
+SUPABASE_URL=http://localhost:54321 ANON_KEY=$(cat $LOG_DIR/anon-key) npm run e2e:local
+```
 
 ## Veritabanı (Supabase)
 

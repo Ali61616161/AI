@@ -1,17 +1,24 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useState, type ComponentProps } from 'react';
-import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Chip } from '@/components/ui/chip';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
+import { ReplanError, useCrisisReplan, useRestoreVersion, type CrisisResult } from '@/features/plan/replan';
+import { useTrips } from '@/features/trips/queries';
+import { formatMoney, todayIsoDate } from '@/lib/format';
+import { isSupabaseConfigured } from '@/lib/supabase';
+import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing, Typography } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-type Message = { id: number; from: 'user' | 'assistant'; text: string };
+type Message =
+  | { id: number; from: 'user'; text: string }
+  | { id: number; from: 'assistant'; text: string; result?: CrisisResult; tripId?: string | null; undone?: boolean };
 
 const SUGGESTIONS = ['suggestionRain', 'suggestionDelay', 'suggestionTired', 'suggestionBudget'] as const;
 
@@ -25,25 +32,77 @@ const QUICK_ACTIONS: {
   { key: 'sos', icon: 'medkit-outline', step: 10 },
 ];
 
+function SuggestionCard({ item }: { item: CrisisResult['suggestions'][number] }) {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  return (
+    <View style={[styles.suggestion, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <Text variant="bodyStrong" style={styles.time}>
+        {item.start_time}
+      </Text>
+      <View style={styles.flex}>
+        <Text variant="bodyStrong">{item.title}</Text>
+        {item.place_name && (
+          <Text variant="caption" color="textSecondary">
+            {item.place_name}
+          </Text>
+        )}
+        {item.description && (
+          <Text variant="caption" color="textSecondary">
+            {item.description}
+          </Text>
+        )}
+        <View style={styles.badges}>
+          {item.is_indoor !== null && (
+            <Text variant="caption" color="textMuted">
+              {item.is_indoor ? t('plan.indoor') : t('plan.outdoor')}
+            </Text>
+          )}
+          {item.estimated_cost !== null && item.currency && (
+            <Text variant="caption" color={item.estimated_cost === 0 ? 'accent' : 'textMuted'}>
+              {item.estimated_cost === 0 ? t('plan.free') : `~${formatMoney(item.estimated_cost, item.currency)}`}
+            </Text>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+}
+
 /**
- * "Planı Değiştir" asistanı. AI bağlantısı 6. adımda eklenecek; şimdilik
- * arayüz ve akış hazır, gönderilen istek alındı olarak yanıtlanır.
+ * "Planı Değiştir" asistanı: kullanıcının durumunu, konumunu ve günün planını AI'a
+ * verir; plan değişirse yeni sürüm kaydedilir ve tek dokunuşla geri alınabilir.
  */
 export default function AssistantScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const session = useSessionStore((s) => s.session);
+  const { data: trips } = useTrips();
+  const today = todayIsoDate();
+  const currentTrip = trips?.find((trip) => trip.start_date && trip.end_date && trip.start_date <= today && trip.end_date >= today) ?? null;
+  const replan = useCrisisReplan();
+  const restore = useRestoreVersion(currentTrip?.id ?? '');
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const canAsk = Boolean(session) && isSupabaseConfigured();
 
-  function send(text: string) {
+  async function send(text: string) {
     const message = text.trim();
-    if (!message) return;
-    setMessages((prev) => [
-      ...prev,
-      { id: prev.length, from: 'user', text: message },
-      { id: prev.length + 1, from: 'assistant', text: t('assistant.notReady', { message }) },
-    ]);
+    if (!message || replan.isPending) return;
     setInput('');
+    setMessages((prev) => [...prev, { id: prev.length, from: 'user', text: message }]);
+    try {
+      const result = await replan.mutateAsync({ message, tripId: currentTrip?.id ?? null });
+      setMessages((prev) => [...prev, { id: prev.length, from: 'assistant', text: result.reply, result, tripId: currentTrip?.id ?? null }]);
+    } catch (e) {
+      const code = e instanceof ReplanError ? e.code : 'network';
+      setMessages((prev) => [...prev, { id: prev.length, from: 'assistant', text: t(`plan.errors.${code}`) }]);
+    }
+  }
+
+  async function undo(messageId: number, previousVersionId: string) {
+    await restore.mutateAsync(previousVersionId);
+    setMessages((prev) => prev.map((m) => (m.id === messageId && m.from === 'assistant' ? { ...m, undone: true } : m)));
   }
 
   return (
@@ -58,15 +117,15 @@ export default function AssistantScreen() {
             accessibilityLabel={t('assistant.placeholder')}
             style={[Typography.body, styles.input, { color: colors.text, textAlign: 'auto' }]}
             multiline
-            onSubmitEditing={() => send(input)}
+            editable={canAsk}
           />
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t('assistant.send')}
             onPress={() => send(input)}
-            disabled={!input.trim()}
-            style={[styles.send, { backgroundColor: input.trim() ? colors.primary : colors.surfaceMuted }]}>
-            <Ionicons name="arrow-up" size={20} color={input.trim() ? colors.onPrimary : colors.textMuted} />
+            disabled={!input.trim() || !canAsk || replan.isPending}
+            style={[styles.send, { backgroundColor: input.trim() && canAsk ? colors.primary : colors.surfaceMuted }]}>
+            <Ionicons name="arrow-up" size={20} color={input.trim() && canAsk ? colors.onPrimary : colors.textMuted} />
           </Pressable>
         </View>
       }>
@@ -93,28 +152,85 @@ export default function AssistantScreen() {
         ))}
       </View>
 
+      {!canAsk ? (
+        <Text variant="caption" color="warning">
+          {isSupabaseConfigured() ? t('ticket.accountRequiredBody') : t('plan.errors.not_configured')}
+        </Text>
+      ) : (
+        !currentTrip && (
+          <Text variant="caption" color="textMuted">
+            {t('assistant.noTrip')}
+          </Text>
+        )
+      )}
+
       {messages.length === 0 ? (
         <View style={styles.suggestions}>
           {SUGGESTIONS.map((s) => (
-            <Chip key={s} label={t(`assistant.${s}`)} onPress={() => send(t(`assistant.${s}`))} />
+            <Chip key={s} label={t(`assistant.${s}`)} onPress={canAsk ? () => send(t(`assistant.${s}`)) : undefined} />
           ))}
         </View>
       ) : (
         <View style={styles.messages}>
-          {messages.map((m) => (
-            <View
-              key={m.id}
-              style={[
-                styles.bubble,
-                m.from === 'user'
-                  ? { alignSelf: 'flex-end', backgroundColor: colors.primary }
-                  : { alignSelf: 'flex-start', backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 },
-              ]}>
-              <Text variant="body" style={m.from === 'user' ? { color: colors.onPrimary } : undefined}>
-                {m.text}
+          {messages.map((m) =>
+            m.from === 'user' ? (
+              <View key={m.id} style={[styles.bubble, styles.userBubble, { backgroundColor: colors.primary }]}>
+                <Text variant="body" style={{ color: colors.onPrimary }}>
+                  {m.text}
+                </Text>
+              </View>
+            ) : (
+              <View key={m.id} style={styles.assistantBlock}>
+                <View style={[styles.bubble, { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }]}>
+                  <Text variant="body">{m.text}</Text>
+                </View>
+                {m.result && m.result.suggestions.length > 0 && (
+                  <View style={styles.suggestionList}>
+                    <Text variant="caption" color="textSecondary">
+                      {t('assistant.suggestionsTitle')}
+                    </Text>
+                    {m.result.suggestions.map((s, i) => (
+                      <SuggestionCard key={i} item={s} />
+                    ))}
+                  </View>
+                )}
+                {m.result?.plan_version_id && m.tripId && (
+                  <View style={[styles.updated, { backgroundColor: colors.surfaceMuted }]}>
+                    <View style={styles.updatedRow}>
+                      <Ionicons name={m.undone ? 'arrow-undo' : 'checkmark-circle'} size={18} color={m.undone ? colors.textSecondary : colors.success} />
+                      <Text variant="bodyStrong" style={styles.flex}>
+                        {m.undone ? t('assistant.undone') : t('assistant.planUpdated')}
+                      </Text>
+                    </View>
+                    {!m.undone && (
+                      <View style={styles.updatedActions}>
+                        <Chip
+                          icon="map-outline"
+                          label={t('assistant.viewPlan')}
+                          onPress={() => router.replace({ pathname: '/trip/[id]', params: { id: m.tripId! } })}
+                        />
+                        {m.result.previous_version_id && (
+                          <Chip
+                            icon="arrow-undo-outline"
+                            label={t('assistant.undo')}
+                            onPress={restore.isPending ? undefined : () => undo(m.id, m.result!.previous_version_id!)}
+                          />
+                        )}
+                      </View>
+                    )}
+                  </View>
+                )}
+              </View>
+            ),
+          )}
+          {replan.isPending && (
+            <View style={[styles.bubble, styles.thinking, { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }]}>
+              <ActivityIndicator color={colors.primary} />
+              <Text variant="body" color="textSecondary">
+                {t('assistant.thinking')}
               </Text>
             </View>
-          ))}
+          )}
         </View>
       )}
     </Screen>
@@ -123,28 +239,24 @@ export default function AssistantScreen() {
 
 const styles = StyleSheet.create({
   quick: { flexDirection: 'row', gap: Spacing.sm },
-  quickItem: {
-    flex: 1,
-    alignItems: 'center',
-    gap: Spacing.xs,
-    padding: Spacing.md,
-    borderRadius: Radius.lg,
-    borderWidth: 1,
-  },
+  quickItem: { flex: 1, alignItems: 'center', gap: Spacing.xs, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },
   small: { fontSize: 11, lineHeight: 14 },
   center: { textAlign: 'center' },
+  flex: { flex: 1 },
   suggestions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   messages: { gap: Spacing.md },
-  bubble: { maxWidth: '85%', padding: Spacing.md, borderRadius: Radius.lg },
-  composer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: Spacing.sm,
-    padding: Spacing.sm,
-    paddingLeft: Spacing.lg,
-    borderRadius: Radius.xl,
-    borderWidth: 1,
-  },
+  bubble: { maxWidth: '88%', padding: Spacing.md, borderRadius: Radius.lg },
+  userBubble: { alignSelf: 'flex-end' },
+  assistantBlock: { gap: Spacing.sm, alignSelf: 'stretch' },
+  thinking: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  suggestionList: { gap: Spacing.sm },
+  suggestion: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },
+  time: { width: 48, fontVariant: ['tabular-nums'] },
+  badges: { flexDirection: 'row', gap: Spacing.md, marginTop: Spacing.xxs },
+  updated: { gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
+  updatedRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  updatedActions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  composer: { flexDirection: 'row', alignItems: 'flex-end', gap: Spacing.sm, padding: Spacing.sm, paddingLeft: Spacing.lg, borderRadius: Radius.xl, borderWidth: 1 },
   input: { flex: 1, maxHeight: 120, paddingVertical: Spacing.sm },
   send: { width: 40, height: 40, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center' },
 });

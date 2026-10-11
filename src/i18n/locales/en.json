@@ -165,7 +165,14 @@
     "menuScan": "Translate a menu",
     "addTicket": "Add a ticket",
     "sos": "Emergency",
-    "openAssistant": "Open AI assistant"
+    "openAssistant": "Open AI assistant",
+    "thinking": "Looking at your location and plan…",
+    "planUpdated": "Today's plan was updated.",
+    "viewPlan": "View plan",
+    "undo": "Undo",
+    "undone": "Back to the previous plan.",
+    "noTrip": "You don't have a trip in progress, so suggestions are general.",
+    "suggestionsTitle": "Suggestions"
   },
   "ticket": {
     "title": "Upload ticket or hotel",
@@ -235,7 +242,9 @@
     "addDocument": "Add a document",
     "planSoon": "The day-by-day route arrives in step 5.",
     "notFound": "Trip not found.",
-    "reference": "Code: {{code}}"
+    "reference": "Code: {{code}}",
+    "changeDates": "Change dates",
+    "versions": "Plan history"
   },
   "plan": {
     "title": "Route",
@@ -267,5 +276,46 @@
       "no_dates": "This trip has no start and end dates.",
       "network": "Connection error. Check your internet and try again."
     }
+  },
+  "dates": {
+    "title": "Change dates",
+    "subtitle": "Make your trip shorter or longer. Your bookings are never deleted.",
+    "start": "Start",
+    "end": "End",
+    "hint": "Format: 2026-11-12",
+    "invalid": "Enter a valid date range.",
+    "impactTitle": "What changes",
+    "removedDays_one": "{{count}} day will be removed",
+    "removedDays_other": "{{count}} days will be removed",
+    "addedDays_one": "{{count}} day will be added",
+    "addedDays_other": "{{count}} days will be added",
+    "outside": "Bookings outside the new dates: {{list}}",
+    "uncovered": "You need a place to stay: no hotel booking for the nights of {{list}}.",
+    "highlights": "I'll try to fit these highlights from the removed days into the remaining days: {{list}}",
+    "noChange": "The dates are the same.",
+    "apply": "Apply",
+    "resultTitle": "Plan updated",
+    "removedTitle": "Removed from the plan",
+    "nothingRemoved": "Nothing was removed from the plan.",
+    "undo": "Undo"
+  },
+  "versions": {
+    "title": "Plan history",
+    "subtitle": "Every change is saved as a new version. You can go back to any of them.",
+    "active": "In use",
+    "reason": {
+      "initial": "First plan",
+      "dates_changed": "Dates changed",
+      "replan": "Rebuilt",
+      "crisis": "Change the plan",
+      "manual_edit": "Manual edit"
+    },
+    "compare": "Differences from the plan in use",
+    "added": "Added",
+    "removed": "Removed",
+    "noDiff": "Same as the plan in use.",
+    "restore": "Go back to this version",
+    "restored": "Switched to this version.",
+    "dates": "Dates: {{dates}}"
   }
 }

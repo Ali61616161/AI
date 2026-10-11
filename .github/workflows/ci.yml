@@ -40,3 +40,38 @@ jobs:
       - uses: actions/checkout@v4
       - run: sudo apt-get install -y postgresql-client
       - run: scripts/test-db.sh
+
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: sudo apt-get install -y postgresql-client
+      - name: PostgREST
+        run: |
+          curl -sSL -o /tmp/pgrst.tar.xz https://github.com/PostgREST/postgrest/releases/download/v12.2.3/postgrest-v12.2.3-linux-static-x64.tar.xz
+          tar -xf /tmp/pgrst.tar.xz -C /tmp
+      - name: Yerel ortam (Gemini test ikiziyle)
+        run: |
+          mkdir -p /tmp/stack
+          FAKE_GEMINI=1 POSTGREST_BIN=/tmp/postgrest LOG_DIR=/tmp/stack scripts/local-stack/start.sh
+      - run: SUPABASE_URL=http://localhost:54321 ANON_KEY=$(cat /tmp/stack/anon-key) npm run e2e:local
+      - if: failure()
+        run: tail -n 50 /tmp/stack/*.log

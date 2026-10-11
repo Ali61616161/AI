@@ -84,6 +84,7 @@ Deno.serve(async (req) => {
   let raw: unknown;
   try {
     raw = await generateJson({
+      apiBase: Deno.env.get('GEMINI_API_BASE'),
       apiKey,
       model: Deno.env.get('GEMINI_MODEL') ?? DEFAULT_MODEL,
       prompt: EXTRACTION_PROMPT,

@@ -391,7 +391,61 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '11. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '11. Tarih değişikliği ve eski sürüme dönüş: tarihler planla birlikte değişir ve geri gelir'
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$
+declare
+  v_trip uuid := (select id from public.trips where title = 'Rome · Florence');
+  v_before uuid := (select id from public.plan_versions where trip_id = (select id from public.trips where title = 'Rome · Florence') and is_active);
+  v_new uuid;
+begin
+  assert (select (start_date, end_date) = ('2026-11-01'::date, '2026-11-05'::date) from public.trips where id = v_trip);
+  assert (select trip_end_date from public.plan_versions where id = v_before) = '2026-11-05', 'sürüm kaydedildiği andaki tarihleri saklamalı';
+
+  -- Seyahati 3 güne kısalt.
+  v_new := public.apply_trip_dates(v_trip, '2026-11-01', '2026-11-03',
+    '[{"date": "2026-11-01", "items": [{"kind": "activity", "title": "Kolezyum", "starts_at": "2026-11-01T10:00:00Z", "priority": 5}]}]',
+    'Seyahat 3 güne kısaldı');
+  assert (select (start_date, end_date) = ('2026-11-01'::date, '2026-11-03'::date) from public.trips where id = v_trip);
+  assert (select reason from public.plan_versions where id = v_new) = 'dates_changed';
+  assert (select is_active from public.plan_versions where id = v_new);
+  assert (select (trip_start_date, trip_end_date) = ('2026-11-01'::date, '2026-11-03'::date) from public.plan_versions where id = v_new);
+  assert (select user_prompt from public.plan_versions where id = v_new) = '2026-11-01 → 2026-11-03';
+  -- Floransa durağı (2–4 Kasım) yeni bitişe (3 Kasım) kısalır.
+  assert (select depart_on from public.trip_destinations where trip_id = v_trip and city = 'Florence') = '2026-11-03';
+  assert (select count(*) from public.reservations where trip_id = v_trip) = 3, 'rezervasyonlar silinmemeli';
+
+  -- Eski plana dön: tarihler de geri gelir.
+  perform public.restore_plan_version(v_before);
+  assert (select is_active from public.plan_versions where id = v_before);
+  assert not (select is_active from public.plan_versions where id = v_new);
+  assert (select (start_date, end_date) = ('2026-11-01'::date, '2026-11-05'::date) from public.trips where id = v_trip);
+
+  assert tests.throws(format($q$ select public.apply_trip_dates(%L, '2026-11-05', '2026-11-01', '[{"date": "2026-11-05", "items": []}]') $q$, v_trip)),
+    'bitiş başlangıçtan önce olamaz';
+
+  -- Rotası olmayan seyahatte sadece tarihler değişir.
+  assert public.apply_trip_dates('10000000-0000-0000-0000-000000000002', '2026-12-01', '2026-12-04', '[]') is null;
+  assert (select end_date from public.trips where id = '10000000-0000-0000-0000-000000000002') = '2026-12-04';
+end $$;
+
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$
+declare v_trip uuid; v_version uuid;
+begin
+  reset role;
+  select id into v_trip from public.trips where title = 'Rome · Florence';
+  select id into v_version from public.plan_versions where trip_id = v_trip and not is_active limit 1;
+  set role authenticated;
+  assert tests.throws(format($q$ select public.apply_trip_dates(%L, '2026-11-01', '2026-11-02', '[{"date": "2026-11-01", "items": []}]') $q$, v_trip)),
+    'Can, Bea''nın seyahatinin tarihlerini değiştirememeli';
+  assert tests.throws(format($q$ select public.restore_plan_version(%L) $q$, v_version)),
+    'Can, Bea''nın planını geri alamamalı';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '12. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

@@ -109,6 +109,23 @@ export default function TripScreen() {
       }>
       <ModalHeader title={trip.title} subtitle={formatDateRange(trip.start_date, trip.end_date)} />
 
+      <View style={styles.actions}>
+        <Button
+          title={t('trip.changeDates')}
+          variant="secondary"
+          style={styles.flex}
+          onPress={() => router.push({ pathname: '/trip-dates', params: { tripId: trip.id } })}
+        />
+        {plan && (
+          <Button
+            title={t('trip.versions')}
+            variant="secondary"
+            style={styles.flex}
+            onPress={() => router.push({ pathname: '/trip-versions', params: { tripId: trip.id } })}
+          />
+        )}
+      </View>
+
       {trip.trip_destinations.length > 0 && (
         <View style={styles.chips}>
           {trip.trip_destinations.map((d) => (
@@ -181,6 +198,7 @@ const styles = StyleSheet.create({
   section: { gap: Spacing.md },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.md },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  actions: { flexDirection: 'row', gap: Spacing.sm },
   notice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
   flex: { flex: 1 },
   row: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: 1 },

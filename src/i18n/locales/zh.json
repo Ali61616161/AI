@@ -163,7 +163,14 @@
     "menuScan": "翻译菜单",
     "addTicket": "添加票据",
     "sos": "紧急求助",
-    "openAssistant": "打开 AI 助手"
+    "openAssistant": "打开 AI 助手",
+    "thinking": "正在查看你的位置和计划…",
+    "planUpdated": "今天的计划已更新。",
+    "viewPlan": "查看计划",
+    "undo": "撤销",
+    "undone": "已恢复为之前的计划。",
+    "noTrip": "你目前没有进行中的行程，建议将较为通用。",
+    "suggestionsTitle": "建议"
   },
   "ticket": {
     "title": "上传机票或酒店",
@@ -232,7 +239,9 @@
     "addDocument": "添加文件",
     "planSoon": "逐日路线将在第 5 步推出。",
     "notFound": "未找到行程。",
-    "reference": "预订码：{{code}}"
+    "reference": "预订码：{{code}}",
+    "changeDates": "修改日期",
+    "versions": "计划历史"
   },
   "plan": {
     "title": "路线",
@@ -263,5 +272,44 @@
       "no_dates": "此行程没有开始和结束日期。",
       "network": "连接错误，请检查网络后重试。"
     }
+  },
+  "dates": {
+    "title": "修改日期",
+    "subtitle": "缩短或延长行程。你的预订不会被删除。",
+    "start": "开始",
+    "end": "结束",
+    "hint": "格式：2026-11-12",
+    "invalid": "请输入有效的日期范围。",
+    "impactTitle": "变化内容",
+    "removedDays_other": "将移除 {{count}} 天",
+    "addedDays_other": "将增加 {{count}} 天",
+    "outside": "新日期之外的预订：{{list}}",
+    "uncovered": "需要住宿：{{list}} 这些晚上没有酒店预订。",
+    "highlights": "我会尽量把被移除日期中的必去地点安排进剩余天数：{{list}}",
+    "noChange": "日期没有变化。",
+    "apply": "应用",
+    "resultTitle": "计划已更新",
+    "removedTitle": "从计划中移除",
+    "nothingRemoved": "计划中没有移除任何地点。",
+    "undo": "撤销"
+  },
+  "versions": {
+    "title": "计划历史",
+    "subtitle": "每次修改都会保存为新版本，你可以随时回到任一版本。",
+    "active": "使用中",
+    "reason": {
+      "initial": "初始计划",
+      "dates_changed": "日期变更",
+      "replan": "重新生成",
+      "crisis": "调整计划",
+      "manual_edit": "手动编辑"
+    },
+    "compare": "与当前计划的差异",
+    "added": "新增",
+    "removed": "移除",
+    "noDiff": "与当前计划相同。",
+    "restore": "回到此版本",
+    "restored": "已切换到此版本。",
+    "dates": "日期：{{dates}}"
   }
 }

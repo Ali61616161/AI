@@ -165,7 +165,14 @@
     "menuScan": "Traducir un menú",
     "addTicket": "Añadir billete",
     "sos": "Emergencia",
-    "openAssistant": "Abrir asistente de IA"
+    "openAssistant": "Abrir asistente de IA",
+    "thinking": "Mirando tu ubicación y tu plan…",
+    "planUpdated": "Se actualizó el plan de hoy.",
+    "viewPlan": "Ver plan",
+    "undo": "Deshacer",
+    "undone": "Has vuelto al plan anterior.",
+    "noTrip": "No tienes un viaje en curso, así que las sugerencias son generales.",
+    "suggestionsTitle": "Sugerencias"
   },
   "ticket": {
     "title": "Subir billete u hotel",
@@ -235,7 +242,9 @@
     "addDocument": "Añadir documento",
     "planSoon": "La ruta día a día llega en el paso 5.",
     "notFound": "Viaje no encontrado.",
-    "reference": "Código: {{code}}"
+    "reference": "Código: {{code}}",
+    "changeDates": "Cambiar fechas",
+    "versions": "Historial del plan"
   },
   "plan": {
     "title": "Ruta",
@@ -267,5 +276,46 @@
       "no_dates": "Este viaje no tiene fechas de inicio y fin.",
       "network": "Error de conexión. Revisa tu internet e inténtalo de nuevo."
     }
+  },
+  "dates": {
+    "title": "Cambiar fechas",
+    "subtitle": "Acorta o alarga tu viaje. Tus reservas nunca se eliminan.",
+    "start": "Inicio",
+    "end": "Fin",
+    "hint": "Formato: 2026-11-12",
+    "invalid": "Escribe un rango de fechas válido.",
+    "impactTitle": "Qué cambia",
+    "removedDays_one": "Se quitará {{count}} día",
+    "removedDays_other": "Se quitarán {{count}} días",
+    "addedDays_one": "Se añadirá {{count}} día",
+    "addedDays_other": "Se añadirán {{count}} días",
+    "outside": "Reservas fuera de las nuevas fechas: {{list}}",
+    "uncovered": "Necesitas alojamiento: no hay reserva de hotel para las noches del {{list}}.",
+    "highlights": "Intentaré incluir en los días restantes estos imprescindibles de los días quitados: {{list}}",
+    "noChange": "Las fechas son las mismas.",
+    "apply": "Aplicar",
+    "resultTitle": "Plan actualizado",
+    "removedTitle": "Quitado del plan",
+    "nothingRemoved": "No se quitó nada del plan.",
+    "undo": "Deshacer"
+  },
+  "versions": {
+    "title": "Historial del plan",
+    "subtitle": "Cada cambio se guarda como una versión nueva. Puedes volver a cualquiera.",
+    "active": "En uso",
+    "reason": {
+      "initial": "Primer plan",
+      "dates_changed": "Cambio de fechas",
+      "replan": "Recreado",
+      "crisis": "Cambiar el plan",
+      "manual_edit": "Edición manual"
+    },
+    "compare": "Diferencias con el plan en uso",
+    "added": "Añadido",
+    "removed": "Quitado",
+    "noDiff": "Igual que el plan en uso.",
+    "restore": "Volver a esta versión",
+    "restored": "Has vuelto a esta versión.",
+    "dates": "Fechas: {{dates}}"
   }
 }

@@ -165,7 +165,14 @@
     "menuScan": "Menü çevir",
     "addTicket": "Bilet ekle",
     "sos": "Acil durum",
-    "openAssistant": "AI asistanı aç"
+    "openAssistant": "AI asistanı aç",
+    "thinking": "Konumuna ve planına bakıyorum…",
+    "planUpdated": "Bugünün planı güncellendi.",
+    "viewPlan": "Planı gör",
+    "undo": "Geri al",
+    "undone": "Önceki plana dönüldü.",
+    "noTrip": "Şu an devam eden bir seyahatin yok; öneriler genel olacak.",
+    "suggestionsTitle": "Öneriler"
   },
   "ticket": {
     "title": "Bilet veya otel yükle",
@@ -235,7 +242,9 @@
     "addDocument": "Belge ekle",
     "planSoon": "Gün gün rota 5. adımda gelecek.",
     "notFound": "Seyahat bulunamadı.",
-    "reference": "Kod: {{code}}"
+    "reference": "Kod: {{code}}",
+    "changeDates": "Tarihleri değiştir",
+    "versions": "Plan geçmişi"
   },
   "plan": {
     "title": "Rota",
@@ -267,5 +276,46 @@
       "no_dates": "Seyahatin başlangıç ve bitiş tarihi yok.",
       "network": "Bağlantı hatası. İnternetini kontrol edip tekrar dene."
     }
+  },
+  "dates": {
+    "title": "Tarihleri değiştir",
+    "subtitle": "Seyahatini kısaltabilir veya uzatabilirsin. Rezervasyonların silinmez.",
+    "start": "Başlangıç",
+    "end": "Bitiş",
+    "hint": "Biçim: 2026-11-12",
+    "invalid": "Geçerli bir tarih aralığı yaz.",
+    "impactTitle": "Bu değişiklik",
+    "removedDays_one": "{{count}} gün çıkacak",
+    "removedDays_other": "{{count}} gün çıkacak",
+    "addedDays_one": "{{count}} gün eklenecek",
+    "addedDays_other": "{{count}} gün eklenecek",
+    "outside": "Yeni tarihlerin dışında kalan rezervasyonlar: {{list}}",
+    "uncovered": "Konaklama gerekiyor: {{list}} geceleri için otel rezervasyonun yok.",
+    "highlights": "Çıkan günlerdeki öne çıkan yerleri kalan günlere sığdırmaya çalışacağım: {{list}}",
+    "noChange": "Tarihler aynı.",
+    "apply": "Uygula",
+    "resultTitle": "Plan güncellendi",
+    "removedTitle": "Plandan çıkanlar",
+    "nothingRemoved": "Plandan çıkan yer yok.",
+    "undo": "Geri al"
+  },
+  "versions": {
+    "title": "Plan geçmişi",
+    "subtitle": "Her değişiklik yeni bir sürüm olarak saklanır. İstediğine geri dönebilirsin.",
+    "active": "Kullanılıyor",
+    "reason": {
+      "initial": "İlk plan",
+      "dates_changed": "Tarih değişikliği",
+      "replan": "Yeniden oluşturuldu",
+      "crisis": "Planı Değiştir",
+      "manual_edit": "Elle düzenleme"
+    },
+    "compare": "Kullanılan planla farklar",
+    "added": "Eklenenler",
+    "removed": "Çıkanlar",
+    "noDiff": "Kullanılan planla aynı.",
+    "restore": "Bu sürüme dön",
+    "restored": "Bu sürüme dönüldü.",
+    "dates": "Tarihler: {{dates}}"
   }
 }

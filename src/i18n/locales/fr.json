@@ -165,7 +165,14 @@
     "menuScan": "Traduire un menu",
     "addTicket": "Ajouter un billet",
     "sos": "Urgence",
-    "openAssistant": "Ouvrir l'assistant IA"
+    "openAssistant": "Ouvrir l'assistant IA",
+    "thinking": "Je regarde votre position et votre plan…",
+    "planUpdated": "Le plan du jour a été mis à jour.",
+    "viewPlan": "Voir le plan",
+    "undo": "Annuler",
+    "undone": "Retour au plan précédent.",
+    "noTrip": "Aucun voyage en cours : les suggestions sont générales.",
+    "suggestionsTitle": "Suggestions"
   },
   "ticket": {
     "title": "Importer un billet ou un hôtel",
@@ -235,7 +242,9 @@
     "addDocument": "Ajouter un document",
     "planSoon": "L'itinéraire jour par jour arrive à l'étape 5.",
     "notFound": "Voyage introuvable.",
-    "reference": "Code : {{code}}"
+    "reference": "Code : {{code}}",
+    "changeDates": "Modifier les dates",
+    "versions": "Historique du plan"
   },
   "plan": {
     "title": "Itinéraire",
@@ -267,5 +276,46 @@
       "no_dates": "Ce voyage n'a pas de dates de début et de fin.",
       "network": "Erreur de connexion. Vérifiez votre connexion et réessayez."
     }
+  },
+  "dates": {
+    "title": "Modifier les dates",
+    "subtitle": "Raccourcissez ou rallongez votre voyage. Vos réservations ne sont jamais supprimées.",
+    "start": "Début",
+    "end": "Fin",
+    "hint": "Format : 2026-11-12",
+    "invalid": "Saisissez une période valide.",
+    "impactTitle": "Ce qui change",
+    "removedDays_one": "{{count}} jour sera retiré",
+    "removedDays_other": "{{count}} jours seront retirés",
+    "addedDays_one": "{{count}} jour sera ajouté",
+    "addedDays_other": "{{count}} jours seront ajoutés",
+    "outside": "Réservations hors des nouvelles dates : {{list}}",
+    "uncovered": "Il vous faut un hébergement : aucune réservation d'hôtel pour les nuits du {{list}}.",
+    "highlights": "J'essaierai de placer ces incontournables des jours retirés dans les jours restants : {{list}}",
+    "noChange": "Les dates sont identiques.",
+    "apply": "Appliquer",
+    "resultTitle": "Plan mis à jour",
+    "removedTitle": "Retiré du plan",
+    "nothingRemoved": "Rien n'a été retiré du plan.",
+    "undo": "Annuler"
+  },
+  "versions": {
+    "title": "Historique du plan",
+    "subtitle": "Chaque modification est enregistrée comme une nouvelle version. Vous pouvez revenir à n'importe laquelle.",
+    "active": "En cours",
+    "reason": {
+      "initial": "Premier plan",
+      "dates_changed": "Dates modifiées",
+      "replan": "Recréé",
+      "crisis": "Changer le plan",
+      "manual_edit": "Modification manuelle"
+    },
+    "compare": "Différences avec le plan en cours",
+    "added": "Ajouté",
+    "removed": "Retiré",
+    "noDiff": "Identique au plan en cours.",
+    "restore": "Revenir à cette version",
+    "restored": "Retour à cette version.",
+    "dates": "Dates : {{dates}}"
   }
 }

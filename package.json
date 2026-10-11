@@ -21,6 +21,7 @@
     "expo-image-picker": "~57.0.20",
     "expo-linking": "~57.0.12",
     "expo-localization": "~57.0.2",
+    "expo-location": "~57.0.20",
     "expo-router": "~57.0.25",
     "expo-secure-store": "~57.0.4",
     "expo-splash-screen": "~57.0.9",
@@ -61,9 +62,10 @@
     "db:test": "scripts/test-db.sh",
     "db:types": "supabase gen types typescript --linked --schema public > src/types/database.ts && prettier --single-quote --print-width 110 --write src/types/database.ts",
     "preview:web": "EXPO_WEB_OUTPUT=single expo export --clear --platform web --output-dir dist-preview && node scripts/build-web-preview.mjs dist-preview dist-preview/yola-preview.html",
-    "functions:check": "cd supabase/functions && deno check */index.ts && deno lint",
+    "functions:check": "cd supabase/functions && deno check */index.ts && deno lint && cd ../.. && deno check --config supabase/functions/deno.json scripts/local-stack/functions-router.ts",
     "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features",
-    "db:types:local": "scripts/gen-db-types-local.sh"
+    "db:types:local": "scripts/gen-db-types-local.sh",
+    "e2e:local": "node tests/e2e/replan.e2e.mjs"
   },
   "private": true
 }

@@ -11,6 +11,8 @@ export type GeminiRequest = {
   responseSchema: unknown;
   fetchImpl?: typeof fetch;
   timeoutMs?: number;
+  /** Varsayılan Google adresi; sadece testlerde (GEMINI_API_BASE) değiştirilir. */
+  apiBase?: string;
 };
 
 export class GeminiError extends Error {
@@ -47,7 +49,7 @@ export async function generateJson(req: GeminiRequest): Promise<unknown> {
 
   let response: Response;
   try {
-    response = await fetchImpl(`${API_BASE}/${encodeURIComponent(req.model)}:generateContent`, {
+    response = await fetchImpl(`${req.apiBase ?? API_BASE}/${encodeURIComponent(req.model)}:generateContent`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-goog-api-key': req.apiKey },
       body: JSON.stringify(buildGeminiBody(req)),
