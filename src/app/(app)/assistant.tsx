@@ -32,7 +32,7 @@ const QUICK_ACTIONS: {
 }[] = [
   { key: 'addTicket', icon: 'ticket-outline' },
   { key: 'translate', icon: 'language-outline' },
-  { key: 'sos', icon: 'medkit-outline', step: 10 },
+  { key: 'sos', icon: 'medkit-outline' },
 ];
 
 function SuggestionCard({ item }: { item: CrisisResult['suggestions'][number] }) {
@@ -157,6 +157,7 @@ export default function AssistantScreen() {
             onPress={() => {
               if (a.key === 'addTicket') router.replace('/ticket');
               if (a.key === 'translate') router.replace('/translate');
+              if (a.key === 'sos') router.replace('/sos');
             }}
             style={[styles.quickItem, { backgroundColor: colors.surface, borderColor: colors.border, opacity: a.step ? 0.55 : 1 }]}>
             <Ionicons name={a.icon} size={22} color={a.key === 'sos' ? colors.danger : colors.primary} />

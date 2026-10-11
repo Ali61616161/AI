@@ -58,3 +58,12 @@ Deno.test('normalizeImageTranslation: eksik ve hatalı kalemleri atar, alanları
   assertEquals(r.items, [{ original: 'Cacio e pepe', translated: 'Peynirli karabiberli makarna', note: 'Pecorino, karabiber. Gluten, süt.', price: '€12', section: 'Primi' }]);
   assertEquals(normalizeImageTranslation({ kind: 'poster' }), { kind: 'other', sourceLanguage: null, summary: '', items: [] });
 });
+
+import { normalizeVisa } from './travel-info.ts';
+
+Deno.test('normalizeVisa: bilinmeyen değerleri "unknown" yapar, güvensiz bağlantıyı atar', () => {
+  const v = normalizeVisa({ requirement: 'evisa', max_stay_days: 30, summary: ' e-Vize gerekir ', documents: ['Pasaport', '', 5], notes: [], official_url: 'https://evisa.example.gov' });
+  assertEquals(v, { requirement: 'evisa', maxStayDays: 30, summary: 'e-Vize gerekir', documents: ['Pasaport'], notes: [], officialUrl: 'https://evisa.example.gov' });
+  const bad = normalizeVisa({ requirement: 'maybe', max_stay_days: -1, official_url: 'javascript:alert(1)' });
+  assertEquals([bad.requirement, bad.maxStayDays, bad.officialUrl], ['unknown', null, null]);
+});

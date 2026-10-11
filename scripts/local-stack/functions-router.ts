@@ -3,7 +3,7 @@
 // SADECE yerel geliştirme ve test içindir.
 type Handler = (req: Request) => Response | Promise<Response>;
 
-const names = Deno.args.length ? Deno.args : ['parse-document', 'generate-itinerary', 'replan', 'places', 'translate'];
+const names = Deno.args.length ? Deno.args : ['parse-document', 'generate-itinerary', 'replan', 'places', 'translate', 'travel-info'];
 const handlers: Record<string, Handler> = {};
 const realServe = Deno.serve.bind(Deno);
 let current = '';

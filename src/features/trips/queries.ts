@@ -10,7 +10,7 @@ const TRIP_LIST_SELECT =
   'id, title, status, start_date, end_date, trip_destinations(city, country_code, position), reservations(count)';
 
 const TRIP_DETAIL_SELECT =
-  'id, title, status, start_date, end_date, budget_tier, companion_type, ' +
+  'id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, adults, children, interests, ' +
   'trip_destinations(id, city, country_code, arrive_on, depart_on, position), ' +
   'reservations(id, type, title, provider_name, reference_code, starts_at, ends_at, start_timezone, end_timezone, ' +
   'origin_name, origin_code, destination_name, destination_code, address, details)';
@@ -86,6 +86,10 @@ export type TripDetail = {
   end_date: string | null;
   budget_tier: string;
   companion_type: string;
+  budget_currency: string | null;
+  adults: number;
+  children: number;
+  interests: string[];
   trip_destinations: {
     id: string;
     city: string;

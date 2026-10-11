@@ -52,7 +52,9 @@ http
         ? 'itinerary'
         : prompt.includes('You are a travel translator')
           ? 'image'
-          : 'other';
+          : prompt.includes('plans a short tourism trip')
+            ? 'visa'
+            : 'other';
     calls.push(kind);
     const payload =
       kind === 'crisis'
@@ -69,7 +71,16 @@ http
                   { original: 'Tiramisù', translated: 'TEST tiramisu', note: 'Mascarpone, coffee, egg.', price: '€7', section: 'Dolci' },
                 ],
               }
-            : { document_type: 'other', items: [] };
+            : kind === 'visa'
+              ? {
+                  requirement: 'visa_required',
+                  max_stay_days: 90,
+                  summary: 'TEST Schengen visa required for short stays.',
+                  documents: ['TEST passport valid 3 months beyond stay', 'TEST travel insurance'],
+                  notes: ['TEST apply at least 15 days before travel'],
+                  official_url: 'javascript:alert(1)',
+                }
+              : { document_type: 'other', items: [] };
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ candidates: [{ content: { parts: [{ text: JSON.stringify(payload) }] }, finishReason: 'STOP' }] }));
   })

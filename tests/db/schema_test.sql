@@ -505,7 +505,39 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '14. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '14. Harcama ve hesap bölüşme: paylar kuruşu kuruşuna, yetkisiz kullanıcı ekleyemez'
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$
+declare v_trip uuid; v_id uuid;
+begin
+  select id into v_trip from public.trips where title = 'Rome · Florence';
+  v_id := public.add_expense(v_trip, 100, 'eur', 100, 'food', ' Akşam yemeği ', 'Bea', array['Bea', 'Ali', 'Can', '', 'Ali']);
+  assert (select currency from public.expenses where id = v_id) = 'EUR';
+  assert (select description from public.expenses where id = v_id) = 'Akşam yemeği';
+  assert (select count(*) from public.expense_shares where expense_id = v_id) = 3, 'boş ve tekrar eden isimler atılmalı';
+  assert (select sum(share_amount) from public.expense_shares where expense_id = v_id) = 100, 'paylar toplamı tutara eşit olmalı';
+  assert (select max(share_amount) - min(share_amount) from public.expense_shares where expense_id = v_id) = 0.01;
+  -- Bütçe para birimine çevrilmiş tutar paylaştırılır.
+  v_id := public.add_expense(v_trip, 3000, 'JPY', 18.5, 'transport', null, 'Ali', array['Bea', 'Ali']);
+  assert (select sum(share_amount) from public.expense_shares where expense_id = v_id) = 18.5;
+  -- Bölüşülmeyen harcama.
+  v_id := public.add_expense(v_trip, 12, 'EUR', 12, 'other', null, 'Bea');
+  assert not exists (select 1 from public.expense_shares where expense_id = v_id);
+  assert tests.throws(format($q$ select public.add_expense(%L, 0, 'EUR', 0, 'food', null, 'Bea') $q$, v_trip)), 'sıfır tutar reddedilmeli';
+end $$;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$
+declare v_trip uuid;
+begin
+  reset role;
+  select id into v_trip from public.trips where title = 'Rome · Florence';
+  set role authenticated;
+  assert tests.throws(format($q$ select public.add_expense(%L, 10, 'EUR', 10, 'food', null, 'Can') $q$, v_trip)), 'Can, Bea''nın seyahatine harcama ekleyememeli';
+  assert (select count(*) from public.expenses where trip_id = v_trip) = 0, 'Can başkasının harcamalarını görememeli';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '15. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

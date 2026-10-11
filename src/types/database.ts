@@ -213,6 +213,7 @@ export type Database = {
           description: string | null;
           id: string;
           paid_by: string | null;
+          paid_by_name: string | null;
           plan_item_id: string | null;
           spent_at: string;
           trip_id: string;
@@ -227,6 +228,7 @@ export type Database = {
           description?: string | null;
           id?: string;
           paid_by?: string | null;
+          paid_by_name?: string | null;
           plan_item_id?: string | null;
           spent_at?: string;
           trip_id: string;
@@ -240,6 +242,7 @@ export type Database = {
           description?: string | null;
           id?: string;
           paid_by?: string | null;
+          paid_by_name?: string | null;
           plan_item_id?: string | null;
           spent_at?: string;
           trip_id?: string;
@@ -1233,6 +1236,19 @@ export type Database = {
     };
     Functions: {
       activate_plan_version: { Args: { p_version_id: string }; Returns: undefined };
+      add_expense: {
+        Args: {
+          p_amount: number;
+          p_amount_in_budget_currency: number;
+          p_category: Database['public']['Enums']['expense_category'];
+          p_currency: string;
+          p_description: string;
+          p_paid_by_name: string;
+          p_participants?: string[];
+          p_trip_id: string;
+        };
+        Returns: string;
+      };
       apply_trip_dates: {
         Args: { p_days: Json; p_end: string; p_start: string; p_summary?: string; p_trip_id: string };
         Returns: string;
@@ -1340,7 +1356,8 @@ export type Database = {
         | 'social_invite'
         | 'nearby_search'
         | 'text_translation'
-        | 'voice_translation';
+        | 'voice_translation'
+        | 'travel_info';
       report_reason: 'harassment' | 'fake_profile' | 'unsafe_behavior' | 'spam' | 'other';
       reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
       subscription_plan: 'free' | 'trip_pass' | 'pro_monthly' | 'pro_yearly';
@@ -1480,6 +1497,7 @@ export const Constants = {
         'nearby_search',
         'text_translation',
         'voice_translation',
+        'travel_info',
       ],
       report_reason: ['harassment', 'fake_profile', 'unsafe_behavior', 'spam', 'other'],
       reservation_type: ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'],
