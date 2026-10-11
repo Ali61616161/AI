@@ -652,5 +652,59 @@
       "relaxed_pace": "Sakin tempo",
       "busy_pace": "Yoğun tempo"
     }
+  },
+  "paywall": {
+    "subtitle": "Her günü planla, sınırsız yeniden planla ve dilediğince çevir.",
+    "limitReached": "Ücretsiz limite ulaştın. Devam etmek için yükselt.",
+    "freeTitle": "Ücretsiz",
+    "features": {
+      "itinerary": "AI rota",
+      "replan": "Planı değiştir",
+      "documents": "Bilet ve rezervasyon okuma",
+      "translate": "Çeviri",
+      "nearby": "Yakında açık yerler",
+      "visa": "Vize sorgusu",
+      "offline": "Çevrimdışı mod"
+    },
+    "free": {
+      "itinerary": "İlk 3 gün",
+      "replan": "Seyahat başına 3",
+      "documents": "Seyahat başına 2",
+      "translate": "Günde 20 metin, 5 dk konuşma, 3 fotoğraf",
+      "nearby": "Günde 10",
+      "visa": "Günde 5"
+    },
+    "pro": {
+      "unlimited": "Sınırsız",
+      "unlimitedDays": "Her gün"
+    },
+    "youArePro": "Yola Pro'dasın. Teşekkürler!",
+    "manage": "Yönet",
+    "mobileOnly": "Satın alma Yola mobil uygulamasında yapılabilir.",
+    "notConfigured": "Mağaza bağlantısı henüz kurulmadı.",
+    "tripPass": "Trip Pass",
+    "monthly": "Aylık",
+    "yearly": "Yıllık",
+    "tripPassFor": "{{trip}} için Pro özellikleri, tek seferlik ödeme",
+    "perMonth": "Aylık {{price}}, yıllık faturalanır",
+    "cancelAnytime": "İstediğin zaman iptal et",
+    "save": "%{{percent}} tasarruf",
+    "failed": "Satın alma tamamlanamadı. Tekrar dene.",
+    "continue": "Devam et — {{price}}",
+    "restore": "Satın alımları geri yükle",
+    "nothingToRestore": "Geri yüklenecek satın alma yok.",
+    "restored": "Satın alımlar geri yüklendi.",
+    "legalIos": "Abonelik, mevcut dönemin bitiminden en az 24 saat önce iptal edilmezse otomatik olarak yenilenir. Ödeme Apple Kimliği hesabından alınır. App Store hesap ayarlarından yönetebilir veya iptal edebilirsin. Trip Pass tek seferlik bir satın almadır.",
+    "legalAndroid": "Abonelik, mevcut dönem bitmeden iptal edilmezse otomatik olarak yenilenir. Google Play → Abonelikler bölümünden istediğin zaman yönetebilir veya iptal edebilirsin. Trip Pass tek seferlik bir satın almadır.",
+    "upgrade": "Pro'ya geç",
+    "currentPlan": "Planın: {{plan}}",
+    "plans": {
+      "free": "Ücretsiz",
+      "trip_pass": "Trip Pass",
+      "pro_monthly": "Pro (aylık)",
+      "pro_yearly": "Pro (yıllık)"
+    },
+    "manageHint": "Aboneliğini yönet",
+    "upgradeHint": "Sınırsız planlama, çeviri ve daha fazlası"
   }
 }

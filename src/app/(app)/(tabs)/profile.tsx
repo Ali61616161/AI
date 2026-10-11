@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { LanguagePicker } from '@/components/settings/language-picker';
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { clearOfflineData } from '@/features/offline/download';
+import { useCurrentPlan } from '@/features/subscription/purchases';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
@@ -37,6 +38,8 @@ export default function ProfileScreen() {
   const email = session?.user.email;
   const initial = email?.[0]?.toUpperCase();
   const notSet = t('profile.notSet');
+  const { data: plan } = useCurrentPlan();
+  const isPro = plan === 'pro_monthly' || plan === 'pro_yearly';
 
   async function handleSignOut() {
     if (session && isSupabaseConfigured()) await getSupabase().auth.signOut();
@@ -72,6 +75,22 @@ export default function ProfileScreen() {
           <Button title={t('profile.createAccount')} variant="secondary" onPress={() => router.push('/sign-in')} />
         )}
       </View>
+
+      {session && (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push('/paywall')}
+          style={[styles.card, styles.planRow, { backgroundColor: colors.surface, borderColor: isPro ? colors.border : colors.primary }]}>
+          <Ionicons name="diamond-outline" size={22} color={colors.primary} />
+          <View style={styles.identityText}>
+            <Text variant="bodyStrong">{t('paywall.currentPlan', { plan: t(`paywall.plans.${plan ?? 'free'}` as 'paywall.plans.free') })}</Text>
+            <Text variant="caption" color="textSecondary">
+              {isPro ? t('paywall.manageHint') : t('paywall.upgradeHint')}
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+        </Pressable>
+      )}
 
       <View style={styles.section}>
         <Text variant="subtitle">{t('profile.preferences')}</Text>
@@ -114,6 +133,7 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  planRow: { flexDirection: 'row', alignItems: 'center' },
   section: { gap: Spacing.md },
   card: { gap: Spacing.lg, padding: Spacing.xl, borderRadius: Radius.xl, borderWidth: 1 },
   identity: { flexDirection: 'row', alignItems: 'center', gap: Spacing.lg },

@@ -652,5 +652,59 @@
       "relaxed_pace": "Ritmo tranquilo",
       "busy_pace": "Ritmo intenso"
     }
+  },
+  "paywall": {
+    "subtitle": "Planifica cada día, replanifica sin límites y traduce sin parar.",
+    "limitReached": "Has llegado al límite gratuito. Mejora tu plan para continuar.",
+    "freeTitle": "Gratis",
+    "features": {
+      "itinerary": "Itinerario con IA",
+      "replan": "Cambiar el plan",
+      "documents": "Lectura de billetes y reservas",
+      "translate": "Traducción",
+      "nearby": "Abierto cerca",
+      "visa": "Consultas de visado",
+      "offline": "Modo sin conexión"
+    },
+    "free": {
+      "itinerary": "Primeros 3 días",
+      "replan": "3 por viaje",
+      "documents": "2 por viaje",
+      "translate": "20 textos, 5 min de voz y 3 fotos al día",
+      "nearby": "10 al día",
+      "visa": "5 al día"
+    },
+    "pro": {
+      "unlimited": "Ilimitado",
+      "unlimitedDays": "Todos los días"
+    },
+    "youArePro": "Tienes Yola Pro. ¡Gracias!",
+    "manage": "Gestionar",
+    "mobileOnly": "Las compras están disponibles en la app móvil de Yola.",
+    "notConfigured": "La conexión con la tienda aún no está configurada.",
+    "tripPass": "Trip Pass",
+    "monthly": "Mensual",
+    "yearly": "Anual",
+    "tripPassFor": "Funciones Pro para {{trip}}, pago único",
+    "perMonth": "{{price}}/mes, facturado anualmente",
+    "cancelAnytime": "Cancela cuando quieras",
+    "save": "Ahorra un {{percent}} %",
+    "failed": "No se pudo completar la compra. Inténtalo de nuevo.",
+    "continue": "Continuar — {{price}}",
+    "restore": "Restaurar compras",
+    "nothingToRestore": "No hay compras para restaurar.",
+    "restored": "Compras restauradas.",
+    "legalIos": "La suscripción se renueva automáticamente salvo que se cancele al menos 24 horas antes del final del periodo actual. El pago se carga en tu cuenta de Apple ID. Gestiónala o cancélala en los ajustes de tu cuenta del App Store. Trip Pass es una compra única.",
+    "legalAndroid": "La suscripción se renueva automáticamente salvo que se cancele antes del final del periodo actual. Gestiónala o cancélala cuando quieras en Google Play → Suscripciones. Trip Pass es una compra única.",
+    "upgrade": "Pásate a Pro",
+    "currentPlan": "Tu plan: {{plan}}",
+    "plans": {
+      "free": "Gratis",
+      "trip_pass": "Trip Pass",
+      "pro_monthly": "Pro (mensual)",
+      "pro_yearly": "Pro (anual)"
+    },
+    "manageHint": "Gestiona tu suscripción",
+    "upgradeHint": "Planificación, traducción y más sin límites"
   }
 }

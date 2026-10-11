@@ -633,5 +633,59 @@
       "relaxed_pace": "悠闲节奏",
       "busy_pace": "紧凑节奏"
     }
+  },
+  "paywall": {
+    "subtitle": "规划每一天，无限次调整计划，畅享翻译。",
+    "limitReached": "已达到免费上限，升级即可继续使用。",
+    "freeTitle": "免费版",
+    "features": {
+      "itinerary": "AI 行程",
+      "replan": "调整计划",
+      "documents": "票据与预订识别",
+      "translate": "翻译",
+      "nearby": "附近营业",
+      "visa": "签证查询",
+      "offline": "离线模式"
+    },
+    "free": {
+      "itinerary": "前 3 天",
+      "replan": "每次行程 3 次",
+      "documents": "每次行程 2 次",
+      "translate": "每天 20 条文本、5 分钟对话、3 张照片",
+      "nearby": "每天 10 次",
+      "visa": "每天 5 次"
+    },
+    "pro": {
+      "unlimited": "无限",
+      "unlimitedDays": "全部天数"
+    },
+    "youArePro": "你已是 Yola Pro，感谢支持！",
+    "manage": "管理",
+    "mobileOnly": "请在 Yola 手机应用中购买。",
+    "notConfigured": "商店连接尚未配置。",
+    "tripPass": "Trip Pass",
+    "monthly": "按月",
+    "yearly": "按年",
+    "tripPassFor": "{{trip}} 享 Pro 功能，一次性付款",
+    "perMonth": "每月 {{price}}，按年计费",
+    "cancelAnytime": "随时取消",
+    "save": "节省 {{percent}}%",
+    "failed": "购买未完成，请重试。",
+    "continue": "继续 — {{price}}",
+    "restore": "恢复购买",
+    "nothingToRestore": "没有可恢复的购买。",
+    "restored": "已恢复购买。",
+    "legalIos": "除非在当前订阅期结束前至少 24 小时取消，否则订阅将自动续订。费用将从你的 Apple ID 账户扣除。可在 App Store 账户设置中管理或取消。Trip Pass 为一次性购买。",
+    "legalAndroid": "除非在当前订阅期结束前取消，否则订阅将自动续订。可随时在 Google Play → 订阅中管理或取消。Trip Pass 为一次性购买。",
+    "upgrade": "升级到 Pro",
+    "currentPlan": "你的方案：{{plan}}",
+    "plans": {
+      "free": "免费版",
+      "trip_pass": "Trip Pass",
+      "pro_monthly": "Pro（月付）",
+      "pro_yearly": "Pro（年付）"
+    },
+    "manageHint": "管理订阅",
+    "upgradeHint": "无限规划、翻译等更多功能"
   }
 }

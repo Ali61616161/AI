@@ -652,5 +652,59 @@
       "relaxed_pace": "Ritmo tranquillo",
       "busy_pace": "Ritmo intenso"
     }
+  },
+  "paywall": {
+    "subtitle": "Pianifica ogni giorno, ripianifica senza limiti e traduci liberamente.",
+    "limitReached": "Hai raggiunto il limite gratuito. Passa a Pro per continuare.",
+    "freeTitle": "Gratis",
+    "features": {
+      "itinerary": "Itinerario IA",
+      "replan": "Cambia piano",
+      "documents": "Lettura di biglietti e prenotazioni",
+      "translate": "Traduzione",
+      "nearby": "Aperto vicino a me",
+      "visa": "Verifiche visto",
+      "offline": "Modalità offline"
+    },
+    "free": {
+      "itinerary": "Primi 3 giorni",
+      "replan": "3 per viaggio",
+      "documents": "2 per viaggio",
+      "translate": "20 testi, 5 min di voce, 3 foto al giorno",
+      "nearby": "10 al giorno",
+      "visa": "5 al giorno"
+    },
+    "pro": {
+      "unlimited": "Illimitato",
+      "unlimitedDays": "Ogni giorno"
+    },
+    "youArePro": "Hai Yola Pro. Grazie!",
+    "manage": "Gestisci",
+    "mobileOnly": "Gli acquisti sono disponibili nell’app mobile di Yola.",
+    "notConfigured": "Il collegamento allo store non è ancora configurato.",
+    "tripPass": "Trip Pass",
+    "monthly": "Mensile",
+    "yearly": "Annuale",
+    "tripPassFor": "Funzioni Pro per {{trip}}, pagamento unico",
+    "perMonth": "{{price}}/mese, fatturato annualmente",
+    "cancelAnytime": "Annulla quando vuoi",
+    "save": "Risparmia il {{percent}}%",
+    "failed": "Impossibile completare l’acquisto. Riprova.",
+    "continue": "Continua — {{price}}",
+    "restore": "Ripristina acquisti",
+    "nothingToRestore": "Nessun acquisto da ripristinare.",
+    "restored": "Acquisti ripristinati.",
+    "legalIos": "L’abbonamento si rinnova automaticamente se non viene annullato almeno 24 ore prima della fine del periodo in corso. Il pagamento viene addebitato sull’account Apple ID. Gestisci o annulla nelle impostazioni dell’account App Store. Il Trip Pass è un acquisto unico.",
+    "legalAndroid": "L’abbonamento si rinnova automaticamente se non viene annullato prima della fine del periodo in corso. Gestisci o annulla quando vuoi in Google Play → Abbonamenti. Il Trip Pass è un acquisto unico.",
+    "upgrade": "Passa a Pro",
+    "currentPlan": "Il tuo piano: {{plan}}",
+    "plans": {
+      "free": "Gratis",
+      "trip_pass": "Trip Pass",
+      "pro_monthly": "Pro (mensile)",
+      "pro_yearly": "Pro (annuale)"
+    },
+    "manageHint": "Gestisci l’abbonamento",
+    "upgradeHint": "Pianificazione, traduzione e altro senza limiti"
   }
 }

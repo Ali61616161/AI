@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Google Places (Text Search), Weather ve Cloud Translation API'nin TEST İKİZİ. Gerçek Google gibi
+// Google Places (Text Search), Weather, Cloud Translation ve RevenueCat REST API'nin TEST İKİZİ. Gerçek Google gibi
 // isteği resmi şemayla doğrular (bilinmeyen alan → 400 INVALID_ARGUMENT) ve Roma
 // civarında öngörülebilir mekanlar ve yağmurlu hava döndürür. Edge Function'ların
 // harita/mekan/hava yolunu gerçek anahtar olmadan uçtan uca test etmek içindir.
@@ -10,6 +10,8 @@ import http from 'node:http';
 const PORT = Number(process.env.FAKE_GOOGLE_PORT ?? 54341);
 const schema = JSON.parse(readFileSync(new URL('../../supabase/functions/_shared/google/schema.json', import.meta.url), 'utf8'));
 const calls = [];
+// RevenueCat REST test ikizi: testler abone verisini POST /__rc/subscribers/<id> ile yazar.
+const rcSubscribers = new Map();
 const ROME = { latitude: 41.9028, longitude: 12.4964 };
 
 function validate(schemas, name, value, path = '') {
@@ -98,6 +100,17 @@ http
     if (url.pathname === '/calls') return send(res, 200, calls);
     const chunks = [];
     for await (const c of req) chunks.push(c);
+
+    const rc = /^\/(__rc|v1)\/subscribers\/([^/]+)$/.exec(url.pathname);
+    if (rc && rc[1] === '__rc' && req.method === 'POST') {
+      rcSubscribers.set(decodeURIComponent(rc[2]), JSON.parse(Buffer.concat(chunks).toString() || '{}'));
+      return send(res, 200, { ok: true });
+    }
+    if (rc && rc[1] === 'v1' && req.method === 'GET') {
+      if (req.headers.authorization !== 'Bearer test-rc-secret') return send(res, 401, { message: 'invalid key' });
+      const id = decodeURIComponent(rc[2]);
+      return send(res, 200, { subscriber: { original_app_user_id: id, subscriptions: {}, non_subscriptions: {}, ...(rcSubscribers.get(id) ?? {}) } });
+    }
 
     if (req.method === 'POST' && url.pathname === '/v1/places:searchText') {
       const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');

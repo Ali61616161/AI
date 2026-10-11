@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui/text';
 
+import { UpgradeButton } from '@/features/subscription/upgrade-button';
+
 import { useQuotaStatus } from './api';
 
 /** Ücretsiz planda bugün kalan kullanımı gösterir; sınırsız planda hiçbir şey göstermez. */
@@ -15,8 +17,11 @@ export function QuotaNote({ feature }: { feature: 'text_translation' | 'voice_tr
       ? t('translate.quotaVoice', { minutes: Math.floor(left / 60), seconds: String(left % 60).padStart(2, '0') })
       : t('translate.quotaLeft', { count: left });
   return (
-    <Text variant="caption" color={left === 0 ? 'warning' : 'textMuted'}>
-      {label}
-    </Text>
+    <>
+      <Text variant="caption" color={left === 0 ? 'warning' : 'textMuted'}>
+        {label}
+      </Text>
+      {left === 0 && <UpgradeButton />}
+    </>
   );
 }

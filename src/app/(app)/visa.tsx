@@ -9,6 +9,7 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { SelectSheet } from '@/components/ui/select-sheet';
 import { Text } from '@/components/ui/text';
+import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { ToolError, useProfileCountries, useSavePassport, useVisaInfo } from '@/features/tools/api';
 import { COUNTRIES, localCountryName } from '@/features/tools/countries';
 import { flag } from '@/features/tools/emergency-numbers';
@@ -64,9 +65,12 @@ export default function VisaScreen() {
       {visa.isFetching ? (
         <ActivityIndicator />
       ) : errorCode ? (
-        <Text variant="caption" color={errorCode === 'quota_exceeded' ? 'warning' : 'danger'}>
-          {t(`visa.errors.${errorCode}`)}
-        </Text>
+        <>
+          <Text variant="caption" color={errorCode === 'quota_exceeded' ? 'warning' : 'danger'}>
+            {t(`visa.errors.${errorCode}`)}
+          </Text>
+          {errorCode === 'quota_exceeded' && <UpgradeButton />}
+        </>
       ) : (
         data && (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>

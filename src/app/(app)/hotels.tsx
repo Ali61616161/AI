@@ -12,6 +12,7 @@ import { Text } from '@/components/ui/text';
 import { PlacesMap } from '@/features/map/places-map';
 import { openBookingLink, PlacesError, useHotels } from '@/features/places/api';
 import { PlaceRow } from '@/features/places/place-row';
+import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { useTrip } from '@/features/trips/queries';
 import { formatDateRange } from '@/lib/format';
 import { Spacing } from '@/theme/tokens';
@@ -52,6 +53,7 @@ export default function HotelsScreen() {
         <ActivityIndicator />
       ) : errorCode ? (
         <EmptyState icon="bed-outline" title={t('hotels.title')} description={t(`nearby.errors.${errorCode}`)}>
+          {errorCode === 'quota_exceeded' && <UpgradeButton tripId={tripId} />}
           {errorCode !== 'quota_exceeded' && errorCode !== 'not_configured' && <Button title={t('common.retry')} variant="secondary" onPress={() => hotels.refetch()} />}
         </EmptyState>
       ) : !data || data.places.length === 0 ? (

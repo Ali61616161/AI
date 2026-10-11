@@ -652,5 +652,59 @@
       "relaxed_pace": "Entspanntes Tempo",
       "busy_pace": "Volles Programm"
     }
+  },
+  "paywall": {
+    "subtitle": "Plane jeden Tag, plane unbegrenzt neu und übersetze frei.",
+    "limitReached": "Du hast das kostenlose Limit erreicht. Upgrade, um weiterzumachen.",
+    "freeTitle": "Kostenlos",
+    "features": {
+      "itinerary": "KI-Reiseplan",
+      "replan": "Plan ändern",
+      "documents": "Tickets und Buchungen einlesen",
+      "translate": "Übersetzung",
+      "nearby": "In der Nähe geöffnet",
+      "visa": "Visumabfragen",
+      "offline": "Offline-Modus"
+    },
+    "free": {
+      "itinerary": "Erste 3 Tage",
+      "replan": "3 pro Reise",
+      "documents": "2 pro Reise",
+      "translate": "20 Texte, 5 Min. Gespräch, 3 Fotos pro Tag",
+      "nearby": "10 pro Tag",
+      "visa": "5 pro Tag"
+    },
+    "pro": {
+      "unlimited": "Unbegrenzt",
+      "unlimitedDays": "Jeden Tag"
+    },
+    "youArePro": "Du hast Yola Pro. Danke!",
+    "manage": "Verwalten",
+    "mobileOnly": "Käufe sind in der Yola-App für Mobilgeräte verfügbar.",
+    "notConfigured": "Die Store-Verbindung ist noch nicht eingerichtet.",
+    "tripPass": "Trip Pass",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich",
+    "tripPassFor": "Pro-Funktionen für {{trip}}, einmalige Zahlung",
+    "perMonth": "{{price}}/Monat, jährliche Abrechnung",
+    "cancelAnytime": "Jederzeit kündbar",
+    "save": "{{percent}} % sparen",
+    "failed": "Der Kauf konnte nicht abgeschlossen werden. Bitte erneut versuchen.",
+    "continue": "Weiter — {{price}}",
+    "restore": "Käufe wiederherstellen",
+    "nothingToRestore": "Keine Käufe zum Wiederherstellen.",
+    "restored": "Käufe wiederhergestellt.",
+    "legalIos": "Das Abo verlängert sich automatisch, wenn es nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums gekündigt wird. Die Zahlung wird deinem Apple-ID-Konto belastet. Verwalten oder kündigen in den App-Store-Kontoeinstellungen. Der Trip Pass ist ein Einmalkauf.",
+    "legalAndroid": "Das Abo verlängert sich automatisch, wenn es nicht vor Ende des aktuellen Zeitraums gekündigt wird. Jederzeit verwalten oder kündigen unter Google Play → Abos. Der Trip Pass ist ein Einmalkauf.",
+    "upgrade": "Auf Pro upgraden",
+    "currentPlan": "Dein Tarif: {{plan}}",
+    "plans": {
+      "free": "Kostenlos",
+      "trip_pass": "Trip Pass",
+      "pro_monthly": "Pro (monatlich)",
+      "pro_yearly": "Pro (jährlich)"
+    },
+    "manageHint": "Abo verwalten",
+    "upgradeHint": "Unbegrenzt planen, übersetzen und mehr"
   }
 }

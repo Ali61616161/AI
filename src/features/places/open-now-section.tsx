@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Text } from '@/components/ui/text';
 import { getCurrentLocation } from '@/features/plan/replan';
+import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { Spacing } from '@/theme/tokens';
 
 import { NEARBY_CATEGORY_LIST, PlacesError, useOpenNow, type NearbyCategory } from './api';
@@ -73,6 +74,7 @@ export function OpenNowSection() {
           <Text variant="caption" color={errorCode === 'quota_exceeded' ? 'warning' : 'danger'}>
             {t(`nearby.errors.${errorCode}`)}
           </Text>
+          {errorCode === 'quota_exceeded' && <UpgradeButton />}
           {errorCode !== 'quota_exceeded' && errorCode !== 'not_configured' && <Button title={t('common.retry')} variant="ghost" onPress={() => query.refetch()} />}
         </View>
       ) : query.data && query.data.length === 0 ? (

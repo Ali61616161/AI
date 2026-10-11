@@ -42,6 +42,8 @@ npm run preview:web     # Tek dosyalık web önizlemesi üretir (dist-preview/yo
 | `translate` | Çeviri merkezi: metin (Cloud Translation), konuşma çevirisi (konuşma telefonda yazıya dökülür, saniyeyle kota), kamerayla menü/tabela (Gemini) | `GOOGLE_TRANSLATE_API_KEY` (yoksa `GOOGLE_MAPS_API_KEY`), `GEMINI_API_KEY` |
 | `travel-info` | Pasaport ve varış ülkesine göre vize ve giriş koşulları (genel bilgi, resmi kaynaktan doğrulanmalı) | `GEMINI_API_KEY` |
 | `trip-report` | Seyahat sonrası rapor: istatistikler, mekan puanları, AI özeti; beğeni/beğenmeme çıkarımları sonraki rotalara yansır | `GEMINI_API_KEY` (yoksa sadece istatistik) |
+| `subscription` | Satın alma sonrası RevenueCat REST'ten doğrulayarak Pro aboneliği günceller; Trip Pass'i seyahate bağlar | `REVENUECAT_SECRET_KEY` |
+| `revenuecat-webhook` | RevenueCat olayları (satın alma, yenileme, iptal, iade, süre sonu) → `subscriptions` | `REVENUECAT_WEBHOOK_AUTH` |
 | `places` | Yakında şu an açık yerler, bütçeye göre otel önerileri (Booking bağlantısıyla), seyahat günlerinin hava tahmini | `GOOGLE_MAPS_API_KEY` |
 
 `GOOGLE_MAPS_API_KEY` için Google Cloud'da **Places API (New)** ve **Weather API** açık olmalıdır. Anahtar yoksa rota yine üretilir, sadece mekan doğrulama ve anlık hava atlanır. Google'a gönderilen her alan, resmi discovery şemasının alt kümesi olan `supabase/functions/_shared/google/schema.json` ile testlerde doğrulanır (`python3 scripts/update-google-schema.py` ile güncellenir).
@@ -61,7 +63,13 @@ npx supabase functions deploy places
 npx supabase functions deploy translate
 npx supabase functions deploy travel-info
 npx supabase functions deploy trip-report
+npx supabase functions deploy subscription
+npx supabase functions deploy revenuecat-webhook --no-verify-jwt
 ```
+
+## Abonelik (RevenueCat)
+
+Ürünler: `yola_trip_pass` (tek seferlik, bir seyahat), `yola_pro_monthly`, `yola_pro_yearly` (otomatik yenilenen). Kimlikler `RC_PRODUCT_*` ortam değişkenleriyle değiştirilebilir. Uygulama RevenueCat'e Supabase kullanıcı kimliğiyle giriş yapar; abonelik durumu sadece sunucuda yazılır (kullanıcı `subscriptions` tablosuna yazamaz). Uygulamadaki herkese açık anahtarlar: `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`. Satın alma mağaza bağlantısı gerektirdiği için Expo Go'da değil, geliştirme derlemesinde çalışır.
 
 ## Yerel test ortamı
 

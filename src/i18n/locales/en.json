@@ -652,5 +652,59 @@
       "relaxed_pace": "Relaxed pace",
       "busy_pace": "Busy pace"
     }
+  },
+  "paywall": {
+    "subtitle": "Plan every day, replan without limits and translate freely.",
+    "limitReached": "You've reached the free limit. Upgrade to keep going.",
+    "freeTitle": "Free",
+    "features": {
+      "itinerary": "AI itinerary",
+      "replan": "Change the plan",
+      "documents": "Ticket & booking scans",
+      "translate": "Translation",
+      "nearby": "Open near me",
+      "visa": "Visa checks",
+      "offline": "Offline mode"
+    },
+    "free": {
+      "itinerary": "First 3 days",
+      "replan": "3 per trip",
+      "documents": "2 per trip",
+      "translate": "20 texts, 5 min talk, 3 photos a day",
+      "nearby": "10 a day",
+      "visa": "5 a day"
+    },
+    "pro": {
+      "unlimited": "Unlimited",
+      "unlimitedDays": "Every day"
+    },
+    "youArePro": "You have Yola Pro. Thank you!",
+    "manage": "Manage",
+    "mobileOnly": "Purchases are available in the Yola mobile app.",
+    "notConfigured": "The store connection isn't set up yet.",
+    "tripPass": "Trip Pass",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "tripPassFor": "Pro features for {{trip}}, one-time payment",
+    "perMonth": "{{price}}/month, billed yearly",
+    "cancelAnytime": "Cancel anytime",
+    "save": "Save {{percent}}%",
+    "failed": "The purchase couldn't be completed. Please try again.",
+    "continue": "Continue — {{price}}",
+    "restore": "Restore purchases",
+    "nothingToRestore": "No purchases to restore.",
+    "restored": "Purchases restored.",
+    "legalIos": "Subscriptions renew automatically unless cancelled at least 24 hours before the end of the current period. Payment is charged to your Apple ID account. Manage or cancel in your App Store account settings. Trip Pass is a one-time purchase.",
+    "legalAndroid": "Subscriptions renew automatically unless cancelled before the end of the current period. Manage or cancel anytime in Google Play → Subscriptions. Trip Pass is a one-time purchase.",
+    "upgrade": "Upgrade to Pro",
+    "currentPlan": "Your plan: {{plan}}",
+    "plans": {
+      "free": "Free",
+      "trip_pass": "Trip Pass",
+      "pro_monthly": "Pro (monthly)",
+      "pro_yearly": "Pro (yearly)"
+    },
+    "manageHint": "Manage your subscription",
+    "upgradeHint": "Unlimited planning, translation and more"
   }
 }

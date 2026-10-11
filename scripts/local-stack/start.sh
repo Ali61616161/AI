@@ -55,16 +55,22 @@ const c=require('crypto');const b=(o)=>Buffer.from(JSON.stringify(o)).toString('
 const h=b({alg:'HS256',typ:'JWT'}),p=b({role:'anon',iss:'local',exp:Math.floor(Date.now()/1000)+3650*86400});
 console.log(h+'.'+p+'.'+c.createHmac('sha256',process.env.JWT_SECRET).update(h+'.'+p).digest('base64url'))")
 
+SERVICE_ROLE_KEY=$(node -e "
+const c=require('crypto');const b=(o)=>Buffer.from(JSON.stringify(o)).toString('base64url');
+const h=b({alg:'HS256',typ:'JWT'}),p=b({role:'service_role',iss:'local',exp:Math.floor(Date.now()/1000)+3650*86400});
+console.log(h+'.'+p+'.'+c.createHmac('sha256',process.env.JWT_SECRET).update(h+'.'+p).digest('base64url'))")
+
 if [ "${FAKE_GEMINI:-}" = "1" ]; then
   setsid node scripts/local-stack/fake-gemini.mjs >"$LOG_DIR/fake-gemini.log" 2>&1 &
   echo $! >>"$LOG_DIR/pids"
   export GEMINI_API_KEY=test-key GEMINI_API_BASE=http://127.0.0.1:54340
   setsid node scripts/local-stack/fake-google.mjs >"$LOG_DIR/fake-google.log" 2>&1 &
   echo $! >>"$LOG_DIR/pids"
+  export REVENUECAT_SECRET_KEY=test-rc-secret REVENUECAT_WEBHOOK_AUTH=test-webhook-auth REVENUECAT_API_BASE=http://127.0.0.1:54341
   export GOOGLE_MAPS_API_KEY=test-key GOOGLE_PLACES_API_BASE=http://127.0.0.1:54341 GOOGLE_WEATHER_API_BASE=http://127.0.0.1:54341 GOOGLE_TRANSLATE_API_BASE=http://127.0.0.1:54341
 fi
 
-SUPABASE_URL="http://127.0.0.1:$GATEWAY_PORT" SUPABASE_ANON_KEY="$ANON_KEY" \
+SUPABASE_URL="http://127.0.0.1:$GATEWAY_PORT" SUPABASE_ANON_KEY="$ANON_KEY" SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" \
   setsid npx deno run --allow-net --allow-env --allow-read --config supabase/functions/deno.json \
   scripts/local-stack/functions-router.ts >"$LOG_DIR/functions.log" 2>&1 &
 echo $! >>"$LOG_DIR/pids"

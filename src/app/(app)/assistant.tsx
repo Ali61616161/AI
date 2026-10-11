@@ -11,6 +11,7 @@ import { Text } from '@/components/ui/text';
 import { openBookingLink, openInMaps } from '@/features/places/api';
 import { useIsOnline } from '@/features/offline/use-online';
 import { PlaceMeta } from '@/features/places/place-row';
+import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { ReplanError, useCrisisReplan, useRestoreVersion, type CrisisResult } from '@/features/plan/replan';
 import { useTrips } from '@/features/trips/queries';
 import { formatMoney, todayIsoDate } from '@/lib/format';
@@ -21,7 +22,7 @@ import { useTheme } from '@/theme/use-theme';
 
 type Message =
   | { id: number; from: 'user'; text: string }
-  | { id: number; from: 'assistant'; text: string; result?: CrisisResult; tripId?: string | null; undone?: boolean };
+  | { id: number; from: 'assistant'; text: string; result?: CrisisResult; tripId?: string | null; undone?: boolean; upgrade?: boolean };
 
 const SUGGESTIONS = ['suggestionRain', 'suggestionDelay', 'suggestionTired', 'suggestionBudget'] as const;
 
@@ -113,7 +114,7 @@ export default function AssistantScreen() {
       setMessages((prev) => [...prev, { id: prev.length, from: 'assistant', text: result.reply, result, tripId: currentTrip?.id ?? null }]);
     } catch (e) {
       const code = e instanceof ReplanError ? e.code : 'network';
-      setMessages((prev) => [...prev, { id: prev.length, from: 'assistant', text: t(`plan.errors.${code}`) }]);
+      setMessages((prev) => [...prev, { id: prev.length, from: 'assistant', text: t(`plan.errors.${code}`), upgrade: code === 'quota_exceeded', tripId: currentTrip?.id ?? null }]);
     }
   }
 
@@ -205,6 +206,7 @@ export default function AssistantScreen() {
                 <View style={[styles.bubble, { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1 }]}>
                   <Text variant="body">{m.text}</Text>
                 </View>
+                {m.upgrade && <UpgradeButton tripId={m.tripId} />}
                 {m.result && m.result.suggestions.length > 0 && (
                   <View style={styles.suggestionList}>
                     <Text variant="caption" color="textSecondary">

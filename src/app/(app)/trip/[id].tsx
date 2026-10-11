@@ -13,6 +13,7 @@ import { Text } from '@/components/ui/text';
 import { RESERVATION_ICONS, TRANSPORT_TYPES } from '@/features/documents/reservation-icons';
 import { PlacesMap } from '@/features/map/places-map';
 import { OfflineCard } from '@/features/offline/offline-card';
+import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { TripTools } from '@/features/tools/trip-tools';
 import { useTripWeather } from '@/features/places/api';
 import { GenerateCard } from '@/features/plan/generate-card';
@@ -173,6 +174,7 @@ export default function TripScreen() {
                 <Text variant="caption" style={styles.flex}>
                   {t('plan.truncated', { count: truncatedTo })}
                 </Text>
+                <UpgradeButton tripId={trip.id} />
               </View>
             )}
             <DaySelector days={days} selected={dayIndex} onSelect={setSelectedDay} />

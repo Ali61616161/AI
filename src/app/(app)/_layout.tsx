@@ -1,6 +1,16 @@
 import { Stack } from 'expo-router';
+import { useEffect } from 'react';
+
+import { identifyPurchaser } from '@/features/subscription/purchases';
+import { useSessionStore } from '@/stores/session-store';
 
 export default function AppLayout() {
+  const userId = useSessionStore((s) => s.session?.user.id ?? null);
+  // Satın almalar Supabase kullanıcısına bağlanır (RevenueCat app_user_id).
+  useEffect(() => {
+    identifyPurchaser(userId);
+  }, [userId]);
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
@@ -20,6 +30,7 @@ export default function AppLayout() {
       <Stack.Screen name="visa" options={{ presentation: 'modal' }} />
       <Stack.Screen name="jetlag" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-report" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-documents" options={{ presentation: 'modal' }} />
     </Stack>
   );
