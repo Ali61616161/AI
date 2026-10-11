@@ -236,5 +236,36 @@
     "planSoon": "Die Route Tag für Tag kommt in Schritt 5.",
     "notFound": "Reise nicht gefunden.",
     "reference": "Code: {{code}}"
+  },
+  "plan": {
+    "title": "Route",
+    "emptyTitle": "Erstelle deine Route Tag für Tag",
+    "emptyBody": "Ich plane jeden Tag Stunde für Stunde rund um deine Buchungen, passend zu Budget, Reisebegleitung und Interessen.",
+    "generate": "Route erstellen",
+    "regenerate": "Route neu erstellen",
+    "generating1": "Orte passend zu deinem Budget werden ausgewählt…",
+    "generating2": "Rund um deine Buchungen eingeplant…",
+    "generating3": "Öffnungszeiten und Wege werden geprüft…",
+    "generatingHint": "Das kann etwa eine Minute dauern.",
+    "dayLabel": "Tag {{n}}",
+    "locked": "Buchung",
+    "free": "Kostenlos",
+    "indoor": "Drinnen",
+    "outdoor": "Draußen",
+    "highlight": "Highlight",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "truncated_one": "Im kostenlosen Tarif wird nur der erste Tag geplant. Pro plant alle Tage.",
+    "truncated_other": "Im kostenlosen Tarif werden nur die ersten {{count}} Tage geplant. Pro plant alle Tage.",
+    "version": "Planversion {{version}}",
+    "emptyDay": "Keine Vorschläge für diesen Tag.",
+    "showReservations": "Buchungen",
+    "errors": {
+      "quota_exceeded": "Du hast alle Routenerstellungen für diese Reise aufgebraucht.",
+      "ai_failed": "Die Route konnte nicht erstellt werden. Versuch es gleich noch einmal.",
+      "not_configured": "Der Server ist noch nicht eingerichtet. Die KI-Anbindung erfolgt in Schritt 15.",
+      "no_dates": "Diese Reise hat kein Start- und Enddatum.",
+      "network": "Verbindungsfehler. Prüfe deine Internetverbindung und versuch es erneut."
+    }
   }
 }

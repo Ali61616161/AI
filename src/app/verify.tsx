@@ -50,15 +50,20 @@ export default function VerifyScreen() {
       token: code.trim(),
       type: 'email',
     });
-    if (verifyError || !data.user) {
+    if (verifyError || !data.user || !data.session) {
       setLoading(false);
       setError(t('auth.invalidCode'));
       return;
     }
+    // Oturum dinleyicisini beklemeden kaydet; yönlendirme korumalı ekranları açık bulmalı.
+    useSessionStore.getState().setSession(data.session);
     await syncPreferences(data.user.id).catch((e) => console.warn('Tercihler eşitlenemedi', e));
     setLoading(false);
-    // Oturum açılınca kök layout doğru ekran grubuna geçer; açık modalları kapatıyoruz.
+    // Giriş ve doğrulama ekranları korumasız olduğu için oturum açılınca kendiliğinden
+    // kapanmazlar; kullanıcıyı açabileceği ilk ekrana açıkça yönlendiriyoruz.
+    const { onboardingCompleted } = useSessionStore.getState();
     if (router.canDismiss()) router.dismissAll();
+    router.replace(onboardingCompleted ? '/' : '/companion');
   }
 
   async function resend() {

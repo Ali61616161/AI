@@ -37,13 +37,25 @@ npm run preview:web     # Tek dosyalık web önizlemesi üretir (dist-preview/yo
 | Fonksiyon | Görev | Gerekli sırlar |
 |---|---|---|
 | `parse-document` | Yüklenen bilet/otel belgesini Gemini ile okur, `documents` tablosuna yazar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
+| `generate-itinerary` | Bütçe, yol arkadaşı ve ilgi alanlarına göre gün gün rota üretir; rezervasyonlar kilitli durak olur; yeni plan sürümü kaydeder (ücretsiz planda ilk 3 gün) | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
 
 Uygulama ile fonksiyonların paylaştığı kod `supabase/functions/_shared/` altındadır (dış paket kullanmaz). Dağıtım:
 
 ```bash
 npx supabase secrets set GEMINI_API_KEY=...
 npx supabase functions deploy parse-document
+npx supabase functions deploy generate-itinerary
 ```
+
+## Yerel test ortamı
+
+Supabase projesi olmadan uygulamayı gerçek sorgularla denemek için: PostgreSQL + PostGIS, [PostgREST](https://postgrest.org) ve Deno gerekir.
+
+```bash
+POSTGREST_BIN=/yol/postgrest PGHOST=/tmp PGPORT=5432 PGUSER=postgres scripts/local-stack/start.sh generate-itinerary
+```
+
+Betik boş bir `yola_dev` veritabanına migration'ları uygular; PostgREST'i, verilen Edge Function'ı ve Supabase adreslerini taklit eden geçidi (`scripts/local-stack/gateway.mjs`) başlatır, uygulamanın kullanacağı `EXPO_PUBLIC_*` değerlerini yazdırır. Girişte her e-posta kabul edilir, kod `123456`'dır. Sadece yerel geliştirme içindir.
 
 ## Veritabanı (Supabase)
 

@@ -21,10 +21,16 @@ create table auth.users (
   raw_user_meta_data jsonb not null default '{}'
 );
 
--- Supabase'deki gibi: JWT'deki "sub" alanını döndürür.
+-- Supabase'deki gibi: JWT'deki "sub" alanını döndürür. PostgREST tüm claim'leri
+-- request.jwt.claims içinde JSON olarak verir; testler tek alanı ayrıca ayarlayabilir.
 create function auth.uid() returns uuid
 language sql stable
-as $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
+as $$
+  select coalesce(
+    nullif(current_setting('request.jwt.claim.sub', true), ''),
+    nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub'
+  )::uuid
+$$;
 
 grant execute on function auth.uid() to anon, authenticated, service_role;
 

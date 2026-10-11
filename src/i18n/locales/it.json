@@ -236,5 +236,36 @@
     "planSoon": "L'itinerario giorno per giorno arriva al passo 5.",
     "notFound": "Viaggio non trovato.",
     "reference": "Codice: {{code}}"
+  },
+  "plan": {
+    "title": "Itinerario",
+    "emptyTitle": "Crea il tuo itinerario giorno per giorno",
+    "emptyBody": "Pianifico ogni giornata ora per ora intorno alle tue prenotazioni, in base a budget, compagni di viaggio e interessi.",
+    "generate": "Crea il mio itinerario",
+    "regenerate": "Ricrea l'itinerario",
+    "generating1": "Scelgo luoghi adatti al tuo budget…",
+    "generating2": "Li inserisco intorno alle tue prenotazioni…",
+    "generating3": "Controllo orari di apertura e tempi di spostamento…",
+    "generatingHint": "Può volerci circa un minuto.",
+    "dayLabel": "Giorno {{n}}",
+    "locked": "Prenotazione",
+    "free": "Gratis",
+    "indoor": "Al chiuso",
+    "outdoor": "All'aperto",
+    "highlight": "Da non perdere",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "truncated_one": "Con il piano gratuito viene pianificato solo il primo giorno. Pro pianifica tutti i giorni.",
+    "truncated_other": "Con il piano gratuito vengono pianificati solo i primi {{count}} giorni. Pro pianifica tutti i giorni.",
+    "version": "Versione del piano {{version}}",
+    "emptyDay": "Nessun suggerimento per questo giorno.",
+    "showReservations": "Prenotazioni",
+    "errors": {
+      "quota_exceeded": "Hai esaurito le creazioni di itinerario per questo viaggio.",
+      "ai_failed": "Impossibile creare l'itinerario. Riprova tra poco.",
+      "not_configured": "Il server non è ancora configurato. La connessione IA verrà fatta al passo 15.",
+      "no_dates": "Questo viaggio non ha date di inizio e fine.",
+      "network": "Errore di connessione. Controlla internet e riprova."
+    }
   }
 }

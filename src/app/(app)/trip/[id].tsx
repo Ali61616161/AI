@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -10,8 +11,16 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { RESERVATION_ICONS, TRANSPORT_TYPES } from '@/features/documents/reservation-icons';
-import { useTrip, type TripReservation } from '@/features/trips/queries';
-import { formatDateRange, formatLocalDateTime } from '@/lib/format';
+import { GenerateCard } from '@/features/plan/generate-card';
+import { DaySelector, DayTimeline } from '@/features/plan/plan-timeline';
+import {
+  GenerateError,
+  useActivePlan,
+  useGenerateItinerary,
+  useTrip,
+  type TripReservation,
+} from '@/features/trips/queries';
+import { daysUntil, formatDateRange, formatLocalDateTime, todayIsoDate } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -49,15 +58,22 @@ function ReservationRow({ reservation: r }: { reservation: TripReservation }) {
   );
 }
 
-/**
- * Seyahat detayı: duraklar ve rezervasyonlar. Gün gün rota ve harita 5. adımda
- * bu ekrana eklenecek.
- */
+/** Seyahatin bugüne denk gelen gününü (yoksa ilk günü) seçer. */
+function initialDayIndex(dates: string[]): number {
+  const index = dates.indexOf(todayIsoDate());
+  return index >= 0 ? index : 0;
+}
+
+/** Seyahat detayı: gün gün rota, duraklar ve rezervasyonlar. */
 export default function TripScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: trip, isLoading, isError } = useTrip(id);
+  const { data: plan, isLoading: planLoading } = useActivePlan(id);
+  const generate = useGenerateItinerary(id);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [showReservations, setShowReservations] = useState(false);
 
   if (isLoading) {
     return (
@@ -75,6 +91,13 @@ export default function TripScreen() {
     );
   }
 
+  const days = plan?.day_plans ?? [];
+  const dayIndex = Math.min(selectedDay ?? initialDayIndex(days.map((d) => d.date)), Math.max(days.length - 1, 0));
+  const totalDays = trip.start_date && trip.end_date ? daysUntil(trip.end_date, new Date(`${trip.start_date}T12:00:00`)) + 1 : 0;
+  const truncatedTo = plan && days.length < totalDays ? days.length : null;
+  const generateError =
+    generate.error instanceof GenerateError ? t(`plan.errors.${generate.error.code}`) : generate.error ? t('plan.errors.network') : null;
+
   return (
     <Screen
       footer={
@@ -87,35 +110,80 @@ export default function TripScreen() {
       <ModalHeader title={trip.title} subtitle={formatDateRange(trip.start_date, trip.end_date)} />
 
       {trip.trip_destinations.length > 0 && (
-        <View style={styles.section}>
-          <Text variant="subtitle">{t('trip.destinations')}</Text>
-          <View style={styles.chips}>
-            {trip.trip_destinations.map((d) => (
-              <Chip key={d.id} icon="location-outline" label={`${d.city} · ${formatDateRange(d.arrive_on, d.depart_on)}`} />
-            ))}
-          </View>
+        <View style={styles.chips}>
+          {trip.trip_destinations.map((d) => (
+            <Chip key={d.id} icon="location-outline" label={`${d.city} · ${formatDateRange(d.arrive_on, d.depart_on)}`} />
+          ))}
         </View>
       )}
 
       <View style={styles.section}>
-        <Text variant="subtitle">{t('trip.reservations')}</Text>
-        {trip.reservations.map((r) => (
-          <ReservationRow key={r.id} reservation={r} />
-        ))}
+        <View style={styles.sectionHeader}>
+          <Text variant="title">{t('plan.title')}</Text>
+          {plan && (
+            <Text variant="caption" color="textMuted">
+              {t('plan.version', { version: plan.version })}
+            </Text>
+          )}
+        </View>
+
+        {planLoading ? (
+          <ActivityIndicator color={colors.primary} />
+        ) : !plan || generate.isPending ? (
+          <GenerateCard pending={generate.isPending} error={generateError} onGenerate={() => generate.mutate()} />
+        ) : (
+          <>
+            {plan.summary && (
+              <Text variant="body" color="textSecondary">
+                {plan.summary}
+              </Text>
+            )}
+            {truncatedTo !== null && (
+              <View style={[styles.notice, { backgroundColor: colors.surfaceMuted }]}>
+                <Ionicons name="lock-closed-outline" size={18} color={colors.primary} />
+                <Text variant="caption" style={styles.flex}>
+                  {t('plan.truncated', { count: truncatedTo })}
+                </Text>
+              </View>
+            )}
+            <DaySelector days={days} selected={dayIndex} onSelect={setSelectedDay} />
+            {days[dayIndex] && <DayTimeline day={days[dayIndex]} />}
+            {generateError && (
+              <Text variant="caption" color="danger">
+                {generateError}
+              </Text>
+            )}
+            <Button title={t('plan.regenerate')} variant="ghost" onPress={() => generate.mutate()} />
+          </>
+        )}
       </View>
 
-      <Text variant="caption" color="textMuted" style={styles.center}>
-        {t('trip.planSoon')}
-      </Text>
+      {trip.reservations.length > 0 && (
+        <View style={styles.section}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityState={{ expanded: showReservations }}
+            onPress={() => setShowReservations((v) => !v)}
+            style={styles.sectionHeader}>
+            <Text variant="subtitle">
+              {t('plan.showReservations')} · {trip.reservations.length}
+            </Text>
+            <Ionicons name={showReservations ? 'chevron-up' : 'chevron-down'} size={20} color={colors.textSecondary} />
+          </Pressable>
+          {showReservations && trip.reservations.map((r) => <ReservationRow key={r.id} reservation={r} />)}
+        </View>
+      )}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   section: { gap: Spacing.md },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.md },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  notice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
+  flex: { flex: 1 },
   row: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: 1 },
   icon: { width: 40, height: 40, borderRadius: Radius.md, alignItems: 'center', justifyContent: 'center' },
   rowText: { flex: 1, gap: Spacing.xxs },
-  center: { textAlign: 'center' },
 });

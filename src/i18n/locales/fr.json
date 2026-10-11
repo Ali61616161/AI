@@ -236,5 +236,36 @@
     "planSoon": "L'itinéraire jour par jour arrive à l'étape 5.",
     "notFound": "Voyage introuvable.",
     "reference": "Code : {{code}}"
+  },
+  "plan": {
+    "title": "Itinéraire",
+    "emptyTitle": "Créez votre itinéraire jour par jour",
+    "emptyBody": "Je planifie chaque journée heure par heure autour de vos réservations, selon votre budget, vos compagnons de voyage et vos centres d'intérêt.",
+    "generate": "Créer mon itinéraire",
+    "regenerate": "Recréer l'itinéraire",
+    "generating1": "Choix de lieux adaptés à votre budget…",
+    "generating2": "Placement autour de vos réservations…",
+    "generating3": "Vérification des horaires et des trajets…",
+    "generatingHint": "Cela peut prendre environ une minute.",
+    "dayLabel": "Jour {{n}}",
+    "locked": "Réservation",
+    "free": "Gratuit",
+    "indoor": "Intérieur",
+    "outdoor": "Extérieur",
+    "highlight": "Incontournable",
+    "checkIn": "Arrivée",
+    "checkOut": "Départ",
+    "truncated_one": "Avec le forfait gratuit, seul le premier jour est planifié. Pro planifie tous les jours.",
+    "truncated_other": "Avec le forfait gratuit, seuls les {{count}} premiers jours sont planifiés. Pro planifie tous les jours.",
+    "version": "Version du plan {{version}}",
+    "emptyDay": "Aucune suggestion pour ce jour.",
+    "showReservations": "Réservations",
+    "errors": {
+      "quota_exceeded": "Vous avez utilisé toutes les créations d'itinéraire pour ce voyage.",
+      "ai_failed": "Impossible de créer l'itinéraire. Réessayez dans un instant.",
+      "not_configured": "Le serveur n'est pas encore configuré. La connexion IA sera faite à l'étape 15.",
+      "no_dates": "Ce voyage n'a pas de dates de début et de fin.",
+      "network": "Erreur de connexion. Vérifiez votre connexion et réessayez."
+    }
   }
 }

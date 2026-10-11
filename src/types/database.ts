@@ -481,6 +481,7 @@ export type Database = {
           address: string | null;
           affiliate_partner: string | null;
           booking_url: string | null;
+          category: string | null;
           cost_currency: string | null;
           created_at: string;
           day_plan_id: string;
@@ -489,6 +490,7 @@ export type Database = {
           estimated_cost: number | null;
           google_place_id: string | null;
           id: string;
+          is_indoor: boolean | null;
           is_locked: boolean;
           kind: Database['public']['Enums']['plan_item_kind'];
           location: unknown;
@@ -498,6 +500,7 @@ export type Database = {
           reservation_id: string | null;
           starts_at: string | null;
           status: Database['public']['Enums']['plan_item_status'];
+          timezone: string | null;
           title: string;
           trip_id: string;
           visited_at: string | null;
@@ -507,6 +510,7 @@ export type Database = {
           address?: string | null;
           affiliate_partner?: string | null;
           booking_url?: string | null;
+          category?: string | null;
           cost_currency?: string | null;
           created_at?: string;
           day_plan_id: string;
@@ -515,6 +519,7 @@ export type Database = {
           estimated_cost?: number | null;
           google_place_id?: string | null;
           id?: string;
+          is_indoor?: boolean | null;
           is_locked?: boolean;
           kind: Database['public']['Enums']['plan_item_kind'];
           location?: unknown;
@@ -524,6 +529,7 @@ export type Database = {
           reservation_id?: string | null;
           starts_at?: string | null;
           status?: Database['public']['Enums']['plan_item_status'];
+          timezone?: string | null;
           title: string;
           trip_id: string;
           visited_at?: string | null;
@@ -532,6 +538,7 @@ export type Database = {
           address?: string | null;
           affiliate_partner?: string | null;
           booking_url?: string | null;
+          category?: string | null;
           cost_currency?: string | null;
           created_at?: string;
           day_plan_id?: string;
@@ -540,6 +547,7 @@ export type Database = {
           estimated_cost?: number | null;
           google_place_id?: string | null;
           id?: string;
+          is_indoor?: boolean | null;
           is_locked?: boolean;
           kind?: Database['public']['Enums']['plan_item_kind'];
           location?: unknown;
@@ -549,6 +557,7 @@ export type Database = {
           reservation_id?: string | null;
           starts_at?: string | null;
           status?: Database['public']['Enums']['plan_item_status'];
+          timezone?: string | null;
           title?: string;
           trip_id?: string;
           visited_at?: string | null;
@@ -1234,6 +1243,16 @@ export type Database = {
       respond_invite: {
         Args: { p_invite_id: string; p_status: Database['public']['Enums']['invite_status'] };
         Returns: undefined;
+      };
+      save_plan_version: {
+        Args: {
+          p_days: Json;
+          p_reason: Database['public']['Enums']['plan_change_reason'];
+          p_summary?: string;
+          p_trip_id: string;
+          p_user_prompt?: string;
+        };
+        Returns: string;
       };
       send_invite: {
         Args: {

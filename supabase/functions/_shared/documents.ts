@@ -292,3 +292,19 @@ export function minConfidence(item: ParsedItem): number {
   const values = Object.values(item.confidence);
   return values.length ? Math.min(...values) : 0.5;
 }
+
+/** "2026-11-01T13:30:00Z" + "Europe/Rome" → "2026-11-01T14:30". Saat dilimi yoksa UTC. */
+export function utcToLocal(iso: string, timeZone: string | null): string {
+  const zone = timeZone && isValidTimeZone(timeZone) ? timeZone : 'UTC';
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: zone,
+    hourCycle: 'h23',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).formatToParts(new Date(iso));
+  const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '00';
+  return `${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}`;
+}

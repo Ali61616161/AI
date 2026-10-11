@@ -236,5 +236,36 @@
     "planSoon": "La ruta día a día llega en el paso 5.",
     "notFound": "Viaje no encontrado.",
     "reference": "Código: {{code}}"
+  },
+  "plan": {
+    "title": "Ruta",
+    "emptyTitle": "Crea tu ruta día a día",
+    "emptyBody": "Planificaré cada día hora a hora alrededor de tus reservas, según tu presupuesto, con quién viajas y tus intereses.",
+    "generate": "Crear mi ruta",
+    "regenerate": "Volver a crear la ruta",
+    "generating1": "Eligiendo lugares que encajan con tu presupuesto…",
+    "generating2": "Encajándolos alrededor de tus reservas…",
+    "generating3": "Comprobando horarios y tiempos de trayecto…",
+    "generatingHint": "Puede tardar alrededor de un minuto.",
+    "dayLabel": "Día {{n}}",
+    "locked": "Reserva",
+    "free": "Gratis",
+    "indoor": "Interior",
+    "outdoor": "Exterior",
+    "highlight": "Imprescindible",
+    "checkIn": "Entrada",
+    "checkOut": "Salida",
+    "truncated_one": "En el plan gratuito solo se planifica el primer día. Pro planifica todos los días.",
+    "truncated_other": "En el plan gratuito solo se planifican los primeros {{count}} días. Pro planifica todos los días.",
+    "version": "Versión del plan {{version}}",
+    "emptyDay": "No hay sugerencias para este día.",
+    "showReservations": "Reservas",
+    "errors": {
+      "quota_exceeded": "Has usado todas las creaciones de ruta de este viaje.",
+      "ai_failed": "No se pudo crear la ruta. Inténtalo de nuevo en un momento.",
+      "not_configured": "El servidor aún no está configurado. La conexión con la IA se hace en el paso 15.",
+      "no_dates": "Este viaje no tiene fechas de inicio y fin.",
+      "network": "Error de conexión. Revisa tu internet e inténtalo de nuevo."
+    }
   }
 }

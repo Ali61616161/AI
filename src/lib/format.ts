@@ -35,3 +35,28 @@ export function todayIsoDate(now = new Date()): string {
   const d = String(now.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
 }
+
+/** Saati o yerin saat diliminde gösterir: "09:45". */
+export function formatTime(iso: string, timeZone: string | null): string {
+  return new Intl.DateTimeFormat(currentLanguage(), {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: timeZone ?? undefined,
+  }).format(new Date(iso));
+}
+
+/** Kısa gün etiketi: "1 Kas Cmt". Tarih YYYY-MM-DD. */
+export function formatDayShort(date: string): string {
+  return new Intl.DateTimeFormat(currentLanguage(), { day: 'numeric', month: 'short', weekday: 'short', timeZone: 'UTC' }).format(
+    new Date(`${date}T00:00:00Z`),
+  );
+}
+
+/** Tutarı para birimiyle gösterir: "€20", "₺350". Para birimi geçersizse sayı + kod. */
+export function formatMoney(amount: number, currency: string): string {
+  try {
+    return new Intl.NumberFormat(currentLanguage(), { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount);
+  } catch {
+    return `${Math.round(amount)} ${currency}`;
+  }
+}

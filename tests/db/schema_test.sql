@@ -332,12 +332,72 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '10. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '10. Plan sürümleri: AI planı tek işlemde kaydedilir, yeni sürüm aktif olur'
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$
+declare
+  v_trip uuid := (select id from public.trips where title = 'Rome · Florence');
+  v_flight uuid := (select id from public.reservations where trip_id = (select id from public.trips where title = 'Rome · Florence') and title = 'TK1865 IST → FCO');
+  v_foreign uuid;
+  v1 uuid;
+  v2 uuid;
+begin
+  -- Bea'nın başka bir seyahatine (Madrid) ait rezervasyon.
+  insert into public.reservations (trip_id, type, title, starts_at)
+    values ('10000000-0000-0000-0000-000000000002', 'event', 'Madrid konseri', '2026-12-01T20:00:00Z')
+    returning id into v_foreign;
+
+  v1 := public.save_plan_version(v_trip, 'initial', format($j$[
+    {"date": "2026-11-01", "city": "Rome", "title": "Varış", "items": [
+      {"kind": "transport", "title": "TK1865", "starts_at": "2026-11-01T05:10:00Z", "timezone": "Europe/Istanbul",
+       "is_locked": true, "priority": 5, "reservation_id": "%s"},
+      {"kind": "activity", "title": "Trevi", "starts_at": "2026-11-01T15:00:00Z", "ends_at": "2026-11-01T16:00:00Z",
+       "timezone": "Europe/Rome", "is_indoor": false, "category": "history", "estimated_cost": 0, "cost_currency": "EUR",
+       "affiliate_partner": "getyourguide", "reservation_id": "%s"}
+    ]},
+    {"date": "2026-11-02", "city": "Rome", "items": []}
+  ]$j$, v_flight, v_foreign)::jsonb, 'İlk plan');
+
+  assert (select version from public.plan_versions where id = v1) = 1;
+  assert (select is_active from public.plan_versions where id = v1);
+  assert (select count(*) from public.day_plans where plan_version_id = v1) = 2;
+  assert (select count(*) from public.plan_items i join public.day_plans d on d.id = i.day_plan_id where d.plan_version_id = v1) = 2;
+  assert (select reservation_id from public.plan_items where title = 'TK1865') = v_flight;
+  assert (select reservation_id from public.plan_items where title = 'Trevi') is null, 'başka seyahatin rezervasyonu bağlanmamalı';
+  assert (select timezone = 'Europe/Rome' and is_indoor = false and category = 'history' and affiliate_partner = 'getyourguide'
+          from public.plan_items where title = 'Trevi');
+  assert (select trip_id from public.plan_items where title = 'Trevi') = v_trip;
+
+  v2 := public.save_plan_version(v_trip, 'replan', '[{"date": "2026-11-01", "items": [{"kind": "meal", "title": "Pizza", "starts_at": "2026-11-01T18:00:00Z"}]}]', null, 'Yağmur başladı');
+  assert (select version from public.plan_versions where id = v2) = 2;
+  assert (select count(*) from public.plan_versions where trip_id = v_trip and is_active) = 1;
+  assert (select is_active from public.plan_versions where id = v2);
+  assert (select user_prompt from public.plan_versions where id = v2) = 'Yağmur başladı';
+  assert (select count(*) from public.plan_items where title = 'Trevi') = 1, 'eski sürümün verisi korunmalı';
+
+  assert tests.throws(format($q$ select public.save_plan_version(%L, 'initial', '[]') $q$, v_trip)), 'boş plan reddedilmeli';
+end $$;
+
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$
+declare v_trip uuid;
+begin
+  reset role;
+  select id into v_trip from public.trips where title = 'Rome · Florence';
+  set role authenticated;
+  assert tests.throws(format($q$ select public.save_plan_version(%L, 'initial',
+    '[{"date": "2026-11-01", "items": []}]') $q$, v_trip)), 'Can, Bea''nın seyahatine plan yazamamalı';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '11. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin
   assert not exists (select 1 from public.trips where owner_id = '00000000-0000-0000-0000-00000000000a');
-  assert not exists (select 1 from public.plan_items);
+  assert not exists (select 1 from public.plan_items where trip_id = '10000000-0000-0000-0000-000000000001');
+  assert exists (select 1 from public.plan_items where title = 'Trevi'), 'başka kullanıcının verisi silinmemeli';
   assert not exists (select 1 from public.match_invites);
   assert not exists (select 1 from public.consents where user_id = '00000000-0000-0000-0000-00000000000a');
 end $$;

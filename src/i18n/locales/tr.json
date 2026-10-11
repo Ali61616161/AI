@@ -236,5 +236,36 @@
     "planSoon": "Gün gün rota 5. adımda gelecek.",
     "notFound": "Seyahat bulunamadı.",
     "reference": "Kod: {{code}}"
+  },
+  "plan": {
+    "title": "Rota",
+    "emptyTitle": "Gün gün rotanı oluştur",
+    "emptyBody": "Bütçene, yol arkadaşlarına ve ilgi alanlarına göre, rezervasyonlarının etrafına yerleşen saatlik bir plan hazırlarım.",
+    "generate": "Rotayı oluştur",
+    "regenerate": "Rotayı yeniden oluştur",
+    "generating1": "Bütçene uygun yerler seçiliyor…",
+    "generating2": "Rezervasyonlarının etrafına yerleştiriliyor…",
+    "generating3": "Açılış saatleri ve yol süreleri hesaplanıyor…",
+    "generatingHint": "Bu bir dakika kadar sürebilir.",
+    "dayLabel": "{{n}}. gün",
+    "locked": "Rezervasyon",
+    "free": "Ücretsiz",
+    "indoor": "Kapalı alan",
+    "outdoor": "Açık alan",
+    "highlight": "Öne çıkan",
+    "checkIn": "Giriş",
+    "checkOut": "Çıkış",
+    "truncated_one": "Ücretsiz planda ilk {{count}} gün planlandı. Tüm günler için Pro gerekiyor.",
+    "truncated_other": "Ücretsiz planda ilk {{count}} gün planlandı. Tüm günler için Pro gerekiyor.",
+    "version": "Plan sürümü {{version}}",
+    "emptyDay": "Bu gün için öneri yok.",
+    "showReservations": "Rezervasyonlar",
+    "errors": {
+      "quota_exceeded": "Bu seyahat için rota oluşturma hakkın doldu.",
+      "ai_failed": "Rota oluşturulamadı. Biraz sonra tekrar dene.",
+      "not_configured": "Sunucu henüz yapılandırılmadı. AI bağlantısı 15. adımda kurulacak.",
+      "no_dates": "Seyahatin başlangıç ve bitiş tarihi yok.",
+      "network": "Bağlantı hatası. İnternetini kontrol edip tekrar dene."
+    }
   }
 }

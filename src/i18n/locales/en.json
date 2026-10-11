@@ -236,5 +236,36 @@
     "planSoon": "The day-by-day route arrives in step 5.",
     "notFound": "Trip not found.",
     "reference": "Code: {{code}}"
+  },
+  "plan": {
+    "title": "Route",
+    "emptyTitle": "Build your day-by-day route",
+    "emptyBody": "I'll plan each day hour by hour around your bookings, matched to your budget, travel companions and interests.",
+    "generate": "Build my route",
+    "regenerate": "Rebuild the route",
+    "generating1": "Picking places that fit your budget…",
+    "generating2": "Fitting them around your bookings…",
+    "generating3": "Checking opening hours and travel times…",
+    "generatingHint": "This can take about a minute.",
+    "dayLabel": "Day {{n}}",
+    "locked": "Booking",
+    "free": "Free",
+    "indoor": "Indoors",
+    "outdoor": "Outdoors",
+    "highlight": "Highlight",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "truncated_one": "On the free plan only the first {{count}} day is planned. Pro plans every day.",
+    "truncated_other": "On the free plan only the first {{count}} days are planned. Pro plans every day.",
+    "version": "Plan version {{version}}",
+    "emptyDay": "No suggestions for this day.",
+    "showReservations": "Reservations",
+    "errors": {
+      "quota_exceeded": "You've used all route builds for this trip.",
+      "ai_failed": "Couldn't build the route. Try again in a moment.",
+      "not_configured": "The server isn't configured yet. The AI connection is set up in step 15.",
+      "no_dates": "This trip has no start and end dates.",
+      "network": "Connection error. Check your internet and try again."
+    }
   }
 }

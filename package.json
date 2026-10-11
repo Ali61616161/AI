@@ -60,9 +60,10 @@
     "check:locales": "node scripts/check-locales.js",
     "db:test": "scripts/test-db.sh",
     "db:types": "supabase gen types typescript --linked --schema public > src/types/database.ts && prettier --single-quote --print-width 110 --write src/types/database.ts",
-    "preview:web": "EXPO_WEB_OUTPUT=single expo export --platform web --output-dir dist-preview && node scripts/build-web-preview.mjs dist-preview dist-preview/yola-preview.html",
+    "preview:web": "EXPO_WEB_OUTPUT=single expo export --clear --platform web --output-dir dist-preview && node scripts/build-web-preview.mjs dist-preview dist-preview/yola-preview.html",
     "functions:check": "cd supabase/functions && deno check */index.ts && deno lint",
-    "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features"
+    "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features",
+    "db:types:local": "scripts/gen-db-types-local.sh"
   },
   "private": true
 }
