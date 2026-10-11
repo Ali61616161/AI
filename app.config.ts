@@ -38,7 +38,7 @@ const config: ExpoConfig = {
       {
         photosPermission: `${brand.name} uses your photos so you can upload ticket and booking screenshots.`,
         cameraPermission: `${brand.name} uses the camera so you can photograph tickets, bookings and menus.`,
-        microphonePermission: false,
+        microphonePermission: `${brand.name} uses the microphone to translate your conversations.`,
       },
     ],
     [
@@ -47,6 +47,13 @@ const config: ExpoConfig = {
         locationWhenInUsePermission: `${brand.name} uses your location to show places open near you and to adjust your plan.`,
         locationAlwaysAndWhenInUsePermission: false,
         isAndroidBackgroundLocationEnabled: false,
+      },
+    ],
+    [
+      'expo-speech-recognition',
+      {
+        microphonePermission: `${brand.name} uses the microphone to translate your conversations.`,
+        speechRecognitionPermission: `${brand.name} turns your speech into text so it can be translated.`,
       },
     ],
     // iOS'ta Apple Haritalar kullanılır (anahtar gerekmez). Android'de Google Haritalar

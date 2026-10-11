@@ -163,7 +163,6 @@
     "suggestionBudget": "Ich habe heute das Budget überschritten, schlag etwas Kostenloses vor",
     "notReady": "Verstanden: „{{message}}“. Der KI-Assistent wird in Schritt 6 angebunden; dann gebe ich echte Vorschläge für deinen Standort.",
     "quickActions": "Schnellaktionen",
-    "menuScan": "Speisekarte übersetzen",
     "addTicket": "Ticket hinzufügen",
     "sos": "Notfall",
     "openAssistant": "KI-Assistent öffnen",
@@ -173,7 +172,8 @@
     "undo": "Rückgängig",
     "undone": "Zurück zum vorherigen Plan.",
     "noTrip": "Du hast gerade keine laufende Reise, die Vorschläge sind allgemein.",
-    "suggestionsTitle": "Vorschläge"
+    "suggestionsTitle": "Vorschläge",
+    "translate": "Übersetzen"
   },
   "ticket": {
     "title": "Ticket oder Hotel hochladen",
@@ -387,5 +387,49 @@
     "speak": "Vorlesen",
     "showHint": "Zeigt den Satz groß an",
     "tapToClose": "Zum Schließen irgendwo tippen"
+  },
+  "translate": {
+    "title": "Übersetzen",
+    "subtitle": "Sprich, tippe oder richte die Kamera aus – Yola übersetzt.",
+    "tabs": {
+      "conversation": "Gespräch",
+      "text": "Text",
+      "camera": "Kamera"
+    },
+    "from": "Von",
+    "to": "Nach",
+    "swap": "Sprachen tauschen",
+    "autoDetect": "Sprache erkennen",
+    "textPlaceholder": "Text eingeben oder einfügen",
+    "translate": "Übersetzen",
+    "detected": "Erkannt: {{language}}",
+    "copy": "Kopieren",
+    "myLanguage": "Deine Sprache",
+    "theirLanguage": "Ihre Sprache",
+    "conversationHint": "Tippe auf deine Taste und sprich. Die Übersetzung wird für die andere Person vorgelesen, dann tippt sie auf ihre.",
+    "listening": "Ich höre zu…",
+    "translating": "Wird übersetzt…",
+    "speakMine": "Auf {{language}} sprechen",
+    "speakTheirs": "Die andere Person spricht {{language}}",
+    "micDenied": "Erlaube Mikrofon und Spracherkennung in den Einstellungen, um den Gesprächsmodus zu nutzen.",
+    "noSpeech": "Nicht verstanden. Versuche es etwas näher noch einmal.",
+    "speechFailed": "Die Spracherkennung wurde beendet. Versuche es erneut.",
+    "speechUnavailable": "Spracherkennung ist auf diesem Gerät nicht verfügbar.",
+    "translateInto": "Übersetzen in",
+    "takePhoto": "Foto aufnehmen",
+    "choosePhoto": "Foto auswählen",
+    "reading": "Text wird gelesen…",
+    "allergyDisclaimer": "Hinweise zu Zutaten und Allergenen sind KI-Schätzungen. Bei Allergien immer beim Personal nachfragen.",
+    "quotaVoice": "Heute noch {{minutes}}:{{seconds}} kostenlose Gesprächszeit",
+    "errors": {
+      "quota_exceeded": "Du hast das kostenlose Tageslimit erreicht. Upgrade für unbegrenzte Übersetzungen.",
+      "not_configured": "Die Übersetzung ist noch nicht verbunden.",
+      "upstream_failed": "Übersetzung fehlgeschlagen. Bitte erneut versuchen.",
+      "ai_failed": "Das Foto konnte nicht gelesen werden. Versuche ein schärferes, helleres Foto.",
+      "file_too_large": "Das Foto ist zu groß.",
+      "network": "Keine Verbindung. Bitte erneut versuchen."
+    },
+    "quotaLeft_one": "Heute noch {{count}} kostenlose Übersetzung",
+    "quotaLeft_other": "Heute noch {{count}} kostenlose Übersetzungen"
   }
 }

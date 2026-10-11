@@ -12,6 +12,7 @@
     "@tanstack/react-query-persist-client": "^5.104.1",
     "eslint-config-expo": "~57.0.2",
     "expo": "~57.0.27",
+    "expo-clipboard": "~57.0.2",
     "expo-constants": "~57.0.21",
     "expo-crypto": "~57.0.3",
     "expo-device": "~57.0.2",
@@ -20,6 +21,7 @@
     "expo-font": "~57.0.4",
     "expo-glass-effect": "~57.0.4",
     "expo-image": "~57.0.5",
+    "expo-image-manipulator": "~57.0.21",
     "expo-image-picker": "~57.0.20",
     "expo-linking": "~57.0.12",
     "expo-localization": "~57.0.2",
@@ -29,6 +31,7 @@
     "expo-secure-store": "~57.0.4",
     "expo-sharing": "~57.0.22",
     "expo-speech": "~57.0.3",
+    "expo-speech-recognition": "^57.1.1",
     "expo-splash-screen": "~57.0.9",
     "expo-status-bar": "~57.0.1",
     "expo-symbols": "~57.0.3",
@@ -71,7 +74,7 @@
     "functions:check": "cd supabase/functions && deno check */index.ts && deno lint && cd ../.. && deno check --config supabase/functions/deno.json scripts/local-stack/functions-router.ts",
     "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features",
     "db:types:local": "scripts/gen-db-types-local.sh",
-    "e2e:local": "node tests/e2e/replan.e2e.mjs && node tests/e2e/places.e2e.mjs"
+    "e2e:local": "node tests/e2e/replan.e2e.mjs && node tests/e2e/places.e2e.mjs && node tests/e2e/translate.e2e.mjs"
   },
   "private": true
 }

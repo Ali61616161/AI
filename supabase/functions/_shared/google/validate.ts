@@ -8,6 +8,7 @@ type Schemas = Record<string, Record<string, Prop>>;
 export const GOOGLE_SCHEMA = schema as unknown as {
   places: { schemas: Schemas; methods: Record<string, string[]> };
   weather: { schemas: Schemas; methods: Record<string, string[]> };
+  translate: { servicePath: string; schemas: Schemas; methods: Record<string, string[]> };
 };
 
 /** Nesnedeki her alanın şemada olduğunu ve enum değerlerinin geçerli olduğunu doğrular. */

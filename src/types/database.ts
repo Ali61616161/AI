@@ -1132,6 +1132,7 @@ export type Database = {
       };
       usage_events: {
         Row: {
+          amount: number;
           created_at: string;
           feature: Database['public']['Enums']['quota_feature'];
           id: number;
@@ -1140,6 +1141,7 @@ export type Database = {
         };
         ComputedFields: never;
         Insert: {
+          amount?: number;
           created_at?: string;
           feature: Database['public']['Enums']['quota_feature'];
           id?: never;
@@ -1147,6 +1149,7 @@ export type Database = {
           user_id: string;
         };
         Update: {
+          amount?: number;
           created_at?: string;
           feature?: Database['public']['Enums']['quota_feature'];
           id?: never;
@@ -1236,7 +1239,11 @@ export type Database = {
       };
       can_edit_trip: { Args: { p_trip_id: string }; Returns: boolean };
       consume_quota: {
-        Args: { p_feature: Database['public']['Enums']['quota_feature']; p_trip_id?: string };
+        Args: {
+          p_amount?: number;
+          p_feature: Database['public']['Enums']['quota_feature'];
+          p_trip_id?: string;
+        };
         Returns: {
           allowed: boolean;
           plan: Database['public']['Enums']['subscription_plan'];
@@ -1275,6 +1282,16 @@ export type Database = {
           is_verified: boolean;
           looking_for: string[];
           user_id: string;
+        }[];
+      };
+      quota_status: {
+        Args: { p_feature: Database['public']['Enums']['quota_feature']; p_trip_id?: string };
+        Returns: {
+          per_day: number;
+          per_trip: number;
+          plan: Database['public']['Enums']['subscription_plan'];
+          used_today: number;
+          used_trip: number;
         }[];
       };
       respond_invite: {
@@ -1321,7 +1338,9 @@ export type Database = {
         | 'replan'
         | 'menu_scan'
         | 'social_invite'
-        | 'nearby_search';
+        | 'nearby_search'
+        | 'text_translation'
+        | 'voice_translation';
       report_reason: 'harassment' | 'fake_profile' | 'unsafe_behavior' | 'spam' | 'other';
       reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
       subscription_plan: 'free' | 'trip_pass' | 'pro_monthly' | 'pro_yearly';
@@ -1459,6 +1478,8 @@ export const Constants = {
         'menu_scan',
         'social_invite',
         'nearby_search',
+        'text_translation',
+        'voice_translation',
       ],
       report_reason: ['harassment', 'fake_profile', 'unsafe_behavior', 'spam', 'other'],
       reservation_type: ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'],

@@ -161,7 +161,6 @@
     "suggestionBudget": "今天超预算了，推荐免费的活动",
     "notReady": "收到：“{{message}}”。AI 助手将在第 6 步接入，届时我会根据你的位置给出真实建议。",
     "quickActions": "快捷操作",
-    "menuScan": "翻译菜单",
     "addTicket": "添加票据",
     "sos": "紧急求助",
     "openAssistant": "打开 AI 助手",
@@ -171,7 +170,8 @@
     "undo": "撤销",
     "undone": "已恢复为之前的计划。",
     "noTrip": "你目前没有进行中的行程，建议将较为通用。",
-    "suggestionsTitle": "建议"
+    "suggestionsTitle": "建议",
+    "translate": "翻译"
   },
   "ticket": {
     "title": "上传机票或酒店",
@@ -379,5 +379,48 @@
     "speak": "朗读",
     "showHint": "放大显示该句子",
     "tapToClose": "点击任意处关闭"
+  },
+  "translate": {
+    "title": "翻译",
+    "subtitle": "说话、打字或对准摄像头，Yola 帮你翻译。",
+    "tabs": {
+      "conversation": "对话",
+      "text": "文本",
+      "camera": "相机"
+    },
+    "from": "源语言",
+    "to": "目标语言",
+    "swap": "交换语言",
+    "autoDetect": "检测语言",
+    "textPlaceholder": "输入或粘贴文字",
+    "translate": "翻译",
+    "detected": "检测到：{{language}}",
+    "copy": "复制",
+    "myLanguage": "你的语言",
+    "theirLanguage": "对方的语言",
+    "conversationHint": "点击你的按钮说话，译文会朗读给对方，然后对方点击自己的按钮。",
+    "listening": "正在聆听…",
+    "translating": "正在翻译…",
+    "speakMine": "用{{language}}说话",
+    "speakTheirs": "对方用{{language}}说话",
+    "micDenied": "请在设置中允许麦克风和语音识别以使用对话模式。",
+    "noSpeech": "没听清，请靠近一点再试。",
+    "speechFailed": "语音识别已停止，请重试。",
+    "speechUnavailable": "此设备不支持语音识别。",
+    "translateInto": "翻译成",
+    "takePhoto": "拍照",
+    "choosePhoto": "选择照片",
+    "reading": "正在识别文字…",
+    "allergyDisclaimer": "配料和过敏原说明为 AI 估计。如有过敏，请务必向店员确认。",
+    "quotaVoice": "今天还剩 {{minutes}}:{{seconds}} 免费对话时长",
+    "errors": {
+      "quota_exceeded": "已达到今日免费上限。升级即可无限翻译。",
+      "not_configured": "翻译功能尚未连接。",
+      "upstream_failed": "翻译失败，请重试。",
+      "ai_failed": "无法识别照片，请换一张更清晰明亮的照片。",
+      "file_too_large": "照片太大。",
+      "network": "没有网络连接，请重试。"
+    },
+    "quotaLeft_other": "今天还剩 {{count}} 次免费翻译"
   }
 }

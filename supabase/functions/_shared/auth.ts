@@ -12,9 +12,9 @@ export async function userClient(req: Request): Promise<{ supabase: SupabaseClie
   return data.user ? { supabase, user: data.user } : null;
 }
 
-export async function consumeQuota(supabase: SupabaseClient, feature: string, tripId: string | null) {
+export async function consumeQuota(supabase: SupabaseClient, feature: string, tripId: string | null, amount = 1) {
   const { data, error } = await supabase
-    .rpc('consume_quota', { p_feature: feature, p_trip_id: tripId })
+    .rpc('consume_quota', { p_feature: feature, p_trip_id: tripId, p_amount: amount })
     .single<{ allowed: boolean; plan: string; remaining: number | null }>();
   if (error) throw error;
   return data;

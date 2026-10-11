@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Google Places (Text Search) ve Weather API'nin TEST İKİZİ. Gerçek Google gibi
+// Google Places (Text Search), Weather ve Cloud Translation API'nin TEST İKİZİ. Gerçek Google gibi
 // isteği resmi şemayla doğrular (bilinmeyen alan → 400 INVALID_ARGUMENT) ve Roma
 // civarında öngörülebilir mekanlar ve yağmurlu hava döndürür. Edge Function'ların
 // harita/mekan/hava yolunu gerçek anahtar olmadan uçtan uca test etmek içindir.
@@ -108,6 +108,18 @@ http
       calls.push({ api: 'places', body, errors });
       if (errors.length) return send(res, 400, { error: { code: 400, status: 'INVALID_ARGUMENT', message: errors.join('; ') } });
       return send(res, 200, searchText(body));
+    }
+
+    if (req.method === 'POST' && url.pathname === `/${schema.translate.servicePath}v2`) {
+      const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
+      const errors = validate(schema.translate.schemas, 'TranslateTextRequest', body);
+      if (!req.headers['x-goog-api-key']) errors.push('API key missing');
+      calls.push({ api: 'translate', body, errors });
+      if (errors.length) return send(res, 400, { error: { code: 400, status: 'INVALID_ARGUMENT', message: errors.join('; ') } });
+      // Gerçek v2 API'si gibi "data" sarmalıyla döner.
+      return send(res, 200, {
+        data: { translations: body.q.map((q) => ({ translatedText: `[${body.target}] ${q}`, ...(body.source ? {} : { detectedSourceLanguage: 'tr' }) })) },
+      });
     }
 
     if (req.method === 'GET' && url.pathname.startsWith('/v1/')) {

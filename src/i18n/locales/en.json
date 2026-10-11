@@ -163,7 +163,6 @@
     "suggestionBudget": "I'm over budget today, suggest something free",
     "notReady": "Got it: \"{{message}}\". The AI assistant gets connected in step 6; then I'll give real suggestions based on your location.",
     "quickActions": "Quick actions",
-    "menuScan": "Translate a menu",
     "addTicket": "Add a ticket",
     "sos": "Emergency",
     "openAssistant": "Open AI assistant",
@@ -173,7 +172,8 @@
     "undo": "Undo",
     "undone": "Back to the previous plan.",
     "noTrip": "You don't have a trip in progress, so suggestions are general.",
-    "suggestionsTitle": "Suggestions"
+    "suggestionsTitle": "Suggestions",
+    "translate": "Translate"
   },
   "ticket": {
     "title": "Upload ticket or hotel",
@@ -387,5 +387,49 @@
     "speak": "Read aloud",
     "showHint": "Shows the phrase in large text",
     "tapToClose": "Tap anywhere to close"
+  },
+  "translate": {
+    "title": "Translate",
+    "subtitle": "Speak, type or point your camera — Yola translates.",
+    "tabs": {
+      "conversation": "Conversation",
+      "text": "Text",
+      "camera": "Camera"
+    },
+    "from": "From",
+    "to": "To",
+    "swap": "Swap languages",
+    "autoDetect": "Detect language",
+    "textPlaceholder": "Type or paste text",
+    "translate": "Translate",
+    "detected": "Detected: {{language}}",
+    "copy": "Copy",
+    "myLanguage": "Your language",
+    "theirLanguage": "Their language",
+    "conversationHint": "Tap your button and speak. The translation is read aloud for the other person, then they tap theirs.",
+    "listening": "Listening…",
+    "translating": "Translating…",
+    "speakMine": "Speak in {{language}}",
+    "speakTheirs": "Other person speaks in {{language}}",
+    "micDenied": "Allow microphone and speech recognition in Settings to use conversation mode.",
+    "noSpeech": "Didn't catch that. Try again a little closer.",
+    "speechFailed": "Speech recognition stopped. Try again.",
+    "speechUnavailable": "Speech recognition isn't available on this device.",
+    "translateInto": "Translate into",
+    "takePhoto": "Take photo",
+    "choosePhoto": "Choose photo",
+    "reading": "Reading the text…",
+    "allergyDisclaimer": "Ingredient and allergen notes are AI estimates. If you have an allergy, always confirm with the staff.",
+    "quotaVoice": "{{minutes}}:{{seconds}} of free conversation left today",
+    "errors": {
+      "quota_exceeded": "You've reached today's free limit. Upgrade for unlimited translation.",
+      "not_configured": "Translation isn't connected yet.",
+      "upstream_failed": "Translation failed. Please try again.",
+      "ai_failed": "Couldn't read the photo. Try a sharper, well-lit photo.",
+      "file_too_large": "The photo is too large.",
+      "network": "No connection. Please try again."
+    },
+    "quotaLeft_one": "{{count}} free translation left today",
+    "quotaLeft_other": "{{count}} free translations left today"
   }
 }

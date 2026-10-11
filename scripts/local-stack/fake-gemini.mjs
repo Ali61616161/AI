@@ -46,9 +46,30 @@ http
     for await (const c of req) chunks.push(c);
     const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
     const prompt = body.contents?.[0]?.parts?.[0]?.text ?? '';
-    const kind = prompt.includes('The traveler says') ? 'crisis' : prompt.includes('Days to plan') ? 'itinerary' : 'other';
+    const kind = prompt.includes('The traveler says')
+      ? 'crisis'
+      : prompt.includes('Days to plan')
+        ? 'itinerary'
+        : prompt.includes('You are a travel translator')
+          ? 'image'
+          : 'other';
     calls.push(kind);
-    const payload = kind === 'crisis' ? crisis(prompt) : kind === 'itinerary' ? itinerary(prompt) : { document_type: 'other', items: [] };
+    const payload =
+      kind === 'crisis'
+        ? crisis(prompt)
+        : kind === 'itinerary'
+          ? itinerary(prompt)
+          : kind === 'image'
+            ? {
+                kind: 'menu',
+                source_language: 'it',
+                summary: `TEST menu translated into ${/into ([A-Za-z ]+)\./.exec(prompt)?.[1] ?? '?'}`,
+                items: [
+                  { original: 'Cacio e pepe', translated: 'TEST cheese and pepper pasta', note: 'Pecorino, black pepper. Gluten, dairy.', price: '€12', section: 'Primi' },
+                  { original: 'Tiramisù', translated: 'TEST tiramisu', note: 'Mascarpone, coffee, egg.', price: '€7', section: 'Dolci' },
+                ],
+              }
+            : { document_type: 'other', items: [] };
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ candidates: [{ content: { parts: [{ text: JSON.stringify(payload) }] }, finishReason: 'STOP' }] }));
   })

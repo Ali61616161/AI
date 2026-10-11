@@ -26,12 +26,12 @@ type Message =
 const SUGGESTIONS = ['suggestionRain', 'suggestionDelay', 'suggestionTired', 'suggestionBudget'] as const;
 
 const QUICK_ACTIONS: {
-  key: 'addTicket' | 'menuScan' | 'sos';
+  key: 'addTicket' | 'translate' | 'sos';
   icon: ComponentProps<typeof Ionicons>['name'];
   step?: number;
 }[] = [
   { key: 'addTicket', icon: 'ticket-outline' },
-  { key: 'menuScan', icon: 'camera-outline', step: 9 },
+  { key: 'translate', icon: 'language-outline' },
   { key: 'sos', icon: 'medkit-outline', step: 10 },
 ];
 
@@ -154,7 +154,10 @@ export default function AssistantScreen() {
             key={a.key}
             accessibilityRole="button"
             disabled={Boolean(a.step)}
-            onPress={() => a.key === 'addTicket' && router.replace('/ticket')}
+            onPress={() => {
+              if (a.key === 'addTicket') router.replace('/ticket');
+              if (a.key === 'translate') router.replace('/translate');
+            }}
             style={[styles.quickItem, { backgroundColor: colors.surface, borderColor: colors.border, opacity: a.step ? 0.55 : 1 }]}>
             <Ionicons name={a.icon} size={22} color={a.key === 'sos' ? colors.danger : colors.primary} />
             <Text variant="caption" style={styles.center}>

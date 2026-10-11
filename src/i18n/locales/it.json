@@ -163,7 +163,6 @@
     "suggestionBudget": "Oggi ho sforato il budget, suggerisci qualcosa di gratuito",
     "notReady": "Ricevuto: «{{message}}». L'assistente IA verrà collegato al passo 6; allora ti darò suggerimenti reali in base alla tua posizione.",
     "quickActions": "Azioni rapide",
-    "menuScan": "Traduci un menu",
     "addTicket": "Aggiungi biglietto",
     "sos": "Emergenza",
     "openAssistant": "Apri l'assistente IA",
@@ -173,7 +172,8 @@
     "undo": "Annulla",
     "undone": "Sei tornato al piano precedente.",
     "noTrip": "Non hai un viaggio in corso, quindi i suggerimenti sono generici.",
-    "suggestionsTitle": "Suggerimenti"
+    "suggestionsTitle": "Suggerimenti",
+    "translate": "Traduci"
   },
   "ticket": {
     "title": "Carica biglietto o hotel",
@@ -387,5 +387,49 @@
     "speak": "Leggi ad alta voce",
     "showHint": "Mostra la frase in grande",
     "tapToClose": "Tocca ovunque per chiudere"
+  },
+  "translate": {
+    "title": "Traduci",
+    "subtitle": "Parla, scrivi o inquadra con la fotocamera: Yola traduce.",
+    "tabs": {
+      "conversation": "Conversazione",
+      "text": "Testo",
+      "camera": "Fotocamera"
+    },
+    "from": "Da",
+    "to": "A",
+    "swap": "Scambia lingue",
+    "autoDetect": "Rileva lingua",
+    "textPlaceholder": "Scrivi o incolla un testo",
+    "translate": "Traduci",
+    "detected": "Rilevato: {{language}}",
+    "copy": "Copia",
+    "myLanguage": "La tua lingua",
+    "theirLanguage": "La sua lingua",
+    "conversationHint": "Tocca il tuo pulsante e parla. La traduzione viene letta ad alta voce per l’altra persona, poi lei tocca il suo.",
+    "listening": "Ti ascolto…",
+    "translating": "Traduzione…",
+    "speakMine": "Parla in {{language}}",
+    "speakTheirs": "L’altra persona parla in {{language}}",
+    "micDenied": "Consenti microfono e riconoscimento vocale nelle Impostazioni per usare la conversazione.",
+    "noSpeech": "Non ho capito. Riprova un po’ più vicino.",
+    "speechFailed": "Il riconoscimento vocale si è interrotto. Riprova.",
+    "speechUnavailable": "Il riconoscimento vocale non è disponibile su questo dispositivo.",
+    "translateInto": "Traduci in",
+    "takePhoto": "Scatta foto",
+    "choosePhoto": "Scegli foto",
+    "reading": "Lettura del testo…",
+    "allergyDisclaimer": "Le note su ingredienti e allergeni sono stime dell’IA. Se hai allergie, chiedi sempre conferma al personale.",
+    "quotaVoice": "Oggi ti restano {{minutes}}:{{seconds}} di conversazione gratuita",
+    "errors": {
+      "quota_exceeded": "Hai raggiunto il limite gratuito di oggi. Passa a un piano superiore per tradurre senza limiti.",
+      "not_configured": "La traduzione non è ancora collegata.",
+      "upstream_failed": "Traduzione non riuscita. Riprova.",
+      "ai_failed": "Impossibile leggere la foto. Prova una foto più nitida e luminosa.",
+      "file_too_large": "La foto è troppo grande.",
+      "network": "Nessuna connessione. Riprova."
+    },
+    "quotaLeft_one": "Oggi ti resta {{count}} traduzione gratuita",
+    "quotaLeft_other": "Oggi ti restano {{count}} traduzioni gratuite"
   }
 }

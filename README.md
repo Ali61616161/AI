@@ -39,6 +39,7 @@ npm run preview:web     # Tek dosyalık web önizlemesi üretir (dist-preview/yo
 | `parse-document` | Yüklenen bilet/otel belgesini Gemini ile okur, `documents` tablosuna yazar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
 | `replan` | "Planı Değiştir": konum ve saate göre günün kalanını yeniden planlar; tarih değişince planı yeni tarihlere uyarlar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
 | `generate-itinerary` | Bütçe, yol arkadaşı ve ilgi alanlarına göre gün gün rota üretir; rezervasyonlar kilitli durak olur; mekanları Google Places ile doğrular; yeni plan sürümü kaydeder (ücretsiz planda ilk 3 gün) | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL`, `GOOGLE_MAPS_API_KEY` |
+| `translate` | Çeviri merkezi: metin (Cloud Translation), konuşma çevirisi (konuşma telefonda yazıya dökülür, saniyeyle kota), kamerayla menü/tabela (Gemini) | `GOOGLE_TRANSLATE_API_KEY` (yoksa `GOOGLE_MAPS_API_KEY`), `GEMINI_API_KEY` |
 | `places` | Yakında şu an açık yerler, bütçeye göre otel önerileri (Booking bağlantısıyla), seyahat günlerinin hava tahmini | `GOOGLE_MAPS_API_KEY` |
 
 `GOOGLE_MAPS_API_KEY` için Google Cloud'da **Places API (New)** ve **Weather API** açık olmalıdır. Anahtar yoksa rota yine üretilir, sadece mekan doğrulama ve anlık hava atlanır. Google'a gönderilen her alan, resmi discovery şemasının alt kümesi olan `supabase/functions/_shared/google/schema.json` ile testlerde doğrulanır (`python3 scripts/update-google-schema.py` ile güncellenir).
@@ -55,6 +56,7 @@ npx supabase functions deploy parse-document
 npx supabase functions deploy generate-itinerary
 npx supabase functions deploy replan
 npx supabase functions deploy places
+npx supabase functions deploy translate
 ```
 
 ## Yerel test ortamı

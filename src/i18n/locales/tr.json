@@ -163,7 +163,6 @@
     "suggestionBudget": "Bugün bütçeyi aştım, ücretsiz bir şey öner",
     "notReady": "İsteğini aldım: \"{{message}}\". AI asistanı 6. adımda bağlanacak; o zaman konumuna göre gerçek öneriler sunacağım.",
     "quickActions": "Hızlı işlemler",
-    "menuScan": "Menü çevir",
     "addTicket": "Bilet ekle",
     "sos": "Acil durum",
     "openAssistant": "AI asistanı aç",
@@ -173,7 +172,8 @@
     "undo": "Geri al",
     "undone": "Önceki plana dönüldü.",
     "noTrip": "Şu an devam eden bir seyahatin yok; öneriler genel olacak.",
-    "suggestionsTitle": "Öneriler"
+    "suggestionsTitle": "Öneriler",
+    "translate": "Çeviri"
   },
   "ticket": {
     "title": "Bilet veya otel yükle",
@@ -387,5 +387,49 @@
     "speak": "Sesli oku",
     "showHint": "Cümleyi büyük yazıyla gösterir",
     "tapToClose": "Kapatmak için herhangi bir yere dokun"
+  },
+  "translate": {
+    "title": "Çeviri",
+    "subtitle": "Konuş, yaz ya da kamerayı tut — Yola çevirsin.",
+    "tabs": {
+      "conversation": "Konuşma",
+      "text": "Metin",
+      "camera": "Kamera"
+    },
+    "from": "Kaynak",
+    "to": "Hedef",
+    "swap": "Dilleri değiştir",
+    "autoDetect": "Dili algıla",
+    "textPlaceholder": "Metni yaz veya yapıştır",
+    "translate": "Çevir",
+    "detected": "Algılanan: {{language}}",
+    "copy": "Kopyala",
+    "myLanguage": "Senin dilin",
+    "theirLanguage": "Karşı tarafın dili",
+    "conversationHint": "Kendi düğmene bas ve konuş. Çeviri karşı taraf için sesli okunur, sonra o kendi düğmesine basar.",
+    "listening": "Dinliyorum…",
+    "translating": "Çevriliyor…",
+    "speakMine": "{{language}} konuş",
+    "speakTheirs": "Karşı taraf {{language}} konuşsun",
+    "micDenied": "Konuşma modunu kullanmak için Ayarlar'dan mikrofon ve konuşma tanıma izni ver.",
+    "noSpeech": "Anlaşılmadı. Biraz daha yakından tekrar dene.",
+    "speechFailed": "Ses tanıma durdu. Tekrar dene.",
+    "speechUnavailable": "Bu cihazda ses tanıma kullanılamıyor.",
+    "translateInto": "Çevrilecek dil",
+    "takePhoto": "Fotoğraf çek",
+    "choosePhoto": "Fotoğraf seç",
+    "reading": "Yazı okunuyor…",
+    "allergyDisclaimer": "İçerik ve alerjen notları AI tahminidir. Alerjin varsa mutlaka personele sor.",
+    "quotaVoice": "Bugün {{minutes}}:{{seconds}} ücretsiz konuşma hakkın kaldı",
+    "errors": {
+      "quota_exceeded": "Bugünkü ücretsiz limite ulaştın. Sınırsız çeviri için yükselt.",
+      "not_configured": "Çeviri henüz bağlanmadı.",
+      "upstream_failed": "Çeviri yapılamadı. Tekrar dene.",
+      "ai_failed": "Fotoğraf okunamadı. Daha net ve aydınlık bir fotoğraf dene.",
+      "file_too_large": "Fotoğraf çok büyük.",
+      "network": "Bağlantı yok. Tekrar dene."
+    },
+    "quotaLeft_one": "Bugün {{count}} ücretsiz çeviri hakkın kaldı",
+    "quotaLeft_other": "Bugün {{count}} ücretsiz çeviri hakkın kaldı"
   }
 }

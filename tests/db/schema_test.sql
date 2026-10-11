@@ -478,7 +478,34 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '13. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '13. Çeviri kotası: metin 20/gün, konuşma 300 saniye/gün (miktarla)'
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$
+declare r record; s record; i integer;
+begin
+  select * into r from public.consume_quota('voice_translation', null, 250);
+  assert r.allowed and r.remaining = 50, '250 saniye izinli, 50 kalmalı';
+  select * into r from public.consume_quota('voice_translation', null, 60);
+  assert not r.allowed and r.remaining = 50, '60 saniye kalan 50 saniyeyi aşar';
+  select * into r from public.consume_quota('voice_translation', null, 50);
+  assert r.allowed and r.remaining = 0;
+  assert tests.throws($q$ select public.consume_quota('voice_translation', null, 0) $q$), 'sıfır miktar reddedilmeli';
+  select * into s from public.quota_status('voice_translation');
+  assert s.plan = 'free' and s.per_day = 300 and s.used_today = 300;
+  for i in 1..20 loop
+    select * into r from public.consume_quota('text_translation');
+    assert r.allowed;
+  end loop;
+  select * into r from public.consume_quota('text_translation');
+  assert not r.allowed, '21. metin çevirisi reddedilmeli';
+end $$;
+reset role;
+do $$ begin
+  assert (select count(*) from public.usage_events where feature = 'voice_translation') = 2, 'reddedilen istek kaydedilmemeli';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '14. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

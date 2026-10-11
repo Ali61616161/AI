@@ -61,7 +61,7 @@ if [ "${FAKE_GEMINI:-}" = "1" ]; then
   export GEMINI_API_KEY=test-key GEMINI_API_BASE=http://127.0.0.1:54340
   setsid node scripts/local-stack/fake-google.mjs >"$LOG_DIR/fake-google.log" 2>&1 &
   echo $! >>"$LOG_DIR/pids"
-  export GOOGLE_MAPS_API_KEY=test-key GOOGLE_PLACES_API_BASE=http://127.0.0.1:54341 GOOGLE_WEATHER_API_BASE=http://127.0.0.1:54341
+  export GOOGLE_MAPS_API_KEY=test-key GOOGLE_PLACES_API_BASE=http://127.0.0.1:54341 GOOGLE_WEATHER_API_BASE=http://127.0.0.1:54341 GOOGLE_TRANSLATE_API_BASE=http://127.0.0.1:54341
 fi
 
 SUPABASE_URL="http://127.0.0.1:$GATEWAY_PORT" SUPABASE_ANON_KEY="$ANON_KEY" \
