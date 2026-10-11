@@ -62,7 +62,10 @@ export default function TripsScreen() {
             <TripCard key={trip.id} trip={trip} highlight={segment === 'upcoming' && index === 0} />
           ))}
           {segment === 'upcoming' && (
-            <Button title={t('today.uploadTicket')} variant="secondary" onPress={() => router.push('/ticket')} />
+            <>
+              <Button title={t('today.uploadTicket')} variant="secondary" onPress={() => router.push('/ticket')} />
+              <Button title={t('today.createManually')} variant="ghost" onPress={() => router.push('/trip-new')} />
+            </>
           )}
         </View>
       ) : segment === 'upcoming' ? (
@@ -71,6 +74,7 @@ export default function TripsScreen() {
           title={t('trips.emptyUpcomingTitle')}
           description={t('trips.emptyUpcomingDescription')}>
           <Button title={t('today.uploadTicket')} onPress={() => router.push('/ticket')} />
+          <Button title={t('today.createManually')} variant="secondary" onPress={() => router.push('/trip-new')} />
         </EmptyState>
       ) : (
         <EmptyState icon="trophy-outline" title={t('trips.emptyPastTitle')} description={t('trips.emptyPastDescription')} />

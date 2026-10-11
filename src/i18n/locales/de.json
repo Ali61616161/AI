@@ -52,7 +52,13 @@
     "invalidCode": "Der Code ist falsch oder abgelaufen. Versuch es noch einmal.",
     "guest": "Ohne Konto fortfahren",
     "guestHint": "Deine Daten bleiben nur auf diesem Handy. Du kannst jederzeit ein Konto erstellen.",
-    "notConfigured": "Die Serververbindung ist noch nicht eingerichtet. Du kannst vorerst ohne Konto fortfahren."
+    "notConfigured": "Die Serververbindung ist noch nicht eingerichtet. Du kannst vorerst ohne Konto fortfahren.",
+    "invalidPassword": "E-Mail oder Passwort falsch.",
+    "signInWithPassword": "Anmelden",
+    "passwordLabel": "Passwort",
+    "usePassword": "Mit Passwort anmelden",
+    "useCode": "Mit E-Mail-Code anmelden",
+    "passwordSubtitle": "Melde dich mit E-Mail und Passwort deines Kontos an."
   },
   "onboarding": {
     "companionTitle": "Mit wem reist du?",
@@ -229,7 +235,12 @@
     "signOut": "Abmelden",
     "version": "Version {{version}}",
     "notSet": "Nicht festgelegt",
-    "editPreferences": "Vorlieben bearbeiten"
+    "editPreferences": "Vorlieben bearbeiten",
+    "deleteAccount": "Konto löschen",
+    "deleteTitle": "Konto löschen?",
+    "deleteBody": "Dein Konto, deine Reisen, Dokumente, Nachrichten und alle anderen Daten werden dauerhaft gelöscht. Aktive Abos musst du separat im App Store oder bei Google Play kündigen.",
+    "deleteConfirm": "Endgültig löschen",
+    "deleteFailed": "Das Konto konnte nicht gelöscht werden. Bitte erneut versuchen."
   },
   "assistant": {
     "title": "Plan ändern",
@@ -784,5 +795,22 @@
     },
     "manageHint": "Abo verwalten",
     "upgradeHint": "Unbegrenzt planen, übersetzen und mehr"
+  },
+  "newTrip": {
+    "title": "Neue Reise",
+    "subtitle": "Noch keine Tickets? Starte mit einer Stadt und Daten.",
+    "create": "Reise erstellen",
+    "city": "Stadt",
+    "country": "Land",
+    "name": "Name der Reise (optional)",
+    "namePlaceholder": "z. B. Sommer in Rom",
+    "endBeforeStart": "Das Enddatum muss nach dem Startdatum liegen.",
+    "hint": "Tickets und Hotelbuchungen kannst du später hinzufügen; Yola plant drumherum."
+  },
+  "legal": {
+    "effective": "Gültig ab {{date}}",
+    "englishOnly": "Auf Englisch und Türkisch verfügbar.",
+    "privacy": "Datenschutzerklärung",
+    "terms": "Nutzungsbedingungen"
   }
 }

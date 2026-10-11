@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { LanguagePicker } from '@/components/settings/language-picker';
@@ -40,6 +41,25 @@ export default function ProfileScreen() {
   const notSet = t('profile.notSet');
   const { data: plan } = useCurrentPlan();
   const isPro = plan === 'pro_monthly' || plan === 'pro_yearly';
+
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteFailed, setDeleteFailed] = useState(false);
+
+  // Hesap ve tüm veriler sunucuda kalıcı olarak silinir, ardından çıkış yapılır.
+  async function handleDelete() {
+    setDeleting(true);
+    setDeleteFailed(false);
+    const { error } = await getSupabase().functions.invoke('delete-account', { body: { confirm: 'DELETE' } });
+    setDeleting(false);
+    if (error) {
+      setDeleteFailed(true);
+      return;
+    }
+    await getSupabase().auth.signOut().catch(() => undefined);
+    clearOfflineData();
+    signOut();
+  }
 
   async function handleSignOut() {
     if (session && isSupabaseConfigured()) await getSupabase().auth.signOut();
@@ -123,7 +143,32 @@ export default function ProfileScreen() {
 
       <View style={styles.section}>
         <Text variant="subtitle">{t('profile.account')}</Text>
+        <Button title={t('legal.privacy')} variant="ghost" onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />
+        <Button title={t('legal.terms')} variant="ghost" onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })} />
         <Button title={t('profile.signOut')} variant="ghost" onPress={handleSignOut} />
+        {session && isSupabaseConfigured() && (
+          <View style={[styles.danger, { borderColor: colors.danger }]}>
+            {!confirmDelete ? (
+              <Button title={t('profile.deleteAccount')} variant="ghost" onPress={() => setConfirmDelete(true)} />
+            ) : (
+              <>
+                <Text variant="bodyStrong" color="danger">
+                  {t('profile.deleteTitle')}
+                </Text>
+                <Text variant="caption" color="textSecondary">
+                  {t('profile.deleteBody')}
+                </Text>
+                {deleteFailed && (
+                  <Text variant="caption" color="danger">
+                    {t('profile.deleteFailed')}
+                  </Text>
+                )}
+                <Button title={t('profile.deleteConfirm')} loading={deleting} onPress={handleDelete} style={{ backgroundColor: colors.danger }} />
+                <Button title={t('common.cancel')} variant="ghost" onPress={() => setConfirmDelete(false)} />
+              </>
+            )}
+          </View>
+        )}
         <Text variant="caption" color="textMuted" style={styles.center}>
           {t('profile.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}
         </Text>
@@ -133,6 +178,7 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  danger: { gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },
   planRow: { flexDirection: 'row', alignItems: 'center' },
   section: { gap: Spacing.md },
   card: { gap: Spacing.lg, padding: Spacing.xl, borderRadius: Radius.xl, borderWidth: 1 },

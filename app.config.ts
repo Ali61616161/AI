@@ -14,7 +14,23 @@ const config: ExpoConfig = {
   ios: {
     bundleIdentifier: brand.bundleId,
     supportsTablet: true,
+    infoPlist: {
+      // Sadece standart HTTPS şifrelemesi kullanılır (ihracat beyanı gerekmez).
+      ITSAppUsesNonExemptEncryption: false,
+    },
+    // Apple'ın "gerekçeli API" beyanı (React Native ve AsyncStorage'ın kullandıkları).
+    privacyManifests: {
+      NSPrivacyAccessedAPITypes: [
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryUserDefaults', NSPrivacyAccessedAPITypeReasons: ['CA92.1'] },
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryFileTimestamp', NSPrivacyAccessedAPITypeReasons: ['C617.1', '0A2A.1'] },
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategorySystemBootTime', NSPrivacyAccessedAPITypeReasons: ['35F9.1'] },
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryDiskSpace', NSPrivacyAccessedAPITypeReasons: ['E174.1', '85F4.1'] },
+      ],
+      NSPrivacyTracking: false,
+    },
   },
+  // iOS'ta uygulama adı ve izin metinleri cihaz diline göre gösterilir.
+  locales: Object.fromEntries(languages.map((l) => [l.code, `./assets/locales/${l.code}.json`])),
   android: {
     package: brand.bundleId,
     adaptiveIcon: {
@@ -24,6 +40,8 @@ const config: ExpoConfig = {
       monochromeImage: './assets/images/android-icon-monochrome.png',
     },
     predictiveBackGestureEnabled: false,
+    // Kullanılmayan izinler (bazı kütüphaneler varsayılan olarak ekler).
+    blockedPermissions: ['android.permission.ACCESS_BACKGROUND_LOCATION', 'android.permission.SYSTEM_ALERT_WINDOW'],
   },
   web: {
     // Önizleme derlemesi tek sayfalık (single) çıktı kullanır: npm run preview:web

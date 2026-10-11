@@ -52,7 +52,13 @@
     "invalidCode": "El código es incorrecto o ha caducado. Inténtalo de nuevo.",
     "guest": "Continuar sin cuenta",
     "guestHint": "Tus datos se guardan solo en este teléfono. Puedes crear una cuenta cuando quieras.",
-    "notConfigured": "La conexión con el servidor aún no está configurada. Por ahora puedes continuar sin cuenta."
+    "notConfigured": "La conexión con el servidor aún no está configurada. Por ahora puedes continuar sin cuenta.",
+    "invalidPassword": "Correo o contraseña incorrectos.",
+    "signInWithPassword": "Iniciar sesión",
+    "passwordLabel": "Contraseña",
+    "usePassword": "Entrar con contraseña",
+    "useCode": "Entrar con código por correo",
+    "passwordSubtitle": "Inicia sesión con el correo y la contraseña de tu cuenta."
   },
   "onboarding": {
     "companionTitle": "¿Con quién viajas?",
@@ -229,7 +235,12 @@
     "signOut": "Cerrar sesión",
     "version": "Versión {{version}}",
     "notSet": "Sin elegir",
-    "editPreferences": "Editar preferencias"
+    "editPreferences": "Editar preferencias",
+    "deleteAccount": "Eliminar cuenta",
+    "deleteTitle": "¿Eliminar tu cuenta?",
+    "deleteBody": "Se eliminarán para siempre tu cuenta, viajes, documentos, mensajes y demás datos. Las suscripciones activas deben cancelarse aparte en el App Store o Google Play.",
+    "deleteConfirm": "Eliminar para siempre",
+    "deleteFailed": "No se pudo eliminar la cuenta. Inténtalo de nuevo."
   },
   "assistant": {
     "title": "Cambiar el plan",
@@ -784,5 +795,22 @@
     },
     "manageHint": "Gestiona tu suscripción",
     "upgradeHint": "Planificación, traducción y más sin límites"
+  },
+  "newTrip": {
+    "title": "Nuevo viaje",
+    "subtitle": "¿Aún sin billetes? Empieza con una ciudad y fechas.",
+    "create": "Crear viaje",
+    "city": "Ciudad",
+    "country": "País",
+    "name": "Nombre del viaje (opcional)",
+    "namePlaceholder": "p. ej., Verano en Roma",
+    "endBeforeStart": "La fecha de fin debe ser posterior a la de inicio.",
+    "hint": "Puedes añadir billetes y reservas de hotel más tarde; Yola ajustará el plan a ellos."
+  },
+  "legal": {
+    "effective": "Vigente desde {{date}}",
+    "englishOnly": "Disponible en inglés y turco.",
+    "privacy": "Política de privacidad",
+    "terms": "Condiciones de uso"
   }
 }

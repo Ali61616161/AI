@@ -1276,6 +1276,18 @@ export type Database = {
         };
         Returns: string;
       };
+      create_trip_manual: {
+        Args: {
+          p_budget?: Database['public']['Enums']['budget_tier'];
+          p_companion?: Database['public']['Enums']['companion_type'];
+          p_destinations: Json;
+          p_end: string;
+          p_interests?: string[];
+          p_start: string;
+          p_title: string;
+        };
+        Returns: string;
+      };
       current_plan: {
         Args: { p_trip_id?: string };
         Returns: Database['public']['Enums']['subscription_plan'];

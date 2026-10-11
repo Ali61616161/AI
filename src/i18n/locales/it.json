@@ -52,7 +52,13 @@
     "invalidCode": "Il codice è errato o scaduto. Riprova.",
     "guest": "Continua senza account",
     "guestHint": "I tuoi dati restano solo su questo telefono. Puoi creare un account quando vuoi.",
-    "notConfigured": "La connessione al server non è ancora configurata. Per ora puoi continuare senza account."
+    "notConfigured": "La connessione al server non è ancora configurata. Per ora puoi continuare senza account.",
+    "invalidPassword": "Email o password errate.",
+    "signInWithPassword": "Accedi",
+    "passwordLabel": "Password",
+    "usePassword": "Accedi con password",
+    "useCode": "Accedi con codice email",
+    "passwordSubtitle": "Accedi con l’email e la password del tuo account."
   },
   "onboarding": {
     "companionTitle": "Con chi viaggi?",
@@ -229,7 +235,12 @@
     "signOut": "Esci",
     "version": "Versione {{version}}",
     "notSet": "Non impostato",
-    "editPreferences": "Modifica preferenze"
+    "editPreferences": "Modifica preferenze",
+    "deleteAccount": "Elimina account",
+    "deleteTitle": "Eliminare l’account?",
+    "deleteBody": "Account, viaggi, documenti, messaggi e tutti gli altri dati verranno eliminati definitivamente. Gli abbonamenti attivi vanno annullati separatamente in App Store o Google Play.",
+    "deleteConfirm": "Elimina definitivamente",
+    "deleteFailed": "Impossibile eliminare l’account. Riprova."
   },
   "assistant": {
     "title": "Cambia il piano",
@@ -784,5 +795,22 @@
     },
     "manageHint": "Gestisci l’abbonamento",
     "upgradeHint": "Pianificazione, traduzione e altro senza limiti"
+  },
+  "newTrip": {
+    "title": "Nuovo viaggio",
+    "subtitle": "Ancora senza biglietti? Inizia con una città e le date.",
+    "create": "Crea viaggio",
+    "city": "Città",
+    "country": "Paese",
+    "name": "Nome del viaggio (facoltativo)",
+    "namePlaceholder": "es. Estate a Roma",
+    "endBeforeStart": "La data di fine deve essere successiva a quella di inizio.",
+    "hint": "Puoi aggiungere biglietti e prenotazioni più tardi; Yola adatterà il piano."
+  },
+  "legal": {
+    "effective": "In vigore dal {{date}}",
+    "englishOnly": "Disponibile in inglese e turco.",
+    "privacy": "Informativa sulla privacy",
+    "terms": "Termini di utilizzo"
   }
 }

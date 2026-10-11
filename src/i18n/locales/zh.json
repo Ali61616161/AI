@@ -52,7 +52,13 @@
     "invalidCode": "验证码错误或已过期，请重试。",
     "guest": "不注册继续",
     "guestHint": "你的数据只保存在这部手机上，随时可以创建账户。",
-    "notConfigured": "服务器连接尚未设置，目前可以不注册继续使用。"
+    "notConfigured": "服务器连接尚未设置，目前可以不注册继续使用。",
+    "invalidPassword": "邮箱或密码错误。",
+    "signInWithPassword": "登录",
+    "passwordLabel": "密码",
+    "usePassword": "使用密码登录",
+    "useCode": "使用邮箱验证码登录",
+    "passwordSubtitle": "使用账户的邮箱和密码登录。"
   },
   "onboarding": {
     "companionTitle": "你和谁一起旅行？",
@@ -227,7 +233,12 @@
     "signOut": "退出登录",
     "version": "版本 {{version}}",
     "notSet": "未设置",
-    "editPreferences": "编辑偏好"
+    "editPreferences": "编辑偏好",
+    "deleteAccount": "删除账户",
+    "deleteTitle": "确定删除账户？",
+    "deleteBody": "你的账户、行程、文件、消息及所有其他数据将被永久删除。有效订阅需在 App Store 或 Google Play 中单独取消。",
+    "deleteConfirm": "永久删除",
+    "deleteFailed": "账户删除失败，请重试。"
   },
   "assistant": {
     "title": "调整计划",
@@ -765,5 +776,22 @@
     },
     "manageHint": "管理订阅",
     "upgradeHint": "无限规划、翻译等更多功能"
+  },
+  "newTrip": {
+    "title": "新建行程",
+    "subtitle": "还没有票？先从城市和日期开始。",
+    "create": "创建行程",
+    "city": "城市",
+    "country": "国家",
+    "name": "行程名称（可选）",
+    "namePlaceholder": "例如：罗马之夏",
+    "endBeforeStart": "结束日期必须晚于开始日期。",
+    "hint": "之后可以添加机票和酒店预订，Yola 会据此调整计划。"
+  },
+  "legal": {
+    "effective": "生效日期：{{date}}",
+    "englishOnly": "提供英文和土耳其文版本。",
+    "privacy": "隐私政策",
+    "terms": "使用条款"
   }
 }

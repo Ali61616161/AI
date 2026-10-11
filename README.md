@@ -44,6 +44,7 @@ npm run preview:web     # Tek dosyalık web önizlemesi üretir (dist-preview/yo
 | `trip-report` | Seyahat sonrası rapor: istatistikler, mekan puanları, AI özeti; beğeni/beğenmeme çıkarımları sonraki rotalara yansır | `GEMINI_API_KEY` (yoksa sadece istatistik) |
 | `subscription` | Satın alma sonrası RevenueCat REST'ten doğrulayarak Pro aboneliği günceller; Trip Pass'i seyahate bağlar | `REVENUECAT_SECRET_KEY` |
 | `revenuecat-webhook` | RevenueCat olayları (satın alma, yenileme, iptal, iade, süre sonu) → `subscriptions` | `REVENUECAT_WEBHOOK_AUTH` |
+| `delete-account` | Hesabı ve tüm verileri kalıcı olarak siler (App Store / Play hesap silme şartı) | `SUPABASE_SERVICE_ROLE_KEY` |
 | `places` | Yakında şu an açık yerler, bütçeye göre otel önerileri (Booking bağlantısıyla), seyahat günlerinin hava tahmini | `GOOGLE_MAPS_API_KEY` |
 
 `GOOGLE_MAPS_API_KEY` için Google Cloud'da **Places API (New)** ve **Weather API** açık olmalıdır. Anahtar yoksa rota yine üretilir, sadece mekan doğrulama ve anlık hava atlanır. Google'a gönderilen her alan, resmi discovery şemasının alt kümesi olan `supabase/functions/_shared/google/schema.json` ile testlerde doğrulanır (`python3 scripts/update-google-schema.py` ile güncellenir).
@@ -65,11 +66,19 @@ npx supabase functions deploy travel-info
 npx supabase functions deploy trip-report
 npx supabase functions deploy subscription
 npx supabase functions deploy revenuecat-webhook --no-verify-jwt
+npx supabase functions deploy delete-account
 ```
 
 ## Abonelik (RevenueCat)
 
 Ürünler: `yola_trip_pass` (tek seferlik, bir seyahat), `yola_pro_monthly`, `yola_pro_yearly` (otomatik yenilenen). Kimlikler `RC_PRODUCT_*` ortam değişkenleriyle değiştirilebilir. Uygulama RevenueCat'e Supabase kullanıcı kimliğiyle giriş yapar; abonelik durumu sadece sunucuda yazılır (kullanıcı `subscriptions` tablosuna yazamaz). Uygulamadaki herkese açık anahtarlar: `EXPO_PUBLIC_REVENUECAT_IOS_KEY`, `EXPO_PUBLIC_REVENUECAT_ANDROID_KEY`. Satın alma mağaza bağlantısı gerektirdiği için Expo Go'da değil, geliştirme derlemesinde çalışır.
+
+## Mağaza ve yayın
+
+- `store/`: 9 dilde App Store ve Google Play sayfa metinleri (`python3 store/build-metadata.py`), yaş sınırı, gizlilik etiketi ve veri güvenliği cevapları, inceleme hesabı notları
+- `docs/`: gizlilik politikası ve kullanım koşulları web sayfaları (`npm run legal:export`, GitHub Pages ile yayınlanabilir)
+- `eas.json`: development, preview ve production derleme profilleri
+- `docs/LAUNCH.md`: anahtarlar bağlanırken izlenecek adımlar
 
 ## Yerel test ortamı
 
@@ -84,7 +93,7 @@ Betik boş bir `yola_dev` veritabanına migration'ları uygular; PostgREST'i, t�
 `FAKE_GEMINI=1` verilirse Gemini ve Google Places/Weather yerine öngörülebilir cevap veren test ikizleri (`fake-gemini.mjs`, `fake-google.mjs`) kullanılır; Google ikizi istekleri resmi şemayla doğrular ve bilinmeyen alana 400 döner. Uçtan uca test bu modda çalışır ve CI'da her push'ta koşar:
 
 ```bash
-SUPABASE_URL=http://localhost:54321 ANON_KEY=$(cat $LOG_DIR/anon-key) npm run e2e:local
+SUPABASE_URL=http://localhost:54321 ANON_KEY=$(cat $LOG_DIR/anon-key) npm run e2e:local   # 8 senaryo, 54 adım
 ```
 
 ## Veritabanı (Supabase)

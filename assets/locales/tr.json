@@ -1,0 +1,8 @@
+{
+  "CFBundleDisplayName": "Yola",
+  "NSCameraUsageDescription": "Yola, biletlerinin, rezervasyonlarının ve menülerin fotoğrafını çekebilmen için kamerayı kullanır.",
+  "NSPhotoLibraryUsageDescription": "Yola, bilet ve rezervasyon ekran görüntülerini yükleyebilmen için fotoğraflarını kullanır.",
+  "NSLocationWhenInUseUsageDescription": "Yola, yakında açık yerleri göstermek ve planını uyarlamak için konumunu kullanır.",
+  "NSMicrophoneUsageDescription": "Yola, konuşmalarını çevirmek için mikrofonu kullanır.",
+  "NSSpeechRecognitionUsageDescription": "Yola, çevirebilmek için konuşmanı yazıya döker."
+}

@@ -1,0 +1,8 @@
+{
+  "CFBundleDisplayName": "Yola",
+  "NSCameraUsageDescription": "Yola использует камеру, чтобы вы могли фотографировать билеты, брони и меню.",
+  "NSPhotoLibraryUsageDescription": "Yola использует фото, чтобы вы могли загружать скриншоты билетов и броней.",
+  "NSLocationWhenInUseUsageDescription": "Yola использует геопозицию, чтобы показывать открытые места рядом и подстраивать план.",
+  "NSMicrophoneUsageDescription": "Yola использует микрофон для перевода ваших разговоров.",
+  "NSSpeechRecognitionUsageDescription": "Yola превращает вашу речь в текст для перевода."
+}

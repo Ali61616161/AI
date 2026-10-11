@@ -60,7 +60,7 @@ export default function TodayScreen() {
       ) : (
         <EmptyState icon="airplane-outline" title={t('today.noTripTitle')} description={t('today.noTripDescription')}>
           <Button title={t('today.uploadTicket')} onPress={() => router.push('/ticket')} />
-          <Button title={t('today.createManually')} variant="secondary" disabled />
+          <Button title={t('today.createManually')} variant="secondary" onPress={() => router.push('/trip-new')} />
         </EmptyState>
       )}
 

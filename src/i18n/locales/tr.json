@@ -52,7 +52,13 @@
     "invalidCode": "Kod hatalı veya süresi dolmuş. Tekrar dene.",
     "guest": "Hesapsız devam et",
     "guestHint": "Verilerin sadece bu telefonda saklanır. İstediğin zaman hesap açabilirsin.",
-    "notConfigured": "Sunucu bağlantısı henüz ayarlanmadı. Şimdilik hesapsız devam edebilirsin."
+    "notConfigured": "Sunucu bağlantısı henüz ayarlanmadı. Şimdilik hesapsız devam edebilirsin.",
+    "invalidPassword": "E-posta veya şifre hatalı.",
+    "signInWithPassword": "Giriş yap",
+    "passwordLabel": "Şifre",
+    "usePassword": "Şifreyle giriş yap",
+    "useCode": "E-posta koduyla giriş yap",
+    "passwordSubtitle": "Hesabının e-postası ve şifresiyle giriş yap."
   },
   "onboarding": {
     "companionTitle": "Kiminle seyahat ediyorsun?",
@@ -229,7 +235,12 @@
     "signOut": "Çıkış yap",
     "version": "Sürüm {{version}}",
     "notSet": "Seçilmedi",
-    "editPreferences": "Tercihleri düzenle"
+    "editPreferences": "Tercihleri düzenle",
+    "deleteAccount": "Hesabı sil",
+    "deleteTitle": "Hesabın silinsin mi?",
+    "deleteBody": "Hesabın, seyahatlerin, belgelerin, mesajların ve diğer tüm verilerin kalıcı olarak silinir. Aktif aboneliğini App Store veya Google Play'den ayrıca iptal etmelisin.",
+    "deleteConfirm": "Kalıcı olarak sil",
+    "deleteFailed": "Hesap silinemedi. Tekrar dene."
   },
   "assistant": {
     "title": "Planı Değiştir",
@@ -784,5 +795,22 @@
     },
     "manageHint": "Aboneliğini yönet",
     "upgradeHint": "Sınırsız planlama, çeviri ve daha fazlası"
+  },
+  "newTrip": {
+    "title": "Yeni seyahat",
+    "subtitle": "Henüz biletin yok mu? Bir şehir ve tarihlerle başla.",
+    "create": "Seyahati oluştur",
+    "city": "Şehir",
+    "country": "Ülke",
+    "name": "Seyahat adı (isteğe bağlı)",
+    "namePlaceholder": "ör. Roma'da yaz",
+    "endBeforeStart": "Bitiş tarihi başlangıçtan sonra olmalı.",
+    "hint": "Bilet ve otel rezervasyonlarını sonra ekleyebilirsin; Yola planı onların etrafına yerleştirir."
+  },
+  "legal": {
+    "effective": "Yürürlük: {{date}}",
+    "englishOnly": "Türkçe ve İngilizce olarak sunulur.",
+    "privacy": "Gizlilik Politikası",
+    "terms": "Kullanım Koşulları"
   }
 }

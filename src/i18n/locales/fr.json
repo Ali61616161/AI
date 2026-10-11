@@ -52,7 +52,13 @@
     "invalidCode": "Le code est incorrect ou a expiré. Réessayez.",
     "guest": "Continuer sans compte",
     "guestHint": "Vos données restent sur ce téléphone. Vous pouvez créer un compte à tout moment.",
-    "notConfigured": "La connexion au serveur n'est pas encore configurée. Vous pouvez continuer sans compte pour l'instant."
+    "notConfigured": "La connexion au serveur n'est pas encore configurée. Vous pouvez continuer sans compte pour l'instant.",
+    "invalidPassword": "E-mail ou mot de passe incorrect.",
+    "signInWithPassword": "Se connecter",
+    "passwordLabel": "Mot de passe",
+    "usePassword": "Se connecter avec un mot de passe",
+    "useCode": "Se connecter avec un code e-mail",
+    "passwordSubtitle": "Connectez-vous avec l’e-mail et le mot de passe de votre compte."
   },
   "onboarding": {
     "companionTitle": "Avec qui voyagez-vous ?",
@@ -229,7 +235,12 @@
     "signOut": "Se déconnecter",
     "version": "Version {{version}}",
     "notSet": "Non défini",
-    "editPreferences": "Modifier les préférences"
+    "editPreferences": "Modifier les préférences",
+    "deleteAccount": "Supprimer le compte",
+    "deleteTitle": "Supprimer votre compte ?",
+    "deleteBody": "Votre compte, vos voyages, documents, messages et toutes vos données seront définitivement supprimés. Les abonnements actifs doivent être résiliés séparément dans l’App Store ou Google Play.",
+    "deleteConfirm": "Supprimer définitivement",
+    "deleteFailed": "Impossible de supprimer le compte. Réessayez."
   },
   "assistant": {
     "title": "Changer le plan",
@@ -784,5 +795,22 @@
     },
     "manageHint": "Gérer votre abonnement",
     "upgradeHint": "Planification, traduction et plus, sans limite"
+  },
+  "newTrip": {
+    "title": "Nouveau voyage",
+    "subtitle": "Pas encore de billets ? Commencez par une ville et des dates.",
+    "create": "Créer le voyage",
+    "city": "Ville",
+    "country": "Pays",
+    "name": "Nom du voyage (facultatif)",
+    "namePlaceholder": "ex. Été à Rome",
+    "endBeforeStart": "La date de fin doit être après la date de début.",
+    "hint": "Vous pourrez ajouter billets et réservations d’hôtel plus tard ; Yola adaptera le plan."
+  },
+  "legal": {
+    "effective": "En vigueur le {{date}}",
+    "englishOnly": "Disponible en anglais et en turc.",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d’utilisation"
   }
 }

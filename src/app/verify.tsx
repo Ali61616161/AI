@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -6,34 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
 import { StepHeader } from '@/components/ui/step-header';
 import { TextField } from '@/components/ui/text-field';
-import { savePreferencesToProfile } from '@/features/profile/save-preferences';
+import { completeSignIn } from '@/features/auth/complete-sign-in';
 import { getSupabase } from '@/lib/supabase';
-import { useSessionStore } from '@/stores/session-store';
-
-/**
- * Giriş başarılı olunca tercihleri birleştirir:
- * - Sunucuda tamamlanmış onboarding varsa (ör. yeni telefon) onu telefona alır.
- * - Yoksa ve kullanıcı misafirken onboarding'i bitirdiyse, tercihlerini hesabına yazar.
- */
-async function syncPreferences(userId: string) {
-  const store = useSessionStore.getState();
-  const { data: profile } = await getSupabase()
-    .from('profiles')
-    .select('default_companion, default_budget, interests, onboarding_completed_at')
-    .eq('id', userId)
-    .maybeSingle();
-
-  if (profile?.onboarding_completed_at) {
-    store.setPreferences({
-      companion: profile.default_companion,
-      budget: profile.default_budget,
-      interests: profile.interests,
-    });
-    store.completeOnboarding();
-  } else if (store.onboardingCompleted) {
-    await savePreferencesToProfile(userId, store.preferences);
-  }
-}
 
 export default function VerifyScreen() {
   const { t } = useTranslation();
@@ -55,15 +29,8 @@ export default function VerifyScreen() {
       setError(t('auth.invalidCode'));
       return;
     }
-    // Oturum dinleyicisini beklemeden kaydet; yönlendirme korumalı ekranları açık bulmalı.
-    useSessionStore.getState().setSession(data.session);
-    await syncPreferences(data.user.id).catch((e) => console.warn('Tercihler eşitlenemedi', e));
+    await completeSignIn(data.session);
     setLoading(false);
-    // Giriş ve doğrulama ekranları korumasız olduğu için oturum açılınca kendiliğinden
-    // kapanmazlar; kullanıcıyı açabileceği ilk ekrana açıkça yönlendiriyoruz.
-    const { onboardingCompleted } = useSessionStore.getState();
-    if (router.canDismiss()) router.dismissAll();
-    router.replace(onboardingCompleted ? '/' : '/companion');
   }
 
   async function resend() {

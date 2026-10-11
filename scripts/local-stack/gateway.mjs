@@ -4,7 +4,8 @@
 //
 //   /rest/v1/*       → PostgREST (gerçek sorgular, gerçek RLS)
 //   /functions/v1/*  → yerelde çalışan Edge Function'lar (functions-router.ts)
-//   /auth/v1/*       → basit giriş: her e-posta kabul edilir, kod LOCAL_OTP_CODE
+//   /auth/v1/*       → basit giriş: her e-posta kabul edilir, kod LOCAL_OTP_CODE;
+//                      şifreyle giriş LOCAL_REVIEW_PASSWORD; yönetici kullanıcı silme
 //
 // SADECE yerel geliştirme ve test içindir; gerçek kimlik doğrulama yapmaz.
 import { execFileSync } from 'node:child_process';
@@ -16,6 +17,8 @@ const POSTGREST = process.env.POSTGREST_URL ?? 'http://127.0.0.1:54330';
 const FUNCTIONS = process.env.FUNCTIONS_URL ?? 'http://127.0.0.1:8000';
 const SECRET = process.env.JWT_SECRET;
 const OTP = process.env.LOCAL_OTP_CODE ?? '123456';
+// Mağaza inceleme hesabı gibi şifreyle girişi denemek için (sadece yerel).
+const REVIEW_PASSWORD = process.env.LOCAL_REVIEW_PASSWORD ?? 'yola-review-123';
 const PSQL = ['-h', process.env.PGHOST ?? '/tmp', '-p', process.env.PGPORT ?? '5432', '-U', process.env.PGUSER ?? 'postgres', '-d', process.env.DEV_DB ?? 'yola_dev', '-Atq', '-v', 'ON_ERROR_STOP=1'];
 
 if (!SECRET) throw new Error('JWT_SECRET gerekli');
@@ -127,6 +130,20 @@ const server = http.createServer(async (req, res) => {
       const claims = verifyJwt(req.headers.authorization?.replace(/^Bearer /i, ''));
       if (!claims?.sub || claims.role !== 'authenticated') return send(res, 401, { code: 401, msg: 'invalid JWT' });
       return send(res, 200, userObject(claims.sub, claims.email));
+    }
+    if (url.pathname === '/auth/v1/token' && url.searchParams.get('grant_type') === 'password') {
+      const body = JSON.parse((await readBody(req)).toString() || '{}');
+      if (body.password !== REVIEW_PASSWORD) return send(res, 400, { code: 400, error_code: 'invalid_credentials', msg: 'Invalid login credentials' });
+      const id = ensureUser(body.email, 'en');
+      return send(res, 200, session(id, body.email));
+    }
+    // Hesap silme (Edge Function'ın service_role ile çağırdığı yönetici API'si).
+    const adminUser = /^\/auth\/v1\/admin\/users\/([0-9a-f-]{36})$/.exec(url.pathname);
+    if (adminUser && req.method === 'DELETE') {
+      const claims = verifyJwt(req.headers.authorization?.replace(/^Bearer /i, ''));
+      if (claims?.role !== 'service_role') return send(res, 403, { msg: 'service_role required' });
+      execFileSync('psql', [...PSQL, '-c', `delete from auth.users where id = '${adminUser[1]}'`]);
+      return send(res, 200, {});
     }
     if (url.pathname === '/auth/v1/token') {
       const body = JSON.parse((await readBody(req)).toString() || '{}');

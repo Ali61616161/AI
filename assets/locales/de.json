@@ -1,0 +1,8 @@
+{
+  "CFBundleDisplayName": "Yola",
+  "NSCameraUsageDescription": "Yola nutzt die Kamera, damit du Tickets, Buchungen und Speisekarten fotografieren kannst.",
+  "NSPhotoLibraryUsageDescription": "Yola nutzt deine Fotos, damit du Screenshots von Tickets und Buchungen hochladen kannst.",
+  "NSLocationWhenInUseUsageDescription": "Yola nutzt deinen Standort, um geöffnete Orte in der Nähe zu zeigen und deinen Plan anzupassen.",
+  "NSMicrophoneUsageDescription": "Yola nutzt das Mikrofon, um deine Gespräche zu übersetzen.",
+  "NSSpeechRecognitionUsageDescription": "Yola wandelt deine Sprache in Text um, damit sie übersetzt werden kann."
+}

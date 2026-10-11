@@ -1,0 +1,8 @@
+{
+  "CFBundleDisplayName": "Yola",
+  "NSCameraUsageDescription": "يستخدم Yola الكاميرا لتصوير التذاكر والحجوزات وقوائم الطعام.",
+  "NSPhotoLibraryUsageDescription": "يستخدم Yola صورك لرفع لقطات التذاكر والحجوزات.",
+  "NSLocationWhenInUseUsageDescription": "يستخدم Yola موقعك لعرض الأماكن المفتوحة بالقرب منك وتعديل خطتك.",
+  "NSMicrophoneUsageDescription": "يستخدم Yola الميكروفون لترجمة محادثاتك.",
+  "NSSpeechRecognitionUsageDescription": "يحوّل Yola كلامك إلى نص لترجمته."
+}

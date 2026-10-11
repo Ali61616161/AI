@@ -1,0 +1,1 @@
+Carica i biglietti e Yola pianifica ogni giorno attorno a loro; se piove o il treno è in ritardo, ripianifica con un tocco.

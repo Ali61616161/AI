@@ -1,0 +1,8 @@
+{
+  "CFBundleDisplayName": "Yola",
+  "NSCameraUsageDescription": "Yola 使用相机拍摄机票、预订单和菜单。",
+  "NSPhotoLibraryUsageDescription": "Yola 使用你的照片上传机票和预订截图。",
+  "NSLocationWhenInUseUsageDescription": "Yola 使用你的位置显示附近正在营业的地点并调整计划。",
+  "NSMicrophoneUsageDescription": "Yola 使用麦克风翻译你的对话。",
+  "NSSpeechRecognitionUsageDescription": "Yola 将你的语音转为文字以便翻译。"
+}

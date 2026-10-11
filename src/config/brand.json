@@ -9,5 +9,15 @@
     "coralSoft": "#FF8A5C",
     "midnight": "#0B1220",
     "aqua": "#2EC4B6"
+  },
+  "legal": {
+    "_note": "15. adımda doldurulacak: şirket unvanı, adresi, iletişim e-postası ve sayfaların yayınlanacağı adresler.",
+    "company": "[ŞİRKET UNVANI]",
+    "address": "[ŞİRKET ADRESİ]",
+    "email": "[privacy@alan-adi.com]",
+    "supportEmail": "[support@alan-adi.com]",
+    "effectiveDate": "2026-10-11",
+    "privacyUrl": "https://ali61616161.github.io/AI/privacy",
+    "termsUrl": "https://ali61616161.github.io/AI/terms"
   }
 }

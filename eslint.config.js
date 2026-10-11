@@ -6,6 +6,6 @@ module.exports = defineConfig([
   expoConfig,
   {
     // Edge Function'lar ve Deno testleri `deno lint` ile denetlenir (npm run functions:check).
-    ignores: ['dist/*', 'dist-preview/*', 'supabase/functions/**', '**/*.test.ts'],
+    ignores: ['dist/*', 'dist-preview/*', 'docs/*', 'supabase/functions/**', '**/*.test.ts', 'scripts/*.ts'],
   },
 ]);

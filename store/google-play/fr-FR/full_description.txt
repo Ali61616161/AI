@@ -1,0 +1,13 @@
+Yola est votre compagnon de voyage IA. Il planifie autour de vos vraies réservations, s’adapte sur le moment et vous aide à comprendre et à vous faire comprendre partout.
+
+• Importez billets et réservations d’hôtel : l’IA les lit et crée votre voyage
+• Plans jour par jour selon votre budget et vos compagnons
+• « Changer le plan » : pluie, retard ou fatigue ? Replanifiez la fin de journée en quelques secondes
+• Lieux vérifiés sur Google, ouverts maintenant, météo et idées d’hôtels
+• Traduction de conversation en direct, texte et photos de menus
+• Fonctionne hors ligne : plan, billets et phrases d’urgence sur votre téléphone
+• Dépenses et partage des frais, liste de valise, visas, plan décalage horaire
+• Bilan du voyage avec notes et carte à partager
+• Mode social facultatif : rencontrez des voyageurs dans des lieux publics, en sécurité
+
+Gratuit pour commencer. Yola Pro (mensuel ou annuel) ou un Trip Pass unique débloque planification, replanification et traduction illimitées.

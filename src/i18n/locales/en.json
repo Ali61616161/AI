@@ -52,7 +52,13 @@
     "invalidCode": "The code is wrong or has expired. Try again.",
     "guest": "Continue without an account",
     "guestHint": "Your data stays on this phone. You can create an account any time.",
-    "notConfigured": "The server connection isn't set up yet. You can continue without an account for now."
+    "notConfigured": "The server connection isn't set up yet. You can continue without an account for now.",
+    "invalidPassword": "Wrong email or password.",
+    "signInWithPassword": "Sign in",
+    "passwordLabel": "Password",
+    "usePassword": "Sign in with a password",
+    "useCode": "Sign in with an email code",
+    "passwordSubtitle": "Sign in with your account's email and password."
   },
   "onboarding": {
     "companionTitle": "Who are you traveling with?",
@@ -229,7 +235,12 @@
     "signOut": "Sign out",
     "version": "Version {{version}}",
     "notSet": "Not set",
-    "editPreferences": "Edit preferences"
+    "editPreferences": "Edit preferences",
+    "deleteAccount": "Delete account",
+    "deleteTitle": "Delete your account?",
+    "deleteBody": "Your account, trips, documents, messages and all other data will be permanently deleted. Active subscriptions must be cancelled separately in the App Store or Google Play.",
+    "deleteConfirm": "Permanently delete",
+    "deleteFailed": "The account couldn't be deleted. Please try again."
   },
   "assistant": {
     "title": "Change the plan",
@@ -784,5 +795,22 @@
     },
     "manageHint": "Manage your subscription",
     "upgradeHint": "Unlimited planning, translation and more"
+  },
+  "newTrip": {
+    "title": "New trip",
+    "subtitle": "No tickets yet? Start with a city and dates.",
+    "create": "Create trip",
+    "city": "City",
+    "country": "Country",
+    "name": "Trip name (optional)",
+    "namePlaceholder": "e.g. Summer in Rome",
+    "endBeforeStart": "The end date must be after the start date.",
+    "hint": "You can add tickets and hotel bookings later; Yola will fit the plan around them."
+  },
+  "legal": {
+    "effective": "Effective {{date}}",
+    "englishOnly": "Available in English and Turkish.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
   }
 }

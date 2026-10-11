@@ -167,6 +167,10 @@ export default function PaywallScreen() {
       <Text variant="caption" color="textMuted">
         {t(Platform.OS === 'ios' ? 'paywall.legalIos' : 'paywall.legalAndroid')}
       </Text>
+      <View style={styles.row}>
+        <Button title={t('legal.terms')} variant="ghost" onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })} />
+        <Button title={t('legal.privacy')} variant="ghost" onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />
+      </View>
     </Screen>
   );
 }

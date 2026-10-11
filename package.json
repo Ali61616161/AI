@@ -76,7 +76,8 @@
     "functions:check": "cd supabase/functions && deno check */index.ts && deno lint && cd ../.. && deno check --config supabase/functions/deno.json scripts/local-stack/functions-router.ts",
     "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features",
     "db:types:local": "scripts/gen-db-types-local.sh",
-    "e2e:local": "node tests/e2e/replan.e2e.mjs && node tests/e2e/places.e2e.mjs && node tests/e2e/translate.e2e.mjs && node tests/e2e/tools.e2e.mjs && node tests/e2e/report.e2e.mjs && node tests/e2e/subscription.e2e.mjs && node tests/e2e/social.e2e.mjs"
+    "e2e:local": "node tests/e2e/replan.e2e.mjs && node tests/e2e/places.e2e.mjs && node tests/e2e/translate.e2e.mjs && node tests/e2e/tools.e2e.mjs && node tests/e2e/report.e2e.mjs && node tests/e2e/subscription.e2e.mjs && node tests/e2e/social.e2e.mjs && node tests/e2e/account.e2e.mjs",
+    "legal:export": "node --experimental-strip-types --no-warnings scripts/export-legal.ts"
   },
   "private": true
 }

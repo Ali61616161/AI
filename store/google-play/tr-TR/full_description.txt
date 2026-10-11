@@ -1,0 +1,13 @@
+Yola, yapay zeka destekli seyahat arkadaşın. Seyahatini gerçek rezervasyonlarının etrafında planlar, anında uyum sağlar ve her yerde anlaşmana yardım eder.
+
+• Bilet ve otel rezervasyonlarını yükle — AI okur ve seyahatini kurar
+• Bütçene ve yol arkadaşlarına göre gün gün plan
+• "Planı Değiştir": yağmur, rötar, yorgunluk mu? Günün kalanını saniyeler içinde yeniden planla
+• Google'da doğrulanmış mekanlar, şu an açık yerler, hava durumu ve otel önerileri
+• Canlı iki yönlü konuşma çevirisi, metin ve menü fotoğrafı çevirisi
+• Çevrimdışı çalışır: plan, biletler ve acil durum cümleleri telefonunda
+• Harcama ve hesap bölüşme, akıllı bavul listesi, vize bilgisi, jet lag planı
+• Puanlı seyahat raporu ve paylaşılabilir kart
+• İsteğe bağlı sosyal mod: gezginlerle güvenle, halka açık yerlerde buluş
+
+Ücretsiz başla. Yola Pro (aylık veya yıllık) ya da tek seferlik Trip Pass ile sınırsız planlama, yeniden planlama ve çeviri.

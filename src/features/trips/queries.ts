@@ -131,6 +131,27 @@ export function useCreateTripFromDocuments() {
   });
 }
 
+/** Bilet olmadan seyahat oluşturur (şehir ve tarihlerle). */
+export function useCreateManualTrip() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { title: string; start: string; end: string; city: string; countryCode: string | null; companion: string; budget: string; interests: string[] }) => {
+      const { data, error } = await getSupabase().rpc('create_trip_manual', {
+        p_title: input.title,
+        p_start: input.start,
+        p_end: input.end,
+        p_destinations: [{ city: input.city, country_code: input.countryCode ?? '' }] as unknown as Json,
+        p_companion: input.companion as 'solo',
+        p_budget: input.budget as 'mid',
+        p_interests: input.interests,
+      });
+      if (error) throw error;
+      return data as string;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['trips'] }),
+  });
+}
+
 export type PlanItemRow = {
   id: string;
   position: number;
