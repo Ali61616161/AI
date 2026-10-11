@@ -12,7 +12,11 @@
 //   → { plan_version_id, previous_version_id, analysis, removed[] }
 //
 // Gerekli sunucu sırları: GEMINI_API_KEY, isteğe bağlı GEMINI_MODEL.
+// İsteğe bağlı: GOOGLE_MAPS_API_KEY (anlık hava ve mekan doğrulama), AFFILIATE_*.
 import { consumeQuota, userClient } from '../_shared/auth.ts';
+import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.ts';
+import type { Place } from '../_shared/places.ts';
+import { fetchCurrent, weatherForPrompt } from '../_shared/weather.ts';
 import { isValidTimeZone, utcToLocal } from '../_shared/documents.ts';
 import { GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
@@ -103,6 +107,19 @@ Deno.serve(async (req) => {
     const day = trip?.activePlan?.days.find((d) => d.date === today) ?? null;
 
     const later = (day?.plan_items ?? []).filter((i) => i.starts_at && i.starts_at >= nowIso);
+    const google = googleConfig();
+    const nearByCity = trip ? await destinationCoords(supabase, trip.destinations, profile.language) : {};
+    const city = day?.city ?? trip?.ctx.destinations[0]?.city ?? null;
+    const here = location ?? (city ? nearByCity[city.toLowerCase()] : null) ?? null;
+    let weather: string | null = null;
+    if (google.apiKey && here) {
+      weather = await fetchCurrent({ ...here, language: profile.language, apiKey: google.apiKey, apiBase: google.weatherBase })
+        .then(weatherForPrompt)
+        .catch((e) => {
+          console.warn('replan crisis: weather failed', e instanceof Error ? e.message : String(e));
+          return null;
+        });
+    }
     const localTime = (iso: string, itemTz: string | null) => utcToLocal(iso, itemTz ?? timezone).slice(11);
 
     let raw: unknown;
@@ -117,7 +134,8 @@ Deno.serve(async (req) => {
           localNow,
           timezone,
           location,
-          city: day?.city ?? trip?.ctx.destinations[0]?.city ?? null,
+          weather,
+          city,
           budget: trip?.ctx.budget ?? 'mid',
           companion: trip?.ctx.companion ?? 'solo',
           interests: trip?.ctx.interests ?? [],
@@ -136,10 +154,18 @@ Deno.serve(async (req) => {
     const result = normalizeCrisis(raw, { nowTime: localNow.slice(11), currency: trip?.ctx.currency ?? profile.currency });
     let planVersionId: string | null = null;
     const previousVersionId = trip?.activePlan?.id ?? null;
+    // Öneriler ve yeni plan aynı mekanları içerir; Google'a her mekan bir kez sorulur.
+    const cache = new Map<string, Place | null>();
+    const enrichOptions = { language: profile.language, near: here, nearByCity, cache };
+    const [suggestions] = await enrichDays(
+      [{ city, items: result.items.map((i) => ({ ...i, affiliate_partner: i.booking_partner })) }],
+      enrichOptions,
+    );
 
     if (result.changePlan && trip?.activePlan && day) {
-      const payload = trip.activePlan.days.map((d) =>
-        d.date === today ? replaceRestOfDay(d, nowIso, result.items, timezone) : storedDayToPayload(d),
+      const payload = await enrichDays(
+        trip.activePlan.days.map((d) => (d.date === today ? replaceRestOfDay(d, nowIso, result.items, timezone) : storedDayToPayload(d))),
+        enrichOptions,
       );
       const { data, error: saveError } = await supabase.rpc('save_plan_version', {
         p_trip_id: trip.id,
@@ -154,7 +180,8 @@ Deno.serve(async (req) => {
 
     return json({
       reply: result.reply,
-      suggestions: result.items,
+      suggestions: suggestions.items,
+      weather,
       plan_version_id: planVersionId,
       previous_version_id: planVersionId ? previousVersionId : null,
       date: today,
@@ -224,7 +251,8 @@ Deno.serve(async (req) => {
       }
       const normalized = normalizeItinerary(raw, { dates: toPlan, fixed, timezones, currency: trip.ctx.currency });
       summary = normalized.summary;
-      planned = toPlanPayload(normalized.days) as PayloadDay[];
+      const nearByCity = await destinationCoords(supabase, trip.destinations, trip.ctx.language);
+      planned = (await enrichDays(toPlanPayload(normalized.days), { language: trip.ctx.language, nearByCity })) as PayloadDay[];
     }
 
     const newDays = [...copied, ...planned].sort((a, b) => a.date.localeCompare(b.date));

@@ -5,7 +5,9 @@
 //
 // Ücretsiz planda sadece ilk FREE_MAX_DAYS gün planlanır (truncated: true).
 // Gerekli sunucu sırları: GEMINI_API_KEY, isteğe bağlı GEMINI_MODEL.
+// İsteğe bağlı: GOOGLE_MAPS_API_KEY (mekan doğrulama), AFFILIATE_* (bilet bağlantıları).
 import { consumeQuota, userClient } from '../_shared/auth.ts';
+import { destinationCoords, enrichDays } from '../_shared/enrich.ts';
 import { GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import {
@@ -76,10 +78,12 @@ Deno.serve(async (req) => {
   }
 
   const { summary, days } = normalizeItinerary(raw, { dates, fixed, timezones, currency: trip.ctx.currency });
+  const nearByCity = await destinationCoords(supabase, trip.destinations, trip.ctx.language);
+  const payload = await enrichDays(toPlanPayload(days), { language: trip.ctx.language, nearByCity });
   const { data: planVersionId, error: saveError } = await supabase.rpc('save_plan_version', {
     p_trip_id: tripId,
     p_reason: 'initial',
-    p_days: toPlanPayload(days),
+    p_days: payload,
     p_summary: summary,
   });
   if (saveError) {

@@ -341,5 +341,54 @@
     "restore": "العودة إلى هذا الإصدار",
     "restored": "تمت العودة إلى هذا الإصدار.",
     "dates": "التواريخ: {{dates}}"
+  },
+  "nearby": {
+    "title": "مفتوح بالقرب منك الآن",
+    "useLocation": "استخدم موقعي",
+    "locationDenied": "اسمح بالوصول إلى الموقع لرؤية الأماكن المفتوحة بالقرب منك.",
+    "empty": "لا يوجد شيء مفتوح بالقرب منك في هذه الفئة الآن.",
+    "categories": {
+      "restaurant": "مطاعم",
+      "cafe": "مقاهٍ",
+      "museum": "متاحف",
+      "attraction": "معالم",
+      "pharmacy": "صيدليات",
+      "supermarket": "متاجر",
+      "atm": "صرافات آلية"
+    },
+    "errors": {
+      "quota_exceeded": "استخدمت عمليات البحث المجانية لليوم. قم بالترقية للبحث بلا حدود.",
+      "not_configured": "البحث عن الأماكن غير متصل بعد.",
+      "upstream_failed": "تعذّر تحميل الأماكن. حاول مرة أخرى.",
+      "network": "لا يوجد اتصال. حاول مرة أخرى."
+    }
+  },
+  "map": {
+    "openInMaps": "الخريطة",
+    "openRoute": "افتح المسار في خرائط Google",
+    "showMap": "عرض الخريطة",
+    "hideMap": "إخفاء الخريطة"
+  },
+  "place": {
+    "buyTicket": "التذاكر",
+    "reviews_zero": "{{formatted}} مراجعة",
+    "reviews_one": "مراجعة واحدة",
+    "reviews_two": "مراجعتان",
+    "reviews_few": "{{formatted}} مراجعات",
+    "reviews_many": "{{formatted}} مراجعة",
+    "reviews_other": "{{formatted}} مراجعة",
+    "closedPermanently": "مغلق نهائيًا — فكّر في استبدال هذه المحطة",
+    "closedTemporarily": "مغلق مؤقتًا — تحقق قبل الذهاب"
+  },
+  "weather": {
+    "rain": "مطر {{percent}}٪",
+    "availableFrom": "تتوفر توقعات الطقس اعتبارًا من {{date}}"
+  },
+  "hotels": {
+    "title": "فنادق مقترحة",
+    "button": "فنادق",
+    "viewOnBooking": "اطّلع على الأسعار في Booking.com",
+    "empty": "لم يتم العثور على فنادق لهذه الميزانية.",
+    "disclosure": "قد تحصل Yola على عمولة إذا حجزت عبر هذه الروابط. السعر لا يتغير بالنسبة لك."
   }
 }

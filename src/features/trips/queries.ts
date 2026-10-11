@@ -146,6 +146,14 @@ export type PlanItemRow = {
   is_locked: boolean;
   reservation_id: string | null;
   affiliate_partner: string | null;
+  booking_url: string | null;
+  google_place_id: string | null;
+  lat: number | null;
+  lng: number | null;
+  rating: number | null;
+  rating_count: number | null;
+  maps_url: string | null;
+  place_status: string | null;
   status: 'planned' | 'visited' | 'skipped';
 };
 
@@ -170,7 +178,8 @@ export type ActivePlan = {
 const PLAN_SELECT =
   'id, version, reason, summary, created_at, day_plans(id, date, city, title, notes, plan_items(' +
   'id, position, kind, title, description, starts_at, ends_at, timezone, place_name, address, category, ' +
-  'estimated_cost, cost_currency, priority, is_indoor, is_locked, reservation_id, affiliate_partner, status))';
+  'estimated_cost, cost_currency, priority, is_indoor, is_locked, reservation_id, affiliate_partner, status, ' +
+  'booking_url, google_place_id, lat, lng, rating, rating_count, maps_url, place_status))';
 
 /** Seyahatin aktif plan sürümü; günler tarihe, kalemler sıraya göre dizili. Plan yoksa null. */
 export function useActivePlan(tripId: string | undefined) {

@@ -11,6 +11,8 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { RESERVATION_ICONS, TRANSPORT_TYPES } from '@/features/documents/reservation-icons';
+import { PlacesMap } from '@/features/map/places-map';
+import { useTripWeather } from '@/features/places/api';
 import { GenerateCard } from '@/features/plan/generate-card';
 import { DaySelector, DayTimeline } from '@/features/plan/plan-timeline';
 import {
@@ -20,7 +22,7 @@ import {
   useTrip,
   type TripReservation,
 } from '@/features/trips/queries';
-import { daysUntil, formatDateRange, formatLocalDateTime, todayIsoDate } from '@/lib/format';
+import { daysUntil, formatDateRange, formatDayShort, formatLocalDateTime, todayIsoDate } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -74,6 +76,8 @@ export default function TripScreen() {
   const generate = useGenerateItinerary(id);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [showReservations, setShowReservations] = useState(false);
+  const [showMap, setShowMap] = useState(true);
+  const weather = useTripWeather(id);
 
   if (isLoading) {
     return (
@@ -95,6 +99,11 @@ export default function TripScreen() {
   const dayIndex = Math.min(selectedDay ?? initialDayIndex(days.map((d) => d.date)), Math.max(days.length - 1, 0));
   const totalDays = trip.start_date && trip.end_date ? daysUntil(trip.end_date, new Date(`${trip.start_date}T12:00:00`)) + 1 : 0;
   const truncatedTo = plan && days.length < totalDays ? days.length : null;
+  const day = days[dayIndex];
+  const dayWeather = day ? weather.data?.days.find((w) => w.date === day.date) : undefined;
+  const mapPoints = (day?.plan_items ?? [])
+    .filter((i) => i.lat !== null && i.lng !== null)
+    .map((i, n) => ({ id: i.id, lat: i.lat!, lng: i.lng!, title: i.place_name ?? i.title, label: String(n + 1), locked: i.is_locked }));
   const generateError =
     generate.error instanceof GenerateError ? t(`plan.errors.${generate.error.code}`) : generate.error ? t('plan.errors.network') : null;
 
@@ -131,6 +140,7 @@ export default function TripScreen() {
           {trip.trip_destinations.map((d) => (
             <Chip key={d.id} icon="location-outline" label={`${d.city} · ${formatDateRange(d.arrive_on, d.depart_on)}`} />
           ))}
+          <Chip icon="bed-outline" label={t('hotels.button')} onPress={() => router.push({ pathname: '/hotels', params: { tripId: trip.id } })} />
         </View>
       )}
 
@@ -164,7 +174,23 @@ export default function TripScreen() {
               </View>
             )}
             <DaySelector days={days} selected={dayIndex} onSelect={setSelectedDay} />
-            {days[dayIndex] && <DayTimeline day={days[dayIndex]} />}
+            {weather.data?.available_from && (
+              <Text variant="caption" color="textMuted">
+                {t('weather.availableFrom', { date: formatDayShort(weather.data.available_from) })}
+              </Text>
+            )}
+            {mapPoints.length > 0 && (
+              <View style={styles.mapBlock}>
+                <Pressable accessibilityRole="button" accessibilityState={{ expanded: showMap }} onPress={() => setShowMap((v) => !v)} style={styles.mapToggle}>
+                  <Ionicons name="map-outline" size={16} color={colors.primary} />
+                  <Text variant="caption" style={{ color: colors.primary }}>
+                    {showMap ? t('map.hideMap') : t('map.showMap')}
+                  </Text>
+                </Pressable>
+                {showMap && <PlacesMap key={day?.id} points={mapPoints} />}
+              </View>
+            )}
+            {day && <DayTimeline day={day} weather={dayWeather} />}
             {generateError && (
               <Text variant="caption" color="danger">
                 {generateError}
@@ -201,6 +227,8 @@ const styles = StyleSheet.create({
   actions: { flexDirection: 'row', gap: Spacing.sm },
   notice: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.md },
   flex: { flex: 1 },
+  mapBlock: { gap: Spacing.sm },
+  mapToggle: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs, alignSelf: 'flex-start' },
   row: { flexDirection: 'row', gap: Spacing.md, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: 1 },
   icon: { width: 40, height: 40, borderRadius: Radius.md, alignItems: 'center', justifyContent: 'center' },
   rowText: { flex: 1, gap: Spacing.xxs },

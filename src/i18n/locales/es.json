@@ -317,5 +317,50 @@
     "restore": "Volver a esta versión",
     "restored": "Has vuelto a esta versión.",
     "dates": "Fechas: {{dates}}"
+  },
+  "nearby": {
+    "title": "Abierto cerca de ti",
+    "useLocation": "Usar mi ubicación",
+    "locationDenied": "Permite el acceso a la ubicación para ver lugares abiertos cerca de ti.",
+    "empty": "Ahora mismo no hay nada abierto cerca en esta categoría.",
+    "categories": {
+      "restaurant": "Restaurantes",
+      "cafe": "Cafeterías",
+      "museum": "Museos",
+      "attraction": "Lugares de interés",
+      "pharmacy": "Farmacias",
+      "supermarket": "Supermercados",
+      "atm": "Cajeros"
+    },
+    "errors": {
+      "quota_exceeded": "Has usado las búsquedas gratuitas de hoy. Mejora tu plan para búsquedas ilimitadas.",
+      "not_configured": "La búsqueda de lugares aún no está conectada.",
+      "upstream_failed": "No se pudieron cargar los lugares. Inténtalo de nuevo.",
+      "network": "Sin conexión. Inténtalo de nuevo."
+    }
+  },
+  "map": {
+    "openInMaps": "Mapa",
+    "openRoute": "Abrir la ruta en Google Maps",
+    "showMap": "Mostrar mapa",
+    "hideMap": "Ocultar mapa"
+  },
+  "place": {
+    "buyTicket": "Entradas",
+    "reviews_one": "{{formatted}} reseña",
+    "reviews_other": "{{formatted}} reseñas",
+    "closedPermanently": "Cerrado permanentemente: considera cambiar esta parada",
+    "closedTemporarily": "Cerrado temporalmente: compruébalo antes de ir"
+  },
+  "weather": {
+    "rain": "{{percent}} % lluvia",
+    "availableFrom": "Pronóstico disponible a partir del {{date}}"
+  },
+  "hotels": {
+    "title": "Hoteles sugeridos",
+    "button": "Hoteles",
+    "viewOnBooking": "Ver precios en Booking.com",
+    "empty": "No se encontraron hoteles para este presupuesto.",
+    "disclosure": "Yola puede recibir una comisión si reservas a través de estos enlaces. Tu precio no cambia."
   }
 }

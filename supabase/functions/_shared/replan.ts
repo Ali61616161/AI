@@ -35,6 +35,16 @@ export type StoredItem = {
   is_locked: boolean;
   reservation_id: string | null;
   affiliate_partner: string | null;
+  // Google Places ile doğrulanan mekan bilgileri (doğrulanmadıysa boş).
+  booking_url?: string | null;
+  google_place_id?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  rating?: number | null;
+  rating_count?: number | null;
+  maps_url?: string | null;
+  place_status?: string | null;
+  place_checked_at?: string | null;
 };
 
 export type StoredDay = {
@@ -149,6 +159,8 @@ export type CrisisContext = {
   localNow: string;
   timezone: string;
   location: { lat: number; lng: number } | null;
+  /** Google Weather'dan anlık hava özeti (anahtar yoksa boş). */
+  weather?: string | null;
   city: string | null;
   budget: BudgetTier;
   companion: Companion;
@@ -206,6 +218,7 @@ The traveler says: "${ctx.message.replace(/"/g, "'")}"
 Situation:
 - Local time: ${ctx.localNow.replace('T', ' ')} (${ctx.timezone})
 - Location: ${where}
+- Weather now: ${ctx.weather ?? 'unknown'}
 - Remaining plan today: ${remaining}
 - Fixed bookings later today (must keep, leave time to reach them): ${fixed}
 - ${BUDGET_RULES[ctx.budget]}

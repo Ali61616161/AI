@@ -311,5 +311,49 @@
     "restore": "回到此版本",
     "restored": "已切换到此版本。",
     "dates": "日期：{{dates}}"
+  },
+  "nearby": {
+    "title": "附近正在营业",
+    "useLocation": "使用我的位置",
+    "locationDenied": "允许访问位置，查看附近正在营业的地点。",
+    "empty": "此类别附近目前没有正在营业的地点。",
+    "categories": {
+      "restaurant": "餐厅",
+      "cafe": "咖啡馆",
+      "museum": "博物馆",
+      "attraction": "景点",
+      "pharmacy": "药店",
+      "supermarket": "超市",
+      "atm": "ATM"
+    },
+    "errors": {
+      "quota_exceeded": "今天的免费搜索次数已用完。升级可无限搜索。",
+      "not_configured": "地点搜索尚未连接。",
+      "upstream_failed": "无法加载地点，请重试。",
+      "network": "没有网络连接，请重试。"
+    }
+  },
+  "map": {
+    "openInMaps": "地图",
+    "openRoute": "在 Google 地图中打开路线",
+    "showMap": "显示地图",
+    "hideMap": "隐藏地图"
+  },
+  "place": {
+    "buyTicket": "门票",
+    "reviews_other": "{{formatted}} 条评价",
+    "closedPermanently": "已永久停业——建议更换此站",
+    "closedTemporarily": "暂时停业——出发前请确认"
+  },
+  "weather": {
+    "rain": "降雨 {{percent}}%",
+    "availableFrom": "天气预报将于 {{date}} 起提供"
+  },
+  "hotels": {
+    "title": "酒店推荐",
+    "button": "酒店",
+    "viewOnBooking": "在 Booking.com 查看价格",
+    "empty": "未找到符合此预算的酒店。",
+    "disclosure": "通过这些链接预订时，Yola 可能获得佣金，您的价格不变。"
   }
 }

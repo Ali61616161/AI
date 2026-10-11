@@ -9,10 +9,12 @@ import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
+import { OpenNowSection } from '@/features/places/open-now-section';
 import { BUDGETS, COMPANIONS } from '@/features/profile/options';
 import { useTrips } from '@/features/trips/queries';
 import { TripCard } from '@/features/trips/trip-card';
 import { todayIsoDate } from '@/lib/format';
+import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -34,6 +36,7 @@ export default function TodayScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const preferences = useSessionStore((s) => s.preferences);
+  const session = useSessionStore((s) => s.session);
   const companion = COMPANIONS.find((c) => c.value === preferences.companion);
   const budget = BUDGETS.find((b) => b.value === preferences.budget);
   const { data: trips } = useTrips();
@@ -55,6 +58,8 @@ export default function TodayScreen() {
           <Button title={t('today.createManually')} variant="secondary" disabled />
         </EmptyState>
       )}
+
+      {session && isSupabaseConfigured() && <OpenNowSection />}
 
       {(companion || budget) && (
         <View style={styles.section}>

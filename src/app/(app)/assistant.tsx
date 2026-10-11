@@ -8,6 +8,8 @@ import { Chip } from '@/components/ui/chip';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
+import { openBookingLink, openInMaps } from '@/features/places/api';
+import { PlaceMeta } from '@/features/places/place-row';
 import { ReplanError, useCrisisReplan, useRestoreVersion, type CrisisResult } from '@/features/plan/replan';
 import { useTrips } from '@/features/trips/queries';
 import { formatMoney, todayIsoDate } from '@/lib/format';
@@ -64,6 +66,19 @@ function SuggestionCard({ item }: { item: CrisisResult['suggestions'][number] })
             </Text>
           )}
         </View>
+        {item.rating != null && <PlaceMeta rating={item.rating} ratingCount={item.rating_count ?? null} priceLevel={null} distanceM={null} />}
+        {(item.place_name || item.booking_url) && (
+          <View style={styles.badges}>
+            {item.place_name && (
+              <Chip
+                icon="navigate-outline"
+                label={t('map.openInMaps')}
+                onPress={() => openInMaps({ name: item.place_name!, mapsUrl: item.maps_url, placeId: item.google_place_id, lat: item.lat, lng: item.lng })}
+              />
+            )}
+            {item.booking_url && <Chip icon="ticket-outline" label={t('place.buyTicket')} onPress={() => openBookingLink(item.booking_url!)} />}
+          </View>
+        )}
       </View>
     </View>
   );

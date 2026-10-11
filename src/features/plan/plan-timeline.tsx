@@ -3,7 +3,11 @@ import type { ComponentProps } from 'react';
 import { ScrollView, StyleSheet, View, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { Chip } from '@/components/ui/chip';
 import { Text } from '@/components/ui/text';
+import { openBookingLink, openInMaps, type DayForecast } from '@/features/places/api';
+import { PlaceMeta } from '@/features/places/place-row';
+import { WeatherBadge } from '@/features/places/weather-badge';
 import type { PlanDayRow, PlanItemRow } from '@/features/trips/queries';
 import { formatDayShort, formatMoney, formatTime } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
@@ -71,11 +75,13 @@ function Badge({ icon, label, tone = 'muted' }: { icon?: IconName; label: string
   );
 }
 
-function TimelineItem({ item, last }: { item: PlanItemRow; last: boolean }) {
+function TimelineItem({ item, last, city }: { item: PlanItemRow; last: boolean; city: string | null }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const time = item.starts_at ? formatTime(item.starts_at, item.timezone) : '';
   const endTime = item.ends_at ? formatTime(item.ends_at, item.timezone) : null;
+  const closed = item.place_status === 'CLOSED_PERMANENTLY' || item.place_status === 'CLOSED_TEMPORARILY';
+  const mappable = !item.is_locked && item.kind !== 'transport' && Boolean(item.place_name || item.lat !== null);
   const title =
     item.category === 'check_in' ? `${t('plan.checkIn')} · ${item.title}` : item.category === 'check_out' ? `${t('plan.checkOut')} · ${item.title}` : item.title;
 
@@ -104,6 +110,15 @@ function TimelineItem({ item, last }: { item: PlanItemRow; last: boolean }) {
             {item.place_name}
           </Text>
         )}
+        {item.rating !== null && <PlaceMeta rating={item.rating} ratingCount={item.rating_count} priceLevel={null} distanceM={null} />}
+        {closed && (
+          <View style={styles.warning}>
+            <Ionicons name="alert-circle" size={14} color={colors.danger} />
+            <Text variant="caption" color="danger" style={styles.flex}>
+              {item.place_status === 'CLOSED_PERMANENTLY' ? t('place.closedPermanently') : t('place.closedTemporarily')}
+            </Text>
+          </View>
+        )}
         {item.description && (
           <Text variant="body" color="textSecondary" numberOfLines={3}>
             {item.description}
@@ -123,12 +138,32 @@ function TimelineItem({ item, last }: { item: PlanItemRow; last: boolean }) {
             <Badge icon={item.is_indoor ? 'home-outline' : 'sunny-outline'} label={item.is_indoor ? t('plan.indoor') : t('plan.outdoor')} />
           )}
         </View>
+        {(mappable || item.booking_url) && (
+          <View style={styles.actions}>
+            {mappable && (
+              <Chip
+                icon="navigate-outline"
+                label={t('map.openInMaps')}
+                onPress={() =>
+                  openInMaps({
+                    name: [item.place_name ?? item.title, item.google_place_id ? null : city].filter(Boolean).join(', '),
+                    mapsUrl: item.maps_url,
+                    placeId: item.google_place_id,
+                    lat: item.lat,
+                    lng: item.lng,
+                  })
+                }
+              />
+            )}
+            {item.booking_url && <Chip icon="ticket-outline" label={t('place.buyTicket')} onPress={() => openBookingLink(item.booking_url!)} />}
+          </View>
+        )}
       </View>
     </View>
   );
 }
 
-export function DayTimeline({ day }: { day: PlanDayRow }) {
+export function DayTimeline({ day, weather }: { day: PlanDayRow; weather?: DayForecast | null }) {
   const { t } = useTranslation();
   return (
     <View style={styles.timeline}>
@@ -142,6 +177,7 @@ export function DayTimeline({ day }: { day: PlanDayRow }) {
           )}
         </View>
       )}
+      {weather && <WeatherBadge forecast={weather} />}
       {day.notes && (
         <Text variant="body" color="textSecondary">
           {day.notes}
@@ -152,7 +188,7 @@ export function DayTimeline({ day }: { day: PlanDayRow }) {
           {t('plan.emptyDay')}
         </Text>
       ) : (
-        day.plan_items.map((item, index) => <TimelineItem key={item.id} item={item} last={index === day.plan_items.length - 1} />)
+        day.plan_items.map((item, index) => <TimelineItem key={item.id} item={item} city={day.city} last={index === day.plan_items.length - 1} />)
       )}
     </View>
   );
@@ -173,4 +209,7 @@ const styles = StyleSheet.create({
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs, marginTop: Spacing.xxs },
   badge: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xxs, paddingHorizontal: Spacing.sm, paddingVertical: 2, borderRadius: Radius.pill },
   badgeText: { fontSize: 12, lineHeight: 16 },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs, marginTop: Spacing.xs },
+  warning: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xxs },
+  flex: { flex: 1 },
 });

@@ -317,5 +317,50 @@
     "restore": "Bu sürüme dön",
     "restored": "Bu sürüme dönüldü.",
     "dates": "Tarihler: {{dates}}"
+  },
+  "nearby": {
+    "title": "Yakında şu an açık",
+    "useLocation": "Konumumu kullan",
+    "locationDenied": "Yakındaki açık yerleri görmek için konum izni ver.",
+    "empty": "Bu kategoride yakında şu an açık bir yer yok.",
+    "categories": {
+      "restaurant": "Restoranlar",
+      "cafe": "Kafeler",
+      "museum": "Müzeler",
+      "attraction": "Gezilecek yerler",
+      "pharmacy": "Eczaneler",
+      "supermarket": "Marketler",
+      "atm": "ATM'ler"
+    },
+    "errors": {
+      "quota_exceeded": "Bugünkü ücretsiz aramalarını kullandın. Sınırsız arama için yükselt.",
+      "not_configured": "Mekan araması henüz bağlanmadı.",
+      "upstream_failed": "Mekanlar yüklenemedi. Tekrar dene.",
+      "network": "Bağlantı yok. Tekrar dene."
+    }
+  },
+  "map": {
+    "openInMaps": "Harita",
+    "openRoute": "Rotayı Google Haritalar'da aç",
+    "showMap": "Haritayı göster",
+    "hideMap": "Haritayı gizle"
+  },
+  "place": {
+    "buyTicket": "Bilet al",
+    "reviews_one": "{{formatted}} yorum",
+    "reviews_other": "{{formatted}} yorum",
+    "closedPermanently": "Kalıcı olarak kapanmış — bu durağı değiştirmeyi düşün",
+    "closedTemporarily": "Geçici olarak kapalı — gitmeden kontrol et"
+  },
+  "weather": {
+    "rain": "%{{percent}} yağmur",
+    "availableFrom": "Hava tahmini {{date}} itibarıyla görünecek"
+  },
+  "hotels": {
+    "title": "Otel önerileri",
+    "button": "Oteller",
+    "viewOnBooking": "Booking.com'da fiyatları gör",
+    "empty": "Bu bütçeye uygun otel bulunamadı.",
+    "disclosure": "Bu bağlantılardan rezervasyon yaparsan Yola komisyon alabilir. Senin ödediğin fiyat değişmez."
   }
 }

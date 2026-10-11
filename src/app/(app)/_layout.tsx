@@ -11,6 +11,7 @@ export default function AppLayout() {
       <Stack.Screen name="trip-dates" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-versions" options={{ presentation: 'modal' }} />
       <Stack.Screen name="preferences" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="hotels" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }

@@ -30,7 +30,7 @@ function romeDate(offset = 0) {
 
 async function activePlan(tripId) {
   const { data } = await get(
-    `plan_versions?trip_id=eq.${tripId}&is_active=eq.true&select=id,version,reason,user_prompt,day_plans(date,plan_items(title,starts_at,is_locked,kind))`,
+    `plan_versions?trip_id=eq.${tripId}&is_active=eq.true&select=id,version,reason,user_prompt,day_plans(date,plan_items(title,starts_at,is_locked,kind,google_place_id,rating,lat,lng,maps_url,booking_url,place_checked_at))`,
   );
   const plan = data[0];
   plan.day_plans.sort((a, b) => a.date.localeCompare(b.date));
@@ -92,6 +92,23 @@ await step('AI rota: ücretsiz planda ilk 3 gün, otel girişi kilitli durak', a
   assert.ok(day1.some((i) => i.title === `TEST museum ${start}`));
 });
 
+await step('Mekan doğrulama: bulunan mekanlara Google kimliği, konum, puan ve bilet bağlantısı eklenir', async () => {
+  const items = firstPlan.day_plans.flatMap((d) => d.plan_items);
+  const museum = items.find((i) => i.title === `TEST museum ${start}`);
+  assert.equal(museum.google_place_id, 'fake-test-musei-vaticani');
+  assert.equal(museum.rating, 4.6);
+  assert.ok(museum.lat > 41 && museum.lng > 12, 'koordinat kaydedilmeli');
+  assert.match(museum.maps_url, /^https:\/\/maps\.google\.com\//);
+  assert.match(museum.booking_url, /^https:\/\/www\.tiqets\.com\/.*q=TEST/);
+  assert.ok(museum.place_checked_at);
+  const walk = items.find((i) => i.title === `TEST walk ${start}`);
+  assert.equal(walk.google_place_id, null, 'Google\'da bulunamayan mekan doğrulanmış sayılmamalı');
+  const hotel = items.find((i) => i.title === 'E2E Hotel');
+  assert.equal(hotel.google_place_id, null, 'kilitli rezervasyonlar sorgulanmaz');
+  const { data: dest } = await get(`trip_destinations?trip_id=eq.${tripId}&select=city,lat,lng`);
+  assert.ok(dest[0].lat > 41, 'şehir koordinatı bir kez bulunup kaydedilmeli');
+});
+
 let crisisVersion;
 await step('Planı Değiştir (yağmur): bugünün kalanı değişir, geçmiş ve diğer günler korunur', async () => {
   const r = await call('/functions/v1/replan', {
@@ -99,6 +116,10 @@ await step('Planı Değiştir (yağmur): bugünün kalanı değişir, geçmiş v
   });
   assert.equal(r.status, 200, JSON.stringify(r.data));
   assert.match(r.data.reply, /TEST reply/);
+  assert.match(r.data.reply, /TEST rain, 12°C/, 'anlık hava asistana verilmeli');
+  const cafe = r.data.suggestions.find((x) => x.title === 'TEST cafe');
+  assert.equal(cafe.google_place_id, 'fake-test-caff-roma');
+  assert.ok(cafe.rating && cafe.maps_url, 'öneriler doğrulanmış mekan bilgisiyle gelmeli');
   assert.equal(r.data.date, today);
   assert.ok(r.data.plan_version_id, 'bugünün planı olduğu için plan değişmeli');
   assert.equal(r.data.previous_version_id, firstPlan.id);

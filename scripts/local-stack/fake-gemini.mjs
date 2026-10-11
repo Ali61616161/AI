@@ -18,9 +18,9 @@ function itinerary(prompt) {
       timezone: 'Europe/Rome',
       title: `TEST day ${i + 1}`,
       items: [
-        { start_time: '09:30', end_time: '11:00', kind: 'activity', title: `TEST museum ${date}`, priority: 5, is_indoor: true, booking: 'tiqets', estimated_cost: 20, currency: 'EUR' },
+        { start_time: '09:30', end_time: '11:00', kind: 'activity', title: `TEST museum ${date}`, place_name: 'TEST Musei Vaticani', priority: 5, is_indoor: true, booking: 'tiqets', estimated_cost: 20, currency: 'EUR' },
         { start_time: '12:30', end_time: '13:30', kind: 'meal', title: `TEST lunch ${date}`, priority: 2, is_indoor: true, booking: 'none', estimated_cost: 12, currency: 'EUR' },
-        { start_time: '16:00', end_time: '17:30', kind: 'activity', title: `TEST walk ${date}`, priority: 3, is_indoor: false, booking: 'none', estimated_cost: 0, currency: 'EUR' },
+        { start_time: '16:00', end_time: '17:30', kind: 'activity', title: `TEST walk ${date}`, place_name: 'Nowhere Street', priority: 3, is_indoor: false, booking: 'none', estimated_cost: 0, currency: 'EUR' },
       ],
     })),
   };
@@ -31,11 +31,11 @@ function crisis(prompt) {
   const minutes = now ? Number(now[1]) * 60 + Number(now[2]) + 30 : 12 * 60;
   const at = (m) => `${String(Math.floor(Math.min(m, 1439) / 60)).padStart(2, '0')}:${String(Math.min(m, 1439) % 60).padStart(2, '0')}`;
   return {
-    reply: 'TEST reply: here are indoor options nearby.',
+    reply: `TEST reply: here are indoor options nearby. Weather: ${/Weather now: ([^\n]+)/.exec(prompt)?.[1] ?? 'none'}`,
     change_plan: !prompt.includes('Remaining plan today: nothing planned'),
     items: [
       { start_time: at(minutes), end_time: at(minutes + 60), kind: 'activity', title: 'TEST indoor gallery', priority: 4, is_indoor: true, booking: 'none', estimated_cost: 15, currency: 'EUR' },
-      { start_time: at(minutes + 90), kind: 'meal', title: 'TEST cafe', priority: 2, is_indoor: true, booking: 'none' },
+      { start_time: at(minutes + 90), kind: 'meal', title: 'TEST cafe', place_name: 'TEST Caffè Roma', priority: 2, is_indoor: true, booking: 'none' },
     ],
   };
 }

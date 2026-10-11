@@ -317,5 +317,50 @@
     "restore": "Go back to this version",
     "restored": "Switched to this version.",
     "dates": "Dates: {{dates}}"
+  },
+  "nearby": {
+    "title": "Open near you now",
+    "useLocation": "Use my location",
+    "locationDenied": "Allow location access to see places open near you.",
+    "empty": "Nothing open nearby in this category right now.",
+    "categories": {
+      "restaurant": "Restaurants",
+      "cafe": "Cafés",
+      "museum": "Museums",
+      "attraction": "Sights",
+      "pharmacy": "Pharmacies",
+      "supermarket": "Supermarkets",
+      "atm": "ATMs"
+    },
+    "errors": {
+      "quota_exceeded": "You've used today's free searches. Upgrade for unlimited searches.",
+      "not_configured": "Place search isn't connected yet.",
+      "upstream_failed": "Couldn't load places. Please try again.",
+      "network": "No connection. Please try again."
+    }
+  },
+  "map": {
+    "openInMaps": "Maps",
+    "openRoute": "Open the route in Google Maps",
+    "showMap": "Show map",
+    "hideMap": "Hide map"
+  },
+  "place": {
+    "buyTicket": "Tickets",
+    "reviews_one": "{{formatted}} review",
+    "reviews_other": "{{formatted}} reviews",
+    "closedPermanently": "Permanently closed — consider replacing this stop",
+    "closedTemporarily": "Temporarily closed — check before you go"
+  },
+  "weather": {
+    "rain": "{{percent}}% rain",
+    "availableFrom": "Weather forecast available from {{date}}"
+  },
+  "hotels": {
+    "title": "Hotel suggestions",
+    "button": "Hotels",
+    "viewOnBooking": "See prices on Booking.com",
+    "empty": "No hotels found for this budget.",
+    "disclosure": "Yola may earn a commission if you book through these links. Your price stays the same."
   }
 }

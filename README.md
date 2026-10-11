@@ -38,15 +38,23 @@ npm run preview:web     # Tek dosyalık web önizlemesi üretir (dist-preview/yo
 |---|---|---|
 | `parse-document` | Yüklenen bilet/otel belgesini Gemini ile okur, `documents` tablosuna yazar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
 | `replan` | "Planı Değiştir": konum ve saate göre günün kalanını yeniden planlar; tarih değişince planı yeni tarihlere uyarlar | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
-| `generate-itinerary` | Bütçe, yol arkadaşı ve ilgi alanlarına göre gün gün rota üretir; rezervasyonlar kilitli durak olur; yeni plan sürümü kaydeder (ücretsiz planda ilk 3 gün) | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL` |
+| `generate-itinerary` | Bütçe, yol arkadaşı ve ilgi alanlarına göre gün gün rota üretir; rezervasyonlar kilitli durak olur; mekanları Google Places ile doğrular; yeni plan sürümü kaydeder (ücretsiz planda ilk 3 gün) | `GEMINI_API_KEY`, isteğe bağlı `GEMINI_MODEL`, `GOOGLE_MAPS_API_KEY` |
+| `places` | Yakında şu an açık yerler, bütçeye göre otel önerileri (Booking bağlantısıyla), seyahat günlerinin hava tahmini | `GOOGLE_MAPS_API_KEY` |
+
+`GOOGLE_MAPS_API_KEY` için Google Cloud'da **Places API (New)** ve **Weather API** açık olmalıdır. Anahtar yoksa rota yine üretilir, sadece mekan doğrulama ve anlık hava atlanır. Google'a gönderilen her alan, resmi discovery şemasının alt kümesi olan `supabase/functions/_shared/google/schema.json` ile testlerde doğrulanır (`python3 scripts/update-google-schema.py` ile güncellenir).
+
+İsteğe bağlı ortaklık (affiliate) bağlantı şablonları: `AFFILIATE_BOOKING_URL`, `AFFILIATE_GETYOURGUIDE_URL`, `AFFILIATE_TIQETS_URL` (yer tutucular: `{query}`, `{city}`, `{checkin}`, `{checkout}`, `{adults}`, `{children}`, `{lang}`; ayrıntı `_shared/affiliate.ts`). Verilmezse ortaklık kimliği olmayan düz arama bağlantıları kullanılır.
+
+Harita: iOS'ta Apple Haritalar (anahtar gerekmez). Android'de Google Haritalar için Android uygulamasına kısıtlı ayrı bir anahtar EAS ortam değişkeni `GOOGLE_MAPS_ANDROID_API_KEY` olarak verilir. Web'de harita yerine rotayı Google Haritalar'da açan kart gösterilir.
 
 Uygulama ile fonksiyonların paylaştığı kod `supabase/functions/_shared/` altındadır (dış paket kullanmaz). Dağıtım:
 
 ```bash
-npx supabase secrets set GEMINI_API_KEY=...
+npx supabase secrets set GEMINI_API_KEY=... GOOGLE_MAPS_API_KEY=...
 npx supabase functions deploy parse-document
 npx supabase functions deploy generate-itinerary
 npx supabase functions deploy replan
+npx supabase functions deploy places
 ```
 
 ## Yerel test ortamı
@@ -59,7 +67,7 @@ POSTGREST_BIN=/yol/postgrest PGHOST=/tmp PGPORT=5432 PGUSER=postgres scripts/loc
 
 Betik boş bir `yola_dev` veritabanına migration'ları uygular; PostgREST'i, tüm Edge Function'ları (`functions-router.ts`) ve Supabase adreslerini taklit eden geçidi (`gateway.mjs`) başlatır, uygulamanın kullanacağı `EXPO_PUBLIC_*` değerlerini yazdırır. Girişte her e-posta kabul edilir, kod `123456`'dır. Durdurmak için `LOG_DIR=... scripts/local-stack/stop.sh`. Sadece yerel geliştirme içindir.
 
-`FAKE_GEMINI=1` verilirse Gemini yerine öngörülebilir cevap veren test ikizi (`fake-gemini.mjs`) kullanılır. Uçtan uca test bu modda çalışır ve CI'da her push'ta koşar:
+`FAKE_GEMINI=1` verilirse Gemini ve Google Places/Weather yerine öngörülebilir cevap veren test ikizleri (`fake-gemini.mjs`, `fake-google.mjs`) kullanılır; Google ikizi istekleri resmi şemayla doğrular ve bilinmeyen alana 400 döner. Uçtan uca test bu modda çalışır ve CI'da her push'ta koşar:
 
 ```bash
 SUPABASE_URL=http://localhost:54321 ANON_KEY=$(cat $LOG_DIR/anon-key) npm run e2e:local

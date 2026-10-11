@@ -44,9 +44,17 @@ const config: ExpoConfig = {
     [
       'expo-location',
       {
-        locationWhenInUsePermission: `${brand.name} uses your location to suggest places near you when you change your plan.`,
+        locationWhenInUsePermission: `${brand.name} uses your location to show places open near you and to adjust your plan.`,
         locationAlwaysAndWhenInUsePermission: false,
         isAndroidBackgroundLocationEnabled: false,
+      },
+    ],
+    // iOS'ta Apple Haritalar kullanılır (anahtar gerekmez). Android'de Google Haritalar
+    // için Android uygulamasına kısıtlı bir anahtar EAS ortam değişkeninden verilir.
+    [
+      'react-native-maps',
+      {
+        androidGoogleMapsApiKey: process.env.GOOGLE_MAPS_ANDROID_API_KEY,
       },
     ],
     [

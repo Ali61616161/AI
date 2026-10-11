@@ -317,5 +317,50 @@
     "restore": "Torna a questa versione",
     "restored": "Sei tornato a questa versione.",
     "dates": "Date: {{dates}}"
+  },
+  "nearby": {
+    "title": "Aperto vicino a te",
+    "useLocation": "Usa la mia posizione",
+    "locationDenied": "Consenti l'accesso alla posizione per vedere i luoghi aperti vicino a te.",
+    "empty": "Al momento non c'è nulla di aperto nelle vicinanze in questa categoria.",
+    "categories": {
+      "restaurant": "Ristoranti",
+      "cafe": "Caffè",
+      "museum": "Musei",
+      "attraction": "Attrazioni",
+      "pharmacy": "Farmacie",
+      "supermarket": "Supermercati",
+      "atm": "Bancomat"
+    },
+    "errors": {
+      "quota_exceeded": "Hai usato le ricerche gratuite di oggi. Passa a un piano superiore per ricerche illimitate.",
+      "not_configured": "La ricerca dei luoghi non è ancora collegata.",
+      "upstream_failed": "Impossibile caricare i luoghi. Riprova.",
+      "network": "Nessuna connessione. Riprova."
+    }
+  },
+  "map": {
+    "openInMaps": "Mappa",
+    "openRoute": "Apri il percorso in Google Maps",
+    "showMap": "Mostra mappa",
+    "hideMap": "Nascondi mappa"
+  },
+  "place": {
+    "buyTicket": "Biglietti",
+    "reviews_one": "{{formatted}} recensione",
+    "reviews_other": "{{formatted}} recensioni",
+    "closedPermanently": "Chiuso definitivamente: valuta di sostituire questa tappa",
+    "closedTemporarily": "Chiuso temporaneamente: verifica prima di andare"
+  },
+  "weather": {
+    "rain": "{{percent}}% pioggia",
+    "availableFrom": "Previsioni disponibili dal {{date}}"
+  },
+  "hotels": {
+    "title": "Hotel consigliati",
+    "button": "Hotel",
+    "viewOnBooking": "Vedi i prezzi su Booking.com",
+    "empty": "Nessun hotel trovato per questo budget.",
+    "disclosure": "Yola può ricevere una commissione se prenoti tramite questi link. Il tuo prezzo non cambia."
   }
 }

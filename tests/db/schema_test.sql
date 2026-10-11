@@ -445,7 +445,40 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '12. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '12. Mekan bilgileri plana kaydedilir; yakın arama kotası günde 10'
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$
+declare v_trip uuid; v_plan uuid; r record; i integer;
+begin
+  select id into v_trip from public.trips where title = 'Rome · Florence';
+  v_plan := public.save_plan_version(v_trip, 'manual_edit', $j$[{"date": "2026-11-01", "city": "Roma", "items": [
+    {"kind": "activity", "title": "Vatikan", "place_name": "Musei Vaticani", "google_place_id": "ChIJvat",
+     "lat": 41.9065, "lng": 12.4536, "rating": 4.6, "rating_count": 120000, "place_status": "OPERATIONAL",
+     "maps_url": "https://maps.google.com/?cid=1", "booking_url": "https://www.tiqets.com/en/search/?q=vat",
+     "affiliate_partner": "tiqets", "place_checked_at": "2026-10-11T10:00:00Z"},
+    {"kind": "meal", "title": "Kötü bağlantılar", "maps_url": "javascript:alert(1)", "booking_url": "http://x.test",
+     "lat": 999, "lng": 12}
+  ]}]$j$::jsonb);
+  select * into r from public.plan_items where trip_id = v_trip and title = 'Vatikan'
+    and day_plan_id in (select id from public.day_plans where plan_version_id = v_plan);
+  assert r.google_place_id = 'ChIJvat' and r.rating = 4.6 and r.rating_count = 120000;
+  assert round(r.lat::numeric, 4) = 41.9065 and round(r.lng::numeric, 4) = 12.4536, 'koordinatlar location sütunundan okunmalı';
+  assert r.maps_url = 'https://maps.google.com/?cid=1' and r.booking_url like 'https://www.tiqets.com/%';
+  assert r.place_checked_at = '2026-10-11T10:00:00Z' and r.place_status = 'OPERATIONAL';
+  select * into r from public.plan_items where title = 'Kötü bağlantılar' and day_plan_id in (select id from public.day_plans where plan_version_id = v_plan);
+  assert r.maps_url is null and r.booking_url is null, 'https olmayan bağlantılar kaydedilmemeli';
+  assert r.location is null and r.lat is null, 'geçersiz koordinat kaydedilmemeli';
+
+  for i in 1..10 loop
+    select * into r from public.consume_quota('nearby_search');
+    assert r.allowed, format('%s. arama izinli olmalı', i);
+  end loop;
+  select * into r from public.consume_quota('nearby_search');
+  assert not r.allowed and r.remaining = 0, '11. yakın arama reddedilmeli';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '13. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

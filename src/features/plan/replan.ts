@@ -46,9 +46,20 @@ export async function getCurrentLocation(): Promise<{ lat: number; lng: number }
   }
 }
 
+/** Google Places ile doğrulanmışsa mekan bilgileri de gelir. */
+export type CrisisSuggestion = PlanItem & {
+  google_place_id?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  rating?: number | null;
+  rating_count?: number | null;
+  maps_url?: string | null;
+  booking_url?: string | null;
+};
+
 export type CrisisResult = {
   reply: string;
-  suggestions: PlanItem[];
+  suggestions: CrisisSuggestion[];
   plan_version_id: string | null;
   previous_version_id: string | null;
   date: string;

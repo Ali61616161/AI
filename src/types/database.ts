@@ -493,10 +493,17 @@ export type Database = {
           is_indoor: boolean | null;
           is_locked: boolean;
           kind: Database['public']['Enums']['plan_item_kind'];
+          lat: number | null;
+          lng: number | null;
           location: unknown;
+          maps_url: string | null;
+          place_checked_at: string | null;
           place_name: string | null;
+          place_status: string | null;
           position: number;
           priority: number;
+          rating: number | null;
+          rating_count: number | null;
           reservation_id: string | null;
           starts_at: string | null;
           status: Database['public']['Enums']['plan_item_status'];
@@ -522,10 +529,17 @@ export type Database = {
           is_indoor?: boolean | null;
           is_locked?: boolean;
           kind: Database['public']['Enums']['plan_item_kind'];
+          lat?: never;
+          lng?: never;
           location?: unknown;
+          maps_url?: string | null;
+          place_checked_at?: string | null;
           place_name?: string | null;
+          place_status?: string | null;
           position?: number;
           priority?: number;
+          rating?: number | null;
+          rating_count?: number | null;
           reservation_id?: string | null;
           starts_at?: string | null;
           status?: Database['public']['Enums']['plan_item_status'];
@@ -550,10 +564,17 @@ export type Database = {
           is_indoor?: boolean | null;
           is_locked?: boolean;
           kind?: Database['public']['Enums']['plan_item_kind'];
+          lat?: never;
+          lng?: never;
           location?: unknown;
+          maps_url?: string | null;
+          place_checked_at?: string | null;
           place_name?: string | null;
+          place_status?: string | null;
           position?: number;
           priority?: number;
+          rating?: number | null;
+          rating_count?: number | null;
           reservation_id?: string | null;
           starts_at?: string | null;
           status?: Database['public']['Enums']['plan_item_status'];
@@ -928,6 +949,8 @@ export type Database = {
           depart_on: string | null;
           google_place_id: string | null;
           id: string;
+          lat: number | null;
+          lng: number | null;
           location: unknown;
           position: number;
           trip_id: string;
@@ -941,6 +964,8 @@ export type Database = {
           depart_on?: string | null;
           google_place_id?: string | null;
           id?: string;
+          lat?: never;
+          lng?: never;
           location?: unknown;
           position?: number;
           trip_id: string;
@@ -953,6 +978,8 @@ export type Database = {
           depart_on?: string | null;
           google_place_id?: string | null;
           id?: string;
+          lat?: never;
+          lng?: never;
           location?: unknown;
           position?: number;
           trip_id?: string;
@@ -1288,7 +1315,13 @@ export type Database = {
       plan_change_reason: 'initial' | 'dates_changed' | 'replan' | 'crisis' | 'manual_edit';
       plan_item_kind: 'activity' | 'meal' | 'transport' | 'accommodation' | 'free_time' | 'reservation';
       plan_item_status: 'planned' | 'visited' | 'skipped';
-      quota_feature: 'document_scan' | 'itinerary_generation' | 'replan' | 'menu_scan' | 'social_invite';
+      quota_feature:
+        | 'document_scan'
+        | 'itinerary_generation'
+        | 'replan'
+        | 'menu_scan'
+        | 'social_invite'
+        | 'nearby_search';
       report_reason: 'harassment' | 'fake_profile' | 'unsafe_behavior' | 'spam' | 'other';
       reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
       subscription_plan: 'free' | 'trip_pass' | 'pro_monthly' | 'pro_yearly';
@@ -1419,7 +1452,14 @@ export const Constants = {
       plan_change_reason: ['initial', 'dates_changed', 'replan', 'crisis', 'manual_edit'],
       plan_item_kind: ['activity', 'meal', 'transport', 'accommodation', 'free_time', 'reservation'],
       plan_item_status: ['planned', 'visited', 'skipped'],
-      quota_feature: ['document_scan', 'itinerary_generation', 'replan', 'menu_scan', 'social_invite'],
+      quota_feature: [
+        'document_scan',
+        'itinerary_generation',
+        'replan',
+        'menu_scan',
+        'social_invite',
+        'nearby_search',
+      ],
       report_reason: ['harassment', 'fake_profile', 'unsafe_behavior', 'spam', 'other'],
       reservation_type: ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'],
       subscription_plan: ['free', 'trip_pass', 'pro_monthly', 'pro_yearly'],

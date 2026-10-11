@@ -317,5 +317,50 @@
     "restore": "Revenir à cette version",
     "restored": "Retour à cette version.",
     "dates": "Dates : {{dates}}"
+  },
+  "nearby": {
+    "title": "Ouvert près de vous",
+    "useLocation": "Utiliser ma position",
+    "locationDenied": "Autorisez l'accès à la position pour voir les lieux ouverts près de vous.",
+    "empty": "Rien d'ouvert à proximité dans cette catégorie pour le moment.",
+    "categories": {
+      "restaurant": "Restaurants",
+      "cafe": "Cafés",
+      "museum": "Musées",
+      "attraction": "À voir",
+      "pharmacy": "Pharmacies",
+      "supermarket": "Supermarchés",
+      "atm": "Distributeurs"
+    },
+    "errors": {
+      "quota_exceeded": "Vous avez utilisé vos recherches gratuites du jour. Passez à l'offre supérieure pour des recherches illimitées.",
+      "not_configured": "La recherche de lieux n'est pas encore connectée.",
+      "upstream_failed": "Impossible de charger les lieux. Réessayez.",
+      "network": "Pas de connexion. Réessayez."
+    }
+  },
+  "map": {
+    "openInMaps": "Carte",
+    "openRoute": "Ouvrir l'itinéraire dans Google Maps",
+    "showMap": "Afficher la carte",
+    "hideMap": "Masquer la carte"
+  },
+  "place": {
+    "buyTicket": "Billets",
+    "reviews_one": "{{formatted}} avis",
+    "reviews_other": "{{formatted}} avis",
+    "closedPermanently": "Définitivement fermé — pensez à remplacer cette étape",
+    "closedTemporarily": "Fermé temporairement — vérifiez avant d'y aller"
+  },
+  "weather": {
+    "rain": "{{percent}} % de pluie",
+    "availableFrom": "Prévisions disponibles à partir du {{date}}"
+  },
+  "hotels": {
+    "title": "Hôtels suggérés",
+    "button": "Hôtels",
+    "viewOnBooking": "Voir les prix sur Booking.com",
+    "empty": "Aucun hôtel trouvé pour ce budget.",
+    "disclosure": "Yola peut percevoir une commission si vous réservez via ces liens. Votre prix reste le même."
   }
 }

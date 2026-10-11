@@ -22,7 +22,8 @@ export type ErrorCode =
   | 'unsupported_file'
   | 'file_too_large'
   | 'ai_failed'
-  | 'not_configured';
+  | 'not_configured'
+  | 'upstream_failed';
 
 export function error(code: ErrorCode, status: number, message?: string): Response {
   return json({ error: { code, message: message ?? code } }, status);
