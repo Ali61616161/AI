@@ -7,6 +7,7 @@ import http from 'node:http';
 
 const PORT = Number(process.env.FAKE_GEMINI_PORT ?? 54340);
 export const calls = [];
+const prompts = [];
 
 function itinerary(prompt) {
   const days = (/Days to plan: ([^\n]+)/.exec(prompt)?.[1] ?? '').split(',').map((d) => d.trim()).filter(Boolean);
@@ -42,10 +43,16 @@ function crisis(prompt) {
 
 http
   .createServer(async (req, res) => {
+    // Testlerin gönderilen istemleri kontrol edebilmesi için.
+    if (req.method === 'GET' && req.url === '/prompts') {
+      res.writeHead(200, { 'content-type': 'application/json' });
+      return res.end(JSON.stringify(prompts));
+    }
     const chunks = [];
     for await (const c of req) chunks.push(c);
     const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
     const prompt = body.contents?.[0]?.parts?.[0]?.text ?? '';
+    prompts.push(prompt);
     const kind = prompt.includes('The traveler says')
       ? 'crisis'
       : prompt.includes('Days to plan')
@@ -54,7 +61,9 @@ http
           ? 'image'
           : prompt.includes('plans a short tourism trip')
             ? 'visa'
-            : 'other';
+            : prompt.includes('end-of-trip summary')
+              ? 'report'
+              : 'other';
     calls.push(kind);
     const payload =
       kind === 'crisis'
@@ -80,7 +89,15 @@ http
                   notes: ['TEST apply at least 15 days before travel'],
                   official_url: 'javascript:alert(1)',
                 }
-              : { document_type: 'other', items: [] };
+              : kind === 'report'
+                ? {
+                    summary: `TEST summary: ${/Place ratings: ([^\n]+)/.exec(prompt)?.[1] ?? ''}`,
+                    highlights: ['TEST highlight 1', 'TEST highlight 2'],
+                    liked: ['history', 'museums', 'casino'],
+                    disliked: ['nightlife'],
+                    next_trip_tip: 'TEST tip',
+                  }
+                : { document_type: 'other', items: [] };
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ candidates: [{ content: { parts: [{ text: JSON.stringify(payload) }] }, finishReason: 'STOP' }] }));
   })

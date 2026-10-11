@@ -10,6 +10,7 @@ export type TripDestination = { id: string; city: string; country_code: string |
 
 export type LoadedTrip = {
   id: string;
+  title: string;
   startDate: string | null;
   endDate: string | null;
   ctx: TripContext;
@@ -19,18 +20,30 @@ export type LoadedTrip = {
 };
 
 const TRIP_SELECT =
-  'id, start_date, end_date, companion_type, budget_tier, interests, adults, children, budget_currency, ' +
+  'id, title, start_date, end_date, companion_type, budget_tier, interests, adults, children, budget_currency, ' +
   'trip_destinations(id, city, country_code, arrive_on, depart_on, position, lat, lng), ' +
   'reservations(id, type, title, starts_at, ends_at, start_timezone, end_timezone, origin_name, destination_name, address, is_cancelled)';
 
 const PLAN_SELECT =
   'id, day_plans(date, city, title, notes, plan_items(position, kind, title, description, starts_at, ends_at, timezone, ' +
   'place_name, address, category, estimated_cost, cost_currency, priority, is_indoor, is_locked, reservation_id, affiliate_partner, ' +
-  'booking_url, google_place_id, lat, lng, rating, rating_count, maps_url, place_status, place_checked_at))';
+  'booking_url, google_place_id, lat, lng, rating, rating_count, maps_url, place_status, place_checked_at, status))';
 
 export async function loadProfile(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase.from('profiles').select('preferred_language, home_currency').eq('id', userId).single();
   return { language: data?.preferred_language ?? 'en', currency: data?.home_currency ?? 'EUR' };
+}
+
+/** Kullanıcının önceki seyahat raporlarından çıkarılan tercihler (en yeni 5). */
+export async function loadPastInsights(supabase: SupabaseClient, excludeTripId: string): Promise<{ liked?: string[]; disliked?: string[] }[]> {
+  const { data } = await supabase
+    .from('trip_reports')
+    .select('ai_insights')
+    .neq('trip_id', excludeTripId)
+    .not('ai_insights', 'is', null)
+    .order('generated_at', { ascending: false })
+    .limit(5);
+  return (data ?? []).map((r: { ai_insights: { liked?: string[]; disliked?: string[] } }) => r.ai_insights);
 }
 
 /** Seyahati düzenleyebilen kullanıcı için yükler; yoksa veya yetki yoksa null. */
@@ -50,6 +63,7 @@ export async function loadTrip(supabase: SupabaseClient, tripId: string, profile
 
   return {
     id: t.id,
+    title: t.title,
     startDate: t.start_date,
     endDate: t.end_date,
     reservations,

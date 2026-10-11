@@ -45,6 +45,7 @@ export type StoredItem = {
   maps_url?: string | null;
   place_status?: string | null;
   place_checked_at?: string | null;
+  status?: 'planned' | 'visited' | 'skipped';
 };
 
 export type StoredDay = {

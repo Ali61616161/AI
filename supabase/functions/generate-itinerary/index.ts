@@ -19,7 +19,8 @@ import {
   timezonesByDate,
   toPlanPayload,
 } from '../_shared/itinerary.ts';
-import { loadProfile, loadTrip } from '../_shared/trip-context.ts';
+import { preferenceRule } from '../_shared/report.ts';
+import { loadPastInsights, loadProfile, loadTrip } from '../_shared/trip-context.ts';
 
 const DEFAULT_MODEL = 'gemini-2.5-flash';
 const FREE_MAX_DAYS = 3;
@@ -67,7 +68,7 @@ Deno.serve(async (req) => {
       apiBase: Deno.env.get('GEMINI_API_BASE'),
       apiKey,
       model: Deno.env.get('GEMINI_MODEL') ?? DEFAULT_MODEL,
-      prompt: buildItineraryPrompt(trip.ctx, dates, fixed, timezones),
+      prompt: buildItineraryPrompt(trip.ctx, dates, fixed, timezones, [preferenceRule(await loadPastInsights(supabase, tripId))].filter((r): r is string => r !== null)),
       responseSchema: ITINERARY_RESPONSE_SCHEMA,
       timeoutMs: 120_000,
     });

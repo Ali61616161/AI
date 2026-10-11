@@ -36,6 +36,13 @@ export function todayIsoDate(now = new Date()): string {
   return `${y}-${m}-${d}`;
 }
 
+/** Bugünden n gün önceki yerel tarih (YYYY-MM-DD). */
+export function isoDateDaysAgo(days: number, now = new Date()): string {
+  const d = new Date(now);
+  d.setDate(d.getDate() - days);
+  return todayIsoDate(d);
+}
+
 /** Saati o yerin saat diliminde gösterir: "09:45". */
 export function formatTime(iso: string, timeZone: string | null): string {
   return new Intl.DateTimeFormat(currentLanguage(), {

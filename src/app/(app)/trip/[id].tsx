@@ -203,6 +203,22 @@ export default function TripScreen() {
         )}
       </View>
 
+      {trip.start_date && trip.start_date <= todayIsoDate() && (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push({ pathname: '/trip-report', params: { tripId: trip.id } })}
+          style={[styles.notice, { backgroundColor: colors.primarySoft }]}>
+          <Ionicons name="trophy-outline" size={20} color={colors.primary} />
+          <View style={styles.flex}>
+            <Text variant="bodyStrong">{trip.end_date && trip.end_date < todayIsoDate() ? t('report.cta') : t('report.ctaDuring')}</Text>
+            <Text variant="caption" color="textSecondary">
+              {t('report.ctaBody')}
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+        </Pressable>
+      )}
+
       <TripTools tripId={trip.id} />
 
       <OfflineCard tripId={trip.id} countryCode={trip.trip_destinations[0]?.country_code ?? null} />

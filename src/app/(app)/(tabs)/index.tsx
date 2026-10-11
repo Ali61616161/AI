@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import type { ComponentProps } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ import { OpenNowSection } from '@/features/places/open-now-section';
 import { BUDGETS, COMPANIONS } from '@/features/profile/options';
 import { useTrips } from '@/features/trips/queries';
 import { TripCard } from '@/features/trips/trip-card';
-import { todayIsoDate } from '@/lib/format';
+import { isoDateDaysAgo, todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
@@ -44,6 +44,9 @@ export default function TodayScreen() {
   const { data: trips } = useTrips();
   const today = todayIsoDate();
   const nextTrip = trips?.find((trip) => !trip.end_date || trip.end_date >= today);
+  // Son 30 günde biten ve henüz raporu oluşturulmamış seyahat.
+  const monthAgo = isoDateDaysAgo(30);
+  const endedTrip = trips?.find((trip) => trip.end_date && trip.end_date < today && trip.end_date >= monthAgo && trip.status !== 'completed');
 
   return (
     <Screen edges={['top']}>
@@ -59,6 +62,23 @@ export default function TodayScreen() {
           <Button title={t('today.uploadTicket')} onPress={() => router.push('/ticket')} />
           <Button title={t('today.createManually')} variant="secondary" disabled />
         </EmptyState>
+      )}
+
+      {endedTrip && (
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push({ pathname: '/trip-report', params: { tripId: endedTrip.id } })}
+          style={[styles.feature, { backgroundColor: colors.primarySoft, borderColor: colors.primary }]}>
+          <View style={[styles.featureIcon, { backgroundColor: colors.surface }]}>
+            <Ionicons name="trophy-outline" size={22} color={colors.primary} />
+          </View>
+          <View style={styles.featureText}>
+            <Text variant="bodyStrong">{t('report.endedTitle', { trip: endedTrip.title })}</Text>
+            <Text variant="caption" color="textSecondary">
+              {t('report.ctaBody')}
+            </Text>
+          </View>
+        </Pressable>
       )}
 
       {session && isSupabaseConfigured() && online && <OpenNowSection />}
