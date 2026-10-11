@@ -31,6 +31,8 @@ export default function AppLayout() {
       <Stack.Screen name="jetlag" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-report" options={{ presentation: 'modal' }} />
       <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="invite" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="chat/[id]" />
       <Stack.Screen name="trip-documents" options={{ presentation: 'modal' }} />
     </Stack>
   );

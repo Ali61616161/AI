@@ -135,7 +135,85 @@
     "safetyLocation": "Dein Standort wird nur auf etwa 1 km genau angezeigt. Dein genauer Ort wird nie geteilt.",
     "safetyPublic": "Treffen können nur an öffentlichen Orten wie Museen und Cafés vorgeschlagen werden.",
     "safetyBlock": "Du kannst jede Person blockieren und melden.",
-    "safetyWomen": "Du kannst festlegen, dass du nur mit Frauen gematcht wirst."
+    "safetyWomen": "Du kannst festlegen, dass du nur mit Frauen gematcht wirst.",
+    "setupTitle": "Dein Reiseprofil",
+    "displayName": "Für andere sichtbarer Name",
+    "birthYear": "Geburtsjahr (18+)",
+    "gender": "Geschlecht",
+    "genders": {
+      "female": "Frau",
+      "male": "Mann",
+      "non_binary": "Nicht-binär",
+      "undisclosed": "Keine Angabe"
+    },
+    "bio": "Ein Satz über dich (optional)",
+    "lookingFor": "Lust auf",
+    "looking": {
+      "coffee": "Kaffee",
+      "museum": "Museen",
+      "walk": "Spaziergang",
+      "food": "Essen",
+      "nightlife": "Ausgehen",
+      "nature": "Natur"
+    },
+    "womenOnly": "Nur mit reisenden Frauen",
+    "consent": "Ich bin mindestens 18, treffe mich nur an öffentlichen Orten, akzeptiere die Community-Regeln und erlaube, dass mein ungefährer Standort (ca. 1 km) angezeigt wird.",
+    "errors": {
+      "age_required": "Für den Social-Modus musst du mindestens 18 Jahre alt sein.",
+      "name_required": "Bitte gib den für andere sichtbaren Namen ein.",
+      "women_only": "Nur Frauen können den Nur-Frauen-Filter aktivieren.",
+      "unknown": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+    },
+    "traveler": "Reisende(r)",
+    "accept": "Annehmen",
+    "decline": "Ablehnen",
+    "waiting": "Wartet auf Antwort",
+    "cancelInvite": "Abbrechen",
+    "status": {
+      "declined": "Abgelehnt",
+      "cancelled": "Abgesagt"
+    },
+    "distance": "~{{km}} km entfernt",
+    "invite": "Einladen",
+    "invites": "Einladungen",
+    "youAreVisible": "Reisende in der Nähe können dich sehen (ca. 1 km genau).",
+    "hide": "Mich verbergen",
+    "nearby": "Reisende in der Nähe",
+    "nobody": "Gerade keine sichtbaren Reisenden in der Nähe. Schau später wieder vorbei.",
+    "sendInvite": "Einladung senden",
+    "inviteTitle": "{{name}} einladen",
+    "invitePublicOnly": "Treffen nur an öffentlichen Orten.",
+    "choosePlace": "Öffentlichen Ort wählen",
+    "chooseTime": "Wann?",
+    "slots": {
+      "in1h": "In 1 Stunde",
+      "in2h": "In 2 Stunden",
+      "evening": "Heute Abend",
+      "tomorrow": "Morgen Vormittag"
+    },
+    "messagePlaceholder": "Sag Hallo (optional)",
+    "inviteErrors": {
+      "quota_exceeded": "Du hast die kostenlose Einladung für heute genutzt. Upgrade für unbegrenzte Einladungen.",
+      "unavailable": "Diese Person ist nicht mehr verfügbar.",
+      "past": "Wähle eine Zeit in der Zukunft.",
+      "unknown": "Die Einladung konnte nicht gesendet werden. Bitte erneut versuchen."
+    },
+    "writeMessage": "Nachricht schreiben",
+    "chatClosed": "Der Chat öffnet sich, wenn die Einladung angenommen wurde.",
+    "shareMeeting": "Treffen teilen",
+    "shareMeetingText": "Ich treffe {{name}} am {{time}} im/in {{place}}. {{maps}}",
+    "report": "Melden",
+    "reportTitle": "Was ist passiert?",
+    "reasons": {
+      "harassment": "Belästigung",
+      "fake_profile": "Fake-Profil",
+      "unsafe_behavior": "Unsicheres Verhalten",
+      "spam": "Spam",
+      "other": "Etwas anderes"
+    },
+    "blockOnly": "Nur blockieren",
+    "reportNote": "Die Person wird blockiert und sieht dich nicht mehr. Unser Team prüft jede Meldung.",
+    "chatSafety": "Triff dich öffentlich, sag jemandem, wo du bist, und behalte deine eigenen Pläne. Du kannst jederzeit jemanden blockieren oder melden."
   },
   "profile": {
     "title": "Profil",

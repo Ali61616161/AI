@@ -38,6 +38,8 @@ insert into auth.users (id, email, raw_user_meta_data) values
   ('00000000-0000-0000-0000-00000000000c', 'can@example.com', '{"language": "xx"}');
 
 update public.profiles set gender = 'female' where id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b');
+-- Sosyal mod için görünen ad ve 18+ yaş.
+update public.profiles set birth_year = 1990, display_name = coalesce(display_name, 'Test');
 update public.profiles set gender = 'male' where id = '00000000-0000-0000-0000-00000000000c';
 
 \echo '1. Kayıt olunca profil oluşur, dil meta veriden alınır'
@@ -537,7 +539,42 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '15. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '15. Sosyal güvenlik: 18 yaş, sadece kadınlar filtresi, engelleyince davet iptali, davet listesi'
+reset role;
+insert into public.consents (user_id, consent, granted, version) values
+  ('00000000-0000-0000-0000-00000000000c', 'social_matching', true, 't'), ('00000000-0000-0000-0000-00000000000c', 'location', true, 't');
+update public.profiles set birth_year = extract(year from now())::int - 16, display_name = 'Can' where id = '00000000-0000-0000-0000-00000000000c';
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$ begin
+  assert tests.throws($q$ insert into public.social_profiles (user_id, is_visible, approx_location) values (auth.uid(), true, 'SRID=4326;POINT(12.49 41.89)') $q$),
+    '18 yaş altı görünür olamaz';
+end $$;
+reset role;
+update public.profiles set birth_year = 1995 where id = '00000000-0000-0000-0000-00000000000c';
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$ begin
+  assert tests.throws($q$ insert into public.social_profiles (user_id, is_visible, women_only, approx_location) values (auth.uid(), true, true, 'SRID=4326;POINT(12.49 41.89)') $q$),
+    'kadın olmayan kullanıcı "sadece kadınlar" filtresini açamaz';
+end $$;
+-- Davet listesi ve engelleme: Can → Ayşe bekleyen davet.
+reset role;
+insert into public.match_invites (id, from_user, to_user, google_place_id, place_name, place_location, meet_at)
+values ('90000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-00000000000c', '00000000-0000-0000-0000-00000000000a', 'p', 'Caffè', 'SRID=4326;POINT(12.48 41.9)', now() + interval '1 day');
+call tests.login('00000000-0000-0000-0000-00000000000a');
+do $$ declare r record; begin
+  select * into r from public.my_invites() where id = '90000000-0000-0000-0000-000000000001';
+  assert r.incoming and r.other_name = 'Can' and r.place_name = 'Caffè', 'davet listesinde karşı tarafın adı görünmeli';
+  assert round(r.place_lat::numeric, 1) = 41.9;
+  insert into public.user_blocks (blocked_id) values ('00000000-0000-0000-0000-00000000000c');
+  assert not exists (select 1 from public.my_invites() where id = '90000000-0000-0000-0000-000000000001'), 'engellenen kişinin daveti listelenmemeli';
+end $$;
+reset role;
+do $$ begin
+  assert (select status from public.match_invites where id = '90000000-0000-0000-0000-000000000001') = 'cancelled', 'engelleyince davet iptal olmalı';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '16. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

@@ -133,7 +133,85 @@
     "safetyLocation": "你的位置只精确到约 1 公里，绝不会分享准确位置。",
     "safetyPublic": "只能约在博物馆、咖啡馆等公共场所见面。",
     "safetyBlock": "你可以屏蔽和举报任何人。",
-    "safetyWomen": "你可以选择只与女性旅行者匹配。"
+    "safetyWomen": "你可以选择只与女性旅行者匹配。",
+    "setupTitle": "你的旅行者资料",
+    "displayName": "向他人显示的名字",
+    "birthYear": "出生年份（18+）",
+    "gender": "性别",
+    "genders": {
+      "female": "女",
+      "male": "男",
+      "non_binary": "非二元",
+      "undisclosed": "不愿透露"
+    },
+    "bio": "一句话介绍自己（可选）",
+    "lookingFor": "想一起",
+    "looking": {
+      "coffee": "喝咖啡",
+      "museum": "逛博物馆",
+      "walk": "散步",
+      "food": "吃饭",
+      "nightlife": "夜生活",
+      "nature": "亲近自然"
+    },
+    "womenOnly": "只与女性旅行者匹配",
+    "consent": "我已年满 18 岁，同意只在公共场所见面并遵守社区规则，允许显示我的大致位置（约 1 公里）。",
+    "errors": {
+      "age_required": "使用社交模式须年满 18 岁。",
+      "name_required": "请输入向他人显示的名字。",
+      "women_only": "只有女性可以开启「仅限女性」筛选。",
+      "unknown": "出错了，请重试。"
+    },
+    "traveler": "旅行者",
+    "accept": "接受",
+    "decline": "拒绝",
+    "waiting": "等待回复",
+    "cancelInvite": "取消",
+    "status": {
+      "declined": "已拒绝",
+      "cancelled": "已取消"
+    },
+    "distance": "约 {{km}} 公里",
+    "invite": "邀请",
+    "invites": "邀请",
+    "youAreVisible": "附近的旅行者可以看到你（精度约 1 公里）。",
+    "hide": "隐藏我",
+    "nearby": "附近的旅行者",
+    "nobody": "附近暂时没有可见的旅行者，稍后再来看看。",
+    "sendInvite": "发送邀请",
+    "inviteTitle": "邀请 {{name}}",
+    "invitePublicOnly": "只能在公共场所见面。",
+    "choosePlace": "选择公共场所",
+    "chooseTime": "什么时候？",
+    "slots": {
+      "in1h": "1 小时后",
+      "in2h": "2 小时后",
+      "evening": "今晚",
+      "tomorrow": "明天上午"
+    },
+    "messagePlaceholder": "打个招呼（可选）",
+    "inviteErrors": {
+      "quota_exceeded": "今天的免费邀请已用完。升级即可无限邀请。",
+      "unavailable": "该旅行者已不可邀请。",
+      "past": "请选择未来的时间。",
+      "unknown": "邀请发送失败，请重试。"
+    },
+    "writeMessage": "输入消息",
+    "chatClosed": "邀请被接受后即可聊天。",
+    "shareMeeting": "分享见面信息",
+    "shareMeetingText": "我将于 {{time}} 在 {{place}} 与 {{name}} 见面。{{maps}}",
+    "report": "举报",
+    "reportTitle": "发生了什么？",
+    "reasons": {
+      "harassment": "骚扰",
+      "fake_profile": "虚假资料",
+      "unsafe_behavior": "不安全行为",
+      "spam": "垃圾信息",
+      "other": "其他"
+    },
+    "blockOnly": "仅拉黑",
+    "reportNote": "对方将被拉黑且无法再看到你。我们的团队会审核每一条举报。",
+    "chatSafety": "在公共场所见面，告诉朋友你在哪里，并保持自己的计划。你可以随时拉黑或举报任何人。"
   },
   "profile": {
     "title": "我的",

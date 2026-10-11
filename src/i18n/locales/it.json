@@ -135,7 +135,85 @@
     "safetyLocation": "La tua posizione è mostrata con una precisione di circa 1 km. Il punto esatto non viene mai condiviso.",
     "safetyPublic": "Gli incontri si possono proporre solo in luoghi pubblici come musei e caffè.",
     "safetyBlock": "Puoi bloccare e segnalare chiunque.",
-    "safetyWomen": "Puoi scegliere di incontrare solo viaggiatrici."
+    "safetyWomen": "Puoi scegliere di incontrare solo viaggiatrici.",
+    "setupTitle": "Il tuo profilo viaggiatore",
+    "displayName": "Nome visibile agli altri",
+    "birthYear": "Anno di nascita (18+)",
+    "gender": "Genere",
+    "genders": {
+      "female": "Donna",
+      "male": "Uomo",
+      "non_binary": "Non binario",
+      "undisclosed": "Preferisco non dirlo"
+    },
+    "bio": "Una frase su di te (facoltativo)",
+    "lookingFor": "Mi va di",
+    "looking": {
+      "coffee": "Caffè",
+      "museum": "Musei",
+      "walk": "Una passeggiata",
+      "food": "Cibo",
+      "nightlife": "Uscire la sera",
+      "nature": "Natura"
+    },
+    "womenOnly": "Solo con viaggiatrici",
+    "consent": "Ho almeno 18 anni, accetto di incontrarmi solo in luoghi pubblici e le regole della community, e consento di mostrare la mia posizione approssimativa (circa 1 km).",
+    "errors": {
+      "age_required": "Devi avere almeno 18 anni per usare la modalità social.",
+      "name_required": "Inserisci il nome visibile agli altri.",
+      "women_only": "Solo le donne possono attivare il filtro solo donne.",
+      "unknown": "Qualcosa è andato storto. Riprova."
+    },
+    "traveler": "Viaggiatore",
+    "accept": "Accetta",
+    "decline": "Rifiuta",
+    "waiting": "In attesa di risposta",
+    "cancelInvite": "Annulla",
+    "status": {
+      "declined": "Rifiutato",
+      "cancelled": "Annullato"
+    },
+    "distance": "a ~{{km}} km",
+    "invite": "Invita",
+    "invites": "Inviti",
+    "youAreVisible": "I viaggiatori vicini possono vederti (precisione di circa 1 km).",
+    "hide": "Nascondimi",
+    "nearby": "Viaggiatori vicini",
+    "nobody": "Al momento non ci sono viaggiatori visibili vicino a te. Riprova più tardi.",
+    "sendInvite": "Invia invito",
+    "inviteTitle": "Invita {{name}}",
+    "invitePublicOnly": "Gli incontri avvengono solo in luoghi pubblici.",
+    "choosePlace": "Scegli un luogo pubblico",
+    "chooseTime": "Quando?",
+    "slots": {
+      "in1h": "Tra 1 ora",
+      "in2h": "Tra 2 ore",
+      "evening": "Stasera",
+      "tomorrow": "Domani mattina"
+    },
+    "messagePlaceholder": "Saluta (facoltativo)",
+    "inviteErrors": {
+      "quota_exceeded": "Hai usato l’invito gratuito di oggi. Passa a Pro per inviti illimitati.",
+      "unavailable": "Questo viaggiatore non è più disponibile.",
+      "past": "Scegli un orario futuro.",
+      "unknown": "Impossibile inviare l’invito. Riprova."
+    },
+    "writeMessage": "Scrivi un messaggio",
+    "chatClosed": "La chat si apre quando l’invito viene accettato.",
+    "shareMeeting": "Condividi incontro",
+    "shareMeetingText": "Incontro {{name}} a {{place}} il {{time}}. {{maps}}",
+    "report": "Segnala",
+    "reportTitle": "Cosa è successo?",
+    "reasons": {
+      "harassment": "Molestie",
+      "fake_profile": "Profilo falso",
+      "unsafe_behavior": "Comportamento non sicuro",
+      "spam": "Spam",
+      "other": "Altro"
+    },
+    "blockOnly": "Blocca soltanto",
+    "reportNote": "Verrà bloccato e non potrà più vederti. Il nostro team esamina ogni segnalazione.",
+    "chatSafety": "Incontratevi in pubblico, di’ a qualcuno dove sei e mantieni i tuoi piani. Puoi bloccare o segnalare chiunque in qualsiasi momento."
   },
   "profile": {
     "title": "Profilo",

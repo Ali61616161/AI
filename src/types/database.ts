@@ -1285,6 +1285,27 @@ export type Database = {
       is_invite_participant: { Args: { p_invite_id: string; p_require_accepted: boolean }; Returns: boolean };
       is_trip_member: { Args: { p_trip_id: string }; Returns: boolean };
       is_trip_owner: { Args: { p_trip_id: string }; Returns: boolean };
+      my_invites: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          created_at: string;
+          google_place_id: string;
+          id: string;
+          incoming: boolean;
+          last_message: string;
+          last_message_at: string;
+          meet_at: string;
+          message: string;
+          other_avatar: string;
+          other_id: string;
+          other_name: string;
+          other_verified: boolean;
+          place_lat: number;
+          place_lng: number;
+          place_name: string;
+          status: Database['public']['Enums']['invite_status'];
+        }[];
+      };
       nearby_travelers: {
         Args: { p_radius_km?: number };
         Returns: {

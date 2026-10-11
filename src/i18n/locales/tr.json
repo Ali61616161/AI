@@ -135,7 +135,85 @@
     "safetyLocation": "Konumun yaklaşık 1 km hassasiyetle gösterilir, tam yerin asla paylaşılmaz.",
     "safetyPublic": "Buluşmalar sadece müze, kafe gibi halka açık yerler için önerilebilir.",
     "safetyBlock": "İstediğin kişiyi engelleyebilir ve şikayet edebilirsin.",
-    "safetyWomen": "İstersen sadece kadın gezginlerle eşleşebilirsin."
+    "safetyWomen": "İstersen sadece kadın gezginlerle eşleşebilirsin.",
+    "setupTitle": "Gezgin profilin",
+    "displayName": "Diğerlerinin göreceği ad",
+    "birthYear": "Doğum yılı (18+)",
+    "gender": "Cinsiyet",
+    "genders": {
+      "female": "Kadın",
+      "male": "Erkek",
+      "non_binary": "Non-binary",
+      "undisclosed": "Belirtmek istemiyorum"
+    },
+    "bio": "Kendinden bir cümle (isteğe bağlı)",
+    "lookingFor": "Neye varsın",
+    "looking": {
+      "coffee": "Kahve",
+      "museum": "Müzeler",
+      "walk": "Yürüyüş",
+      "food": "Yemek",
+      "nightlife": "Gece dışarı",
+      "nature": "Doğa"
+    },
+    "womenOnly": "Sadece kadın gezginlerle eşleş",
+    "consent": "18 yaşından büyüğüm; sadece halka açık yerlerde buluşmayı ve topluluk kurallarını kabul ediyorum; yaklaşık konumumun (~1 km) gösterilmesine izin veriyorum.",
+    "errors": {
+      "age_required": "Sosyal modu kullanmak için 18 yaşından büyük olmalısın.",
+      "name_required": "Diğerlerinin göreceği adı yaz.",
+      "women_only": "Sadece kadınlar \"sadece kadınlar\" filtresini açabilir.",
+      "unknown": "Bir şeyler ters gitti. Tekrar dene."
+    },
+    "traveler": "Gezgin",
+    "accept": "Kabul et",
+    "decline": "Reddet",
+    "waiting": "Yanıt bekleniyor",
+    "cancelInvite": "İptal et",
+    "status": {
+      "declined": "Reddedildi",
+      "cancelled": "İptal edildi"
+    },
+    "distance": "~{{km}} km uzakta",
+    "invite": "Davet et",
+    "invites": "Davetler",
+    "youAreVisible": "Yakındaki gezginler seni görebilir (yaklaşık 1 km hassasiyetle).",
+    "hide": "Beni gizle",
+    "nearby": "Yakındaki gezginler",
+    "nobody": "Şu an yakında görünür gezgin yok. Daha sonra tekrar bak.",
+    "sendInvite": "Daveti gönder",
+    "inviteTitle": "{{name}} kişisini davet et",
+    "invitePublicOnly": "Buluşmalar sadece halka açık yerlerde.",
+    "choosePlace": "Halka açık bir yer seç",
+    "chooseTime": "Ne zaman?",
+    "slots": {
+      "in1h": "1 saat sonra",
+      "in2h": "2 saat sonra",
+      "evening": "Bu akşam",
+      "tomorrow": "Yarın sabah"
+    },
+    "messagePlaceholder": "Merhaba de (isteğe bağlı)",
+    "inviteErrors": {
+      "quota_exceeded": "Bugünkü ücretsiz davet hakkını kullandın. Sınırsız davet için yükselt.",
+      "unavailable": "Bu gezgin artık müsait değil.",
+      "past": "İleri bir saat seç.",
+      "unknown": "Davet gönderilemedi. Tekrar dene."
+    },
+    "writeMessage": "Mesaj yaz",
+    "chatClosed": "Sohbet, davet kabul edilince açılır.",
+    "shareMeeting": "Buluşmayı paylaş",
+    "shareMeetingText": "{{time}} saatinde {{place}} adresinde {{name}} ile buluşuyorum. {{maps}}",
+    "report": "Şikayet et",
+    "reportTitle": "Ne oldu?",
+    "reasons": {
+      "harassment": "Taciz",
+      "fake_profile": "Sahte profil",
+      "unsafe_behavior": "Güvensiz davranış",
+      "spam": "Spam",
+      "other": "Başka bir şey"
+    },
+    "blockOnly": "Sadece engelle",
+    "reportNote": "Engellenecek ve seni bir daha göremeyecek. Ekibimiz her şikayeti inceler.",
+    "chatSafety": "Halka açık yerde buluş, bir arkadaşına nerede olduğunu söyle ve kendi planına sadık kal. Herkesi istediğin an engelleyebilir veya şikayet edebilirsin."
   },
   "profile": {
     "title": "Profil",
