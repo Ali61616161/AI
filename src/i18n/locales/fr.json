@@ -13,7 +13,8 @@
     "comingSoon": "Bientôt",
     "stepSoon": "Arrive à l'étape {{step}}",
     "edit": "Modifier",
-    "done": "OK"
+    "done": "OK",
+    "close": "Fermer"
   },
   "welcome": {
     "title": "Votre prochain voyage commence ici",
@@ -362,5 +363,29 @@
     "viewOnBooking": "Voir les prix sur Booking.com",
     "empty": "Aucun hôtel trouvé pour ce budget.",
     "disclosure": "Yola peut percevoir une commission si vous réservez via ces liens. Votre prix reste le même."
+  },
+  "offline": {
+    "banner": "Vous êtes hors ligne. Affichage de votre voyage, plan et documents enregistrés.",
+    "title": "Utiliser ce voyage hors ligne",
+    "description": "Enregistrez votre plan, la météo et vos documents de réservation sur ce téléphone pour les consulter sans internet.",
+    "descriptionWeb": "Votre plan est conservé dans ce navigateur. Les documents peuvent être enregistrés hors ligne dans l’application mobile.",
+    "ready": "Prêt pour une utilisation hors ligne",
+    "savedAt_one": "Enregistré le {{date}} · {{count}} document",
+    "savedAt_other": "Enregistré le {{date}} · {{count}} documents",
+    "download": "Enregistrer hors ligne",
+    "update": "Mettre à jour",
+    "downloading": "Téléchargement {{done}}/{{total}}",
+    "failed": "Échec de l’enregistrement. Vérifiez votre connexion et réessayez.",
+    "documents": "Documents",
+    "documentsSubtitle": "Billets et réservations enregistrés sur ce téléphone",
+    "noDocuments": "Aucun document enregistré pour ce voyage.",
+    "aiUnavailable": "Vous êtes hors ligne. Les fonctions IA reviendront une fois reconnecté."
+  },
+  "phrases": {
+    "title": "Phrases d’urgence",
+    "subtitle": "Fonctionne sans internet. Touchez une phrase pour l’afficher en grand.",
+    "speak": "Lire à voix haute",
+    "showHint": "Affiche la phrase en grand",
+    "tapToClose": "Touchez n’importe où pour fermer"
   }
 }

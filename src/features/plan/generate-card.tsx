@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
+import { useIsOnline } from '@/features/offline/use-online';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -15,6 +16,7 @@ export function GenerateCard({ pending, error, onGenerate }: { pending: boolean;
   const { t } = useTranslation();
   const { colors } = useTheme();
   const [step, setStep] = useState(0);
+  const online = useIsOnline();
 
   useEffect(() => {
     if (!pending) return;
@@ -38,9 +40,15 @@ export function GenerateCard({ pending, error, onGenerate }: { pending: boolean;
           {error}
         </Text>
       )}
+      {!pending && !online && (
+        <Text variant="caption" color="warning" style={styles.center}>
+          {t('offline.aiUnavailable')}
+        </Text>
+      )}
       {!pending && (
         <Button
           title={t('plan.generate')}
+          disabled={!online}
           onPress={() => {
             setStep(0);
             onGenerate();

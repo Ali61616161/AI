@@ -8,6 +8,7 @@ import { LanguagePicker } from '@/components/settings/language-picker';
 import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
+import { clearOfflineData } from '@/features/offline/download';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
@@ -39,6 +40,7 @@ export default function ProfileScreen() {
 
   async function handleSignOut() {
     if (session && isSupabaseConfigured()) await getSupabase().auth.signOut();
+    clearOfflineData();
     signOut();
   }
 

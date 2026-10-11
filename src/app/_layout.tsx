@@ -1,21 +1,18 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 
 import { useAuthListener } from '@/features/auth/use-auth-listener';
+import { OfflineBanner } from '@/features/offline/offline-banner';
 import i18n, { initI18n } from '@/i18n';
+import { persistOptions, queryClient } from '@/lib/query-client';
 import { useIsSignedIn, useSessionStore } from '@/stores/session-store';
 import { useTheme } from '@/theme/use-theme';
 
 SplashScreen.preventAutoHideAsync();
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { staleTime: 60_000, retry: 1 },
-  },
-});
 
 /** Telefonda kayıtlı oturum bilgisi okunana kadar bekler. */
 function useStoreHydrated(): boolean {
@@ -65,8 +62,9 @@ export default function RootLayout() {
   // Koşul değişince (ör. çıkış yapınca) Expo Router uygun gruba kendisi yönlendirir.
   return (
     <I18nextProvider i18n={i18n}>
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <ThemeProvider value={navigationTheme}>
+          <OfflineBanner />
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Protected guard={!signedIn}>
               <Stack.Screen name="(auth)" />
@@ -82,7 +80,7 @@ export default function RootLayout() {
             <Stack.Screen name="verify" options={{ presentation: 'modal' }} />
           </Stack>
         </ThemeProvider>
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </I18nextProvider>
   );
 }

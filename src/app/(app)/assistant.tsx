@@ -9,6 +9,7 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { openBookingLink, openInMaps } from '@/features/places/api';
+import { useIsOnline } from '@/features/offline/use-online';
 import { PlaceMeta } from '@/features/places/place-row';
 import { ReplanError, useCrisisReplan, useRestoreVersion, type CrisisResult } from '@/features/plan/replan';
 import { useTrips } from '@/features/trips/queries';
@@ -99,7 +100,8 @@ export default function AssistantScreen() {
   const restore = useRestoreVersion(currentTrip?.id ?? '');
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const canAsk = Boolean(session) && isSupabaseConfigured();
+  const online = useIsOnline();
+  const canAsk = Boolean(session) && isSupabaseConfigured() && online;
 
   async function send(text: string) {
     const message = text.trim();
@@ -169,7 +171,7 @@ export default function AssistantScreen() {
 
       {!canAsk ? (
         <Text variant="caption" color="warning">
-          {isSupabaseConfigured() ? t('ticket.accountRequiredBody') : t('plan.errors.not_configured')}
+          {!online ? t('offline.aiUnavailable') : isSupabaseConfigured() ? t('ticket.accountRequiredBody') : t('plan.errors.not_configured')}
         </Text>
       ) : (
         !currentTrip && (

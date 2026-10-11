@@ -13,7 +13,8 @@
     "comingSoon": "Coming soon",
     "stepSoon": "Coming in step {{step}}",
     "edit": "Edit",
-    "done": "Done"
+    "done": "Done",
+    "close": "Close"
   },
   "welcome": {
     "title": "Your next journey starts here",
@@ -362,5 +363,29 @@
     "viewOnBooking": "See prices on Booking.com",
     "empty": "No hotels found for this budget.",
     "disclosure": "Yola may earn a commission if you book through these links. Your price stays the same."
+  },
+  "offline": {
+    "banner": "You're offline. Showing your saved trip, plan and documents.",
+    "title": "Use this trip offline",
+    "description": "Save your plan, weather and booking documents on this phone so they work without internet.",
+    "descriptionWeb": "Your plan is kept in this browser. Documents can be saved offline in the mobile app.",
+    "ready": "Ready for offline use",
+    "savedAt_one": "Saved {{date}} · {{count}} document",
+    "savedAt_other": "Saved {{date}} · {{count}} documents",
+    "download": "Save for offline",
+    "update": "Update",
+    "downloading": "Downloading {{done}}/{{total}}",
+    "failed": "Saving failed. Check your connection and try again.",
+    "documents": "Documents",
+    "documentsSubtitle": "Tickets and bookings saved on this phone",
+    "noDocuments": "No documents saved for this trip yet.",
+    "aiUnavailable": "You're offline. AI features will be back when you reconnect."
+  },
+  "phrases": {
+    "title": "Emergency phrases",
+    "subtitle": "Works without internet. Tap a phrase to show it in large text.",
+    "speak": "Read aloud",
+    "showHint": "Shows the phrase in large text",
+    "tapToClose": "Tap anywhere to close"
   }
 }

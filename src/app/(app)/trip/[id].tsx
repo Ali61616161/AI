@@ -12,6 +12,7 @@ import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { RESERVATION_ICONS, TRANSPORT_TYPES } from '@/features/documents/reservation-icons';
 import { PlacesMap } from '@/features/map/places-map';
+import { OfflineCard } from '@/features/offline/offline-card';
 import { useTripWeather } from '@/features/places/api';
 import { GenerateCard } from '@/features/plan/generate-card';
 import { DaySelector, DayTimeline } from '@/features/plan/plan-timeline';
@@ -200,6 +201,8 @@ export default function TripScreen() {
           </>
         )}
       </View>
+
+      <OfflineCard tripId={trip.id} countryCode={trip.trip_destinations[0]?.country_code ?? null} />
 
       {trip.reservations.length > 0 && (
         <View style={styles.section}>

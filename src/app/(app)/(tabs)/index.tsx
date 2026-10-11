@@ -9,6 +9,7 @@ import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
+import { useIsOnline } from '@/features/offline/use-online';
 import { OpenNowSection } from '@/features/places/open-now-section';
 import { BUDGETS, COMPANIONS } from '@/features/profile/options';
 import { useTrips } from '@/features/trips/queries';
@@ -37,6 +38,7 @@ export default function TodayScreen() {
   const { colors } = useTheme();
   const preferences = useSessionStore((s) => s.preferences);
   const session = useSessionStore((s) => s.session);
+  const online = useIsOnline();
   const companion = COMPANIONS.find((c) => c.value === preferences.companion);
   const budget = BUDGETS.find((b) => b.value === preferences.budget);
   const { data: trips } = useTrips();
@@ -59,7 +61,7 @@ export default function TodayScreen() {
         </EmptyState>
       )}
 
-      {session && isSupabaseConfigured() && <OpenNowSection />}
+      {session && isSupabaseConfigured() && online && <OpenNowSection />}
 
       {(companion || budget) && (
         <View style={styles.section}>

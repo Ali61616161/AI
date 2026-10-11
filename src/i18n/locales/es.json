@@ -13,7 +13,8 @@
     "comingSoon": "Próximamente",
     "stepSoon": "Llega en el paso {{step}}",
     "edit": "Editar",
-    "done": "Listo"
+    "done": "Listo",
+    "close": "Cerrar"
   },
   "welcome": {
     "title": "Tu próximo viaje empieza aquí",
@@ -362,5 +363,29 @@
     "viewOnBooking": "Ver precios en Booking.com",
     "empty": "No se encontraron hoteles para este presupuesto.",
     "disclosure": "Yola puede recibir una comisión si reservas a través de estos enlaces. Tu precio no cambia."
+  },
+  "offline": {
+    "banner": "Sin conexión. Se muestran tu viaje, plan y documentos guardados.",
+    "title": "Usar este viaje sin conexión",
+    "description": "Guarda tu plan, el tiempo y los documentos de reserva en el teléfono para usarlos sin internet.",
+    "descriptionWeb": "Tu plan se guarda en este navegador. Los documentos pueden guardarse sin conexión en la app móvil.",
+    "ready": "Listo para usar sin conexión",
+    "savedAt_one": "Guardado {{date}} · {{count}} documento",
+    "savedAt_other": "Guardado {{date}} · {{count}} documentos",
+    "download": "Guardar sin conexión",
+    "update": "Actualizar",
+    "downloading": "Descargando {{done}}/{{total}}",
+    "failed": "No se pudo guardar. Revisa tu conexión e inténtalo de nuevo.",
+    "documents": "Documentos",
+    "documentsSubtitle": "Billetes y reservas guardados en este teléfono",
+    "noDocuments": "Aún no hay documentos guardados para este viaje.",
+    "aiUnavailable": "Sin conexión. Las funciones de IA volverán cuando te conectes."
+  },
+  "phrases": {
+    "title": "Frases de emergencia",
+    "subtitle": "Funciona sin internet. Toca una frase para verla en grande.",
+    "speak": "Leer en voz alta",
+    "showHint": "Muestra la frase en grande",
+    "tapToClose": "Toca en cualquier lugar para cerrar"
   }
 }

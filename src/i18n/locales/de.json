@@ -13,7 +13,8 @@
     "comingSoon": "Demnächst",
     "stepSoon": "Kommt in Schritt {{step}}",
     "edit": "Bearbeiten",
-    "done": "Fertig"
+    "done": "Fertig",
+    "close": "Schließen"
   },
   "welcome": {
     "title": "Deine nächste Reise beginnt hier",
@@ -362,5 +363,29 @@
     "viewOnBooking": "Preise auf Booking.com ansehen",
     "empty": "Keine Hotels für dieses Budget gefunden.",
     "disclosure": "Yola erhält eventuell eine Provision, wenn du über diese Links buchst. Dein Preis bleibt gleich."
+  },
+  "offline": {
+    "banner": "Du bist offline. Deine gespeicherte Reise, dein Plan und deine Dokumente werden angezeigt.",
+    "title": "Diese Reise offline nutzen",
+    "description": "Speichere Plan, Wetter und Buchungsdokumente auf diesem Handy, damit sie ohne Internet funktionieren.",
+    "descriptionWeb": "Dein Plan wird in diesem Browser gespeichert. Dokumente können in der mobilen App offline gespeichert werden.",
+    "ready": "Bereit für die Offline-Nutzung",
+    "savedAt_one": "Gespeichert am {{date}} · {{count}} Dokument",
+    "savedAt_other": "Gespeichert am {{date}} · {{count}} Dokumente",
+    "download": "Offline speichern",
+    "update": "Aktualisieren",
+    "downloading": "Lädt {{done}}/{{total}}",
+    "failed": "Speichern fehlgeschlagen. Prüfe deine Verbindung und versuche es erneut.",
+    "documents": "Dokumente",
+    "documentsSubtitle": "Auf diesem Handy gespeicherte Tickets und Buchungen",
+    "noDocuments": "Für diese Reise sind noch keine Dokumente gespeichert.",
+    "aiUnavailable": "Du bist offline. KI-Funktionen sind wieder da, sobald du verbunden bist."
+  },
+  "phrases": {
+    "title": "Notfallsätze",
+    "subtitle": "Funktioniert ohne Internet. Tippe auf einen Satz, um ihn groß anzuzeigen.",
+    "speak": "Vorlesen",
+    "showHint": "Zeigt den Satz groß an",
+    "tapToClose": "Zum Schließen irgendwo tippen"
   }
 }

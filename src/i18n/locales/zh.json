@@ -13,7 +13,8 @@
     "comingSoon": "即将推出",
     "stepSoon": "将在第 {{step}} 步推出",
     "edit": "编辑",
-    "done": "完成"
+    "done": "完成",
+    "close": "关闭"
   },
   "welcome": {
     "title": "你的下一段旅程从这里开始",
@@ -355,5 +356,28 @@
     "viewOnBooking": "在 Booking.com 查看价格",
     "empty": "未找到符合此预算的酒店。",
     "disclosure": "通过这些链接预订时，Yola 可能获得佣金，您的价格不变。"
+  },
+  "offline": {
+    "banner": "当前离线。正在显示已保存的行程、计划和文件。",
+    "title": "离线使用此行程",
+    "description": "将计划、天气和预订文件保存到手机，无网络也能查看。",
+    "descriptionWeb": "计划保存在此浏览器中。文件可在手机应用中离线保存。",
+    "ready": "已可离线使用",
+    "savedAt_other": "保存于 {{date}} · {{count}} 个文件",
+    "download": "保存以离线使用",
+    "update": "更新",
+    "downloading": "正在下载 {{done}}/{{total}}",
+    "failed": "保存失败。请检查网络后重试。",
+    "documents": "文件",
+    "documentsSubtitle": "保存在此手机上的票据和预订",
+    "noDocuments": "此行程尚未保存文件。",
+    "aiUnavailable": "当前离线。联网后即可使用 AI 功能。"
+  },
+  "phrases": {
+    "title": "紧急用语",
+    "subtitle": "无需网络。点击句子可放大显示。",
+    "speak": "朗读",
+    "showHint": "放大显示该句子",
+    "tapToClose": "点击任意处关闭"
   }
 }

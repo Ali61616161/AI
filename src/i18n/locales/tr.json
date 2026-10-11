@@ -13,7 +13,8 @@
     "comingSoon": "Yakında",
     "stepSoon": "{{step}}. adımda geliyor",
     "edit": "Düzenle",
-    "done": "Tamam"
+    "done": "Tamam",
+    "close": "Kapat"
   },
   "welcome": {
     "title": "Bir sonraki yolculuğun burada başlıyor",
@@ -362,5 +363,29 @@
     "viewOnBooking": "Booking.com'da fiyatları gör",
     "empty": "Bu bütçeye uygun otel bulunamadı.",
     "disclosure": "Bu bağlantılardan rezervasyon yaparsan Yola komisyon alabilir. Senin ödediğin fiyat değişmez."
+  },
+  "offline": {
+    "banner": "Çevrimdışısın. Kayıtlı seyahatin, planın ve belgelerin gösteriliyor.",
+    "title": "Bu seyahati çevrimdışı kullan",
+    "description": "Planını, hava tahminini ve rezervasyon belgelerini telefona kaydet; internet olmadan da açılsın.",
+    "descriptionWeb": "Planın bu tarayıcıda saklanıyor. Belgeler mobil uygulamada çevrimdışı kaydedilebilir.",
+    "ready": "Çevrimdışı kullanıma hazır",
+    "savedAt_one": "{{date}} kaydedildi · {{count}} belge",
+    "savedAt_other": "{{date}} kaydedildi · {{count}} belge",
+    "download": "Çevrimdışı için kaydet",
+    "update": "Güncelle",
+    "downloading": "İndiriliyor {{done}}/{{total}}",
+    "failed": "Kaydedilemedi. Bağlantını kontrol edip tekrar dene.",
+    "documents": "Belgeler",
+    "documentsSubtitle": "Telefona kaydedilen biletler ve rezervasyonlar",
+    "noDocuments": "Bu seyahat için kayıtlı belge yok.",
+    "aiUnavailable": "Çevrimdışısın. AI özellikleri bağlantı gelince geri gelecek."
+  },
+  "phrases": {
+    "title": "Acil durum cümleleri",
+    "subtitle": "İnternetsiz çalışır. Büyük yazıyla göstermek için cümleye dokun.",
+    "speak": "Sesli oku",
+    "showHint": "Cümleyi büyük yazıyla gösterir",
+    "tapToClose": "Kapatmak için herhangi bir yere dokun"
   }
 }
