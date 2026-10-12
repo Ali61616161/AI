@@ -52,7 +52,8 @@ Deno.serve(async (req) => {
     });
     return json({ ...normalizeVisa(raw), passport, destination, quota: { plan: quota.plan, remaining: quota.remaining } });
   } catch (e) {
-    console.error('travel-info failed', e instanceof GeminiError ? e.message : String(e));
-    return error('ai_failed', 502);
+    const message = e instanceof GeminiError ? e.message : String(e);
+    console.error('travel-info failed', message);
+    return error('ai_failed', 502, message.slice(0, 300));
   }
 });

@@ -50,7 +50,7 @@ jobs:
           check() {
             code=$(call "$2" "$3")
             if [ "$code" = 200 ]; then sum "- ✅ $1 — $(jq -r "$4" /tmp/out.json 2>/dev/null | head -c 160)"
-            else sum "- ❌ $1 — HTTP $code $(jq -r '.error.code // empty' /tmp/out.json 2>/dev/null)"; fi
+            else sum "- ❌ $1 — HTTP $code $(jq -r '"\(.error.code // "") \(.error.message // "")"' /tmp/out.json 2>/dev/null | head -c 300)"; fi
           }
           sum "### Servisler"
           check "Google Places (açık yerler)" places '{"action":"open_now","lat":41.0369,"lng":28.985,"category":"cafe"}' '"\(.places | length) yer, ör. \(.places[0].name // "-")"'
