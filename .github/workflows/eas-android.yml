@@ -65,6 +65,15 @@ jobs:
           page="https://expo.dev/accounts/akturan-group/projects/yola/builds/$(jq -r '.[0].id' build.json)"
           echo "Derleme sayfası: $page" | tee -a "$GITHUB_STEP_SUMMARY"
           [ -n "$url" ] && echo "Dosya: $url" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Hata ayrıntısı (EAS günlüğü)
+        if: failure()
+        run: |
+          npx eas-cli@latest build:list --platform android --limit 1 --json --non-interactive > last.json || exit 0
+          echo "Hata: $(jq -r '.[0].error.message // "-"' last.json)" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Derleme sayfası: https://expo.dev/accounts/akturan-group/projects/yola/builds/$(jq -r '.[0].id' last.json)" | tee -a "$GITHUB_STEP_SUMMARY"
+          for u in $(jq -r '.[0].logFiles[]? // empty' last.json); do
+            curl -sSL --compressed "$u" | jq -r 'select(.msg) | "[\(.phase // "-")] \(.msg)"' 2>/dev/null | tail -n 200 || true
+          done
       - name: Google Play'e gönder
         if: inputs.profile == 'production' && inputs.play_track != ''
         env:
