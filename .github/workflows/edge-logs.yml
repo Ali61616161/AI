@@ -1,0 +1,29 @@
+# Son Edge Function hata kayıtlarını gösterir (Supabase günlükleri). Anahtar yazdırmaz.
+name: Sunucu günlükleri
+
+on:
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: Kaç dakika geriye bakılsın
+        default: '60'
+
+jobs:
+  logs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Günlükler
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          MINUTES: ${{ inputs.minutes }}
+        run: |
+          ref=$(printf '%s' "$SUPABASE_PROJECT_REF" | tr -d '[:space:]')
+          token=$(printf '%s' "$SUPABASE_ACCESS_TOKEN" | tr -d '[:space:]')
+          echo "::add-mask::$token"
+          start=$(date -u -d "-${MINUTES:-60} minutes" +%Y-%m-%dT%H:%M:%SZ)
+          end=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          sql="select timestamp, event_message from function_logs where regexp_contains(event_message, '(?i)fail|error') order by timestamp desc limit 40"
+          curl -sS -G -H "Authorization: Bearer $token" "https://api.supabase.com/v1/projects/$ref/analytics/endpoints/logs.all" \
+            --data-urlencode "sql=$sql" --data-urlencode "iso_timestamp_start=$start" --data-urlencode "iso_timestamp_end=$end" \
+            | jq -r '.result[]? | "\(.timestamp) \(.event_message)"' | sed -E 's/(key=|AIza|AQ\.)[A-Za-z0-9_.-]{10,}/\1[gizli]/g' | tee -a "$GITHUB_STEP_SUMMARY"
