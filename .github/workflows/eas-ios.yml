@@ -11,6 +11,10 @@ on:
         description: App Store Connect uygulama numarası (Apple ID). Boşsa TestFlight'a gönderilmez.
         required: false
         default: ''
+      setup_credentials:
+        description: İlk kez Apple sertifikası ve profili oluştur (etkileşimli kurulum)
+        type: boolean
+        default: false
       team_type:
         description: Apple geliştirici hesabı türü
         type: choice
@@ -66,7 +70,13 @@ jobs:
       - run: npm ci
       - name: Expo hesabı
         run: npx eas-cli@latest whoami
+      - name: Derle (EAS, ilk kimlik kurulumu)
+        if: inputs.setup_credentials
+        run: |
+          pip install --quiet pexpect
+          python3 scripts/ci/eas-build-interactive.py
       - name: Derle (EAS)
+        if: ${{ !inputs.setup_credentials }}
         run: npx eas-cli@latest build --platform ios --profile production --non-interactive --wait
       - name: TestFlight'a gönder
         if: inputs.asc_app_id != ''
