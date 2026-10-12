@@ -44,3 +44,6 @@ example
 
 # web önizleme derlemesi
 dist-preview/
+
+# Python
+__pycache__/
