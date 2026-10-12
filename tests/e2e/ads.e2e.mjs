@@ -57,10 +57,11 @@ await step('İmzasız, sahte veya değiştirilmiş istek hak vermez', async () =
 });
 
 await step('Geçerli imzalı ödül +1 hak verir; aynı işlem iki kez sayılmaz', async () => {
-  const first = await reward({ userId, tx: 'same-tx' });
+  const tx = `same-tx-${Date.now()}`;
+  const first = await reward({ userId, tx });
   assert.equal(first.status, 200);
   assert.equal(first.data.result, 'granted');
-  assert.equal((await reward({ userId, tx: 'same-tx' })).data.result, 'duplicate');
+  assert.equal((await reward({ userId, tx })).data.result, 'duplicate');
   assert.equal((await places({ action: 'open_now', ...ROME, category: 'cafe' })).status, 200);
   assert.equal((await places({ action: 'open_now', ...ROME, category: 'cafe' })).status, 402, 'tek ödül tek hak');
 });
