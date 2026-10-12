@@ -1,0 +1,82 @@
+# Bir hesaba süresiz (bağış) Pro verir veya geri alır. Hesap yoksa e-postası doğrulanmış
+# olarak oluşturulur; kullanıcı e-posta koduyla giriş yapar. İsteğe bağlı OWNER_PASSWORD
+# GitHub sırrı tanımlıysa (ve set_password seçiliyse) hesaba bu şifre atanır — şifre hiçbir
+# yerde yazılmaz, sadece sırdan okunur.
+# Gerekli sırlar: SUPABASE_ACCESS_TOKEN, SUPABASE_PROJECT_REF.
+name: Pro ver
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: Hesabın e-posta adresi
+        required: true
+      action:
+        description: grant = Pro ver, revoke = geri al
+        type: choice
+        options: [grant, revoke]
+        default: grant
+      set_password:
+        description: OWNER_PASSWORD sırrındaki şifreyi hesaba ata
+        type: boolean
+        default: false
+
+jobs:
+  grant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hazırlık
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          EMAIL: ${{ inputs.email }}
+        run: |
+          ref=$(printf '%s' "$SUPABASE_PROJECT_REF" | tr -d '[:space:]')
+          token=$(printf '%s' "$SUPABASE_ACCESS_TOKEN" | tr -d '[:space:]')
+          [ -n "$ref" ] && [ -n "$token" ] || { echo "Supabase sırları eksik" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
+          email=$(printf '%s' "$EMAIL" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
+          # Sadece güvenli karakterler: SQL'e gömülmeden önce doğrulanır.
+          printf '%s' "$email" | grep -Eq '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$' || { echo "Geçersiz e-posta"; exit 1; }
+          echo "::add-mask::$token"
+          key=$(curl -sSf -H "Authorization: Bearer $token" "https://api.supabase.com/v1/projects/$ref/api-keys?reveal=true" \
+            | jq -r '(map(select(.name == "service_role")) + map(select(.type == "secret")))[0].api_key // empty')
+          [ -n "$key" ] || { echo "Servis anahtarı alınamadı"; exit 1; }
+          echo "::add-mask::$key"
+          { echo "REF=$ref"; echo "MGMT_TOKEN=$token"; echo "SERVICE_KEY=$key"; echo "EMAIL_NORM=$email"; } >> "$GITHUB_ENV"
+      - name: Hesap
+        env:
+          OWNER_PASSWORD: ${{ inputs.set_password && secrets.OWNER_PASSWORD || '' }}
+        run: |
+          sql() { curl -sSf -X POST -H "Authorization: Bearer $MGMT_TOKEN" -H 'Content-Type: application/json' \
+            "https://api.supabase.com/v1/projects/$REF/database/query" -d "$(jq -n --arg q "$1" '{query: $q}')"; }
+          auth="https://$REF.supabase.co/auth/v1/admin/users"
+          hdr=(-H "apikey: $SERVICE_KEY" -H "Authorization: Bearer $SERVICE_KEY" -H 'Content-Type: application/json')
+          id=$(sql "select id from auth.users where lower(email) = '$EMAIL_NORM' limit 1" | jq -r '.[0].id // empty')
+          if [ -z "$id" ]; then
+            body=$(jq -n --arg e "$EMAIL_NORM" --arg p "$OWNER_PASSWORD" '{email: $e, email_confirm: true, user_metadata: {language: "tr"}} + (if $p == "" then {} else {password: $p} end)')
+            id=$(curl -sSf -X POST "${hdr[@]}" "$auth" -d "$body" | jq -r '.id')
+            echo "Hesap oluşturuldu." | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Hesap zaten var." | tee -a "$GITHUB_STEP_SUMMARY"
+            if [ -n "$OWNER_PASSWORD" ]; then
+              curl -sSf -X PUT "${hdr[@]}" "$auth/$id" -d "$(jq -n --arg p "$OWNER_PASSWORD" '{password: $p}')" > /dev/null
+            fi
+          fi
+          [ -n "$OWNER_PASSWORD" ] && echo "Şifre OWNER_PASSWORD sırrından atandı." | tee -a "$GITHUB_STEP_SUMMARY"
+          printf '%s' "$id" | grep -Eq '^[0-9a-f-]{36}$' || { echo "Kullanıcı kimliği alınamadı"; exit 1; }
+          echo "USER_ID=$id" >> "$GITHUB_ENV"
+      - name: Pro
+        env:
+          ACTION: ${{ inputs.action }}
+        run: |
+          sql() { curl -sSf -X POST -H "Authorization: Bearer $MGMT_TOKEN" -H 'Content-Type: application/json' \
+            "https://api.supabase.com/v1/projects/$REF/database/query" -d "$(jq -n --arg q "$1" '{query: $q}')"; }
+          if [ "$ACTION" = grant ]; then
+            sql "insert into public.subscriptions (user_id, plan, status, store, product_id, original_transaction_id, expires_at)
+                 values ('$USER_ID', 'pro_yearly', 'active', 'promotional', 'yola_complimentary', 'complimentary:$USER_ID', null)
+                 on conflict (original_transaction_id) do update set status = 'active', plan = 'pro_yearly', expires_at = null" > /dev/null
+            echo "Süresiz Pro verildi." | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            sql "update public.subscriptions set status = 'cancelled' where original_transaction_id = 'complimentary:$USER_ID'" > /dev/null
+            echo "Bağış Pro geri alındı." | tee -a "$GITHUB_STEP_SUMMARY"
+          fi

@@ -18,8 +18,8 @@ export default function CompanionStep() {
         <Button title={t('common.continue')} disabled={!companion} onPress={() => router.push('/budget')} />
       }>
       <StepHeader
-        step={1}
-        total={3}
+        step={2}
+        total={4}
         title={t('onboarding.companionTitle')}
         subtitle={t('onboarding.companionSubtitle')}
       />

@@ -479,6 +479,46 @@ export type Database = {
           },
         ];
       };
+      place_visits: {
+        Row: {
+          category: string | null;
+          city: string | null;
+          created_at: string;
+          google_place_id: string;
+          id: string;
+          lat: number | null;
+          lng: number | null;
+          name: string;
+          user_id: string;
+          visited_on: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          category?: string | null;
+          city?: string | null;
+          created_at?: string;
+          google_place_id: string;
+          id?: string;
+          lat?: number | null;
+          lng?: number | null;
+          name: string;
+          user_id?: string;
+          visited_on?: string;
+        };
+        Update: {
+          category?: string | null;
+          city?: string | null;
+          created_at?: string;
+          google_place_id?: string;
+          id?: string;
+          lat?: number | null;
+          lng?: number | null;
+          name?: string;
+          user_id?: string;
+          visited_on?: string;
+        };
+        Relationships: [];
+      };
       plan_items: {
         Row: {
           address: string | null;
@@ -615,6 +655,7 @@ export type Database = {
           feature: Database['public']['Enums']['quota_feature'];
           per_day: number | null;
           per_trip: number | null;
+          per_week: number | null;
           plan: Database['public']['Enums']['subscription_plan'];
         };
         ComputedFields: never;
@@ -622,12 +663,14 @@ export type Database = {
           feature: Database['public']['Enums']['quota_feature'];
           per_day?: number | null;
           per_trip?: number | null;
+          per_week?: number | null;
           plan: Database['public']['Enums']['subscription_plan'];
         };
         Update: {
           feature?: Database['public']['Enums']['quota_feature'];
           per_day?: number | null;
           per_trip?: number | null;
+          per_week?: number | null;
           plan?: Database['public']['Enums']['subscription_plan'];
         };
         Relationships: [];
@@ -692,13 +735,18 @@ export type Database = {
           default_budget: Database['public']['Enums']['budget_tier'] | null;
           default_companion: Database['public']['Enums']['companion_type'] | null;
           display_name: string | null;
+          extra_visas: string[];
           gender: string;
+          home_city: string | null;
           home_country: string | null;
           home_currency: string;
+          home_lat: number | null;
+          home_lng: number | null;
           id: string;
           identity_verified_at: string | null;
           interests: string[];
           onboarding_completed_at: string | null;
+          other_passports: string[];
           passport_country: string | null;
           preferred_language: string;
           updated_at: string;
@@ -712,13 +760,18 @@ export type Database = {
           default_budget?: Database['public']['Enums']['budget_tier'] | null;
           default_companion?: Database['public']['Enums']['companion_type'] | null;
           display_name?: string | null;
+          extra_visas?: string[];
           gender?: string;
+          home_city?: string | null;
           home_country?: string | null;
           home_currency?: string;
+          home_lat?: number | null;
+          home_lng?: number | null;
           id: string;
           identity_verified_at?: string | null;
           interests?: string[];
           onboarding_completed_at?: string | null;
+          other_passports?: string[];
           passport_country?: string | null;
           preferred_language?: string;
           updated_at?: string;
@@ -731,16 +784,49 @@ export type Database = {
           default_budget?: Database['public']['Enums']['budget_tier'] | null;
           default_companion?: Database['public']['Enums']['companion_type'] | null;
           display_name?: string | null;
+          extra_visas?: string[];
           gender?: string;
+          home_city?: string | null;
           home_country?: string | null;
           home_currency?: string;
+          home_lat?: number | null;
+          home_lng?: number | null;
           id?: string;
           identity_verified_at?: string | null;
           interests?: string[];
           onboarding_completed_at?: string | null;
+          other_passports?: string[];
           passport_country?: string | null;
           preferred_language?: string;
           updated_at?: string;
+        };
+        Relationships: [];
+      };
+      quota_bonuses: {
+        Row: {
+          amount: number;
+          created_at: string;
+          feature: Database['public']['Enums']['quota_feature'];
+          id: number;
+          transaction_id: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          amount?: number;
+          created_at?: string;
+          feature: Database['public']['Enums']['quota_feature'];
+          id?: never;
+          transaction_id: string;
+          user_id: string;
+        };
+        Update: {
+          amount?: number;
+          created_at?: string;
+          feature?: Database['public']['Enums']['quota_feature'];
+          id?: never;
+          transaction_id?: string;
+          user_id?: string;
         };
         Relationships: [];
       };
@@ -837,6 +923,49 @@ export type Database = {
             referencedColumns: ['id'];
           },
         ];
+      };
+      saved_places: {
+        Row: {
+          address: string | null;
+          category: string | null;
+          created_at: string;
+          google_place_id: string;
+          id: string;
+          lat: number | null;
+          list_name: string;
+          lng: number | null;
+          maps_url: string | null;
+          name: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          address?: string | null;
+          category?: string | null;
+          created_at?: string;
+          google_place_id: string;
+          id?: string;
+          lat?: number | null;
+          list_name?: string;
+          lng?: number | null;
+          maps_url?: string | null;
+          name: string;
+          user_id?: string;
+        };
+        Update: {
+          address?: string | null;
+          category?: string | null;
+          created_at?: string;
+          google_place_id?: string;
+          id?: string;
+          lat?: number | null;
+          list_name?: string;
+          lng?: number | null;
+          maps_url?: string | null;
+          name?: string;
+          user_id?: string;
+        };
+        Relationships: [];
       };
       social_profiles: {
         Row: {
@@ -1250,7 +1379,21 @@ export type Database = {
         Args: { p_days: Json; p_end: string; p_start: string; p_summary?: string; p_trip_id: string };
         Returns: string;
       };
+      bonus_today: {
+        Args: { p_feature: Database['public']['Enums']['quota_feature']; p_user: string };
+        Returns: number;
+      };
       can_edit_trip: { Args: { p_trip_id: string }; Returns: boolean };
+      city_passport_stats: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          categories: number;
+          places: number;
+          this_month: number;
+          visits: number;
+          week_streak: number;
+        }[];
+      };
       consume_quota: {
         Args: {
           p_amount?: number;
@@ -1288,6 +1431,14 @@ export type Database = {
       current_plan: {
         Args: { p_trip_id?: string };
         Returns: Database['public']['Enums']['subscription_plan'];
+      };
+      grant_ad_reward: {
+        Args: {
+          p_feature: Database['public']['Enums']['quota_feature'];
+          p_transaction_id: string;
+          p_user: string;
+        };
+        Returns: string;
       };
       has_consent: { Args: { p_consent: Database['public']['Enums']['consent_type'] }; Returns: boolean };
       is_blocked_between: { Args: { p_a: string; p_b: string }; Returns: boolean };
@@ -1335,9 +1486,11 @@ export type Database = {
         Returns: {
           per_day: number;
           per_trip: number;
+          per_week: number;
           plan: Database['public']['Enums']['subscription_plan'];
           used_today: number;
           used_trip: number;
+          used_week: number;
         }[];
       };
       respond_invite: {
@@ -1367,6 +1520,8 @@ export type Database = {
         };
         Returns: string;
       };
+      valid_country_codes: { Args: { p_codes: string[]; p_max: number }; Returns: boolean };
+      valid_extra_visas: { Args: { p_keys: string[] }; Returns: boolean };
     };
     Enums: {
       budget_tier: 'low' | 'mid' | 'lux';
@@ -1389,7 +1544,10 @@ export type Database = {
         | 'voice_translation'
         | 'travel_info'
         | 'weather'
-        | 'trip_report';
+        | 'trip_report'
+        | 'city_plan'
+        | 'getaway'
+        | 'spin';
       report_reason: 'harassment' | 'fake_profile' | 'unsafe_behavior' | 'spam' | 'other';
       reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
       subscription_plan: 'free' | 'trip_pass' | 'pro_monthly' | 'pro_yearly';
@@ -1532,6 +1690,9 @@ export const Constants = {
         'travel_info',
         'weather',
         'trip_report',
+        'city_plan',
+        'getaway',
+        'spin',
       ],
       report_reason: ['harassment', 'fake_profile', 'unsafe_behavior', 'spam', 'other'],
       reservation_type: ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'],

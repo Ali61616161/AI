@@ -120,6 +120,8 @@ export function rowFromWebhook(event: any, products: ProductMap, now = Date.now(
 }
 
 export const PRO_PLANS: Plan[] = ['pro_monthly', 'pro_yearly'];
+/** Elle verilen (bağış) Pro'nun ürün kimliği. Mağaza eşitlemesi bu kayıtları kapatmaz. */
+export const COMPLIMENTARY_PRODUCT_ID = 'yola_complimentary';
 
 /**
  * TRANSFER olayında satın almanın taşındığı eski kullanıcılar. Bu kullanıcıların Pro

@@ -8,14 +8,16 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { Brand } from '@/config/brand';
-import { fillLegal, LEGAL, type LegalLanguage } from '@/features/legal/content';
+import { fillLegal, LEGAL, type LegalDocKey, type LegalLanguage } from '@/features/legal/content';
 import { Spacing } from '@/theme/tokens';
 
-/** Gizlilik politikası ve kullanım koşulları (Türkçe veya İngilizce). */
+const DOCS: LegalDocKey[] = ['terms', 'privacy', 'kvkk'];
+
+/** Kullanım koşulları, gizlilik politikası ve KVKK aydınlatma metni (Türkçe veya İngilizce). Giriş yapmadan da açılır. */
 export default function LegalScreen() {
   const { t, i18n } = useTranslation();
-  const params = useLocalSearchParams<{ doc?: 'privacy' | 'terms' }>();
-  const [doc, setDoc] = useState<'privacy' | 'terms'>(params.doc ?? 'privacy');
+  const params = useLocalSearchParams<{ doc?: LegalDocKey }>();
+  const [doc, setDoc] = useState<LegalDocKey>(params.doc && DOCS.includes(params.doc) ? params.doc : 'privacy');
   const lang: LegalLanguage = i18n.language === 'tr' ? 'tr' : 'en';
   const content = LEGAL[lang][doc];
   const values = Brand.legal as unknown as Record<string, string>;
@@ -24,8 +26,9 @@ export default function LegalScreen() {
     <Screen>
       <ModalHeader title={content.title} subtitle={t('legal.effective', { date: Brand.legal.effectiveDate })} />
       <View style={styles.chips}>
-        <Chip label={LEGAL[lang].privacy.title} selected={doc === 'privacy'} onPress={() => setDoc('privacy')} />
-        <Chip label={LEGAL[lang].terms.title} selected={doc === 'terms'} onPress={() => setDoc('terms')} />
+        {DOCS.map((d) => (
+          <Chip key={d} label={LEGAL[lang][d].title} selected={doc === d} onPress={() => setDoc(d)} />
+        ))}
       </View>
       {lang === 'en' && i18n.language !== 'en' && (
         <Text variant="caption" color="textMuted">
@@ -45,6 +48,6 @@ export default function LegalScreen() {
 }
 
 const styles = StyleSheet.create({
-  chips: { flexDirection: 'row', gap: Spacing.sm },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   section: { gap: Spacing.xs },
 });

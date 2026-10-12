@@ -17,6 +17,8 @@ import { useTrip } from '@/features/trips/queries';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 import { RewardedButton } from '@/features/ads/rewarded-button';
+import { AccessBadge } from '@/features/identity/access-badge';
+import { useSessionStore } from '@/stores/session-store';
 
 const TONE = {
   visa_free: 'success',
@@ -31,13 +33,15 @@ const TONE = {
 export default function VisaScreen() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const { tripId } = useLocalSearchParams<{ tripId?: string }>();
+  const { tripId, destination: destParam } = useLocalSearchParams<{ tripId?: string; destination?: string }>();
   const { data: trip } = useTrip(tripId);
   const { data: profile } = useProfileCountries();
   const savePassport = useSavePassport();
-  const [destination, setDestination] = useState<string | null>(null);
+  const identity = useSessionStore((s) => s.identity);
+  const setIdentity = useSessionStore((s) => s.setIdentity);
+  const [destination, setDestination] = useState<string | null>(destParam ?? null);
   const dest = destination ?? trip?.trip_destinations[0]?.country_code ?? null;
-  const passport = profile?.passport_country ?? null;
+  const passport = profile?.passport_country ?? identity.passport ?? null;
   const visa = useVisaInfo(passport, dest);
 
   const options = useMemo(
@@ -57,11 +61,16 @@ export default function VisaScreen() {
       <Text variant="overline" color="textMuted">
         {t('visa.passport')}
       </Text>
-      <SelectSheet label={t('visa.passport')} value={passport} options={options} placeholder={t('visa.choose')} onChange={(c) => savePassport.mutate(c)} />
+      <SelectSheet label={t('visa.passport')} value={passport} options={options} placeholder={t('visa.choose')} onChange={(c) => {
+          setIdentity({ passport: c });
+          if (useSessionStore.getState().session) savePassport.mutate(c);
+        }} />
       <Text variant="overline" color="textMuted">
         {t('visa.destination')}
       </Text>
       <SelectSheet label={t('visa.destination')} value={dest} options={options} placeholder={t('visa.choose')} onChange={setDestination} />
+
+      {passport && dest && <AccessBadge passports={[passport, ...identity.otherPassports.filter((p) => p !== passport)]} extras={identity.extraVisas} destination={dest} />}
 
       {visa.isFetching ? (
         <ActivityIndicator />

@@ -10,6 +10,6 @@ import { useIsSignedIn, useSessionStore } from '@/stores/session-store';
 export default function NotFound() {
   const signedIn = useIsSignedIn();
   const onboarded = useSessionStore((s) => s.onboardingCompleted);
-  const href = !signedIn ? '/welcome' : !onboarded ? '/companion' : '/';
+  const href = !signedIn ? '/welcome' : !onboarded ? '/identity' : '/';
   return <Redirect href={href} />;
 }

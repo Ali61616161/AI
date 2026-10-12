@@ -16,6 +16,8 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { adPrivacyOptionsAvailable, openAdPrivacyOptions } from '@/features/ads/privacy-options';
+import { PassportCard } from '@/features/identity/passport-card';
+import { usePassportPower } from '@/features/identity/use-passport-power';
 import { clearOfflineData } from '@/features/offline/download';
 import { useCurrentPlan } from '@/features/subscription/purchases';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
@@ -42,6 +44,8 @@ export default function ProfileScreen() {
   const { colors } = useTheme();
   const session = useSessionStore((s) => s.session);
   const preferences = useSessionStore((s) => s.preferences);
+  const identity = useSessionStore((s) => s.identity);
+  const power = usePassportPower(identity);
   const signOut = useSessionStore((s) => s.signOut);
   const appearance = useAppearanceStore((s) => s.appearance);
   const setAppearance = useAppearanceStore((s) => s.setAppearance);
@@ -141,6 +145,26 @@ export default function ProfileScreen() {
       )}
 
       <View style={styles.section}>
+        <SectionHeader title={t('passport.title')} action={t('passport.open')} onAction={() => router.push('/passport')} />
+        {power ? (
+          <PassportCard passports={[identity.passport, ...identity.otherPassports].filter((p): p is string => !!p)} power={power} onPress={() => router.push('/passport')} />
+        ) : (
+          <Card variant="glow" onPress={() => router.push('/passport')} accessibilityLabel={t('passport.addTitle')}>
+            <View style={styles.identity}>
+              <IconBadge icon="earth" size={46} />
+              <View style={styles.identityText}>
+                <Text variant="bodyStrong">{t('passport.addTitle')}</Text>
+                <Text variant="caption" color="textSecondary">
+                  {t('passport.addBody')}
+                </Text>
+              </View>
+              <DirIcon name="chevron-forward" size={18} color={colors.textSecondary} />
+            </View>
+          </Card>
+        )}
+      </View>
+
+      <View style={styles.section}>
         <SectionHeader title={t('profile.preferences')} action={t('profile.editPreferences')} onAction={() => router.push('/preferences')} />
         <Card>
           <Row label={t('profile.companion')} value={preferences.companion ? t(`companion.${preferences.companion}`) : notSet} />
@@ -183,6 +207,7 @@ export default function ProfileScreen() {
         <Card padding={Spacing.xs}>
           <ListRow icon="shield-checkmark-outline" label={t('legal.privacy')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />
           <ListRow icon="document-text-outline" label={t('legal.terms')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })} />
+          <ListRow icon="reader-outline" label={t('legal.kvkk')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'kvkk' } })} />
           {adPrivacyOptionsAvailable && !isPro && <ListRow icon="megaphone-outline" label={t('ads.privacyOptions')} onPress={openAdPrivacyOptions} />}
           <ListRow icon="log-out-outline" label={t('profile.signOut')} onPress={handleSignOut} />
           {session && isSupabaseConfigured() && !confirmDelete && (

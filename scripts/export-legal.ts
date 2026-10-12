@@ -26,7 +26,7 @@ ${body}
 `;
 }
 
-for (const [kind, slug] of [['privacy', 'privacy'], ['terms', 'terms']] as const) {
+for (const [kind, slug] of [['privacy', 'privacy'], ['terms', 'terms'], ['kvkk', 'kvkk']] as const) {
   for (const lang of ['en', 'tr'] as const) {
     const dir = new URL(`../docs/${slug}/${lang === 'en' ? '' : 'tr/'}`, import.meta.url);
     mkdirSync(dir, { recursive: true });
@@ -38,7 +38,7 @@ writeFileSync(
   new URL('../docs/index.html', import.meta.url),
   `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(brand.name)}</title></head>
 <body style="font:16px/1.6 system-ui,sans-serif;max-width:720px;margin:0 auto;padding:24px 16px"><h1 style="color:#FF6B4A">${esc(brand.storeName)}</h1>
-<p><a href="privacy/">Privacy Policy</a> · <a href="terms/">Terms of Use</a> · <a href="privacy/tr/">Gizlilik Politikası</a> · <a href="terms/tr/">Kullanım Koşulları</a></p>
+<p><a href="privacy/">Privacy Policy</a> · <a href="terms/">Terms of Use</a> · <a href="privacy/tr/">Gizlilik Politikası</a> · <a href="terms/tr/">Kullanım Koşulları</a> · <a href="kvkk/tr/">KVKK Aydınlatma Metni</a></p>
 <p>Support: ${esc(values.supportEmail)}</p></body></html>\n`,
 );
 console.log('docs/ güncellendi');

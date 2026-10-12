@@ -11,6 +11,8 @@ import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { currentLanguage } from '@/i18n';
 import { useSessionStore } from '@/stores/session-store';
 import { completeSignIn } from '@/features/auth/complete-sign-in';
+import { LEGAL_VERSION } from '@/features/legal/content';
+import { ConsentBox } from '@/features/legal/consent-box';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -24,6 +26,14 @@ export default function SignInScreen() {
   const [withPassword, setWithPassword] = useState(false);
   const [password, setPassword] = useState('');
   const configured = isSupabaseConfigured();
+  const saved = useSessionStore((s) => s.consents);
+  const setConsents = useSessionStore((s) => s.setConsents);
+  const [consent, setConsent] = useState({ accepted: saved?.version === LEGAL_VERSION, marketing: saved?.marketing ?? false });
+
+  // Onaylar telefonda tutulur, giriş tamamlanınca hesaba yazılır (complete-sign-in).
+  function rememberConsent() {
+    setConsents({ version: LEGAL_VERSION, marketing: consent.marketing });
+  }
 
   // Şifreyle giriş: mağaza inceleme hesabı gibi e-posta kodu alamayan hesaplar için.
   async function signInWithPassword() {
@@ -34,6 +44,7 @@ export default function SignInScreen() {
     }
     setError(null);
     setLoading(true);
+    rememberConsent();
     const { data, error: signInError } = await getSupabase().auth.signInWithPassword({ email: value, password });
     if (signInError || !data.session) {
       setLoading(false);
@@ -52,6 +63,7 @@ export default function SignInScreen() {
     }
     setError(null);
     setLoading(true);
+    rememberConsent();
     const { error: otpError } = await getSupabase().auth.signInWithOtp({
       email: value,
       // Yeni kullanıcının profili bu dille oluşturulur (handle_new_user tetikleyicisi).
@@ -73,7 +85,7 @@ export default function SignInScreen() {
             title={withPassword ? t('auth.signInWithPassword') : t('auth.sendCode')}
             onPress={withPassword ? signInWithPassword : sendCode}
             loading={loading}
-            disabled={!configured}
+            disabled={!configured || !consent.accepted}
           />
           {!isGuest && (
             <Button
@@ -116,6 +128,7 @@ export default function SignInScreen() {
           onSubmitEditing={signInWithPassword}
         />
       )}
+      {configured && <ConsentBox value={consent} onChange={setConsent} />}
       {configured ? (
         <Button title={withPassword ? t('auth.useCode') : t('auth.usePassword')} variant="ghost" onPress={() => setWithPassword((v) => !v)} />
       ) : (

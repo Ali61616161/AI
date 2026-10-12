@@ -831,7 +831,8 @@
     "effective": "Effective {{date}}",
     "englishOnly": "Available in English and Turkish.",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Use"
+    "terms": "Terms of Use",
+    "kvkk": "KVKK notice"
   },
   "decide": {
     "title": "Decide for me",
@@ -876,5 +877,119 @@
     "rewardGranted": "+1 added. Try again.",
     "rewardFailed": "Couldn't verify the reward. Try again shortly.",
     "privacyOptions": "Ad preferences"
+  },
+  "consent": {
+    "termsLabel": "I accept the Terms of Use and have read the Privacy Policy",
+    "terms": "I accept the <terms>Terms of Use</terms>, have read the <privacy>Privacy Policy</privacy> and the <kvkk>KVKK notice</kvkk>, and I am at least 13 years old.",
+    "marketing": "Send me travel ideas, deals and news by email (optional, you can stop anytime).",
+    "guestNote": "By continuing you accept the"
+  },
+  "intro": {
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Let’s go",
+    "page": "Page {{page}} of {{total}}",
+    "passportCard": "PASSPORT",
+    "plan": {
+      "overline": "AI travel planner",
+      "title": "Drop your tickets, get your route",
+      "body": "Yola reads your flight and hotel bookings and builds an hour-by-hour plan with real, open places."
+    },
+    "city": {
+      "overline": "My City",
+      "title": "Your city, new every week",
+      "body": "Tonight’s plan, a café you haven’t tried, a cheap getaway two hours away. Not just for holidays."
+    },
+    "spin": {
+      "overline": "Spin the wheel",
+      "title": "Can’t decide? Let the wheel pick",
+      "body": "Only places that fit your budget, the season and your passport. Share the result with friends."
+    },
+    "passport": {
+      "overline": "Passport power",
+      "title": "See where you can go",
+      "body": "Add your citizenship and visas: we show every country you can enter visa-free, on arrival or with an e-visa."
+    }
+  },
+  "identity": {
+    "title": "Your passport and city",
+    "subtitle": "We use this to show where you can travel and to suggest plans near you.",
+    "citizenship": "Citizenship",
+    "otherCitizenship": "Other citizenship",
+    "choose": "Choose a country",
+    "removeCitizenship": "Remove citizenship",
+    "addCitizenship": "I have another citizenship",
+    "extraVisas": "Visas and residence permits",
+    "extraVisasHint": "Holding a valid one opens more countries. Choose all you currently have.",
+    "group": {
+      "visas": "Valid visas",
+      "residence": "Residence permits"
+    },
+    "homeCity": "Home city",
+    "homeCityHint": "For My City plans and nearby getaways. Stored only at city level.",
+    "homeCityPlaceholder": "e.g. Istanbul",
+    "homeCountry": "Country of your city",
+    "useLocation": "Use my location",
+    "locateFailed": "We couldn’t find your city. Type it instead.",
+    "disclaimer": "Visa information is based on public data and official pages and can change. Always check with official sources before you travel."
+  },
+  "visaType": {
+    "schengen_visa": "Schengen visa",
+    "us_visa": "US visa",
+    "uk_visa": "UK visa",
+    "ca_visa": "Canada visa",
+    "au_visa": "Australia visa",
+    "nz_visa": "New Zealand visa",
+    "jp_visa": "Japan visa",
+    "ie_visa": "Ireland visa",
+    "kr_visa": "South Korea visa",
+    "eu_residence": "Schengen/EU residence permit",
+    "us_green_card": "US Green Card",
+    "uk_residence": "UK residence permit",
+    "ca_pr": "Canada PR",
+    "au_pr": "Australia PR",
+    "jp_residence": "Japan residence card",
+    "gcc_residence": "Gulf (GCC) residence"
+  },
+  "passport": {
+    "title": "My passport",
+    "subtitle": "Passport power and where you can go",
+    "open": "Details",
+    "addTitle": "How strong is your passport?",
+    "addBody": "Add your citizenship and visas to see every country you can enter.",
+    "rank": "World #{{rank}}",
+    "easyCount": "countries without a visa in advance",
+    "breakdownA11y": "Visa-free {{free}}, on arrival {{arrival}}, travel authorisation {{eta}}, e-visa {{evisa}}, visa required {{required}}",
+    "legend": "{{free}} visa-free · {{arrival}} on arrival/eTA · {{evisa}} e-visa",
+    "unlocked_one": "+{{count}} thanks to your visas",
+    "unlocked_other": "+{{count}} thanks to your visas",
+    "noExtraVisas": "No extra visas added",
+    "livesIn": "Lives in {{city}}",
+    "edit": "Edit",
+    "whereTitle": "Where can I go?",
+    "filter": {
+      "easy": "No visa needed",
+      "evisa": "E-visa",
+      "visa_required": "Visa required"
+    },
+    "emptyTitle": "No countries here",
+    "emptyBody": "Try another filter or search."
+  },
+  "access": {
+    "own": "Your country",
+    "visa_free": "Visa-free",
+    "visa_on_arrival": "Visa on arrival",
+    "eta": "Online travel authorisation",
+    "evisa": "E-visa",
+    "visa_required": "Visa required",
+    "no_admission": "Entry not permitted",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "viaVisa": "Possible thanks to your {{visa}}",
+    "condition": "Condition",
+    "source": "Official source",
+    "viaPassport": "With your {{flag}} passport",
+    "dataNote": "Passport data: {{date}}. Check official sources before you travel.",
+    "withVisa": "with your visa"
   }
 }

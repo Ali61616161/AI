@@ -601,7 +601,70 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '17. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '17. v1.1: vatandaşlık ve vizeler, kayıtlı/gidilen yerler, haftalık kota, bağış Pro'
+reset role;
+-- Bea'ya bağış (süresiz) Pro verilir.
+insert into public.subscriptions (user_id, plan, status, store, product_id, original_transaction_id, expires_at)
+values ('00000000-0000-0000-0000-00000000000b', 'pro_yearly', 'active', 'promotional', 'yola_complimentary', 'complimentary:b', null);
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$
+declare r record; i integer; s record;
+begin
+  update public.profiles set passport_country = 'TR', other_passports = '{DE}', extra_visas = '{schengen_visa,us_visa}',
+    home_city = 'İstanbul', home_country = 'TR', home_lat = 41.01, home_lng = 28.98 where id = auth.uid();
+  assert tests.throws($q$ update public.profiles set extra_visas = '{fake_visa}' where id = auth.uid() $q$), 'bilinmeyen vize türü reddedilmeli';
+  assert tests.throws($q$ update public.profiles set other_passports = '{tr}' where id = auth.uid() $q$), 'ülke kodu büyük harf 2 karakter olmalı';
+  assert tests.throws($q$ update public.profiles set other_passports = '{DE,FR,IT,ES}' where id = auth.uid() $q$), 'en fazla 3 ek pasaport';
+  assert tests.throws($q$ update public.profiles set home_lat = 41.0123 where id = auth.uid() $q$) or
+    (select home_lat from public.profiles where id = auth.uid()) = 41.01, 'şehir konumu ~1 km hassasiyette saklanmalı';
+
+  -- Ücretsiz: tek liste, başka liste adı Pro ister.
+  insert into public.saved_places (google_place_id, name) values ('p1', 'Kafe');
+  assert tests.throws($q$ insert into public.saved_places (list_name, google_place_id, name) values ('date', 'p2', 'Restoran') $q$), 'ücretsizde ek liste olmamalı';
+  assert tests.throws($q$ insert into public.saved_places (user_id, google_place_id, name) values ('00000000-0000-0000-0000-00000000000b', 'p3', 'X') $q$), 'başkası adına kayıt olmamalı';
+
+  -- Şehir pasaportu: bu hafta ve geçen hafta → seri 2.
+  insert into public.place_visits (google_place_id, name, category, visited_on) values
+    ('p1', 'Kafe', 'cafe', current_date), ('p9', 'Park', 'park', current_date - 7), ('p1', 'Kafe', 'cafe', current_date - 21);
+  select * into s from public.city_passport_stats();
+  assert s.places = 2 and s.visits = 3 and s.categories = 2, format('istatistik yanlış: %s', s);
+  assert s.week_streak = 2, format('seri 2 olmalı, %s', s.week_streak);
+  assert tests.throws($q$ insert into public.place_visits (google_place_id, name, visited_on) values ('p5', 'Gelecek', current_date + 5) $q$), 'gelecek tarihli ziyaret olmamalı';
+
+  -- Haftalık kota: Şehrim planı haftada 1; çark günde 1.
+  select * into r from public.consume_quota('city_plan');
+  assert r.allowed and r.remaining = 0;
+  select * into r from public.consume_quota('city_plan');
+  assert not r.allowed, 'ücretsizde haftada 1 şehir planı';
+  select * into r from public.quota_status('city_plan');
+  assert r.per_week = 1 and r.used_week = 1;
+  select * into r from public.consume_quota('spin');
+  assert r.allowed;
+  select * into r from public.consume_quota('spin');
+  assert not r.allowed, 'ücretsizde günde 1 çark';
+end $$;
+
+-- Bea (bağış Pro): sınırsız çark ve ek listeler.
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$
+declare r record; i integer;
+begin
+  assert public.current_plan() = 'pro_yearly', 'bağış Pro geçerli olmalı';
+  for i in 1..5 loop
+    select * into r from public.consume_quota('spin');
+    assert r.allowed, 'Pro sınırsız çark';
+  end loop;
+  insert into public.saved_places (list_name, google_place_id, name) values ('date', 'p2', 'Restoran');
+  assert (select count(*) from public.saved_places) = 1, 'herkes sadece kendi kayıtlı yerlerini görür';
+end $$;
+reset role;
+do $$ begin
+  assert public.grant_ad_reward('00000000-0000-0000-0000-00000000000c', 'spin', 'tx-spin-1') = 'granted', 'çark ödüllü reklamla açılabilmeli';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '18. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

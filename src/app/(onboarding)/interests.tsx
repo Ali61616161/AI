@@ -45,8 +45,8 @@ export default function InterestsStep() {
         </>
       }>
       <StepHeader
-        step={3}
-        total={3}
+        step={4}
+        total={4}
         title={t('onboarding.interestsTitle')}
         subtitle={t('onboarding.interestsSubtitle')}
       />

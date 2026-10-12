@@ -831,7 +831,8 @@
     "effective": "Yürürlük: {{date}}",
     "englishOnly": "Türkçe ve İngilizce olarak sunulur.",
     "privacy": "Gizlilik Politikası",
-    "terms": "Kullanım Koşulları"
+    "terms": "Kullanım Koşulları",
+    "kvkk": "KVKK Aydınlatma Metni"
   },
   "decide": {
     "title": "Kararsızım",
@@ -876,5 +877,119 @@
     "rewardGranted": "+1 hak eklendi. Tekrar dene.",
     "rewardFailed": "Ödül doğrulanamadı. Biraz sonra tekrar dene.",
     "privacyOptions": "Reklam tercihleri"
+  },
+  "consent": {
+    "termsLabel": "Kullanım Koşulları'nı kabul ediyorum ve Gizlilik Politikası'nı okudum",
+    "terms": "<terms>Kullanım Koşulları</terms>'nı kabul ediyorum; <privacy>Gizlilik Politikası</privacy> ve <kvkk>KVKK Aydınlatma Metni</kvkk>'ni okudum. 13 yaşından büyüğüm.",
+    "marketing": "Seyahat fikirleri, fırsatlar ve yenilikler e-postayla gelsin (isteğe bağlı, istediğin an durdurabilirsin).",
+    "guestNote": "Devam ederek şunu kabul etmiş olursun:"
+  },
+  "intro": {
+    "skip": "Geç",
+    "next": "İleri",
+    "start": "Başlayalım",
+    "page": "Sayfa {{page}} / {{total}}",
+    "passportCard": "PASAPORT",
+    "plan": {
+      "overline": "AI seyahat planlayıcı",
+      "title": "Biletini yükle, rotan hazır",
+      "body": "Yola uçak ve otel rezervasyonlarını okur, gerçekten açık olan yerlerle saat saat plan çıkarır."
+    },
+    "city": {
+      "overline": "Şehrim",
+      "title": "Şehrin her hafta yeni",
+      "body": "Bu akşamın planı, henüz denemediğin bir kafe, iki saat ötede ucuz bir kaçamak. Sadece tatilde değil."
+    },
+    "spin": {
+      "overline": "Çarkı çevir",
+      "title": "Karar veremiyor musun? Çark seçsin",
+      "body": "Sadece bütçene, mevsime ve pasaportuna uyan yerler. Sonucu arkadaşlarınla paylaş."
+    },
+    "passport": {
+      "overline": "Pasaport gücü",
+      "title": "Nereye gidebileceğini gör",
+      "body": "Vatandaşlığını ve vizelerini ekle: vizesiz, kapıda vizeyle veya e-vizeyle girebileceğin her ülkeyi gösterelim."
+    }
+  },
+  "identity": {
+    "title": "Pasaportun ve şehrin",
+    "subtitle": "Nereye gidebileceğini göstermek ve sana yakın planlar önermek için kullanırız.",
+    "citizenship": "Vatandaşlık",
+    "otherCitizenship": "Diğer vatandaşlık",
+    "choose": "Ülke seç",
+    "removeCitizenship": "Vatandaşlığı kaldır",
+    "addCitizenship": "Başka vatandaşlığım da var",
+    "extraVisas": "Vizeler ve oturum izinleri",
+    "extraVisasHint": "Geçerli bir vize veya oturum iznin varsa daha fazla ülke açılır. Şu an sahip olduklarının hepsini seç.",
+    "group": {
+      "visas": "Geçerli vizeler",
+      "residence": "Oturum izinleri"
+    },
+    "homeCity": "Yaşadığın şehir",
+    "homeCityHint": "Şehrim planları ve yakın kaçamaklar için. Sadece şehir düzeyinde saklanır.",
+    "homeCityPlaceholder": "ör. İstanbul",
+    "homeCountry": "Şehrin bulunduğu ülke",
+    "useLocation": "Konumumu kullan",
+    "locateFailed": "Şehrini bulamadık. Elle yazabilirsin.",
+    "disclaimer": "Vize bilgileri herkese açık verilere ve resmi sayfalara dayanır, değişebilir. Seyahatten önce mutlaka resmi kaynaklardan kontrol et."
+  },
+  "visaType": {
+    "schengen_visa": "Schengen vizesi",
+    "us_visa": "ABD vizesi",
+    "uk_visa": "İngiltere vizesi",
+    "ca_visa": "Kanada vizesi",
+    "au_visa": "Avustralya vizesi",
+    "nz_visa": "Yeni Zelanda vizesi",
+    "jp_visa": "Japonya vizesi",
+    "ie_visa": "İrlanda vizesi",
+    "kr_visa": "Güney Kore vizesi",
+    "eu_residence": "Schengen/AB oturum izni",
+    "us_green_card": "ABD Green Card",
+    "uk_residence": "İngiltere oturum izni",
+    "ca_pr": "Kanada daimi oturum",
+    "au_pr": "Avustralya daimi oturum",
+    "jp_residence": "Japonya oturum kartı",
+    "gcc_residence": "Körfez (GCC) oturum izni"
+  },
+  "passport": {
+    "title": "Pasaportum",
+    "subtitle": "Pasaport gücü ve gidebileceğin yerler",
+    "open": "Ayrıntılar",
+    "addTitle": "Pasaportun ne kadar güçlü?",
+    "addBody": "Vatandaşlığını ve vizelerini ekle, girebileceğin her ülkeyi gör.",
+    "rank": "Dünyada #{{rank}}",
+    "easyCount": "ülkeye önceden vize almadan",
+    "breakdownA11y": "Vizesiz {{free}}, kapıda vize {{arrival}}, elektronik izin {{eta}}, e-vize {{evisa}}, vize gerekli {{required}}",
+    "legend": "{{free}} vizesiz · {{arrival}} kapıda/e-izin · {{evisa}} e-vize",
+    "unlocked_one": "Vizelerinle +{{count}}",
+    "unlocked_other": "Vizelerinle +{{count}}",
+    "noExtraVisas": "Ek vize eklenmedi",
+    "livesIn": "{{city}} şehrinde yaşıyor",
+    "edit": "Düzenle",
+    "whereTitle": "Nereye gidebilirim?",
+    "filter": {
+      "easy": "Vize gerekmez",
+      "evisa": "E-vize",
+      "visa_required": "Vize gerekli"
+    },
+    "emptyTitle": "Burada ülke yok",
+    "emptyBody": "Başka bir filtre veya arama dene."
+  },
+  "access": {
+    "own": "Kendi ülken",
+    "visa_free": "Vizesiz",
+    "visa_on_arrival": "Kapıda vize",
+    "eta": "Online seyahat izni",
+    "evisa": "E-vize",
+    "visa_required": "Vize gerekli",
+    "no_admission": "Giriş yok",
+    "days_one": "{{count}} gün",
+    "days_other": "{{count}} gün",
+    "viaVisa": "{{visa}} sayesinde mümkün",
+    "condition": "Koşul",
+    "source": "Resmi kaynak",
+    "viaPassport": "{{flag}} pasaportunla",
+    "dataNote": "Pasaport verisi: {{date}}. Seyahatten önce resmi kaynaklardan kontrol et.",
+    "withVisa": "vizenle"
   }
 }

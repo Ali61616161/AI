@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -26,6 +26,10 @@ export default function WelcomeScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const continueAsGuest = useSessionStore((s) => s.continueAsGuest);
+  const introSeen = useSessionStore((s) => s.introSeen);
+
+  // İlk açılışta önce tanıtım slaytları gösterilir.
+  if (!introSeen) return <Redirect href="/intro" />;
 
   return (
     <Screen
@@ -33,6 +37,12 @@ export default function WelcomeScreen() {
         <>
           <Button title={t('welcome.getStarted')} icon="arrow-forward" onPress={() => (isSupabaseConfigured() ? router.push('/sign-in') : continueAsGuest())} />
           {isSupabaseConfigured() && <Button title={t('auth.guest')} variant="ghost" onPress={continueAsGuest} />}
+          <Text variant="caption" color="textMuted" style={styles.legal}>
+            {t('consent.guestNote')}{' '}
+            <Text variant="caption" color="textSecondary" style={styles.link} onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })}>
+              {t('legal.terms')}
+            </Text>
+          </Text>
         </>
       }>
       <Animated.View entering={FadeInDown.duration(700)} style={styles.hero}>
@@ -69,6 +79,8 @@ export default function WelcomeScreen() {
 
 const styles = StyleSheet.create({
   hero: { alignItems: 'center', marginTop: Spacing.sm },
+  legal: { textAlign: 'center' },
+  link: { textDecorationLine: 'underline' },
   section: { gap: Spacing.md },
   pills: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   pill: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.md, paddingVertical: 7, borderRadius: Radius.pill, borderWidth: StyleSheet.hairlineWidth * 2 },

@@ -10,7 +10,7 @@
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
-import { fetchSubscriber, PRO_PLANS, productMapFromEnv, rowsFromSubscriber, tripPassKey, tripPassPurchases } from '../_shared/subscriptions.ts';
+import { COMPLIMENTARY_PRODUCT_ID, fetchSubscriber, PRO_PLANS, productMapFromEnv, rowsFromSubscriber, tripPassKey, tripPassPurchases } from '../_shared/subscriptions.ts';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -56,6 +56,7 @@ Deno.serve(async (req) => {
       .update({ status: 'expired' })
       .eq('user_id', user.id)
       .in('plan', stale)
+      .neq('product_id', COMPLIMENTARY_PRODUCT_ID)
       .in('status', ['active', 'in_grace']);
     if (expireError) return error('bad_request', 500, expireError.message);
   }
