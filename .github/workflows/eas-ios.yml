@@ -18,8 +18,8 @@ on:
       team_type:
         description: Apple geliştirici hesabı türü
         type: choice
-        options: [COMPANY_OR_ORGANIZATION, INDIVIDUAL]
-        default: COMPANY_OR_ORGANIZATION
+        options: [INDIVIDUAL, COMPANY_OR_ORGANIZATION]
+        default: INDIVIDUAL
 
 concurrency:
   group: eas-ios

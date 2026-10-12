@@ -1,12 +1,16 @@
 """EAS iOS derlemesini etkileşimli modda çalıştırır ve kimlik bilgisi sorularını
 varsayılan cevapla (Enter) geçer. Sadece ilk sertifika/profil kurulumu için kullanılır;
 App Store Connect API anahtarı ortam değişkenlerinden okunur. Apple ID/şifre sorulursa durur."""
+import os
 import sys
 
 import pexpect
 
 cmd = ['eas-cli@latest', 'build', '--platform', 'ios', '--profile', 'production', '--wait']
-child = pexpect.spawn('npx', cmd, encoding='utf-8', timeout=3600, dimensions=(60, 200))
+# EAS, CI değişkenlerini görünce soruları kapatır; ilk kurulum için bu süreçte gizlenir.
+env = {k: v for k, v in os.environ.items() if k not in ('CI', 'GITHUB_ACTIONS', 'CONTINUOUS_INTEGRATION', 'BUILD_NUMBER', 'RUN_ID')}
+env['TERM'] = 'xterm-256color'
+child = pexpect.spawn('npx', cmd, encoding='utf-8', timeout=3600, dimensions=(60, 200), env=env)
 child.logfile_read = sys.stdout
 
 PROMPTS = [
