@@ -28,7 +28,7 @@ PROMPTS = [
 ]
 url = None
 while True:
-    i = child.expect(PROMPTS)
+    i = child.expect(PROMPTS, timeout=120)
     if i == 0:
         child.sendline('n')
     elif i == 1:
@@ -44,6 +44,8 @@ while True:
     elif i in (5, 6):
         child.send('\r')
     else:
+        if i == 8:
+            print('\n--- beklenmeyen soru (ekranın sonu) ---\n' + (child.before or '')[-1500:])
         break
 if not url:
     print('::error::Kayıt bağlantısı alınamadı')

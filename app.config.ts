@@ -115,6 +115,8 @@ const config: ExpoConfig = {
         imageWidth: 120,
       },
     ],
+    // En sonda olmalı: önceki eklentilerin eklediği push yetkisini kaldırır.
+    './plugins/without-push-entitlement',
   ],
   experiments: {
     typedRoutes: true,
