@@ -53,3 +53,24 @@ Deno.test('generateJson: HTTP hatası, engelleme, boş ve bozuk cevap', async ()
   );
   assertEquals(invalid.reason, 'invalid_json');
 });
+
+Deno.test('generateJson: geçici hatada (503) yeniden dener, kalıcı hatada (403) denemez', async () => {
+  let calls = 0;
+  const flaky = (() => {
+    calls++;
+    return Promise.resolve(
+      calls < 3
+        ? new Response('{"error":{"status":"UNAVAILABLE"}}', { status: 503 })
+        : new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: '{"ok":true}' }] } }] }), { status: 200 }),
+    );
+  }) as typeof fetch;
+  assertEquals(await generateJson({ ...base, fetchImpl: flaky, retryDelaysMs: [0, 0] }), { ok: true });
+  assertEquals(calls, 3);
+
+  const busy = await assertRejects(() => generateJson({ ...base, fetchImpl: stubFetch(503, 'busy'), retryDelaysMs: [0] }), GeminiError);
+  assertEquals(busy.status, 503);
+
+  const captured: Captured[] = [];
+  await assertRejects(() => generateJson({ ...base, fetchImpl: stubFetch(403, 'bad key', captured), retryDelaysMs: [0, 0] }), GeminiError);
+  assertEquals(captured.length, 1);
+});

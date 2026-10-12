@@ -16,7 +16,13 @@ export type GeminiRequest = {
   timeoutMs?: number;
   /** Varsayılan Google adresi; sadece testlerde (GEMINI_API_BASE) değiştirilir. */
   apiBase?: string;
+  /** Geçici hatalarda (429/500/503) tekrar denemeden önceki beklemeler; testlerde kısaltılır. */
+  retryDelaysMs?: number[];
 };
+
+/** Model yoğunluğu gibi geçici durumlar; tekrar denemeye değer. */
+const TRANSIENT = new Set([429, 500, 503]);
+const RETRY_DELAYS_MS = [1_000, 3_000];
 
 export class GeminiError extends Error {
   constructor(
@@ -44,8 +50,22 @@ export function buildGeminiBody(req: Pick<GeminiRequest, 'prompt' | 'file' | 're
   };
 }
 
-/** Modeli çağırır ve şemaya uygun JSON'u ayrıştırılmış nesne olarak döndürür. */
+/** Modeli çağırır ve şemaya uygun JSON'u ayrıştırılmış nesne olarak döndürür.
+ *  Geçici HTTP hatalarında birkaç kez bekleyip yeniden dener. */
 export async function generateJson(req: GeminiRequest): Promise<unknown> {
+  const delays = req.retryDelaysMs ?? RETRY_DELAYS_MS;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await generateOnce(req);
+    } catch (error) {
+      const retry = error instanceof GeminiError && error.reason === 'http' && TRANSIENT.has(error.status) && attempt < delays.length;
+      if (!retry) throw error;
+      await new Promise((resolve) => setTimeout(resolve, delays[attempt]));
+    }
+  }
+}
+
+async function generateOnce(req: GeminiRequest): Promise<unknown> {
   const fetchImpl = req.fetchImpl ?? fetch;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), req.timeoutMs ?? 60_000);
