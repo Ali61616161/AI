@@ -812,7 +812,8 @@
     "effective": "生效日期：{{date}}",
     "englishOnly": "提供英文和土耳其文版本。",
     "privacy": "隐私政策",
-    "terms": "使用条款"
+    "terms": "使用条款",
+    "kvkk": "KVKK 告知书"
   },
   "decide": {
     "title": "帮我决定",
@@ -837,7 +838,10 @@
     "again": "换一个",
     "change": "重新选择",
     "noneLeft": "这个类型没有更多营业中的地方了。扩大距离或换个类型吧。",
-    "pickedFrom_other": "从 {{count}} 个正在营业的地方中选出"
+    "pickedFrom_other": "从 {{count}} 个正在营业的地方中选出",
+    "onlyNew": "只看没去过的地方",
+    "price": "价格",
+    "anyPrice": "不限"
   },
   "explore": {
     "title": "探索",
@@ -855,5 +859,381 @@
     "rewardGranted": "已增加 1 次，请重试。",
     "rewardFailed": "无法验证奖励，请稍后再试。",
     "privacyOptions": "广告偏好"
+  },
+  "consent": {
+    "termsLabel": "我接受使用条款，并已阅读隐私政策",
+    "terms": "我接受<terms>使用条款</terms>，已阅读<privacy>隐私政策</privacy>和<kvkk>KVKK 告知书</kvkk>，且已年满 13 岁。",
+    "marketing": "通过邮件给我发送旅行灵感、优惠和新动态（可选，可随时退订）。",
+    "guestNote": "继续即表示你接受"
+  },
+  "intro": {
+    "skip": "跳过",
+    "next": "下一步",
+    "start": "开始吧",
+    "page": "第 {{page}} 页，共 {{total}} 页",
+    "passportCard": "护照",
+    "plan": {
+      "overline": "AI 旅行规划",
+      "title": "上传机票，路线马上就有",
+      "body": "Yola 会读取你的机票和酒店预订，用真实且正在营业的地方为你生成逐小时行程。"
+    },
+    "city": {
+      "overline": "我的城市",
+      "title": "你的城市，每周都有新发现",
+      "body": "今晚的安排、一家还没去过的咖啡馆、两小时外的平价小旅行。不只在假期。"
+    },
+    "spin": {
+      "overline": "转转盘",
+      "title": "选择困难？让转盘来决定",
+      "body": "只推荐符合你的预算、季节和护照的地方。把结果分享给朋友吧。"
+    },
+    "passport": {
+      "overline": "护照实力",
+      "title": "看看你能去哪儿",
+      "body": "添加你的国籍和签证：我们会列出你可以免签、落地签或电子签证入境的所有国家。"
+    }
+  },
+  "identity": {
+    "title": "你的护照和城市",
+    "subtitle": "用于展示你能去哪儿，并推荐你附近的安排。",
+    "citizenship": "国籍",
+    "otherCitizenship": "其他国籍",
+    "choose": "选择国家",
+    "removeCitizenship": "移除国籍",
+    "addCitizenship": "我还有其他国籍",
+    "extraVisas": "签证和居留许可",
+    "extraVisasHint": "持有有效的签证或居留许可可以解锁更多国家。请选择你目前持有的全部。",
+    "group": {
+      "visas": "有效签证",
+      "residence": "居留许可"
+    },
+    "homeCity": "常住城市",
+    "homeCityHint": "用于“我的城市”安排和周边小旅行。仅保存到城市级别。",
+    "homeCityPlaceholder": "例如：伊斯坦布尔",
+    "homeCountry": "城市所在国家",
+    "useLocation": "使用我的位置",
+    "locateFailed": "没找到你的城市，请手动输入。",
+    "disclaimer": "签证信息基于公开数据和官方页面，可能会有变化。出行前请务必以官方信息为准。"
+  },
+  "visaType": {
+    "schengen_visa": "申根签证",
+    "us_visa": "美国签证",
+    "uk_visa": "英国签证",
+    "ca_visa": "加拿大签证",
+    "au_visa": "澳大利亚签证",
+    "nz_visa": "新西兰签证",
+    "jp_visa": "日本签证",
+    "ie_visa": "爱尔兰签证",
+    "kr_visa": "韩国签证",
+    "eu_residence": "申根/欧盟居留许可",
+    "us_green_card": "美国绿卡",
+    "uk_residence": "英国居留许可",
+    "ca_pr": "加拿大永居",
+    "au_pr": "澳大利亚永居",
+    "jp_residence": "日本在留卡",
+    "gcc_residence": "海湾国家（GCC）居留"
+  },
+  "passport": {
+    "title": "我的护照",
+    "subtitle": "护照实力和可去的地方",
+    "open": "详情",
+    "addTitle": "你的护照有多强？",
+    "addBody": "添加国籍和签证，查看你能入境的所有国家。",
+    "rank": "全球第 {{rank}} 名",
+    "easyCount": "个国家无需提前办签证",
+    "breakdownA11y": "免签 {{free}}，落地签 {{arrival}}，电子旅行许可 {{eta}}，电子签证 {{evisa}}，需要签证 {{required}}",
+    "legend": "{{free}} 免签 · {{arrival}} 落地签/eTA · {{evisa}} 电子签证",
+    "unlocked_other": "签证额外解锁 +{{count}}",
+    "noExtraVisas": "未添加其他签证",
+    "livesIn": "住在{{city}}",
+    "edit": "编辑",
+    "whereTitle": "我能去哪儿？",
+    "filter": {
+      "easy": "免签",
+      "evisa": "电子签证",
+      "visa_required": "需要签证"
+    },
+    "emptyTitle": "这里没有国家",
+    "emptyBody": "换个筛选条件或搜索试试。"
+  },
+  "access": {
+    "own": "你的国家",
+    "visa_free": "免签",
+    "visa_on_arrival": "落地签",
+    "eta": "电子旅行许可",
+    "evisa": "电子签证",
+    "visa_required": "需要签证",
+    "no_admission": "禁止入境",
+    "days_other": "{{count}} 天",
+    "viaVisa": "凭{{visa}}可入境",
+    "condition": "条件",
+    "source": "官方来源",
+    "viaPassport": "持你的 {{flag}} 护照",
+    "dataNote": "护照数据：{{date}}。出行前请核实官方信息。",
+    "withVisa": "凭你的签证"
+  },
+  "city": {
+    "overline": "我的城市",
+    "addCityTitle": "添加你的城市",
+    "addCityBody": "添加你的常住城市，获取晚间安排、周边小旅行和城市护照。",
+    "addCity": "添加我的城市",
+    "passportShort": "城市护照",
+    "inCity": "在{{city}}",
+    "fromCity": "从{{city}}出发",
+    "tiles": {
+      "evening": {
+        "title": "今晚去哪？",
+        "body": "AI 帮你安排今晚或周末"
+      },
+      "getaway": {
+        "title": "小旅行",
+        "body": "几小时车程的平价出行"
+      },
+      "spin": {
+        "title": "转转盘",
+        "body": "让转盘选出你的下一个国家"
+      },
+      "saved": {
+        "title": "我的清单",
+        "body": "想去试试的地方"
+      }
+    },
+    "streakLine": "连续 {{weeks}} 周 · 已探索 {{places}} 个地方",
+    "eveningTitle": "今晚做点什么？",
+    "eveningSubtitle": "用你附近真实营业的地方安排好",
+    "when": "时间",
+    "whenOptions": {
+      "tonight": "今晚",
+      "tomorrow": "明天",
+      "weekend": "周末"
+    },
+    "withWho": "和谁",
+    "mood": "心情（最多 3 个）",
+    "moods": {
+      "romantic": "浪漫",
+      "chill": "放松",
+      "food": "美食",
+      "culture": "文化",
+      "active": "运动",
+      "outdoor": "户外",
+      "nightlife": "夜生活",
+      "budget": "省钱"
+    },
+    "makePlan": "生成我的计划",
+    "planning": "规划中…",
+    "newPlan": "新计划",
+    "backToPlan": "返回我的计划",
+    "minutes_other": "{{count}} 分钟",
+    "free": "免费",
+    "perPerson": "人均约 {{amount}}",
+    "perPersonShort": "每人",
+    "openRoute": "在地图中打开路线",
+    "estimateNote": "费用为估算值，出发前请确认价格和营业时间。",
+    "save": "收藏",
+    "saved": "已收藏",
+    "visited": "去过了",
+    "visitedToday": "今天去过",
+    "visitAgain": "又去了一次",
+    "remove": "移除",
+    "getawayTitle": "周边小旅行",
+    "getawaySubtitle": "符合预算的短途旅行",
+    "howLong": "玩几天",
+    "daysOption_other": "{{count}} 天",
+    "budgetPerPerson": "人均预算（{{currency}}）",
+    "budgetHint": "含交通、住宿、餐饮和活动。",
+    "transport": "出行方式",
+    "transportOptions": {
+      "any": "不限",
+      "public": "大巴 / 火车",
+      "car": "自驾"
+    },
+    "findGetaways": "查找小旅行",
+    "searching": "搜索中…",
+    "moreGetaways": "看看其他地方",
+    "changeFilters": "修改筛选",
+    "backToResults": "返回结果",
+    "resultsFor": "{{days}} · 人均约 {{amount}}",
+    "noGetaways": "没有符合条件的结果。试试提高预算或延长行程。",
+    "travelTime": "{{hours}} 小时",
+    "km": "{{km}} 公里",
+    "costTransport": "交通：往返 {{amount}}",
+    "costStay_other": "住宿：{{amount}} × {{count}} 晚",
+    "costDaily_other": "餐饮娱乐：{{amount}} × {{count}} 天",
+    "bestSeason": "最佳时间：{{season}}",
+    "planIt": "规划这趟旅行",
+    "directions": "导航",
+    "savedTitle": "我的清单",
+    "savedSubtitle": "你在城市里想去试试的地方",
+    "wantList": "想去",
+    "newList": "新建清单",
+    "listName": "清单名称",
+    "listPlaceholder": "例如：约会之夜",
+    "newListHint": "把一个地方收藏到这个清单，清单才会保留。",
+    "savedEmptyTitle": "还没有收藏",
+    "savedEmptyBody": "在今晚安排、转盘或附近地点中，点任意地方的“收藏”即可。",
+    "passportTitle": "城市护照",
+    "passportSubtitle": "你发现的地方",
+    "passportHero": "你探索过的城市",
+    "stats": {
+      "places": "个地方",
+      "streak": "周连续",
+      "month": "本月",
+      "categories": "种类型"
+    },
+    "badgesTitle": "徽章",
+    "badges": {
+      "first": "第一步",
+      "explorer5": "5 个地方",
+      "local15": "15 个地方：本地通",
+      "legend40": "40 个地方：传奇",
+      "variety": "5 种类型",
+      "streak3": "连续 3 周",
+      "streak8": "连续 8 周"
+    },
+    "recentTitle": "最近去过",
+    "noVisitsTitle": "开始探索",
+    "noVisitsBody": "在地点上点“去过了”，给你的城市护照盖个章。",
+    "errors": {
+      "quota_exceeded": "本周的免费计划已用完。Pro 不限次数。",
+      "not_configured": "此功能暂未开放。",
+      "no_home_city": "请先添加你的常住城市。",
+      "ai_failed": "暂时无法生成计划，请重试。",
+      "network": "没有网络连接，请重试。"
+    }
+  },
+  "spin": {
+    "title": "转转盘",
+    "subtitle_other": "有 {{count}} 个国家符合你的筛选",
+    "spin": "转一下",
+    "again": "再转一次",
+    "share": "分享",
+    "planIt": "规划这趟旅行",
+    "sentMe": "转盘把我送到了",
+    "bestTime": "最佳时间：{{months}}",
+    "daily": "每人每天约 {{range}}",
+    "footer": "来 Yola 转转你的转盘",
+    "filters": "筛选",
+    "budget": "每日预算",
+    "cost": {
+      "1": "经济",
+      "2": "适中",
+      "3": "舒适",
+      "4": "不限"
+    },
+    "when": "时间",
+    "whenOptions": {
+      "this": "本月",
+      "next": "下个月",
+      "any": "不限"
+    },
+    "visa": "签证",
+    "visaOptions": {
+      "easy": "免签",
+      "evisa": "电子签证也行",
+      "any": "不限"
+    },
+    "region": "地区",
+    "anywhere": "任何地方",
+    "regions": {
+      "europe": "欧洲",
+      "middle_east": "中东",
+      "asia": "亚洲",
+      "africa": "非洲",
+      "americas": "美洲",
+      "oceania": "大洋洲"
+    },
+    "vibe": "风格",
+    "anything": "不限",
+    "vibes": {
+      "beach": "海滩",
+      "city": "城市",
+      "culture": "文化",
+      "food": "美食",
+      "nature": "自然",
+      "adventure": "探险"
+    },
+    "limit": "今天的免费次数已用完。看个广告再转一次，或升级 Pro 无限次转。",
+    "guestLimit": "游客每天只能转一次。注册免费账号可以转更多次。",
+    "empty": "没有符合这些筛选的国家。放宽预算、季节或签证条件试试。",
+    "addPassport": "添加你的护照，只看能轻松入境的国家 →",
+    "note": "费用和季节仅供参考。预订前请查看入境规定和旅行提示。"
+  },
+  "visited": {
+    "title": "我去过的国家",
+    "subtitle": "用数字看你的世界",
+    "stepTitle": "你去过哪些地方？",
+    "stepSubtitle": "点选你去过的国家，看看你已经走过了世界的多少。",
+    "skip": "暂时跳过",
+    "search": "搜索国家",
+    "noMatch": "未找到国家",
+    "cardOverline": "我已走过",
+    "ofWorld": "的世界",
+    "countries_other": "个国家",
+    "continentsLabel": "个大洲",
+    "cities_other": "座城市（与 Yola 同行）",
+    "footer": "在 Yola 上记录你的足迹",
+    "share": "分享我的地图",
+    "easyLine": "你的护照可免预先签证前往 {{total}} 个国家，你已去过其中 {{visited}} 个。",
+    "percentile": "你去过的国家数超过了 {{percent}}% 的 Yola 旅行者。",
+    "badgesTitle": "徽章",
+    "badges": {
+      "c5": "5 个国家",
+      "c10": "10 个国家",
+      "c25": "25 个国家",
+      "c50": "50 个国家",
+      "k3": "3 个大洲",
+      "k6": "全部大洲"
+    },
+    "pickTitle": "编辑我的国家",
+    "pickHint": "已完成的 Yola 行程中的国家会自动添加。",
+    "continents": {
+      "europe": "欧洲",
+      "asia": "亚洲",
+      "africa": "非洲",
+      "north_america": "北美洲",
+      "south_america": "南美洲",
+      "oceania": "大洋洲"
+    }
+  },
+  "docs": {
+    "title": "我的证件与申根",
+    "short": "证件",
+    "subtitle": "到期提醒与 90/180 天规则",
+    "needAccount": "创建免费账户，保存你的证件提醒和申根停留记录。",
+    "documents": "我的证件",
+    "add": "添加",
+    "empty": "添加你的护照和签证，我们会在到期前提醒你。",
+    "kind": {
+      "passport": "护照",
+      "visa": "签证",
+      "residence": "居留许可",
+      "id_card": "身份证",
+      "other": "其他"
+    },
+    "country": "签发国家",
+    "label": "名称（可选）",
+    "labelPlaceholder": "例如：申根签证（德国）",
+    "expiresOn": "到期日期",
+    "privacyNote": "仅保存类型、国家和到期日期。切勿输入证件号码。",
+    "expired": "已于 {{date}} 过期",
+    "expiresIn_other": "{{count}} 天后到期（{{date}}）",
+    "passportRule": "许多国家要求护照至少还有 6 个月有效期。",
+    "reminderTitle": "{{name}}即将到期",
+    "reminderBody_other": "将在 {{count}} 天后（{{date}}）到期，请及时续办。",
+    "schengenTitle": "申根 90/180 计算器",
+    "schengenToday": "今天仍可停留的天数",
+    "daysLeft": "天剩余（共 {{limit}} 天）",
+    "daysUsed": "过去 180 天内已用 {{used}} 天",
+    "freedFrom": "{{date}} 起天数开始释放",
+    "overstay": "注意：已于 {{date}} 超过 90 天上限。",
+    "planTitle": "在计划行程吗？",
+    "planEntry": "入境日期",
+    "planResult_other": "你最多可停留 {{count}} 天，直到 {{date}}。",
+    "planNone": "在此日期入境会违反 90/180 规则。",
+    "staysTitle": "我的申根停留记录",
+    "entry": "入境",
+    "exit": "出境",
+    "addStay": "添加停留",
+    "schengenNote": "入境日和出境日均计入。仅供参考，请以欧盟短期停留计算器为准。"
   }
 }
