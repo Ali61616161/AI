@@ -1,0 +1,32 @@
+# Bir EAS derlemesinin hata mesajını ve günlüğünün sonunu gösterir.
+name: EAS derleme günlüğü
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_id:
+        description: EAS derleme kimliği
+        required: true
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sırlar tanımlı mı
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          token=$(printf '%s' "$EXPO_TOKEN" | tr -d '[:space:]')
+          echo "::add-mask::$token"
+          echo "EXPO_TOKEN=$token" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - name: Günlük
+        env:
+          BUILD_ID: ${{ inputs.build_id }}
+        run: |
+          npx --yes eas-cli@latest build:view "$BUILD_ID" --json > build.json
+          echo "Durum: $(jq -r '.status' build.json)"
+          echo "Hata: $(jq -r '.error.message // "-"' build.json)" | tee -a "$GITHUB_STEP_SUMMARY"
+          for u in $(jq -r '.logFiles[]? // empty' build.json); do
+            curl -sSL --compressed "$u" | jq -r 'select(.msg) | "[\(.phase // "-")] \(.msg)"' 2>/dev/null | tail -n 250 || true
+          done
