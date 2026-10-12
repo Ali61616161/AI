@@ -32,7 +32,8 @@ export default function NewTripScreen() {
     [i18n.language],
   );
   const datesValid = DATE.test(start) && DATE.test(end) && end >= start;
-  const valid = city.trim().length > 1 && datesValid;
+  // Ülke acil durum numaraları, vize bilgisi ve ifade kitabı için gerekli.
+  const valid = city.trim().length > 1 && country !== null && datesValid;
 
   async function submit() {
     const id = await create.mutateAsync({
@@ -53,10 +54,15 @@ export default function NewTripScreen() {
       <ModalHeader title={t('newTrip.title')} subtitle={t('newTrip.subtitle')} />
       <TextField label={t('newTrip.city')} value={city} onChangeText={setCity} placeholder="Roma" autoCapitalize="words" />
       <View style={styles.field}>
-        <Text variant="caption" color="textSecondary">
+        <Text variant="overline" color="textMuted">
           {t('newTrip.country')}
         </Text>
         <SelectSheet label={t('newTrip.country')} value={country} options={options} placeholder={t('visa.choose')} onChange={setCountry} />
+        {!country && (
+          <Text variant="caption" color="textMuted">
+            {t('newTrip.countryWhy')}
+          </Text>
+        )}
       </View>
       <TextField label={t('dates.start')} value={start} onChangeText={setStart} hint={t('dates.hint')} keyboardType="numbers-and-punctuation" maxLength={10} />
       <TextField

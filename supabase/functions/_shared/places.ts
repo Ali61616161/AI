@@ -75,6 +75,10 @@ export const NEARBY_CATEGORIES = {
   pharmacy: { type: 'pharmacy', query: 'pharmacy' },
   supermarket: { type: 'supermarket', query: 'supermarket' },
   atm: { type: 'atm', query: 'atm' },
+  bar: { type: 'bar', query: 'bar' },
+  bakery: { type: 'bakery', query: 'bakery' },
+  dessert: { type: 'dessert_shop', query: 'dessert' },
+  park: { type: 'park', query: 'park' },
 } as const;
 
 export type NearbyCategory = keyof typeof NEARBY_CATEGORIES;
@@ -86,7 +90,7 @@ export function isNearbyCategory(value: unknown): value is NearbyCategory {
 const circle = (lat: number, lng: number, radius: number) => ({ circle: { center: { latitude: lat, longitude: lng }, radius } });
 
 /** Konuma yakın, şu an açık yerler. searchNearby'de openNow olmadığı için Text Search kullanılır. */
-export function openNowRequest(input: { lat: number; lng: number; category: NearbyCategory; language: string; radius?: number }): SearchTextRequest {
+export function openNowRequest(input: { lat: number; lng: number; category: NearbyCategory; language: string; radius?: number; pageSize?: number }): SearchTextRequest {
   const c = NEARBY_CATEGORIES[input.category];
   return {
     textQuery: c.query,
@@ -95,7 +99,7 @@ export function openNowRequest(input: { lat: number; lng: number; category: Near
     openNow: true,
     rankPreference: 'DISTANCE',
     locationBias: circle(input.lat, input.lng, input.radius ?? 1500),
-    pageSize: 10,
+    pageSize: input.pageSize ?? 10,
     languageCode: input.language,
   };
 }

@@ -66,6 +66,21 @@ await step('Yakında şu an açık: sadece açık yerler, mesafeyle', async () =
   assert.equal(r.data.quota.remaining, 9);
 });
 
+await step('Kararsızım ve harita: yeni kategoriler, geniş alan ve 20 sonuç', async () => {
+  const r = await places({ action: 'open_now', ...ROME, category: 'dessert', radius: 3000, limit: 20 });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  const calls = await (await fetch(`${FAKE_GOOGLE}/calls`)).json();
+  const last = calls.filter((c) => c.api === 'places').at(-1).body;
+  assert.equal(last.includedType, 'dessert_shop');
+  assert.equal(last.pageSize, 20);
+  assert.equal(last.locationBias.circle.radius, 3000);
+  // Sınırlar: yarıçap 300-5000 m, sonuç 10 veya 20.
+  await places({ action: 'open_now', ...ROME, category: 'park', radius: 99999, limit: 500 });
+  const clamped = (await (await fetch(`${FAKE_GOOGLE}/calls`)).json()).filter((c) => c.api === 'places').at(-1).body;
+  assert.equal(clamped.locationBias.circle.radius, 5000);
+  assert.equal(clamped.pageSize, 10);
+});
+
 await step('Geçersiz kategori ve konum reddedilir (kota harcanmaz)', async () => {
   assert.equal((await places({ action: 'open_now', ...ROME, category: 'casino' })).status, 400);
   assert.equal((await places({ action: 'open_now', lat: 200, lng: 0, category: 'cafe' })).status, 400);
@@ -103,8 +118,8 @@ await step('Hava durumu: her gün kendi şehriyle, Google şemasına uygun istek
 });
 
 await step('Ücretsiz planda günde 10 yakın arama; 11. reddedilir', async () => {
-  // 1 açık yer + 1 otel araması yapıldı; 8 tane daha izinli.
-  for (let i = 0; i < 8; i++) assert.equal((await places({ action: 'open_now', ...ROME, category: 'museum' })).status, 200);
+  // 3 açık yer + 1 otel araması yapıldı; 6 tane daha izinli.
+  for (let i = 0; i < 6; i++) assert.equal((await places({ action: 'open_now', ...ROME, category: 'museum' })).status, 200);
   const r = await places({ action: 'open_now', ...ROME, category: 'museum' });
   assert.equal(r.status, 402);
   assert.equal(r.data.error.code, 'quota_exceeded');

@@ -8,13 +8,14 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
+import { GradientBg } from '@/components/ui/gradient-bg';
 import { Text } from '@/components/ui/text';
 import { getCurrentLocation } from '@/features/plan/replan';
 import { useContactsStore } from '@/features/tools/contacts-store';
 import { countryName, emergencyNumbersFor, flag, type EmergencyNumbers } from '@/features/tools/emergency-numbers';
 import { useTrip, useTrips } from '@/features/trips/queries';
 import { todayIsoDate } from '@/lib/format';
-import { Radius, Spacing, Typography } from '@/theme/tokens';
+import { Gradients, Radius, Spacing, Typography } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 const call = (number: string) => Linking.openURL(`tel:${number}`);
@@ -27,7 +28,10 @@ export default function SosScreen() {
   const today = todayIsoDate();
   const current = trips?.find((x) => x.start_date && x.end_date && x.start_date <= today && x.end_date >= today) ?? trips?.find((x) => !x.end_date || x.end_date >= today);
   const { data: trip } = useTrip(current?.id);
-  const country = trip?.trip_destinations[0]?.country_code ?? current?.trip_destinations[0]?.country_code ?? Localization.getLocales()[0]?.regionCode ?? null;
+  // Seyahatteyken o ülkenin numaraları; ülke bilinmiyorsa genel 112 gösterilir. Telefonun
+  // bölgesi sadece seyahat yokken (evdeyken) kullanılır, yurt dışında yanlış numara gösterilmesin.
+  const tripCountry = trip?.trip_destinations[0]?.country_code ?? current?.trip_destinations[0]?.country_code ?? null;
+  const country = current ? tripCountry : (Localization.getLocales()[0]?.regionCode ?? null);
   const numbers = emergencyNumbersFor(country);
   const hotel = trip?.reservations.find((r) => r.type === 'hotel' && r.address && (!r.ends_at || r.ends_at.slice(0, 10) >= today));
   const { contacts, add, remove } = useContactsStore();
@@ -79,7 +83,8 @@ export default function SosScreen() {
                 accessibilityRole="button"
                 accessibilityLabel={`${t(`sos.numbers.${r.key}`)} ${numbers[r.key]}`}
                 onPress={() => call(numbers[r.key]!)}
-                style={[styles.number, { backgroundColor: r.key === 'general' ? colors.danger : colors.surface, borderColor: colors.danger }]}>
+                style={[styles.number, { backgroundColor: r.key === 'general' ? 'transparent' : colors.surface, borderColor: r.key === 'general' ? 'transparent' : `${colors.danger}88` }]}>
+                {r.key === 'general' && <GradientBg colors={Gradients.danger} />}
                 <Ionicons name={r.icon} size={22} color={r.key === 'general' ? colors.onPrimary : colors.danger} />
                 <Text variant="title" style={{ color: r.key === 'general' ? colors.onPrimary : colors.text }}>
                   {numbers[r.key]}
@@ -90,7 +95,8 @@ export default function SosScreen() {
               </Pressable>
             ))
         ) : (
-          <Pressable accessibilityRole="button" onPress={() => call('112')} style={[styles.number, { backgroundColor: colors.danger, borderColor: colors.danger }]}>
+          <Pressable accessibilityRole="button" onPress={() => call('112')} style={[styles.number, { borderColor: 'transparent' }]}>
+            <GradientBg colors={Gradients.danger} />
             <Ionicons name="call" size={22} color={colors.onPrimary} />
             <Text variant="title" style={{ color: colors.onPrimary }}>
               112
@@ -166,7 +172,7 @@ export default function SosScreen() {
 
 const styles = StyleSheet.create({
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
-  number: { flexGrow: 1, flexBasis: '45%', alignItems: 'center', gap: Spacing.xxs, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: 1.5 },
+  number: { flexGrow: 1, flexBasis: '45%', alignItems: 'center', gap: Spacing.xxs, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: 1.5, overflow: 'hidden' },
   card: { gap: Spacing.xs, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: 1 },
   section: { gap: Spacing.md },
   contact: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },

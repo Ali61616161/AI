@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
+import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { getCurrentLocation } from '@/features/plan/replan';
@@ -206,13 +207,8 @@ export default function SocialScreen() {
   const active = (invites ?? []).filter((i) => i.status === 'pending' || i.status === 'accepted');
 
   return (
-    <Screen edges={['top']}>
-      <View style={styles.header}>
-        <Text variant="display">{t('social.title')}</Text>
-        <Text variant="body" color="textSecondary">
-          {t('social.subtitle')}
-        </Text>
-      </View>
+    <Screen>
+      <ModalHeader title={t('social.title')} subtitle={t('social.subtitle')} />
 
       {!session || !isSupabaseConfigured() ? (
         <EmptyState icon="people-outline" title={t('social.title')} description={t('ticket.accountRequiredBody')} />

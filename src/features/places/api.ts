@@ -1,5 +1,7 @@
+import type Ionicons from '@expo/vector-icons/Ionicons';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
+import type { ComponentProps } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'react-native';
 
@@ -11,11 +13,17 @@ import type { DayForecast } from '../../../supabase/functions/_shared/weather.ts
 
 export type { NearbyCategory, Place, DayForecast };
 
-export const NEARBY_CATEGORY_LIST: { key: NearbyCategory; icon: 'restaurant-outline' | 'cafe-outline' | 'business-outline' | 'camera-outline' | 'medkit-outline' | 'cart-outline' | 'cash-outline' }[] = [
+type IconName = ComponentProps<typeof Ionicons>['name'];
+
+export const NEARBY_CATEGORY_LIST: { key: NearbyCategory; icon: IconName }[] = [
   { key: 'restaurant', icon: 'restaurant-outline' },
   { key: 'cafe', icon: 'cafe-outline' },
-  { key: 'museum', icon: 'business-outline' },
+  { key: 'bar', icon: 'wine-outline' },
+  { key: 'dessert', icon: 'ice-cream-outline' },
+  { key: 'bakery', icon: 'basket-outline' },
   { key: 'attraction', icon: 'camera-outline' },
+  { key: 'museum', icon: 'business-outline' },
+  { key: 'park', icon: 'leaf-outline' },
   { key: 'pharmacy', icon: 'medkit-outline' },
   { key: 'supermarket', icon: 'cart-outline' },
   { key: 'atm', icon: 'cash-outline' },
@@ -47,17 +55,29 @@ function useCanCall() {
   return useSessionStore((s) => Boolean(s.session)) && isSupabaseConfigured();
 }
 
-/** Konuma yakın, şu an açık yerler. Konum ~100 m'ye yuvarlanır ki küçük oynamalar yeni istek açmasın. */
-export function useOpenNow(category: NearbyCategory, coords: { lat: number; lng: number } | null) {
-  const canCall = useCanCall();
-  const lat = coords ? Math.round(coords.lat * 1000) / 1000 : null;
-  const lng = coords ? Math.round(coords.lng * 1000) / 1000 : null;
-  return useQuery({
-    queryKey: ['open_now', category, lat, lng],
-    enabled: canCall && lat !== null && lng !== null,
+type Coords = { lat: number; lng: number };
+export type OpenNowOptions = { radius?: number; limit?: 10 | 20 };
+
+/** Önbellek anahtarı: konum ~100 m'ye yuvarlanır ki küçük oynamalar yeni istek (ve kota) harcamasın. */
+export function openNowQuery(category: NearbyCategory, coords: Coords, options: OpenNowOptions = {}) {
+  const lat = Math.round(coords.lat * 1000) / 1000;
+  const lng = Math.round(coords.lng * 1000) / 1000;
+  return {
+    queryKey: ['open_now', category, lat, lng, options.radius ?? null, options.limit ?? 10] as const,
     staleTime: 5 * 60_000,
     retry: false,
-    queryFn: () => invokePlaces<{ places: Place[] }>({ action: 'open_now', category, lat: coords!.lat, lng: coords!.lng }).then((r) => r.places),
+    queryFn: () =>
+      invokePlaces<{ places: Place[] }>({ action: 'open_now', category, lat: coords.lat, lng: coords.lng, radius: options.radius, limit: options.limit }).then((r) => r.places),
+  };
+}
+
+/** Konuma yakın, şu an açık yerler. */
+export function useOpenNow(category: NearbyCategory, coords: Coords | null, options: OpenNowOptions = {}) {
+  const canCall = useCanCall();
+  const base = openNowQuery(category, coords ?? { lat: 0, lng: 0 }, options);
+  return useQuery({
+    ...base,
+    enabled: canCall && coords !== null,
   });
 }
 

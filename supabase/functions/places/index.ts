@@ -1,7 +1,7 @@
 // Harita ve çevre bilgileri: yakında şu an açık yerler, bütçeye göre otel önerileri
 // ve seyahat günleri için hava durumu.
 //
-//   POST { "action": "open_now", "lat", "lng", "category": "restaurant" | "cafe" | ... }
+//   POST { "action": "open_now", "lat", "lng", "category": "restaurant" | "cafe" | ..., "radius"?: 300-5000 m, "limit"?: 10 | 20 }
 //     → { places[] }                         (kota: nearby_search)
 //   POST { "action": "hotels", "trip_id", "destination_id"? }
 //     → { city, checkin, checkout, places[] (booking_url ile) }   (kota: nearby_search)
@@ -95,7 +95,10 @@ Deno.serve(async (req) => {
     const quota = await consumeQuota(supabase, 'nearby_search', null);
     if (!quota.allowed) return error('quota_exceeded', 402);
     const origin = { lat: body.lat, lng: body.lng };
-    const places = await searchText({ apiKey, apiBase: google.placesBase, body: openNowRequest({ ...origin, category: body.category, language }), origin });
+    // Harita ve "Kararsızım" daha geniş alan ve daha çok sonuç isteyebilir (aynı ücret).
+    const radius = typeof body.radius === 'number' && Number.isFinite(body.radius) ? Math.min(Math.max(Math.round(body.radius), 300), 5000) : undefined;
+    const pageSize = body.limit === 20 ? 20 : 10;
+    const places = await searchText({ apiKey, apiBase: google.placesBase, body: openNowRequest({ ...origin, category: body.category, language, radius, pageSize }), origin });
     // Google openNow filtresine rağmen kapalı veya kalıcı kapalı dönebilir; elenir.
     const open = places.filter((p) => p.openNow !== false && p.status !== 'CLOSED_PERMANENTLY' && p.status !== 'CLOSED_TEMPORARILY');
     return json({ places: open, quota: { plan: quota.plan, remaining: quota.remaining } });

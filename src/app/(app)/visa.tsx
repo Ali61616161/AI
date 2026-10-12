@@ -53,11 +53,11 @@ export default function VisaScreen() {
   return (
     <Screen>
       <ModalHeader title={t('visa.title')} subtitle={t('visa.subtitle')} />
-      <Text variant="caption" color="textSecondary">
+      <Text variant="overline" color="textMuted">
         {t('visa.passport')}
       </Text>
       <SelectSheet label={t('visa.passport')} value={passport} options={options} placeholder={t('visa.choose')} onChange={(c) => savePassport.mutate(c)} />
-      <Text variant="caption" color="textSecondary">
+      <Text variant="overline" color="textMuted">
         {t('visa.destination')}
       </Text>
       <SelectSheet label={t('visa.destination')} value={dest} options={options} placeholder={t('visa.choose')} onChange={setDestination} />

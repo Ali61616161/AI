@@ -3,7 +3,8 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 're
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
 import { Spacing } from '@/theme/tokens';
-import { useTheme } from '@/theme/use-theme';
+
+import { Aurora } from './aurora';
 
 type Props = {
   children: ReactNode;
@@ -11,25 +12,31 @@ type Props = {
   footer?: ReactNode;
   scroll?: boolean;
   edges?: Edge[];
+  /** Sekme ekranlarında içerik yüzen alt menünün altında kalmasın diye boşluk. */
+  tabBarSpace?: boolean;
+  aurora?: 'default' | 'subtle';
 };
 
-export function Screen({ children, footer, scroll = true, edges = ['top', 'bottom'] }: Props) {
-  const { colors } = useTheme();
+export function Screen({ children, footer, scroll = true, edges = ['top', 'bottom'], tabBarSpace = false, aurora = 'default' }: Props) {
+  const bottomSpace = tabBarSpace ? { paddingBottom: 120 } : null;
   const body = scroll ? (
-    <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <ScrollView contentContainerStyle={[styles.content, bottomSpace]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
       {children}
     </ScrollView>
   ) : (
-    <View style={[styles.content, styles.fill]}>{children}</View>
+    <View style={[styles.content, styles.fill, bottomSpace]}>{children}</View>
   );
 
   return (
-    <SafeAreaView edges={edges} style={[styles.fill, { backgroundColor: colors.background }]}>
-      <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        {body}
-        {footer && <View style={styles.footer}>{footer}</View>}
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+    <View style={styles.fill}>
+      <Aurora variant={aurora} />
+      <SafeAreaView edges={edges} style={styles.fill}>
+        <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          {body}
+          {footer && <View style={styles.footer}>{footer}</View>}
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -37,7 +44,9 @@ const styles = StyleSheet.create({
   fill: { flex: 1 },
   content: {
     flexGrow: 1,
-    padding: Spacing.xl,
+    paddingHorizontal: Spacing.xl,
+    paddingTop: Spacing.lg,
+    paddingBottom: Spacing.xl,
     gap: Spacing.xl,
     width: '100%',
     maxWidth: 640,

@@ -15,12 +15,16 @@
     "edit": "Düzenle",
     "done": "Tamam",
     "close": "Kapat",
-    "search": "Ara"
+    "search": "Ara",
+    "stepOf": "Adım {{step}}/{{total}}"
   },
   "welcome": {
     "title": "Bir sonraki yolculuğun burada başlıyor",
     "subtitle": "Biletini yükle, gerisini Yola planlasın.",
-    "getStarted": "Başlayalım"
+    "getStarted": "Başlayalım",
+    "pillRoute": "AI rota",
+    "pillTranslate": "Canlı çeviri",
+    "pillOffline": "İnternetsiz"
   },
   "language": {
     "title": "Dil",
@@ -35,7 +39,8 @@
     "trips": "Seyahatlerim",
     "assistant": "Asistan",
     "social": "Sosyal",
-    "profile": "Profil"
+    "profile": "Profil",
+    "explore": "Keşfet"
   },
   "auth": {
     "signInTitle": "Hesabına giriş yap",
@@ -115,7 +120,15 @@
     "featureReplan": "Yağmur, rötar, yorgunluk: planı anında değiştirir.",
     "featureOffline": "Rotan ve biletlerin internetsiz de yanında olur.",
     "featureMenu": "Menünün fotoğrafını çek, ne olduğunu ve fiyat seviyesini öğren.",
-    "nextTrip": "Sıradaki seyahatin"
+    "nextTrip": "Sıradaki seyahatin",
+    "quick": {
+      "explore": "Keşfet",
+      "travelers": "Gezginler",
+      "translate": "Çeviri",
+      "sos": "Acil durum",
+      "decideTitle": "Kararsız mısın?",
+      "decideBody": "Yakında şu an açık bir yeri senin için seçeyim."
+    }
   },
   "trips": {
     "title": "Seyahatlerim",
@@ -131,7 +144,8 @@
     "daysLeft_other": "{{count}} gün kaldı",
     "startsToday": "Bugün başlıyor",
     "ongoing": "Devam ediyor",
-    "loadFailed": "Seyahatler yüklenemedi."
+    "loadFailed": "Seyahatler yüklenemedi.",
+    "dayProgress": "{{day}}. gün / {{total}}"
   },
   "social": {
     "title": "Gezgin eşleşmesi",
@@ -232,7 +246,13 @@
     "deleteTitle": "Hesabın silinsin mi?",
     "deleteBody": "Hesabın, seyahatlerin, belgelerin, mesajların ve diğer tüm verilerin kalıcı olarak silinir. Aktif aboneliğini App Store veya Google Play'den ayrıca iptal etmelisin.",
     "deleteConfirm": "Kalıcı olarak sil",
-    "deleteFailed": "Hesap silinemedi. Tekrar dene."
+    "deleteFailed": "Hesap silinemedi. Tekrar dene.",
+    "appearance": "Görünüm",
+    "appearanceOptions": {
+      "dark": "Koyu",
+      "light": "Açık",
+      "system": "Sistem"
+    }
   },
   "assistant": {
     "title": "Planı Değiştir",
@@ -413,7 +433,11 @@
       "attraction": "Gezilecek yerler",
       "pharmacy": "Eczaneler",
       "supermarket": "Marketler",
-      "atm": "ATM'ler"
+      "atm": "ATM'ler",
+      "bar": "Barlar",
+      "bakery": "Fırınlar",
+      "dessert": "Tatlıcılar",
+      "park": "Parklar"
     },
     "errors": {
       "quota_exceeded": "Bugünkü ücretsiz aramalarını kullandın. Sınırsız arama için yükselt.",
@@ -797,12 +821,47 @@
     "name": "Seyahat adı (isteğe bağlı)",
     "namePlaceholder": "ör. Roma'da yaz",
     "endBeforeStart": "Bitiş tarihi başlangıçtan sonra olmalı.",
-    "hint": "Bilet ve otel rezervasyonlarını sonra ekleyebilirsin; Yola planı onların etrafına yerleştirir."
+    "hint": "Bilet ve otel rezervasyonlarını sonra ekleyebilirsin; Yola planı onların etrafına yerleştirir.",
+    "countryWhy": "Acil durum numaraları, vize bilgisi ve yerel ifadeler için gerekli."
   },
   "legal": {
     "effective": "Yürürlük: {{date}}",
     "englishOnly": "Türkçe ve İngilizce olarak sunulur.",
     "privacy": "Gizlilik Politikası",
     "terms": "Kullanım Koşulları"
+  },
+  "decide": {
+    "title": "Kararsızım",
+    "subtitle": "Ne istediğini seç, gerisini bana bırak. Yakında şu an açık bir yer bulurum.",
+    "groups": {
+      "food": "Yemek",
+      "coffee": "Kahve",
+      "sweet": "Tatlı",
+      "drinks": "İçecek",
+      "see": "Gezilecek yer",
+      "surprise": "Sürpriz"
+    },
+    "distance": "Mesafe",
+    "walk": "Yürüyerek · 1 km",
+    "ride": "Biraz uzak · 3 km",
+    "topRated": "Sadece yüksek puanlılar (4.2+)",
+    "spin": "Benim için seç",
+    "spinning": "Seçiyorum…",
+    "result": "Bugünkü seçimin",
+    "openNow": "Şu an açık",
+    "pickedFrom": "Şu an açık {{count}} yer arasından seçildi",
+    "go": "Yol tarifi al",
+    "again": "Başka bir tane",
+    "change": "Seçimi değiştir",
+    "noneLeft": "Bu seçimde gösterecek açık yer kalmadı. Mesafeyi artır ya da başka bir şey seç."
+  },
+  "explore": {
+    "title": "Keşfet",
+    "live": "Canlı",
+    "openCount": "{{count}} yer şu an açık",
+    "searchArea": "Bu bölgede ara",
+    "locate": "Konumuma git",
+    "needLocation": "Haritayı çevrene göre açmak ve açık yerleri canlı göstermek için konum iznine ihtiyacım var.",
+    "radar": "Radar görünümü · haritalar telefonda açılır"
   }
 }

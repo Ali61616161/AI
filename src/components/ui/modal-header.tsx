@@ -1,30 +1,37 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+import { Tap } from './tap';
 import { Text } from './text';
 
-export function ModalHeader({ title, subtitle }: { title: string; subtitle?: string }) {
+export function ModalHeader({ title, subtitle, overline }: { title: string; subtitle?: string; overline?: string }) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   return (
     <View style={styles.wrap}>
       <View style={styles.top}>
-        <Text variant="title" style={styles.title}>
-          {title}
-        </Text>
-        <Pressable
+        <View style={styles.titles}>
+          {overline && (
+            <Text variant="overline" color="primary">
+              {overline}
+            </Text>
+          )}
+          <Text variant="display">{title}</Text>
+        </View>
+        <Tap
           accessibilityRole="button"
-          accessibilityLabel={t('common.cancel')}
+          accessibilityLabel={t('common.close')}
           onPress={() => router.back()}
           hitSlop={12}
-          style={[styles.close, { backgroundColor: colors.surfaceMuted }]}>
+          feedback="select"
+          style={[styles.close, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
           <Ionicons name="close" size={20} color={colors.text} />
-        </Pressable>
+        </Tap>
       </View>
       {subtitle && (
         <Text variant="body" color="textSecondary">
@@ -37,7 +44,7 @@ export function ModalHeader({ title, subtitle }: { title: string; subtitle?: str
 
 const styles = StyleSheet.create({
   wrap: { gap: Spacing.sm },
-  top: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  title: { flex: 1 },
-  close: { width: 36, height: 36, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center' },
+  top: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.md },
+  titles: { flex: 1, gap: Spacing.xs },
+  close: { width: 40, height: 40, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center', borderWidth: StyleSheet.hairlineWidth * 2, marginTop: 2 },
 });

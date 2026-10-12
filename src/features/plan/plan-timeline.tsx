@@ -1,16 +1,18 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
 import type { ComponentProps } from 'react';
-import { ScrollView, StyleSheet, View, Pressable } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Chip } from '@/components/ui/chip';
+import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { openBookingLink, openInMaps, type DayForecast } from '@/features/places/api';
 import { PlaceMeta } from '@/features/places/place-row';
 import { WeatherBadge } from '@/features/places/weather-badge';
 import type { PlanDayRow, PlanItemRow } from '@/features/trips/queries';
 import { formatDayShort, formatMoney, formatTime } from '@/lib/format';
-import { Radius, Spacing } from '@/theme/tokens';
+import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
@@ -40,22 +42,25 @@ export function DaySelector({
       {days.map((day, index) => {
         const active = index === selected;
         return (
-          <Pressable
-            key={day.id}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: active }}
-            onPress={() => onSelect(index)}
-            style={[
-              styles.day,
-              { backgroundColor: active ? colors.primary : colors.surface, borderColor: active ? colors.primary : colors.border },
-            ]}>
-            <Text variant="bodyStrong" style={{ color: active ? colors.onPrimary : colors.text }}>
-              {t('plan.dayLabel', { n: index + 1 })}
-            </Text>
-            <Text variant="caption" style={{ color: active ? colors.onPrimary : colors.textSecondary }}>
-              {formatDayShort(day.date)}
-            </Text>
-          </Pressable>
+          <Tap key={day.id} accessibilityRole="tab" accessibilityState={{ selected: active }} onPress={() => onSelect(index)} feedback="select" scaleTo={0.94}>
+            {active ? (
+              <LinearGradient colors={Gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.day, styles.dayActive]}>
+                <Text variant="overline" style={styles.onPrimarySoft}>
+                  {formatDayShort(day.date)}
+                </Text>
+                <Text variant="subtitle" style={styles.onPrimary}>
+                  {t('plan.dayLabel', { n: index + 1 })}
+                </Text>
+              </LinearGradient>
+            ) : (
+              <View style={[styles.day, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <Text variant="overline" color="textMuted">
+                  {formatDayShort(day.date)}
+                </Text>
+                <Text variant="subtitle">{t('plan.dayLabel', { n: index + 1 })}</Text>
+              </View>
+            )}
+          </Tap>
         );
       })}
     </ScrollView>
@@ -196,7 +201,10 @@ export function DayTimeline({ day, weather }: { day: PlanDayRow; weather?: DayFo
 
 const styles = StyleSheet.create({
   days: { gap: Spacing.sm, paddingVertical: Spacing.xs },
-  day: { paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radius.lg, borderWidth: 1, alignItems: 'center' },
+  day: { minWidth: 86, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth * 2, gap: 2 },
+  dayActive: { borderColor: 'transparent' },
+  onPrimary: { color: '#FFFFFF' },
+  onPrimarySoft: { color: 'rgba(255,255,255,0.8)' },
   timeline: { gap: Spacing.md },
   dayHeader: { gap: Spacing.xxs },
   item: { flexDirection: 'row', gap: Spacing.sm },

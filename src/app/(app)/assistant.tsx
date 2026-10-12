@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Chip } from '@/components/ui/chip';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
+import { GradientBg } from '@/components/ui/gradient-bg';
 import { Text } from '@/components/ui/text';
 import { openBookingLink, openInMaps } from '@/features/places/api';
 import { useIsOnline } from '@/features/offline/use-online';
@@ -196,7 +197,8 @@ export default function AssistantScreen() {
         <View style={styles.messages}>
           {messages.map((m) =>
             m.from === 'user' ? (
-              <View key={m.id} style={[styles.bubble, styles.userBubble, { backgroundColor: colors.primary }]}>
+              <View key={m.id} style={[styles.bubble, styles.userBubble, styles.clip]}>
+                <GradientBg />
                 <Text variant="body" style={{ color: colors.onPrimary }}>
                   {m.text}
                 </Text>
@@ -261,6 +263,7 @@ export default function AssistantScreen() {
 }
 
 const styles = StyleSheet.create({
+  clip: { overflow: 'hidden' },
   quick: { flexDirection: 'row', gap: Spacing.sm },
   quickItem: { flex: 1, alignItems: 'center', gap: Spacing.xs, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },
   small: { fontSize: 11, lineHeight: 14 },

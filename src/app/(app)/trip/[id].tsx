@@ -5,8 +5,10 @@ import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
+import { IconBadge } from '@/components/ui/icon-badge';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
@@ -15,6 +17,7 @@ import { PlacesMap } from '@/features/map/places-map';
 import { OfflineCard } from '@/features/offline/offline-card';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { TripTools } from '@/features/tools/trip-tools';
+import { TripHero } from '@/features/trips/trip-hero';
 import { useTripWeather } from '@/features/places/api';
 import { GenerateCard } from '@/features/plan/generate-card';
 import { DaySelector, DayTimeline } from '@/features/plan/plan-timeline';
@@ -119,31 +122,23 @@ export default function TripScreen() {
           onPress={() => router.push({ pathname: '/ticket', params: { tripId: trip.id } })}
         />
       }>
-      <ModalHeader title={trip.title} subtitle={formatDateRange(trip.start_date, trip.end_date)} />
+      <TripHero
+        id={trip.id}
+        city={trip.trip_destinations[0]?.city ?? trip.title}
+        title={trip.title}
+        subtitle={formatDateRange(trip.start_date, trip.end_date)}
+        actions={[
+          { icon: 'calendar-outline', label: t('trip.changeDates'), onPress: () => router.push({ pathname: '/trip-dates', params: { tripId: trip.id } }) },
+          ...(plan ? [{ icon: 'git-branch-outline' as const, label: t('trip.versions'), onPress: () => router.push({ pathname: '/trip-versions', params: { tripId: trip.id } }) }] : []),
+          { icon: 'bed-outline', label: t('hotels.button'), onPress: () => router.push({ pathname: '/hotels', params: { tripId: trip.id } }) },
+        ]}
+      />
 
-      <View style={styles.actions}>
-        <Button
-          title={t('trip.changeDates')}
-          variant="secondary"
-          style={styles.flex}
-          onPress={() => router.push({ pathname: '/trip-dates', params: { tripId: trip.id } })}
-        />
-        {plan && (
-          <Button
-            title={t('trip.versions')}
-            variant="secondary"
-            style={styles.flex}
-            onPress={() => router.push({ pathname: '/trip-versions', params: { tripId: trip.id } })}
-          />
-        )}
-      </View>
-
-      {trip.trip_destinations.length > 0 && (
+      {trip.trip_destinations.length > 1 && (
         <View style={styles.chips}>
           {trip.trip_destinations.map((d) => (
             <Chip key={d.id} icon="location-outline" label={`${d.city} · ${formatDateRange(d.arrive_on, d.depart_on)}`} />
           ))}
-          <Chip icon="bed-outline" label={t('hotels.button')} onPress={() => router.push({ pathname: '/hotels', params: { tripId: trip.id } })} />
         </View>
       )}
 
@@ -206,19 +201,18 @@ export default function TripScreen() {
       </View>
 
       {trip.start_date && trip.start_date <= todayIsoDate() && (
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push({ pathname: '/trip-report', params: { tripId: trip.id } })}
-          style={[styles.notice, { backgroundColor: colors.primarySoft }]}>
-          <Ionicons name="trophy-outline" size={20} color={colors.primary} />
-          <View style={styles.flex}>
-            <Text variant="bodyStrong">{trip.end_date && trip.end_date < todayIsoDate() ? t('report.cta') : t('report.ctaDuring')}</Text>
-            <Text variant="caption" color="textSecondary">
-              {t('report.ctaBody')}
-            </Text>
+        <Card variant="glow" onPress={() => router.push({ pathname: '/trip-report', params: { tripId: trip.id } })} accessibilityLabel={t('report.ctaBody')}>
+          <View style={styles.reportRow}>
+            <IconBadge icon="trophy" tone="gradient" />
+            <View style={styles.flex}>
+              <Text variant="bodyStrong">{trip.end_date && trip.end_date < todayIsoDate() ? t('report.cta') : t('report.ctaDuring')}</Text>
+              <Text variant="caption" color="textSecondary">
+                {t('report.ctaBody')}
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
           </View>
-          <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
-        </Pressable>
+        </Card>
       )}
 
       <TripTools tripId={trip.id} />
@@ -245,6 +239,7 @@ export default function TripScreen() {
 }
 
 const styles = StyleSheet.create({
+  reportRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   section: { gap: Spacing.md },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.md },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },

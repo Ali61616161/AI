@@ -15,12 +15,16 @@
     "edit": "Editar",
     "done": "Listo",
     "close": "Cerrar",
-    "search": "Buscar"
+    "search": "Buscar",
+    "stepOf": "Paso {{step}} de {{total}}"
   },
   "welcome": {
     "title": "Tu próximo viaje empieza aquí",
     "subtitle": "Sube tu billete y deja que Yola planifique el resto.",
-    "getStarted": "Empezar"
+    "getStarted": "Empezar",
+    "pillRoute": "Ruta con IA",
+    "pillTranslate": "Traducción en vivo",
+    "pillOffline": "Sin conexión"
   },
   "language": {
     "title": "Idioma",
@@ -35,7 +39,8 @@
     "trips": "Mis viajes",
     "assistant": "Asistente",
     "social": "Social",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "explore": "Explorar"
   },
   "auth": {
     "signInTitle": "Inicia sesión en tu cuenta",
@@ -115,7 +120,15 @@
     "featureReplan": "Lluvia, retrasos, cansancio: cambia el plan al instante.",
     "featureOffline": "Tu ruta y tus billetes te acompañan incluso sin conexión.",
     "featureMenu": "Haz una foto al menú y descubre qué es cada plato y cuánto cuesta.",
-    "nextTrip": "Tu próximo viaje"
+    "nextTrip": "Tu próximo viaje",
+    "quick": {
+      "explore": "Explorar",
+      "travelers": "Viajeros",
+      "translate": "Traducir",
+      "sos": "Emergencia",
+      "decideTitle": "¿No te decides?",
+      "decideBody": "Deja que elija por ti un sitio cercano abierto ahora."
+    }
   },
   "trips": {
     "title": "Mis viajes",
@@ -131,7 +144,8 @@
     "daysLeft_other": "Faltan {{count}} días",
     "startsToday": "Empieza hoy",
     "ongoing": "En curso",
-    "loadFailed": "No se pudieron cargar tus viajes."
+    "loadFailed": "No se pudieron cargar tus viajes.",
+    "dayProgress": "Día {{day}} de {{total}}"
   },
   "social": {
     "title": "Encuentros entre viajeros",
@@ -232,7 +246,13 @@
     "deleteTitle": "¿Eliminar tu cuenta?",
     "deleteBody": "Se eliminarán para siempre tu cuenta, viajes, documentos, mensajes y demás datos. Las suscripciones activas deben cancelarse aparte en el App Store o Google Play.",
     "deleteConfirm": "Eliminar para siempre",
-    "deleteFailed": "No se pudo eliminar la cuenta. Inténtalo de nuevo."
+    "deleteFailed": "No se pudo eliminar la cuenta. Inténtalo de nuevo.",
+    "appearance": "Apariencia",
+    "appearanceOptions": {
+      "dark": "Oscuro",
+      "light": "Claro",
+      "system": "Sistema"
+    }
   },
   "assistant": {
     "title": "Cambiar el plan",
@@ -413,7 +433,11 @@
       "attraction": "Lugares de interés",
       "pharmacy": "Farmacias",
       "supermarket": "Supermercados",
-      "atm": "Cajeros"
+      "atm": "Cajeros",
+      "bar": "Bares",
+      "bakery": "Panaderías",
+      "dessert": "Postres",
+      "park": "Parques"
     },
     "errors": {
       "quota_exceeded": "Has usado las búsquedas gratuitas de hoy. Mejora tu plan para búsquedas ilimitadas.",
@@ -797,12 +821,47 @@
     "name": "Nombre del viaje (opcional)",
     "namePlaceholder": "p. ej., Verano en Roma",
     "endBeforeStart": "La fecha de fin debe ser posterior a la de inicio.",
-    "hint": "Puedes añadir billetes y reservas de hotel más tarde; Yola ajustará el plan a ellos."
+    "hint": "Puedes añadir billetes y reservas de hotel más tarde; Yola ajustará el plan a ellos.",
+    "countryWhy": "Necesario para números de emergencia, visados y frases locales."
   },
   "legal": {
     "effective": "Vigente desde {{date}}",
     "englishOnly": "Disponible en inglés y turco.",
     "privacy": "Política de privacidad",
     "terms": "Condiciones de uso"
+  },
+  "decide": {
+    "title": "Decide por mí",
+    "subtitle": "Elige qué te apetece y déjame el resto. Encontraré un sitio cercano abierto ahora.",
+    "groups": {
+      "food": "Comida",
+      "coffee": "Café",
+      "sweet": "Algo dulce",
+      "drinks": "Copas",
+      "see": "Algo que ver",
+      "surprise": "Sorpréndeme"
+    },
+    "distance": "Distancia",
+    "walk": "A pie · 1 km",
+    "ride": "Un poco más lejos · 3 km",
+    "topRated": "Solo los mejor valorados (4,2+)",
+    "spin": "Elige por mí",
+    "spinning": "Eligiendo…",
+    "result": "Tu elección",
+    "openNow": "Abierto ahora",
+    "pickedFrom": "Elegido entre {{count}} sitios abiertos ahora",
+    "go": "Cómo llegar",
+    "again": "Otro",
+    "change": "Cambiar elección",
+    "noneLeft": "No quedan sitios abiertos para esta elección. Amplía la distancia o elige otra cosa."
+  },
+  "explore": {
+    "title": "Explorar",
+    "live": "En vivo",
+    "openCount": "{{count}} sitios abiertos ahora",
+    "searchArea": "Buscar en esta zona",
+    "locate": "Ir a mi ubicación",
+    "needLocation": "Necesito acceso a la ubicación para centrar el mapa en ti y mostrar sitios abiertos en vivo.",
+    "radar": "Vista radar · el mapa completo se abre en el móvil"
   }
 }

@@ -1,12 +1,15 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Tap } from '@/components/ui/tap';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Speech from 'expo-speech';
 import { ExpoSpeechRecognitionModule, useSpeechRecognitionEvent } from 'expo-speech-recognition';
 import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { GradientBg } from '@/components/ui/gradient-bg';
 import { Text } from '@/components/ui/text';
-import { Radius, Spacing } from '@/theme/tokens';
+import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { useTranslateVoice } from './api';
@@ -118,7 +121,8 @@ export function Conversation({ myLanguage, theirLanguage, onLanguages }: { myLan
           return (
             <View
               key={turn.id}
-              style={[styles.bubble, mine ? styles.mine : styles.theirs, { backgroundColor: mine ? colors.primary : colors.surface, borderColor: colors.border }]}>
+              style={[styles.bubble, mine ? styles.mine : styles.theirs, { backgroundColor: mine ? 'transparent' : colors.surface, borderColor: mine ? 'transparent' : colors.border, overflow: 'hidden' }]}>
+              {mine && <GradientBg />}
               <Text variant="caption" style={{ color: mine ? colors.onPrimary : colors.textSecondary, writingDirection: dir(langOf(turn.side)) }}>
                 {turn.original}
               </Text>
@@ -159,19 +163,29 @@ export function Conversation({ myLanguage, theirLanguage, onLanguages }: { myLan
         {(['me', 'them'] as Side[]).map((s) => {
           const active = listening === s;
           return (
-            <Pressable
+            <Tap
               key={s}
               accessibilityRole="button"
               accessibilityState={{ selected: active }}
               accessibilityLabel={t(s === 'me' ? 'translate.speakMine' : 'translate.speakTheirs', { language: translateLanguage(langOf(s)).name })}
               disabled={listening !== null && !active}
               onPress={() => start(s)}
-              style={[styles.mic, { backgroundColor: active ? colors.danger : s === 'me' ? colors.primary : colors.accent, opacity: listening && !active ? 0.4 : 1 }]}>
-              <Ionicons name={active ? 'stop' : 'mic'} size={28} color={colors.onPrimary} />
-              <Text variant="bodyStrong" style={{ color: colors.onPrimary }} numberOfLines={1}>
-                {translateLanguage(langOf(s)).name}
-              </Text>
-            </Pressable>
+              feedback="press"
+              scaleTo={0.95}
+              style={styles.micWrap}>
+              <LinearGradient
+                colors={active ? Gradients.danger : s === 'me' ? Gradients.primary : Gradients.accent}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.mic}>
+                <View style={styles.micIcon}>
+                  <Ionicons name={active ? 'stop' : 'mic'} size={28} color="#FFFFFF" />
+                </View>
+                <Text variant="bodyStrong" style={{ color: '#FFFFFF' }} numberOfLines={1}>
+                  {translateLanguage(langOf(s)).name}
+                </Text>
+              </LinearGradient>
+            </Tap>
           );
         })}
       </View>
@@ -188,5 +202,7 @@ const styles = StyleSheet.create({
   mine: { alignSelf: 'flex-end' },
   theirs: { alignSelf: 'flex-start' },
   mics: { flexDirection: 'row', gap: Spacing.md },
-  mic: { flex: 1, alignItems: 'center', gap: Spacing.xs, paddingVertical: Spacing.lg, borderRadius: Radius.xl },
+  micWrap: { flex: 1 },
+  mic: { alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.xl, borderRadius: Radius.xl },
+  micIcon: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.18)' },
 });

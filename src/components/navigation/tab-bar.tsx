@@ -1,37 +1,58 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import type { BottomTabBarProps } from 'expo-router/tabs';
-import type { ComponentProps } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { useEffect, useState, type ComponentProps } from 'react';
+import { Platform, StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, withSpring, withTiming } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
+import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
-import { Radius, Spacing } from '@/theme/tokens';
+import { Gradients, Motion, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
 const ICONS: Record<string, { active: IconName; inactive: IconName }> = {
-  index: { active: 'sunny', inactive: 'sunny-outline' },
+  index: { active: 'planet', inactive: 'planet-outline' },
   trips: { active: 'airplane', inactive: 'airplane-outline' },
+  explore: { active: 'map', inactive: 'map-outline' },
   social: { active: 'people', inactive: 'people-outline' },
   profile: { active: 'person-circle', inactive: 'person-circle-outline' },
 };
 
+const ORB = 58;
+
 /**
- * Alt menü: dört sekme ve ortada her ekrandan "Planı Değiştir" asistanını açan buton.
- * Buton ilk iki sekmeden sonra yerleşir.
+ * Yüzen cam alt menü. Seçili sekmenin arkasında yayla kayan bir ışık vardır; ortadaki
+ * parlayan düğme her ekrandan "Planı Değiştir" asistanını açar.
  */
 export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const { t } = useTranslation();
   const middle = Math.ceil(state.routes.length / 2);
+  const [tabWidth, setTabWidth] = useState(0);
+  const slot = state.index < middle ? state.index : state.index + 1; // ortadaki düğme bir yuva kaplar
+  const x = useSharedValue(0);
+  const glow = useSharedValue(0.4);
+
+  useEffect(() => {
+    x.set(withSpring(slot * tabWidth, Motion.enter));
+  }, [slot, tabWidth, x]);
+  useEffect(() => {
+    glow.set(withRepeat(withSequence(withTiming(0.75, { duration: 1600 }), withTiming(0.4, { duration: 1600 })), -1));
+  }, [glow]);
+
+  const indicator = useAnimatedStyle(() => ({ transform: [{ translateX: x.get() }] }));
+  const orbGlow = useAnimatedStyle(() => ({ shadowOpacity: glow.get() }));
 
   const tabs = state.routes.map((route, index) => {
     const focused = state.index === index;
     const { options } = descriptors[route.key];
     const icon = ICONS[route.name] ?? { active: 'ellipse', inactive: 'ellipse-outline' };
-    const color = focused ? colors.primary : colors.textMuted;
+    const color = focused ? colors.text : colors.textMuted;
 
     const onPress = () => {
       const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
@@ -39,66 +60,79 @@ export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarP
     };
 
     return (
-      <Pressable
+      <Tap
         key={route.key}
         accessibilityRole="tab"
         accessibilityState={{ selected: focused }}
         accessibilityLabel={options.title}
         onPress={onPress}
+        feedback="select"
+        scaleTo={0.9}
         style={styles.tab}>
-        <Ionicons name={focused ? icon.active : icon.inactive} size={24} color={color} />
+        <Ionicons name={focused ? icon.active : icon.inactive} size={22} color={focused ? colors.primary : color} />
         <Text variant="caption" numberOfLines={1} style={[styles.label, { color }]}>
           {options.title}
         </Text>
-      </Pressable>
+      </Tap>
     );
   });
 
+  const glass =
+    Platform.OS === 'ios' ? (
+      <BlurView tint={isDark ? 'systemUltraThinMaterialDark' : 'systemUltraThinMaterialLight'} intensity={80} style={StyleSheet.absoluteFill} />
+    ) : (
+      <View style={[StyleSheet.absoluteFill, { backgroundColor: isDark ? 'rgba(12,18,34,0.92)' : 'rgba(255,255,255,0.94)' }]} />
+    );
+
   return (
-    <View
-      style={[
-        styles.bar,
-        { backgroundColor: colors.surface, borderTopColor: colors.border, paddingBottom: Math.max(insets.bottom, Spacing.sm) },
-      ]}>
-      {tabs.slice(0, middle)}
-      <View style={styles.fabSlot}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('assistant.openAssistant')}
-          onPress={() => router.push('/assistant')}
-          style={({ pressed }) => [
-            styles.fab,
-            { backgroundColor: colors.primary, shadowColor: colors.primary, transform: [{ scale: pressed ? 0.95 : 1 }] },
-          ]}>
-          <Ionicons name="sparkles" size={26} color={colors.onPrimary} />
-        </Pressable>
+    <View pointerEvents="box-none" style={[styles.wrap, { paddingBottom: Math.max(insets.bottom - 6, Spacing.md) }]}>
+      <View style={[styles.bar, { borderColor: colors.borderStrong, shadowColor: '#000' }]} onLayout={(e) => setTabWidth((e.nativeEvent.layout.width - Spacing.xs * 2) / (state.routes.length + 1))}>
+        <View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.clip]}>
+          {glass}
+        </View>
+        {tabWidth > 0 && (
+          <Animated.View style={[styles.indicator, { width: tabWidth }, indicator]}>
+            <View style={[styles.indicatorPill, { backgroundColor: colors.surfaceStrong }]} />
+          </Animated.View>
+        )}
+        <View style={styles.row}>
+          {tabs.slice(0, middle)}
+          <View style={styles.tab}>
+            <Animated.View style={[styles.orbShadow, orbGlow]}>
+              <Tap accessibilityRole="button" accessibilityLabel={t('assistant.openAssistant')} onPress={() => router.push('/assistant')} feedback="press" scaleTo={0.9}>
+                <LinearGradient colors={Gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.orb}>
+                  <View pointerEvents="none" style={styles.orbShine} />
+                  <Ionicons name="sparkles" size={24} color="#FFFFFF" />
+                </LinearGradient>
+              </Tap>
+            </Animated.View>
+          </View>
+          {tabs.slice(middle)}
+        </View>
       </View>
-      {tabs.slice(middle)}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrap: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: Spacing.lg },
   bar: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    paddingTop: Spacing.sm,
-    paddingHorizontal: Spacing.sm,
-  },
-  tab: { flex: 1, alignItems: 'center', gap: Spacing.xxs, paddingVertical: Spacing.xs },
-  label: { fontSize: 11, lineHeight: 14 },
-  fabSlot: { width: 72, alignItems: 'center' },
-  fab: {
-    width: 60,
-    height: 60,
-    borderRadius: Radius.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: -28,
+    borderRadius: Radius.xl,
+    borderWidth: StyleSheet.hairlineWidth * 2,
+    overflow: 'visible',
     shadowOpacity: 0.35,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 8,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 10 },
+    elevation: 12,
+    paddingHorizontal: Spacing.xs,
   },
+  clip: { borderRadius: Radius.xl, overflow: 'hidden' },
+  row: { flexDirection: 'row', alignItems: 'center', height: 66 },
+  tab: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 3, height: '100%' },
+  label: { fontSize: 10.5, lineHeight: 13 },
+  indicator: { position: 'absolute', top: 7, bottom: 7, left: Spacing.xs, alignItems: 'center' },
+  indicatorPill: { flex: 1, width: '88%', borderRadius: Radius.lg },
+  orbShadow: { shadowColor: '#FF4D6A', shadowRadius: 18, shadowOffset: { width: 0, height: 6 }, elevation: 10, borderRadius: ORB / 2, marginTop: -26 },
+  orb: { width: ORB, height: ORB, borderRadius: ORB / 2, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderWidth: 3, borderColor: 'rgba(255,255,255,0.18)' },
+  orbShine: { position: 'absolute', top: 0, left: 0, right: 0, height: ORB / 2, backgroundColor: 'rgba(255,255,255,0.16)' },
 });

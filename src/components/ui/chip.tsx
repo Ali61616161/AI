@@ -1,10 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
 import type { ComponentProps } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Radius, Spacing } from '@/theme/tokens';
+import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+import { Tap } from './tap';
 import { Text } from './text';
 
 type Props = {
@@ -17,26 +19,28 @@ type Props = {
 export function Chip({ label, icon, selected = false, onPress }: Props) {
   const { colors } = useTheme();
   const foreground = selected ? colors.onPrimary : colors.text;
-
-  return (
-    <Pressable
-      accessibilityRole={onPress ? 'checkbox' : 'text'}
-      accessibilityState={onPress ? { checked: selected } : undefined}
-      disabled={!onPress}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.chip,
-        {
-          backgroundColor: selected ? colors.primary : colors.surface,
-          borderColor: selected ? colors.primary : colors.border,
-          opacity: pressed ? 0.85 : 1,
-        },
-      ]}>
-      {icon && <Ionicons name={icon} size={16} color={foreground} />}
-      <Text variant="caption" style={{ color: foreground }}>
+  const inner = (
+    <>
+      {icon && <Ionicons name={icon} size={15} color={selected ? foreground : colors.textSecondary} />}
+      <Text variant="caption" numberOfLines={1} style={{ color: foreground }}>
         {label}
       </Text>
-    </Pressable>
+    </>
+  );
+
+  const body = selected ? (
+    <LinearGradient colors={Gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.chip, styles.selected]}>
+      {inner}
+    </LinearGradient>
+  ) : (
+    <View style={[styles.chip, { backgroundColor: colors.surface, borderColor: colors.border }]}>{inner}</View>
+  );
+
+  if (!onPress) return <View accessibilityRole="text">{body}</View>;
+  return (
+    <Tap accessibilityRole="checkbox" accessibilityState={{ checked: selected }} onPress={onPress} feedback="select" scaleTo={0.94}>
+      {body}
+    </Tap>
   );
 }
 
@@ -46,8 +50,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.xs,
     paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.sm,
+    paddingVertical: 9,
     borderRadius: Radius.pill,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth * 2,
   },
+  selected: { borderColor: 'transparent' },
 });

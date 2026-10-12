@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Text } from '@/components/ui/text';
+import { Chip } from '@/components/ui/chip';
 import { changeLanguage, currentLanguage, restartApp } from '@/i18n';
 import { SUPPORTED_LANGUAGES, type LanguageCode } from '@/i18n/languages';
-import { Radius, Spacing } from '@/theme/tokens';
-import { useTheme } from '@/theme/use-theme';
+import { Spacing } from '@/theme/tokens';
 
-export function LanguagePicker() {
+export function LanguagePicker({ align = 'start' }: { align?: 'start' | 'center' }) {
   const { t } = useTranslation();
-  const { colors } = useTheme();
   const [selected, setSelected] = useState<LanguageCode>(currentLanguage());
 
   async function select(code: LanguageCode) {
@@ -25,43 +23,15 @@ export function LanguagePicker() {
   }
 
   return (
-    <View style={styles.grid}>
-      {SUPPORTED_LANGUAGES.map((lang) => {
-        const active = lang.code === selected;
-        return (
-          <Pressable
-            key={lang.code}
-            accessibilityRole="radio"
-            accessibilityState={{ selected: active }}
-            onPress={() => select(lang.code)}
-            style={[
-              styles.chip,
-              {
-                backgroundColor: active ? colors.primary : colors.surface,
-                borderColor: active ? colors.primary : colors.border,
-              },
-            ]}>
-            <Text variant="caption" style={{ color: active ? colors.onPrimary : colors.text }}>
-              {lang.nativeName}
-            </Text>
-          </Pressable>
-        );
-      })}
+    <View style={[styles.grid, align === 'center' && styles.centered]} accessibilityRole="radiogroup">
+      {SUPPORTED_LANGUAGES.map((lang) => (
+        <Chip key={lang.code} label={lang.nativeName} selected={lang.code === selected} onPress={() => select(lang.code)} />
+      ))}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: Spacing.sm,
-    justifyContent: 'center',
-  },
-  chip: {
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.sm,
-    borderRadius: Radius.pill,
-    borderWidth: 1,
-  },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  centered: { justifyContent: 'center' },
 });

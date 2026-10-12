@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useState } from 'react';
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
 import { Radius, Spacing, Typography } from '@/theme/tokens';
@@ -15,13 +16,14 @@ type Props = TextInputProps & {
   warning?: string | null;
 };
 
-export function TextField({ label, error, hint, warning, style, ...rest }: Props) {
+export function TextField({ label, error, hint, warning, style, onFocus, onBlur, ...rest }: Props) {
   const { colors } = useTheme();
-  const borderColor = error ? colors.danger : warning ? colors.warning : colors.border;
+  const [focused, setFocused] = useState(false);
+  const borderColor = error ? colors.danger : warning ? colors.warning : focused ? colors.primary : colors.border;
   return (
     <View style={styles.wrap}>
       <View style={styles.labelRow}>
-        <Text variant="caption" color="textSecondary" style={styles.label}>
+        <Text variant="overline" color={focused ? 'primary' : 'textMuted'} style={styles.label}>
           {label}
         </Text>
         {warning && !error && (
@@ -36,6 +38,15 @@ export function TextField({ label, error, hint, warning, style, ...rest }: Props
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor={colors.textMuted}
+        selectionColor={colors.primary}
+        onFocus={(e) => {
+          setFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setFocused(false);
+          onBlur?.(e);
+        }}
         style={[
           Typography.body,
           styles.input,
@@ -43,7 +54,9 @@ export function TextField({ label, error, hint, warning, style, ...rest }: Props
             color: colors.text,
             backgroundColor: colors.surface,
             borderColor,
-            borderWidth: warning || error ? 2 : 1,
+            borderWidth: focused || warning || error ? 1.5 : StyleSheet.hairlineWidth * 2,
+            shadowColor: colors.primary,
+            shadowOpacity: focused ? 0.25 : 0,
             textAlign: 'auto',
           },
           style,
@@ -64,13 +77,15 @@ export function TextField({ label, error, hint, warning, style, ...rest }: Props
 }
 
 const styles = StyleSheet.create({
-  wrap: { gap: Spacing.xs },
+  wrap: { gap: Spacing.sm },
   labelRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   label: { flex: 1 },
   badge: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xxs },
   input: {
-    minHeight: 52,
+    minHeight: 54,
     paddingHorizontal: Spacing.lg,
-    borderRadius: Radius.md,
+    borderRadius: Radius.lg,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 0 },
   },
 });

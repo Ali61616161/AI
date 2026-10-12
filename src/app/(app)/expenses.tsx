@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Card } from '@/components/ui/card';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
@@ -83,14 +84,14 @@ export default function ExpensesScreen() {
       footer={!adding ? <Button title={t('expenses.add')} onPress={() => setAdding(true)} /> : undefined}>
       <ModalHeader title={t('expenses.title')} subtitle={trip?.title} />
 
-      <View style={[styles.total, { backgroundColor: colors.primary }]}>
-        <Text variant="caption" style={{ color: colors.onPrimary }}>
+      <Card variant="gradient" padding={Spacing.xl}>
+        <Text variant="overline" style={{ color: 'rgba(255,255,255,0.8)' }}>
           {t('expenses.total')}
         </Text>
-        <Text variant="display" style={{ color: colors.onPrimary }}>
+        <Text variant="hero" style={{ color: colors.onPrimary }}>
           {formatMoney(total, budget)}
         </Text>
-      </View>
+      </Card>
 
       {byCategory.length > 0 && (
         <View style={styles.section}>
@@ -101,7 +102,7 @@ export default function ExpensesScreen() {
                 {t(`expenses.categories.${c}`)}
               </Text>
               <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }]}>
-                <View style={[styles.barFill, { width: `${Math.max(4, (sum / total) * 100)}%`, backgroundColor: colors.accent }]} />
+                <View style={[styles.barFill, { width: `${Math.max(4, (sum / total) * 100)}%`, backgroundColor: colors.primary }]} />
               </View>
               <Text variant="caption" style={styles.barValue}>
                 {formatMoney(sum, budget)}

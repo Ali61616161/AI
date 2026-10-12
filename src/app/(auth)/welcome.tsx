@@ -1,8 +1,11 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
+import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
-import { LogoMark } from '@/components/brand/logo-mark';
+import { OrbitHero } from '@/components/brand/orbit-hero';
 import { LanguagePicker } from '@/components/settings/language-picker';
 import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
@@ -10,54 +13,63 @@ import { Text } from '@/components/ui/text';
 import { Brand } from '@/config/brand';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
-import { Spacing } from '@/theme/tokens';
+import { Radius, Spacing } from '@/theme/tokens';
+import { useTheme } from '@/theme/use-theme';
+
+const PILLS: { icon: ComponentProps<typeof Ionicons>['name']; key: 'pillRoute' | 'pillTranslate' | 'pillOffline' }[] = [
+  { icon: 'sparkles', key: 'pillRoute' },
+  { icon: 'language', key: 'pillTranslate' },
+  { icon: 'cloud-offline', key: 'pillOffline' },
+];
 
 export default function WelcomeScreen() {
   const { t } = useTranslation();
+  const { colors } = useTheme();
   const continueAsGuest = useSessionStore((s) => s.continueAsGuest);
 
   return (
     <Screen
       footer={
         <>
-          <Button
-            title={t('welcome.getStarted')}
-            onPress={() => (isSupabaseConfigured() ? router.push('/sign-in') : continueAsGuest())}
-          />
-          {isSupabaseConfigured() && (
-            <Button title={t('auth.guest')} variant="ghost" onPress={continueAsGuest} />
-          )}
+          <Button title={t('welcome.getStarted')} icon="arrow-forward" onPress={() => (isSupabaseConfigured() ? router.push('/sign-in') : continueAsGuest())} />
+          {isSupabaseConfigured() && <Button title={t('auth.guest')} variant="ghost" onPress={continueAsGuest} />}
         </>
       }>
-      <View style={styles.hero}>
-        <LogoMark size={96} />
-        <Text variant="display">{Brand.name}</Text>
-        <Text variant="body" color="textSecondary" style={styles.center}>
-          {t('app.tagline')}
-        </Text>
-      </View>
+      <Animated.View entering={FadeInDown.duration(700)} style={styles.hero}>
+        <OrbitHero size={260} />
+      </Animated.View>
 
-      <View style={styles.section}>
-        <Text variant="title" style={styles.center}>
-          {t('welcome.title')}
+      <Animated.View entering={FadeInDown.delay(120).duration(600)} style={styles.section}>
+        <Text variant="overline" color="primary">
+          {Brand.name} · {t('app.tagline')}
         </Text>
-        <Text variant="body" color="textSecondary" style={styles.center}>
+        <Text variant="hero">{t('welcome.title')}</Text>
+        <Text variant="body" color="textSecondary">
           {t('welcome.subtitle')}
         </Text>
-      </View>
+        <View style={styles.pills}>
+          {PILLS.map((p) => (
+            <View key={p.key} style={[styles.pill, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Ionicons name={p.icon} size={14} color={colors.accent} />
+              <Text variant="caption">{t(`welcome.${p.key}`)}</Text>
+            </View>
+          ))}
+        </View>
+      </Animated.View>
 
-      <View style={styles.section}>
-        <Text variant="caption" color="textMuted" style={styles.center}>
+      <Animated.View entering={FadeInDown.delay(240).duration(600)} style={styles.section}>
+        <Text variant="overline" color="textMuted">
           {t('language.subtitle')}
         </Text>
         <LanguagePicker />
-      </View>
+      </Animated.View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  hero: { alignItems: 'center', gap: Spacing.md, marginTop: Spacing.xxl },
+  hero: { alignItems: 'center', marginTop: Spacing.sm },
   section: { gap: Spacing.md },
-  center: { textAlign: 'center' },
+  pills: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  pill: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.md, paddingVertical: 7, borderRadius: Radius.pill, borderWidth: StyleSheet.hairlineWidth * 2 },
 });
