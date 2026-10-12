@@ -20,6 +20,11 @@ jobs:
           echo "::add-mask::$token"
           echo "EXPO_TOKEN=$token" >> "$GITHUB_ENV"
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - name: Günlük
         env:
           BUILD_ID: ${{ inputs.build_id }}
