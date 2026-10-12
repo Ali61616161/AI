@@ -6,7 +6,8 @@ import { Text } from '@/components/ui/text';
 import { Radius } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-import { nativeMapsAvailable } from './availability';
+import { DARK_MAP_STYLE } from '@/features/explore/map-style';
+import { mapProvider, nativeMapsAvailable, usesGoogleMap } from './availability';
 import { RouteCard } from './route-card';
 import type { PlacesMapProps } from './types';
 
@@ -33,11 +34,13 @@ function NativePlacesMap({ points, height = 220, onSelect }: PlacesMapProps) {
   return (
     <View style={[styles.wrap, { height, borderColor: colors.border }]}>
       <MapView
+        provider={mapProvider}
         ref={ref}
         style={StyleSheet.absoluteFill}
         initialRegion={{ latitude: first.lat, longitude: first.lng, latitudeDelta: 0.05, longitudeDelta: 0.05 }}
         onMapReady={points.length > 1 ? fit : undefined}
         userInterfaceStyle={isDark ? 'dark' : 'light'}
+        customMapStyle={usesGoogleMap && isDark ? DARK_MAP_STYLE : undefined}
         showsUserLocation
         toolbarEnabled={false}
         accessibilityLabel={points.map((p) => p.title).join(', ')}>

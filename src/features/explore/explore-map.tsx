@@ -1,14 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 import { Gradients } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-import { nativeMapsAvailable } from '@/features/map/availability';
+import { mapProvider, nativeMapsAvailable, usesGoogleMap } from '@/features/map/availability';
 
 import { DARK_MAP_STYLE } from './map-style';
 import { RadarMap } from './radar-map';
@@ -61,11 +61,12 @@ const NativeExploreMap = forwardRef<ExploreMapHandle, ExploreMapProps>(function 
 
   return (
     <MapView
+      provider={mapProvider}
       ref={map}
       style={StyleSheet.absoluteFill}
       initialCamera={{ center: { latitude: center.lat, longitude: center.lng }, pitch: 50, heading: 0, altitude: 1600, zoom: 15 }}
       userInterfaceStyle={isDark ? 'dark' : 'light'}
-      customMapStyle={Platform.OS === 'android' && isDark ? DARK_MAP_STYLE : undefined}
+      customMapStyle={usesGoogleMap && isDark ? DARK_MAP_STYLE : undefined}
       showsUserLocation
       showsMyLocationButton={false}
       showsCompass={false}

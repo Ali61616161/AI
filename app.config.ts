@@ -98,6 +98,8 @@ const config: ExpoConfig = {
       'react-native-maps',
       {
         androidGoogleMapsApiKey: process.env.GOOGLE_MAPS_ANDROID_API_KEY,
+        // Varsa iOS'ta da Google Haritalar (aynı koyu stil); yoksa Apple Haritalar.
+        iosGoogleMapsApiKey: process.env.GOOGLE_MAPS_IOS_API_KEY,
       },
     ],
     [
@@ -126,6 +128,7 @@ const config: ExpoConfig = {
     eas: { projectId: brand.easProjectId },
     // Android'de Google Haritalar anahtarı derlemeye eklendi mi (yoksa harita yerine radar).
     androidMapsKey: Boolean(process.env.GOOGLE_MAPS_ANDROID_API_KEY),
+      iosMapsKey: Boolean(process.env.GOOGLE_MAPS_IOS_API_KEY),
   },
 };
 
