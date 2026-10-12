@@ -18,7 +18,7 @@ const privacyEn: LegalDoc = {
     {
       heading: 'What we collect',
       body: [
-        '• Account: your email address and, if you choose, a display name, birth year, gender and a short bio (needed only for social mode).',
+        '• Account: your email address and, if you choose, a display name, birth year and a short bio (needed only for social mode).',
         '• Trips: destinations, dates, travel preferences, plans, expenses, packing lists, ratings and notes you create.',
         '• Documents you upload: tickets and booking confirmations (images or PDFs) and the details read from them.',
         '• Location: only while you use features that need it (places open near you, changing your plan, emergency sharing, social mode). In social mode only an approximate location (about 1 km) is stored.',
@@ -112,7 +112,7 @@ const privacyTr: LegalDoc = {
     {
       heading: 'Hangi verileri topluyoruz',
       body: [
-        '• Hesap: e-posta adresin ve istersen görünen adın, doğum yılın, cinsiyetin ve kısa tanıtımın (sadece sosyal mod için gerekir).',
+        '• Hesap: e-posta adresin ve istersen görünen adın, doğum yılın ve kısa tanıtımın (sadece sosyal mod için gerekir).',
         '• Seyahatler: oluşturduğun varış yerleri, tarihler, seyahat tercihleri, planlar, harcamalar, bavul listeleri, puanlar ve notlar.',
         '• Yüklediğin belgeler: biletler ve rezervasyon onayları (görsel veya PDF) ve bunlardan okunan bilgiler.',
         '• Konum: sadece gerektiren özellikleri kullanırken (yakında açık yerler, planı değiştirme, acil durum paylaşımı, sosyal mod). Sosyal modda sadece yaklaşık konum (~1 km) saklanır.',

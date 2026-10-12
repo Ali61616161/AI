@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useState, type ComponentProps } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Switch, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -30,13 +30,11 @@ import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing, Typography } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-const SAFETY: { icon: ComponentProps<typeof Ionicons>['name']; key: 'safetyLocation' | 'safetyPublic' | 'safetyBlock' | 'safetyWomen' }[] = [
+const SAFETY: { icon: ComponentProps<typeof Ionicons>['name']; key: 'safetyLocation' | 'safetyPublic' | 'safetyBlock' }[] = [
   { icon: 'locate-outline', key: 'safetyLocation' },
   { icon: 'cafe-outline', key: 'safetyPublic' },
   { icon: 'hand-left-outline', key: 'safetyBlock' },
-  { icon: 'female-outline', key: 'safetyWomen' },
 ];
-const GENDERS = ['female', 'male', 'non_binary', 'undisclosed'] as const;
 
 function Setup({ me }: { me: SocialMe }) {
   const { t } = useTranslation();
@@ -45,18 +43,15 @@ function Setup({ me }: { me: SocialMe }) {
   const goVisible = useGoVisible();
   const [name, setName] = useState(me.display_name ?? '');
   const [year, setYear] = useState(me.birth_year ? String(me.birth_year) : '');
-  const [gender, setGender] = useState(me.gender);
   const [bio, setBio] = useState(me.bio ?? '');
   const [lookingFor, setLookingFor] = useState<string[]>(me.social?.looking_for.length ? me.social.looking_for : ['coffee']);
-  const [womenOnly, setWomenOnly] = useState(me.social?.women_only ?? false);
   const [accepted, setAccepted] = useState(false);
   const [locationDenied, setLocationDenied] = useState(false);
   const today = todayIsoDate();
   const trip = trips?.find((x) => x.start_date && x.end_date && x.start_date <= today && x.end_date >= today);
   const birthYear = Number(year);
-  // Güvenlik için doğum yılı ve cinsiyet bir kez belirlenince değiştirilemez.
+  // Güvenlik için doğum yılı bir kez belirlenince değiştirilemez.
   const yearLocked = me.birth_year != null;
-  const genderLocked = me.gender !== 'undisclosed';
   const valid = name.trim().length > 0 && Number.isInteger(birthYear) && birthYear > 1900 && accepted && lookingFor.length > 0;
 
   async function submit() {
@@ -66,10 +61,8 @@ function Setup({ me }: { me: SocialMe }) {
     goVisible.mutate({
       displayName: name,
       birthYear,
-      gender,
       bio,
       lookingFor,
-      womenOnly: gender === 'female' && womenOnly,
       location,
       city: trip?.trip_destinations[0]?.city ?? null,
       countryCode: trip?.trip_destinations[0]?.country_code ?? null,
@@ -84,14 +77,6 @@ function Setup({ me }: { me: SocialMe }) {
       <Text variant="subtitle">{t('social.setupTitle')}</Text>
       <TextInput value={name} onChangeText={setName} maxLength={60} placeholder={t('social.displayName')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.displayName')} style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]} />
       <TextInput value={year} editable={!yearLocked} onChangeText={(v) => setYear(v.replace(/\D/g, '').slice(0, 4))} keyboardType="number-pad" placeholder={t('social.birthYear')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.birthYear')} style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]} />
-      <Text variant="caption" color="textSecondary">
-        {t('social.gender')}
-      </Text>
-      <View style={styles.chips}>
-        {GENDERS.map((g) => (
-          <Chip key={g} label={t(`social.genders.${g}`)} selected={gender === g} onPress={genderLocked ? undefined : () => setGender(g)} />
-        ))}
-      </View>
       <Text variant="caption" color="textMuted">
         {t('social.identityNote')}
       </Text>
@@ -104,14 +89,6 @@ function Setup({ me }: { me: SocialMe }) {
           <Chip key={l} label={t(`social.looking.${l}`)} selected={lookingFor.includes(l)} onPress={() => setLookingFor((x) => (x.includes(l) ? x.filter((y) => y !== l) : [...x, l]))} />
         ))}
       </View>
-      {gender === 'female' && (
-        <View style={styles.switchRow}>
-          <Text variant="body" style={styles.flex}>
-            {t('social.womenOnly')}
-          </Text>
-          <Switch value={womenOnly} onValueChange={setWomenOnly} accessibilityLabel={t('social.womenOnly')} />
-        </View>
-      )}
       <Pressable accessibilityRole="checkbox" accessibilityState={{ checked: accepted }} onPress={() => setAccepted((v) => !v)} style={styles.switchRow}>
         <Ionicons name={accepted ? 'checkbox' : 'square-outline'} size={22} color={accepted ? colors.primary : colors.textSecondary} />
         <Text variant="caption" style={styles.flex}>

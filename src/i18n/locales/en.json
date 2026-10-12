@@ -141,17 +141,9 @@
     "safetyLocation": "Your location is shown to within about 1 km. Your exact spot is never shared.",
     "safetyPublic": "Meetups can only be suggested at public places like museums and cafés.",
     "safetyBlock": "You can block and report anyone.",
-    "safetyWomen": "You can choose to match only with women travelers.",
     "setupTitle": "Your traveler profile",
     "displayName": "Name shown to others",
     "birthYear": "Birth year (18+)",
-    "gender": "Gender",
-    "genders": {
-      "female": "Woman",
-      "male": "Man",
-      "non_binary": "Non-binary",
-      "undisclosed": "Prefer not to say"
-    },
     "bio": "A line about you (optional)",
     "lookingFor": "Up for",
     "looking": {
@@ -162,14 +154,12 @@
       "nightlife": "Night out",
       "nature": "Nature"
     },
-    "womenOnly": "Only match with women travelers",
     "consent": "I'm 18 or older, I agree to meet only in public places and to the community rules, and I allow my approximate location (about 1 km) to be shown.",
     "errors": {
       "age_required": "You must be 18 or older to use social mode.",
       "name_required": "Please enter the name shown to others.",
-      "women_only": "Only women can turn on the women-only filter.",
       "unknown": "Something went wrong. Please try again.",
-      "identity_locked": "Birth year and gender can't be changed. Contact support to correct them."
+      "identity_locked": "Your birth year can't be changed. Contact support to correct it."
     },
     "traveler": "Traveler",
     "accept": "Accept",
@@ -221,7 +211,7 @@
     "blockOnly": "Just block",
     "reportNote": "They'll be blocked and won't see you again. Our team reviews every report.",
     "chatSafety": "Meet in public, tell a friend where you are and keep your own plans. You can block or report anyone at any time.",
-    "identityNote": "For your safety, birth year and gender can't be changed once saved. Contact support if there's a mistake."
+    "identityNote": "For your safety, your birth year can't be changed once saved. Contact support if there's a mistake."
   },
   "profile": {
     "title": "Profile",

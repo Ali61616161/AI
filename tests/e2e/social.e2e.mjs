@@ -25,8 +25,8 @@ async function signIn(label) {
   const user = (await call('/auth/v1/user', undefined, 'GET')).data;
   return { call, id: user.id };
 }
-async function goVisible(u, { name, year, lng, lat, gender = 'female' }) {
-  assert.equal((await u.call(`/rest/v1/profiles?id=eq.${u.id}`, { display_name: name, birth_year: year, gender }, 'PATCH')).status, 204);
+async function goVisible(u, { name, year, lng, lat }) {
+  assert.equal((await u.call(`/rest/v1/profiles?id=eq.${u.id}`, { display_name: name, birth_year: year }, 'PATCH')).status, 204);
   await u.call('/rest/v1/consents', [{ consent: 'social_matching', granted: true, version: 't' }, { consent: 'location', granted: true, version: 't' }]);
   return u.call('/rest/v1/social_profiles', { user_id: u.id, is_visible: true, approx_location: `SRID=4326;POINT(${lng} ${lat})`, looking_for: ['coffee'] }, 'POST', { prefer: 'resolution=merge-duplicates' });
 }
@@ -59,7 +59,7 @@ await step('İki gezgin görünür olur ve birbirini yaklaşık mesafeyle görü
   ece = await signIn('ece');
   mert = await signIn('mert');
   assert.equal((await goVisible(ece, { name: 'Ece', year: 1996, lng: 12.4823, lat: 41.8955 })).status, 201);
-  assert.equal((await goVisible(mert, { name: 'Mert', year: 1994, lng: 12.4901, lat: 41.9012, gender: 'male' })).status, 201);
+  assert.equal((await goVisible(mert, { name: 'Mert', year: 1994, lng: 12.4901, lat: 41.9012 })).status, 201);
   const list = (await ece.call('/rest/v1/rpc/nearby_travelers', { p_radius_km: 10 })).data;
   const m = list.find((x) => x.user_id === mert.id);
   assert.ok(m, 'Mert listede olmalı');

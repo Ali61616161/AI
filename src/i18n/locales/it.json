@@ -141,17 +141,9 @@
     "safetyLocation": "La tua posizione è mostrata con una precisione di circa 1 km. Il punto esatto non viene mai condiviso.",
     "safetyPublic": "Gli incontri si possono proporre solo in luoghi pubblici come musei e caffè.",
     "safetyBlock": "Puoi bloccare e segnalare chiunque.",
-    "safetyWomen": "Puoi scegliere di incontrare solo viaggiatrici.",
     "setupTitle": "Il tuo profilo viaggiatore",
     "displayName": "Nome visibile agli altri",
     "birthYear": "Anno di nascita (18+)",
-    "gender": "Genere",
-    "genders": {
-      "female": "Donna",
-      "male": "Uomo",
-      "non_binary": "Non binario",
-      "undisclosed": "Preferisco non dirlo"
-    },
     "bio": "Una frase su di te (facoltativo)",
     "lookingFor": "Mi va di",
     "looking": {
@@ -162,14 +154,12 @@
       "nightlife": "Uscire la sera",
       "nature": "Natura"
     },
-    "womenOnly": "Solo con viaggiatrici",
     "consent": "Ho almeno 18 anni, accetto di incontrarmi solo in luoghi pubblici e le regole della community, e consento di mostrare la mia posizione approssimativa (circa 1 km).",
     "errors": {
       "age_required": "Devi avere almeno 18 anni per usare la modalità social.",
       "name_required": "Inserisci il nome visibile agli altri.",
-      "women_only": "Solo le donne possono attivare il filtro solo donne.",
       "unknown": "Qualcosa è andato storto. Riprova.",
-      "identity_locked": "Anno di nascita e genere non possono essere modificati. Contatta l’assistenza per correggerli."
+      "identity_locked": "L’anno di nascita non può essere modificato. Contatta l’assistenza per correggerlo."
     },
     "traveler": "Viaggiatore",
     "accept": "Accetta",
@@ -221,7 +211,7 @@
     "blockOnly": "Blocca soltanto",
     "reportNote": "Verrà bloccato e non potrà più vederti. Il nostro team esamina ogni segnalazione.",
     "chatSafety": "Incontratevi in pubblico, di’ a qualcuno dove sei e mantieni i tuoi piani. Puoi bloccare o segnalare chiunque in qualsiasi momento.",
-    "identityNote": "Per la tua sicurezza, anno di nascita e genere non possono essere modificati dopo il salvataggio. Se c’è un errore, contatta l’assistenza."
+    "identityNote": "Per la tua sicurezza, l’anno di nascita non può essere modificato dopo il salvataggio. Se c’è un errore, contatta l’assistenza."
   },
   "profile": {
     "title": "Profilo",

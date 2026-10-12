@@ -850,7 +850,6 @@ export type Database = {
           trip_id: string | null;
           updated_at: string;
           user_id: string;
-          women_only: boolean;
         };
         ComputedFields: never;
         Insert: {
@@ -864,7 +863,6 @@ export type Database = {
           trip_id?: string | null;
           updated_at?: string;
           user_id: string;
-          women_only?: boolean;
         };
         Update: {
           approx_location?: unknown;
@@ -877,7 +875,6 @@ export type Database = {
           trip_id?: string | null;
           updated_at?: string;
           user_id?: string;
-          women_only?: boolean;
         };
         Relationships: [
           {
@@ -1390,7 +1387,9 @@ export type Database = {
         | 'nearby_search'
         | 'text_translation'
         | 'voice_translation'
-        | 'travel_info';
+        | 'travel_info'
+        | 'weather'
+        | 'trip_report';
       report_reason: 'harassment' | 'fake_profile' | 'unsafe_behavior' | 'spam' | 'other';
       reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
       subscription_plan: 'free' | 'trip_pass' | 'pro_monthly' | 'pro_yearly';
@@ -1531,6 +1530,8 @@ export const Constants = {
         'text_translation',
         'voice_translation',
         'travel_info',
+        'weather',
+        'trip_report',
       ],
       report_reason: ['harassment', 'fake_profile', 'unsafe_behavior', 'spam', 'other'],
       reservation_type: ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'],

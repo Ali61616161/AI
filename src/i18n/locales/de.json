@@ -141,17 +141,9 @@
     "safetyLocation": "Dein Standort wird nur auf etwa 1 km genau angezeigt. Dein genauer Ort wird nie geteilt.",
     "safetyPublic": "Treffen können nur an öffentlichen Orten wie Museen und Cafés vorgeschlagen werden.",
     "safetyBlock": "Du kannst jede Person blockieren und melden.",
-    "safetyWomen": "Du kannst festlegen, dass du nur mit Frauen gematcht wirst.",
     "setupTitle": "Dein Reiseprofil",
     "displayName": "Für andere sichtbarer Name",
     "birthYear": "Geburtsjahr (18+)",
-    "gender": "Geschlecht",
-    "genders": {
-      "female": "Frau",
-      "male": "Mann",
-      "non_binary": "Nicht-binär",
-      "undisclosed": "Keine Angabe"
-    },
     "bio": "Ein Satz über dich (optional)",
     "lookingFor": "Lust auf",
     "looking": {
@@ -162,14 +154,12 @@
       "nightlife": "Ausgehen",
       "nature": "Natur"
     },
-    "womenOnly": "Nur mit reisenden Frauen",
     "consent": "Ich bin mindestens 18, treffe mich nur an öffentlichen Orten, akzeptiere die Community-Regeln und erlaube, dass mein ungefährer Standort (ca. 1 km) angezeigt wird.",
     "errors": {
       "age_required": "Für den Social-Modus musst du mindestens 18 Jahre alt sein.",
       "name_required": "Bitte gib den für andere sichtbaren Namen ein.",
-      "women_only": "Nur Frauen können den Nur-Frauen-Filter aktivieren.",
       "unknown": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
-      "identity_locked": "Geburtsjahr und Geschlecht können nicht geändert werden. Wende dich zur Korrektur an den Support."
+      "identity_locked": "Das Geburtsjahr kann nicht geändert werden. Wende dich zur Korrektur an den Support."
     },
     "traveler": "Reisende(r)",
     "accept": "Annehmen",
@@ -221,7 +211,7 @@
     "blockOnly": "Nur blockieren",
     "reportNote": "Die Person wird blockiert und sieht dich nicht mehr. Unser Team prüft jede Meldung.",
     "chatSafety": "Triff dich öffentlich, sag jemandem, wo du bist, und behalte deine eigenen Pläne. Du kannst jederzeit jemanden blockieren oder melden.",
-    "identityNote": "Zu deiner Sicherheit können Geburtsjahr und Geschlecht nach dem Speichern nicht mehr geändert werden. Wende dich bei einem Fehler an den Support."
+    "identityNote": "Zu deiner Sicherheit kann das Geburtsjahr nach dem Speichern nicht mehr geändert werden. Wende dich bei einem Fehler an den Support."
   },
   "profile": {
     "title": "Profil",

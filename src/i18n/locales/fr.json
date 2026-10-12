@@ -141,17 +141,9 @@
     "safetyLocation": "Votre position est affichée à environ 1 km près. Votre emplacement exact n'est jamais partagé.",
     "safetyPublic": "Les rencontres ne peuvent être proposées que dans des lieux publics comme les musées et les cafés.",
     "safetyBlock": "Vous pouvez bloquer et signaler n'importe qui.",
-    "safetyWomen": "Vous pouvez choisir de ne rencontrer que des voyageuses.",
     "setupTitle": "Votre profil voyageur",
     "displayName": "Nom visible par les autres",
     "birthYear": "Année de naissance (18+)",
-    "gender": "Genre",
-    "genders": {
-      "female": "Femme",
-      "male": "Homme",
-      "non_binary": "Non binaire",
-      "undisclosed": "Je préfère ne pas le dire"
-    },
     "bio": "Une phrase sur vous (facultatif)",
     "lookingFor": "Envie de",
     "looking": {
@@ -162,14 +154,12 @@
       "nightlife": "Sortie le soir",
       "nature": "Nature"
     },
-    "womenOnly": "Uniquement avec des voyageuses",
     "consent": "J’ai 18 ans ou plus, j’accepte de me retrouver uniquement dans des lieux publics et les règles de la communauté, et j’autorise l’affichage de ma position approximative (environ 1 km).",
     "errors": {
       "age_required": "Vous devez avoir 18 ans ou plus pour utiliser le mode social.",
       "name_required": "Saisissez le nom visible par les autres.",
-      "women_only": "Seules les femmes peuvent activer le filtre réservé aux femmes.",
       "unknown": "Une erreur s’est produite. Réessayez.",
-      "identity_locked": "L’année de naissance et le genre ne peuvent pas être modifiés. Contacte le support pour les corriger."
+      "identity_locked": "L’année de naissance ne peut pas être modifiée. Contacte le support pour la corriger."
     },
     "traveler": "Voyageur",
     "accept": "Accepter",
@@ -221,7 +211,7 @@
     "blockOnly": "Bloquer seulement",
     "reportNote": "Cette personne sera bloquée et ne vous verra plus. Notre équipe examine chaque signalement.",
     "chatSafety": "Retrouvez-vous en public, dites à un proche où vous êtes et gardez vos propres projets. Vous pouvez bloquer ou signaler quelqu’un à tout moment.",
-    "identityNote": "Pour ta sécurité, l’année de naissance et le genre ne peuvent plus être modifiés une fois enregistrés. En cas d’erreur, contacte le support."
+    "identityNote": "Pour ta sécurité, l’année de naissance ne peut plus être modifiée une fois enregistrée. En cas d’erreur, contacte le support."
   },
   "profile": {
     "title": "Profil",

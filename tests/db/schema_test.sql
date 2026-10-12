@@ -37,10 +37,8 @@ insert into auth.users (id, email, raw_user_meta_data) values
   ('00000000-0000-0000-0000-00000000000b', 'bea@example.com', '{"language": "es", "display_name": "Bea"}'),
   ('00000000-0000-0000-0000-00000000000c', 'can@example.com', '{"language": "xx"}');
 
-update public.profiles set gender = 'female' where id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b');
 -- Sosyal mod için görünen ad ve 18+ yaş.
 update public.profiles set birth_year = 1990, display_name = coalesce(display_name, 'Test');
-update public.profiles set gender = 'male' where id = '00000000-0000-0000-0000-00000000000c';
 
 \echo '1. Kayıt olunca profil oluşur, dil meta veriden alınır'
 do $$ begin
@@ -145,7 +143,7 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '5. Sosyal mod: rıza şartı, konum yuvarlama, kadınlara özel filtre, engelleme'
+\echo '5. Sosyal mod: rıza şartı, konum yuvarlama, engelleme'
 call tests.login('00000000-0000-0000-0000-00000000000a');
 do $$ begin
   assert tests.throws($q$ insert into public.social_profiles (user_id, is_visible) values (auth.uid(), true) $q$),
@@ -154,8 +152,8 @@ end $$;
 
 -- Üç kullanıcı da rıza verip Floransa merkezinde görünür olur.
 insert into public.consents (consent, granted, version) values ('social_matching', true, '1.0'), ('location', true, '1.0');
-insert into public.social_profiles (user_id, is_visible, city, approx_location, women_only)
-  values (auth.uid(), true, 'Firenze', 'SRID=4326;POINT(11.255814 43.769562)', true);
+insert into public.social_profiles (user_id, is_visible, city, approx_location)
+  values (auth.uid(), true, 'Firenze', 'SRID=4326;POINT(11.255814 43.769562)');
 
 call tests.login('00000000-0000-0000-0000-00000000000b');
 insert into public.consents (consent, granted, version) values ('social_matching', true, '1.0'), ('location', true, '1.0');
@@ -171,16 +169,14 @@ do $$ begin
   assert (select extensions.st_astext(approx_location::extensions.geometry) from public.social_profiles)
     = 'POINT(11.25 43.77)', 'konum ~1 km ızgaraya yuvarlanmalı';
   assert (select count(*) from public.social_profiles) = 1, 'başkalarının sosyal kaydı doğrudan okunamamalı';
-  assert not exists (select 1 from public.nearby_travelers() where user_id = '00000000-0000-0000-0000-00000000000a'),
-    'Can, sadece kadınlara açık Ayşe''yi görmemeli';
+  assert exists (select 1 from public.nearby_travelers() where user_id = '00000000-0000-0000-0000-00000000000a');
   assert exists (select 1 from public.nearby_travelers() where user_id = '00000000-0000-0000-0000-00000000000b');
 end $$;
 
 call tests.login('00000000-0000-0000-0000-00000000000a');
 do $$ begin
   assert exists (select 1 from public.nearby_travelers() where user_id = '00000000-0000-0000-0000-00000000000b');
-  assert not exists (select 1 from public.nearby_travelers() where user_id = '00000000-0000-0000-0000-00000000000c'),
-    'kadınlara özel modda Ayşe Can''ı görmemeli';
+  assert exists (select 1 from public.nearby_travelers() where user_id = '00000000-0000-0000-0000-00000000000c');
 end $$;
 
 call tests.login('00000000-0000-0000-0000-00000000000b');
@@ -539,7 +535,7 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '15. Sosyal güvenlik: 18 yaş, sadece kadınlar filtresi, engelleyince davet iptali, davet listesi'
+\echo '15. Sosyal güvenlik: 18 yaş, engelleyince davet iptali, davet listesi'
 reset role;
 insert into public.consents (user_id, consent, granted, version) values
   ('00000000-0000-0000-0000-00000000000c', 'social_matching', true, 't'), ('00000000-0000-0000-0000-00000000000c', 'location', true, 't');
@@ -551,11 +547,6 @@ do $$ begin
 end $$;
 reset role;
 update public.profiles set birth_year = 1995 where id = '00000000-0000-0000-0000-00000000000c';
-call tests.login('00000000-0000-0000-0000-00000000000c');
-do $$ begin
-  assert tests.throws($q$ insert into public.social_profiles (user_id, is_visible, women_only, approx_location) values (auth.uid(), true, true, 'SRID=4326;POINT(12.49 41.89)') $q$),
-    'kadın olmayan kullanıcı "sadece kadınlar" filtresini açamaz';
-end $$;
 -- Davet listesi ve engelleme: Can → Ayşe bekleyen davet.
 reset role;
 insert into public.match_invites (id, from_user, to_user, google_place_id, place_name, place_location, meet_at)
@@ -574,9 +565,8 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '16. Yetki sıkılaştırma: üye satırı taşınamaz, sahip değişmez, kimlik alanları kilitli, https bağlantılar, kotalar'
+\echo '16. Yetki sıkılaştırma: üye satırı taşınamaz, sahip değişmez, doğum yılı kilitli, https bağlantılar, kotalar'
 reset role;
-update public.profiles set gender = 'male' where id = '00000000-0000-0000-0000-00000000000c';
 set role authenticated;
 call tests.login('00000000-0000-0000-0000-00000000000c');
 insert into public.trips (id, title) values ('10000000-0000-0000-0000-0000000000c1', 'Can trip');
@@ -588,9 +578,8 @@ begin
   assert tests.throws($q$ update public.trips set owner_id = '00000000-0000-0000-0000-00000000000b'
     where id = '10000000-0000-0000-0000-0000000000c1' $q$), 'seyahat sahibi değiştirilememeli';
   update public.trips set title = 'Can trip 2' where id = '10000000-0000-0000-0000-0000000000c1';
-  assert tests.throws($q$ update public.profiles set gender = 'female' where id = auth.uid() $q$), 'cinsiyet sonradan değiştirilememeli';
   assert tests.throws($q$ update public.profiles set birth_year = 2001 where id = auth.uid() $q$), 'doğum yılı sonradan değiştirilememeli';
-  update public.profiles set bio = 'merhaba', birth_year = 1995, gender = 'male' where id = auth.uid();
+  update public.profiles set bio = 'merhaba', birth_year = 1995 where id = auth.uid();
   assert tests.throws($q$ update public.profiles set avatar_url = 'https://evil.test/pixel.png' where id = auth.uid() $q$), 'dış adresten profil fotoğrafı olmamalı';
 
   for i in 1..40 loop
@@ -609,8 +598,6 @@ end $$;
 reset role;
 do $$ begin
   assert tests.throws($q$ update public.plan_items set booking_url = 'javascript:alert(1)' where title = 'Trevi' $q$), 'https olmayan bilet bağlantısı reddedilmeli';
-  update public.profiles set gender = 'female' where id = '00000000-0000-0000-0000-00000000000c';
-  update public.profiles set gender = 'male' where id = '00000000-0000-0000-0000-00000000000c';
 end $$;
 
 -- ---------------------------------------------------------------------------

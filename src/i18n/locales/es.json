@@ -141,17 +141,9 @@
     "safetyLocation": "Tu ubicación se muestra con una precisión de 1 km aprox. Nunca se comparte tu ubicación exacta.",
     "safetyPublic": "Solo se pueden proponer encuentros en lugares públicos como museos y cafeterías.",
     "safetyBlock": "Puedes bloquear y denunciar a cualquier persona.",
-    "safetyWomen": "Puedes elegir conectar solo con mujeres viajeras.",
     "setupTitle": "Tu perfil de viajero",
     "displayName": "Nombre visible para otros",
     "birthYear": "Año de nacimiento (18+)",
-    "gender": "Género",
-    "genders": {
-      "female": "Mujer",
-      "male": "Hombre",
-      "non_binary": "No binario",
-      "undisclosed": "Prefiero no decirlo"
-    },
     "bio": "Una frase sobre ti (opcional)",
     "lookingFor": "Me apetece",
     "looking": {
@@ -162,14 +154,12 @@
       "nightlife": "Salir de noche",
       "nature": "Naturaleza"
     },
-    "womenOnly": "Solo coincidir con mujeres viajeras",
     "consent": "Tengo 18 años o más, acepto quedar solo en lugares públicos y las normas de la comunidad, y permito mostrar mi ubicación aproximada (unos 1 km).",
     "errors": {
       "age_required": "Debes tener 18 años o más para usar el modo social.",
       "name_required": "Escribe el nombre visible para otros.",
-      "women_only": "Solo las mujeres pueden activar el filtro solo mujeres.",
       "unknown": "Algo salió mal. Inténtalo de nuevo.",
-      "identity_locked": "El año de nacimiento y el género no se pueden cambiar. Contacta con soporte para corregirlos."
+      "identity_locked": "El año de nacimiento no se puede cambiar. Contacta con soporte para corregirlo."
     },
     "traveler": "Viajero",
     "accept": "Aceptar",
@@ -221,7 +211,7 @@
     "blockOnly": "Solo bloquear",
     "reportNote": "Quedará bloqueado y no volverá a verte. Nuestro equipo revisa cada denuncia.",
     "chatSafety": "Queda en público, avisa a alguien de dónde estás y mantén tus planes. Puedes bloquear o denunciar a cualquiera en cualquier momento.",
-    "identityNote": "Por tu seguridad, el año de nacimiento y el género no se pueden cambiar una vez guardados. Si hay un error, contacta con soporte."
+    "identityNote": "Por tu seguridad, el año de nacimiento no se puede cambiar una vez guardado. Si hay un error, contacta con soporte."
   },
   "profile": {
     "title": "Perfil",

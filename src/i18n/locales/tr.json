@@ -141,17 +141,9 @@
     "safetyLocation": "Konumun yaklaşık 1 km hassasiyetle gösterilir, tam yerin asla paylaşılmaz.",
     "safetyPublic": "Buluşmalar sadece müze, kafe gibi halka açık yerler için önerilebilir.",
     "safetyBlock": "İstediğin kişiyi engelleyebilir ve şikayet edebilirsin.",
-    "safetyWomen": "İstersen sadece kadın gezginlerle eşleşebilirsin.",
     "setupTitle": "Gezgin profilin",
     "displayName": "Diğerlerinin göreceği ad",
     "birthYear": "Doğum yılı (18+)",
-    "gender": "Cinsiyet",
-    "genders": {
-      "female": "Kadın",
-      "male": "Erkek",
-      "non_binary": "Non-binary",
-      "undisclosed": "Belirtmek istemiyorum"
-    },
     "bio": "Kendinden bir cümle (isteğe bağlı)",
     "lookingFor": "Neye varsın",
     "looking": {
@@ -162,14 +154,12 @@
       "nightlife": "Gece dışarı",
       "nature": "Doğa"
     },
-    "womenOnly": "Sadece kadın gezginlerle eşleş",
     "consent": "18 yaşından büyüğüm; sadece halka açık yerlerde buluşmayı ve topluluk kurallarını kabul ediyorum; yaklaşık konumumun (~1 km) gösterilmesine izin veriyorum.",
     "errors": {
       "age_required": "Sosyal modu kullanmak için 18 yaşından büyük olmalısın.",
       "name_required": "Diğerlerinin göreceği adı yaz.",
-      "women_only": "Sadece kadınlar \"sadece kadınlar\" filtresini açabilir.",
       "unknown": "Bir şeyler ters gitti. Tekrar dene.",
-      "identity_locked": "Doğum yılı ve cinsiyet değiştirilemez. Düzeltme için destekle iletişime geç."
+      "identity_locked": "Doğum yılı değiştirilemez. Düzeltme için destekle iletişime geç."
     },
     "traveler": "Gezgin",
     "accept": "Kabul et",
@@ -221,7 +211,7 @@
     "blockOnly": "Sadece engelle",
     "reportNote": "Engellenecek ve seni bir daha göremeyecek. Ekibimiz her şikayeti inceler.",
     "chatSafety": "Halka açık yerde buluş, bir arkadaşına nerede olduğunu söyle ve kendi planına sadık kal. Herkesi istediğin an engelleyebilir veya şikayet edebilirsin.",
-    "identityNote": "Güvenliğin için doğum yılı ve cinsiyet kaydedildikten sonra değiştirilemez. Hata varsa destekle iletişime geç."
+    "identityNote": "Güvenliğin için doğum yılı kaydedildikten sonra değiştirilemez. Hata varsa destekle iletişime geç."
   },
   "profile": {
     "title": "Profil",
