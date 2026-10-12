@@ -7,7 +7,7 @@
 //
 // Gerekli sunucu sırrı: GEMINI_API_KEY (yoksa sadece istatistikler kaydedilir).
 import { consumeQuota, userClient } from '../_shared/auth.ts';
-import { GeminiError, generateJson } from '../_shared/gemini.ts';
+import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import { LANGUAGE_NAMES } from '../_shared/itinerary.ts';
 import { buildReportPrompt, computeTripStats, isPlace, normalizeInsights, REPORT_RESPONSE_SCHEMA, type ReportDay, type ReportInsights } from '../_shared/report.ts';
@@ -75,7 +75,7 @@ Deno.serve(async (req) => {
       const raw = await generateJson({
         apiBase: Deno.env.get('GEMINI_API_BASE'),
         apiKey,
-        model: Deno.env.get('GEMINI_MODEL') ?? 'gemini-2.5-flash',
+        model: Deno.env.get('GEMINI_MODEL') ?? DEFAULT_GEMINI_MODEL,
         prompt: buildReportPrompt({
           languageName: LANGUAGE_NAMES[profile.language] ?? 'English',
           title: trip.title,

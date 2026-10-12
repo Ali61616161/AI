@@ -10,7 +10,7 @@
 //
 // Sunucu sırları: GOOGLE_TRANSLATE_API_KEY (yoksa GOOGLE_MAPS_API_KEY), GEMINI_API_KEY.
 import { consumeQuota, userClient } from '../_shared/auth.ts';
-import { GeminiError, generateJson } from '../_shared/gemini.ts';
+import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import {
   buildImagePrompt,
@@ -22,7 +22,7 @@ import {
   translateText,
 } from '../_shared/translate.ts';
 
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 const MAX_IMAGE_BYTES = 6 * 1024 * 1024;
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
 

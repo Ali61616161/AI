@@ -27,12 +27,12 @@ import {
 } from '../_shared/city.ts';
 import { isValidTimeZone, utcToLocal } from '../_shared/documents.ts';
 import { googleConfig } from '../_shared/enrich.ts';
-import { GeminiError, generateJson } from '../_shared/gemini.ts';
+import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import { cityRequest, PlacesError, searchText, verifyPlanDays } from '../_shared/places.ts';
 import { fetchCurrent, weatherForPrompt } from '../_shared/weather.ts';
 
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 const COMPANIONS = ['solo', 'couple', 'family', 'friends'];
 const BUDGETS = ['low', 'mid', 'lux'];
 

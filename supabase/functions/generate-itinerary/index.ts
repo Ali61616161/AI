@@ -8,7 +8,7 @@
 // İsteğe bağlı: GOOGLE_MAPS_API_KEY (mekan doğrulama), AFFILIATE_* (bilet bağlantıları).
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { destinationCoords, enrichDays } from '../_shared/enrich.ts';
-import { GeminiError, generateJson } from '../_shared/gemini.ts';
+import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import {
   buildItineraryPrompt,
@@ -22,7 +22,7 @@ import {
 import { preferenceRule } from '../_shared/report.ts';
 import { loadPastInsights, loadProfile, loadTrip } from '../_shared/trip-context.ts';
 
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 const FREE_MAX_DAYS = 3;
 const MAX_DAYS = 30;
 

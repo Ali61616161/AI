@@ -14,7 +14,7 @@ import {
   minConfidence,
   normalizeParsedDocument,
 } from '../_shared/documents.ts';
-import { GeminiError, generateJson } from '../_shared/gemini.ts';
+import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 
 const SUPPORTED_MIME_TYPES = new Set([
@@ -26,7 +26,7 @@ const SUPPORTED_MIME_TYPES = new Set([
   'image/heif',
 ]);
 const MAX_BYTES = 10 * 1024 * 1024;
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });

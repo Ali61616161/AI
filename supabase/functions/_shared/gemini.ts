@@ -1,6 +1,9 @@
 // Gemini API ile yapılandırılmış (JSON şemalı) içerik üretimi.
 // Doküman: https://ai.google.dev/api/generate-content
 
+/** Varsayılan model; GEMINI_MODEL sırrıyla değiştirilebilir. (2.5-flash yeni hesaplara kapatıldı.) */
+export const DEFAULT_GEMINI_MODEL = 'gemini-3.8-flash';
+
 export type GeminiFile = { mimeType: string; base64: string };
 
 export type GeminiRequest = {

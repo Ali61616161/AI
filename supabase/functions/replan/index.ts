@@ -18,7 +18,7 @@ import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.t
 import type { Place } from '../_shared/places.ts';
 import { fetchCurrent, weatherForPrompt } from '../_shared/weather.ts';
 import { isValidTimeZone, utcToLocal } from '../_shared/documents.ts';
-import { GeminiError, generateJson } from '../_shared/gemini.ts';
+import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import {
   buildItineraryPrompt,
@@ -43,7 +43,7 @@ import {
 } from '../_shared/replan.ts';
 import { loadProfile, loadTrip, type LoadedTrip } from '../_shared/trip-context.ts';
 
-const DEFAULT_MODEL = 'gemini-2.5-flash';
+const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 const FREE_MAX_DAYS = 3;
 const MAX_DAYS = 30;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
