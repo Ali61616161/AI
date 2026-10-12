@@ -858,7 +858,10 @@
     "change": "Change my pick",
     "noneLeft": "No more open places for this pick. Increase the distance or choose something else.",
     "pickedFrom_one": "Picked from {{count}} place open now",
-    "pickedFrom_other": "Picked from {{count}} places open now"
+    "pickedFrom_other": "Picked from {{count}} places open now",
+    "onlyNew": "Only places I haven’t been",
+    "price": "Price",
+    "anyPrice": "Any"
   },
   "explore": {
     "title": "Explore",
@@ -991,5 +994,138 @@
     "viaPassport": "With your {{flag}} passport",
     "dataNote": "Passport data: {{date}}. Check official sources before you travel.",
     "withVisa": "with your visa"
+  },
+  "city": {
+    "overline": "My City",
+    "addCityTitle": "Add your city",
+    "addCityBody": "Add your home city for evening plans, nearby getaways and your city passport.",
+    "addCity": "Add my city",
+    "passportShort": "City passport",
+    "inCity": "In {{city}}",
+    "fromCity": "From {{city}}",
+    "tiles": {
+      "evening": {
+        "title": "Tonight?",
+        "body": "An AI plan for this evening or the weekend"
+      },
+      "getaway": {
+        "title": "Getaway",
+        "body": "Cheap trips a few hours away"
+      },
+      "spin": {
+        "title": "Spin the wheel",
+        "body": "Let the wheel pick your next country"
+      },
+      "saved": {
+        "title": "My lists",
+        "body": "Places you want to try"
+      }
+    },
+    "streakLine": "{{weeks}}-week streak · {{places}} places explored",
+    "eveningTitle": "What shall we do tonight?",
+    "eveningSubtitle": "A plan with real, open places near you",
+    "when": "When",
+    "whenOptions": {
+      "tonight": "Tonight",
+      "tomorrow": "Tomorrow",
+      "weekend": "Weekend"
+    },
+    "withWho": "With who",
+    "mood": "Mood (up to 3)",
+    "moods": {
+      "romantic": "Romantic",
+      "chill": "Chill",
+      "food": "Foodie",
+      "culture": "Culture",
+      "active": "Active",
+      "outdoor": "Outdoors",
+      "nightlife": "Nightlife",
+      "budget": "On a budget"
+    },
+    "makePlan": "Make my plan",
+    "planning": "Planning…",
+    "newPlan": "New plan",
+    "backToPlan": "Back to my plan",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "free": "Free",
+    "perPerson": "~{{amount}} per person",
+    "perPersonShort": "per person",
+    "openRoute": "Open the route in Maps",
+    "estimateNote": "Costs are estimates; check prices and opening hours before you go.",
+    "save": "Save",
+    "saved": "Saved",
+    "visited": "I went",
+    "visitedToday": "Visited today",
+    "visitAgain": "Went again",
+    "remove": "Remove",
+    "getawayTitle": "Getaways",
+    "getawaySubtitle": "Short trips that fit your budget",
+    "howLong": "How long",
+    "daysOption_one": "Day trip",
+    "daysOption_other": "{{count}} days",
+    "budgetPerPerson": "Budget per person ({{currency}})",
+    "budgetHint": "Transport, stay, food and activities included.",
+    "transport": "Getting there",
+    "transportOptions": {
+      "any": "Any",
+      "public": "Bus / train",
+      "car": "By car"
+    },
+    "findGetaways": "Find getaways",
+    "searching": "Searching…",
+    "moreGetaways": "Show other places",
+    "changeFilters": "Change filters",
+    "backToResults": "Back to results",
+    "resultsFor": "{{days}} · about {{amount}} per person",
+    "noGetaways": "Nothing fits these filters. Try a bigger budget or a longer trip.",
+    "travelTime": "{{hours}} h",
+    "km": "{{km}} km",
+    "costTransport": "Transport: {{amount}} round trip",
+    "costStay_one": "Stay: {{amount}} × {{count}} night",
+    "costStay_other": "Stay: {{amount}} × {{count}} nights",
+    "costDaily_one": "Food and fun: {{amount}} × {{count}} day",
+    "costDaily_other": "Food and fun: {{amount}} × {{count}} days",
+    "bestSeason": "Best time: {{season}}",
+    "planIt": "Plan this trip",
+    "directions": "Directions",
+    "savedTitle": "My lists",
+    "savedSubtitle": "Places you want to try in your city",
+    "wantList": "Want to go",
+    "newList": "New list",
+    "listName": "List name",
+    "listPlaceholder": "e.g. Date night",
+    "newListHint": "Save a place to this list to keep it.",
+    "savedEmptyTitle": "Nothing saved yet",
+    "savedEmptyBody": "Tap Save on any place from Tonight, the picker or nearby places.",
+    "passportTitle": "City passport",
+    "passportSubtitle": "Places you discovered",
+    "passportHero": "Your city, explored",
+    "stats": {
+      "places": "places",
+      "streak": "week streak",
+      "month": "this month",
+      "categories": "kinds of places"
+    },
+    "badgesTitle": "Badges",
+    "badges": {
+      "first": "First step",
+      "explorer5": "5 places",
+      "local15": "15 places: local",
+      "legend40": "40 places: legend",
+      "variety": "5 kinds of places",
+      "streak3": "3-week streak",
+      "streak8": "8-week streak"
+    },
+    "recentTitle": "Recently visited",
+    "noVisitsTitle": "Start exploring",
+    "noVisitsBody": "Tap “I went” on a place to stamp your city passport.",
+    "errors": {
+      "quota_exceeded": "You’ve used this week’s free plan. Pro is unlimited.",
+      "not_configured": "This feature isn’t available yet.",
+      "no_home_city": "Add your home city first.",
+      "ai_failed": "We couldn’t make a plan right now. Try again.",
+      "network": "No connection. Try again."
+    }
   }
 }

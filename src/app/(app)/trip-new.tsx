@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -22,10 +22,12 @@ export default function NewTripScreen() {
   const { t, i18n } = useTranslation();
   const preferences = useSessionStore((s) => s.preferences);
   const create = useCreateManualTrip();
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState<string | null>(null);
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
+  // Kaçamak ve Çark'tan gelindiğinde şehir, ülke ve tarihler hazır gelir.
+  const prefill = useLocalSearchParams<{ city?: string; country?: string; start?: string; end?: string }>();
+  const [city, setCity] = useState(prefill.city ?? '');
+  const [country, setCountry] = useState<string | null>(prefill.country && /^[A-Z]{2}$/.test(prefill.country) ? prefill.country : null);
+  const [start, setStart] = useState(prefill.start && DATE.test(prefill.start) ? prefill.start : '');
+  const [end, setEnd] = useState(prefill.end && DATE.test(prefill.end) ? prefill.end : '');
   const [title, setTitle] = useState('');
   const options = useMemo(
     () => COUNTRIES.map((c) => ({ value: c.code, label: `${flag(c.code)}  ${localCountryName(c.code, i18n.language)}` })).sort((a, b) => a.label.slice(4).localeCompare(b.label.slice(4), i18n.language)),

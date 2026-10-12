@@ -14,7 +14,10 @@ import { Screen } from '@/components/ui/screen';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { categoryFor, pickPlace, type DecideGroup } from '@/features/decide/pick';
+import { useVisits } from '@/features/city/api';
+import { PlaceActions } from '@/features/city/place-actions';
 import { openInMaps, openNowQuery, PlacesError, type Place } from '@/features/places/api';
+import { useSessionStore } from '@/stores/session-store';
 import { PlaceMeta } from '@/features/places/place-row';
 import { useDeviceLocation } from '@/features/places/use-device-location';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
@@ -45,6 +48,10 @@ export default function DecideScreen() {
   const [group, setGroup] = useState<DecideGroup>('food');
   const [distance, setDistance] = useState<keyof typeof RADIUS>('walk');
   const [topRated, setTopRated] = useState(false);
+  const [onlyNew, setOnlyNew] = useState(false);
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const signedIn = useSessionStore((s) => Boolean(s.session));
+  const { data: visits } = useVisits();
   const [phase, setPhase] = useState<Phase>('idle');
   const [reel, setReel] = useState<string>('');
   const [picked, setPicked] = useState<{ place: Place; pool: number } | null>(null);
@@ -65,7 +72,9 @@ export default function DecideScreen() {
       const category = categoryFor(group);
       const places = await queryClient.fetchQuery(openNowQuery(category, coords, { radius: RADIUS[distance], limit: 20 }));
       const minRating = topRated ? 4.2 : null;
-      const choice = pickPlace(places, { exclude: seen.current, minRating });
+      // "Sadece yeni yerler": şehir pasaportunda gidildi olarak işaretlenenler hariç.
+      const exclude = onlyNew && visits?.length ? new Set([...seen.current, ...visits.map((v) => v.google_place_id)]) : seen.current;
+      const choice = pickPlace(places, { exclude, minRating, maxPrice });
       if (!choice) {
         setPhase('empty');
         haptic.warning();
@@ -163,6 +172,7 @@ export default function DecideScreen() {
             <Text variant="caption" color="textMuted">
               {t('decide.pickedFrom', { count: picked.pool })}
             </Text>
+            <PlaceActions place={{ google_place_id: picked.place.id, name: picked.place.name, category: group, address: picked.place.address, lat: picked.place.lat, lng: picked.place.lng, maps_url: picked.place.mapsUrl }} />
           </Card>
         </Animated.View>
       )}
@@ -214,7 +224,28 @@ export default function DecideScreen() {
               </Text>
               <Switch value={topRated} onValueChange={setTopRated} trackColor={{ true: colors.primary, false: colors.surfaceStrong }} accessibilityLabel={t('decide.topRated')} />
             </View>
+            {signedIn && (
+              <View style={[styles.row, styles.switchRow]}>
+                <Ionicons name="sparkles" size={18} color={colors.accent} />
+                <Text variant="body" style={styles.flex}>
+                  {t('decide.onlyNew')}
+                </Text>
+                <Switch value={onlyNew} onValueChange={setOnlyNew} trackColor={{ true: colors.primary, false: colors.surfaceStrong }} accessibilityLabel={t('decide.onlyNew')} />
+              </View>
+            )}
           </Card>
+
+          <View style={styles.section}>
+            <Text variant="overline" color="textMuted">
+              {t('decide.price')}
+            </Text>
+            <View style={styles.row}>
+              <Chip label={t('decide.anyPrice')} selected={maxPrice === null} onPress={() => setMaxPrice(null)} />
+              {[1, 2, 3].map((p) => (
+                <Chip key={p} label={'€'.repeat(p)} selected={maxPrice === p} onPress={() => setMaxPrice(p)} />
+              ))}
+            </View>
+          </View>
 
           {phase === 'empty' && (
             <Text variant="body" color="warning">
@@ -258,4 +289,5 @@ const styles = StyleSheet.create({
   resultHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   openPill: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.sm, paddingVertical: 4, borderRadius: Radius.pill },
   dot: { width: 7, height: 7, borderRadius: 4 },
+  switchRow: { marginTop: Spacing.sm },
 });

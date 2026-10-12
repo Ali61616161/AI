@@ -60,7 +60,7 @@ jobs:
       - name: Edge Function'lar
         if: steps.check.outputs.ready == 'true'
         run: |
-          for f in parse-document generate-itinerary replan places translate travel-info trip-report subscription delete-account; do
+          for f in parse-document generate-itinerary replan places translate travel-info trip-report subscription delete-account city; do
             npx supabase functions deploy "$f" --project-ref "$SUPABASE_PROJECT_REF" --use-api
           done
           for f in revenuecat-webhook ad-reward; do

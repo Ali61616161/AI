@@ -19,17 +19,19 @@ export function categoryFor(group: DecideGroup, random: () => number = Math.rand
   return pool[Math.floor(random() * pool.length) % pool.length];
 }
 
-export type PickOptions = { exclude?: ReadonlySet<string>; minRating?: number | null };
+export type PickOptions = { exclude?: ReadonlySet<string>; minRating?: number | null; maxPrice?: number | null };
 
 /** Uygun yerler: kapalı olmayan, koordinatı olan, istenirse puanı yeterli ve daha önce gösterilmemiş. */
-export function candidates(places: readonly Place[], { exclude, minRating }: PickOptions = {}): Place[] {
+export function candidates(places: readonly Place[], { exclude, minRating, maxPrice }: PickOptions = {}): Place[] {
   return places.filter(
     (p) =>
       p.openNow !== false &&
       p.status !== 'CLOSED_PERMANENTLY' &&
       p.status !== 'CLOSED_TEMPORARILY' &&
       !exclude?.has(p.id) &&
-      (minRating == null || (p.rating !== null && p.rating >= minRating)),
+      (minRating == null || (p.rating !== null && p.rating >= minRating)) &&
+      // Fiyat seviyesi bilinmeyen yerler fiyat filtresinden geçer.
+      (maxPrice == null || p.priceLevel === null || p.priceLevel <= maxPrice),
   );
 }
 

@@ -5,6 +5,7 @@ import { queryClient } from '@/lib/query-client';
 import { getSupabase } from '@/lib/supabase';
 
 import { useOfflineStore, type OfflineFile } from './offline-store';
+import { useCityStore } from '@/stores/city-store';
 
 const SIGNED_URL_SECONDS = 600;
 
@@ -77,4 +78,5 @@ export function clearOfflineData() {
     if (dir.exists) dir.delete();
   }
   useOfflineStore.getState().clear();
+  useCityStore.getState().clear();
 }

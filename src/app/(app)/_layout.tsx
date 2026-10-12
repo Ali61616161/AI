@@ -40,6 +40,11 @@ export default function AppLayout() {
       <Stack.Screen name="decide" options={{ presentation: 'modal' }} />
       <Stack.Screen name="social" />
       <Stack.Screen name="passport" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="evening" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="getaway" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="saved" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="city-passport" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="spin" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }

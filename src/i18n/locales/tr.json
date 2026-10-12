@@ -858,7 +858,10 @@
     "change": "Seçimi değiştir",
     "noneLeft": "Bu seçimde gösterecek açık yer kalmadı. Mesafeyi artır ya da başka bir şey seç.",
     "pickedFrom_one": "Şu an açık {{count}} yer arasından seçildi",
-    "pickedFrom_other": "Şu an açık {{count}} yer arasından seçildi"
+    "pickedFrom_other": "Şu an açık {{count}} yer arasından seçildi",
+    "onlyNew": "Sadece gitmediğim yerler",
+    "price": "Fiyat",
+    "anyPrice": "Farketmez"
   },
   "explore": {
     "title": "Keşfet",
@@ -991,5 +994,138 @@
     "viaPassport": "{{flag}} pasaportunla",
     "dataNote": "Pasaport verisi: {{date}}. Seyahatten önce resmi kaynaklardan kontrol et.",
     "withVisa": "vizenle"
+  },
+  "city": {
+    "overline": "Şehrim",
+    "addCityTitle": "Şehrini ekle",
+    "addCityBody": "Akşam planları, yakın kaçamaklar ve şehir pasaportun için yaşadığın şehri ekle.",
+    "addCity": "Şehrimi ekle",
+    "passportShort": "Şehir pasaportu",
+    "inCity": "{{city}}",
+    "fromCity": "{{city}} çıkışlı",
+    "tiles": {
+      "evening": {
+        "title": "Bu akşam?",
+        "body": "Bu akşam veya hafta sonu için AI planı"
+      },
+      "getaway": {
+        "title": "Kaçamak",
+        "body": "Birkaç saat ötede ucuz rotalar"
+      },
+      "spin": {
+        "title": "Çarkı çevir",
+        "body": "Sıradaki ülkeni çark seçsin"
+      },
+      "saved": {
+        "title": "Listelerim",
+        "body": "Denemek istediğin yerler"
+      }
+    },
+    "streakLine": "{{weeks}} haftalık seri · {{places}} yer keşfedildi",
+    "eveningTitle": "Bu akşam ne yapsak?",
+    "eveningSubtitle": "Yakınında, gerçekten açık yerlerle bir plan",
+    "when": "Ne zaman",
+    "whenOptions": {
+      "tonight": "Bu akşam",
+      "tomorrow": "Yarın",
+      "weekend": "Hafta sonu"
+    },
+    "withWho": "Kiminle",
+    "mood": "Ruh hali (en fazla 3)",
+    "moods": {
+      "romantic": "Romantik",
+      "chill": "Sakin",
+      "food": "Lezzet",
+      "culture": "Kültür",
+      "active": "Hareketli",
+      "outdoor": "Açık hava",
+      "nightlife": "Gece hayatı",
+      "budget": "Ekonomik"
+    },
+    "makePlan": "Planımı çıkar",
+    "planning": "Planlanıyor…",
+    "newPlan": "Yeni plan",
+    "backToPlan": "Planıma dön",
+    "minutes_one": "{{count}} dk",
+    "minutes_other": "{{count}} dk",
+    "free": "Ücretsiz",
+    "perPerson": "Kişi başı ~{{amount}}",
+    "perPersonShort": "kişi başı",
+    "openRoute": "Rotayı haritada aç",
+    "estimateNote": "Fiyatlar tahminidir; gitmeden önce fiyatları ve açılış saatlerini kontrol et.",
+    "save": "Kaydet",
+    "saved": "Kaydedildi",
+    "visited": "Gittim",
+    "visitedToday": "Bugün gidildi",
+    "visitAgain": "Yine gittim",
+    "remove": "Kaldır",
+    "getawayTitle": "Kaçamaklar",
+    "getawaySubtitle": "Bütçene uyan kısa rotalar",
+    "howLong": "Ne kadar",
+    "daysOption_one": "Günübirlik",
+    "daysOption_other": "{{count}} gün",
+    "budgetPerPerson": "Kişi başı bütçe ({{currency}})",
+    "budgetHint": "Yol, konaklama, yemek ve etkinlikler dahil.",
+    "transport": "Nasıl gidelim",
+    "transportOptions": {
+      "any": "Farketmez",
+      "public": "Otobüs / tren",
+      "car": "Arabayla"
+    },
+    "findGetaways": "Kaçamak bul",
+    "searching": "Aranıyor…",
+    "moreGetaways": "Başka yerler göster",
+    "changeFilters": "Filtreleri değiştir",
+    "backToResults": "Sonuçlara dön",
+    "resultsFor": "{{days}} · kişi başı yaklaşık {{amount}}",
+    "noGetaways": "Bu filtrelere uyan yer çıkmadı. Bütçeyi artır veya süreyi uzat.",
+    "travelTime": "{{hours}} sa",
+    "km": "{{km}} km",
+    "costTransport": "Yol: {{amount}} gidiş-dönüş",
+    "costStay_one": "Konaklama: {{amount}} × {{count}} gece",
+    "costStay_other": "Konaklama: {{amount}} × {{count}} gece",
+    "costDaily_one": "Yeme-içme ve gezme: {{amount}} × {{count}} gün",
+    "costDaily_other": "Yeme-içme ve gezme: {{amount}} × {{count}} gün",
+    "bestSeason": "En iyi dönem: {{season}}",
+    "planIt": "Bu rotayı planla",
+    "directions": "Yol tarifi",
+    "savedTitle": "Listelerim",
+    "savedSubtitle": "Şehrinde denemek istediğin yerler",
+    "wantList": "Gitmek istediklerim",
+    "newList": "Yeni liste",
+    "listName": "Liste adı",
+    "listPlaceholder": "ör. Randevu akşamları",
+    "newListHint": "Listeyi korumak için içine bir yer kaydet.",
+    "savedEmptyTitle": "Henüz kayıtlı yer yok",
+    "savedEmptyBody": "Akşam planında, Kararsızım'da veya yakındaki yerlerde Kaydet'e dokun.",
+    "passportTitle": "Şehir pasaportu",
+    "passportSubtitle": "Keşfettiğin yerler",
+    "passportHero": "Şehrini keşfet",
+    "stats": {
+      "places": "yer",
+      "streak": "haftalık seri",
+      "month": "bu ay",
+      "categories": "farklı tür"
+    },
+    "badgesTitle": "Rozetler",
+    "badges": {
+      "first": "İlk adım",
+      "explorer5": "5 yer",
+      "local15": "15 yer: yerli",
+      "legend40": "40 yer: efsane",
+      "variety": "5 farklı tür",
+      "streak3": "3 haftalık seri",
+      "streak8": "8 haftalık seri"
+    },
+    "recentTitle": "Son gidilenler",
+    "noVisitsTitle": "Keşfe başla",
+    "noVisitsBody": "Bir yerde “Gittim”e dokun, şehir pasaportuna damga bas.",
+    "errors": {
+      "quota_exceeded": "Bu haftaki ücretsiz hakkını kullandın. Pro'da sınırsız.",
+      "not_configured": "Bu özellik henüz kullanılamıyor.",
+      "no_home_city": "Önce yaşadığın şehri ekle.",
+      "ai_failed": "Şu an plan çıkaramadık. Tekrar dene.",
+      "network": "Bağlantı yok. Tekrar dene."
+    }
   }
 }

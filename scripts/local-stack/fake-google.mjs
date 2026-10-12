@@ -60,8 +60,19 @@ const place = (name, i, extra = {}) => ({
   ...extra,
 });
 
+// Kaçamak testleri için Roma çevresindeki gerçek şehirler; bilinmeyen şehir Roma döner.
+const TOWNS = {
+  tivoli: { latitude: 41.963, longitude: 12.798 },
+  orvieto: { latitude: 42.718, longitude: 12.111 },
+  napoli: { latitude: 40.852, longitude: 14.268 },
+  milano: { latitude: 45.464, longitude: 9.19 },
+};
+
 function searchText(body) {
-  if (body.includedType === 'locality') return { places: [{ id: 'fake-city', displayName: { text: 'Rome' }, location: ROME }] };
+  if (body.includedType === 'locality') {
+    const town = TOWNS[body.textQuery.split(',')[0].trim().toLowerCase()];
+    return { places: [{ id: town ? `fake-city-${slug(body.textQuery.split(',')[0])}` : 'fake-city', displayName: { text: 'Rome' }, location: town ?? ROME }] };
+  }
   if (body.includedType === 'lodging') return { places: ['TEST Hotel Centro', 'TEST Hotel Stazione', 'TEST Hotel Closed'].map((n, i) => place(n, i, i === 2 ? { businessStatus: 'CLOSED_PERMANENTLY' } : {})) };
   if (body.openNow) {
     return {

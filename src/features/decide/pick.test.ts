@@ -40,3 +40,9 @@ Deno.test('pickPlace: boşsa null, her uygun yer seçilebilir', () => {
   assertEquals(pickPlace(places, {}, () => 0)!.id, 'a');
   assertEquals(pickPlace(places, {}, () => 0.9999)!.id, 'b');
 });
+
+Deno.test('fiyat filtresi: pahalı yerler çıkar, fiyatı bilinmeyenler kalır', () => {
+  const list = [place('a', { priceLevel: 1 }), place('b', { priceLevel: 3 }), place('c', { priceLevel: null })];
+  assertEquals(candidates(list, { maxPrice: 2 }).map((p) => p.id), ['a', 'c']);
+  assertEquals(candidates(list, { maxPrice: null }).length, 3);
+});

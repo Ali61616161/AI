@@ -27,6 +27,7 @@ import { useSessionStore } from '@/stores/session-store';
 import { Gradients, Motion, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 import { NativeAdCard } from '@/features/ads/native-ad-card';
+import { MyCitySection } from '@/features/city/my-city-section';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -86,6 +87,12 @@ export default function TodayScreen() {
         </Tap>
       </Animated.View>
 
+      {!nextTrip && (
+        <Animated.View entering={enter(1)}>
+          <MyCitySection />
+        </Animated.View>
+      )}
+
       <Animated.View entering={enter(1)}>
         {nextTrip ? (
           <TripCard trip={nextTrip} highlight />
@@ -129,6 +136,12 @@ export default function TodayScreen() {
           ))}
         </View>
       </Animated.View>
+
+      {nextTrip && (
+        <Animated.View entering={enter(3)}>
+          <MyCitySection />
+        </Animated.View>
+      )}
 
       <NativeAdCard />
 
