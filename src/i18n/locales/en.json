@@ -168,7 +168,8 @@
       "age_required": "You must be 18 or older to use social mode.",
       "name_required": "Please enter the name shown to others.",
       "women_only": "Only women can turn on the women-only filter.",
-      "unknown": "Something went wrong. Please try again."
+      "unknown": "Something went wrong. Please try again.",
+      "identity_locked": "Birth year and gender can't be changed. Contact support to correct them."
     },
     "traveler": "Traveler",
     "accept": "Accept",
@@ -219,7 +220,8 @@
     },
     "blockOnly": "Just block",
     "reportNote": "They'll be blocked and won't see you again. Our team reviews every report.",
-    "chatSafety": "Meet in public, tell a friend where you are and keep your own plans. You can block or report anyone at any time."
+    "chatSafety": "Meet in public, tell a friend where you are and keep your own plans. You can block or report anyone at any time.",
+    "identityNote": "For your safety, birth year and gender can't be changed once saved. Contact support if there's a mistake."
   },
   "profile": {
     "title": "Profile",

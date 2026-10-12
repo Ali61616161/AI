@@ -168,7 +168,8 @@
       "age_required": "Devi avere almeno 18 anni per usare la modalità social.",
       "name_required": "Inserisci il nome visibile agli altri.",
       "women_only": "Solo le donne possono attivare il filtro solo donne.",
-      "unknown": "Qualcosa è andato storto. Riprova."
+      "unknown": "Qualcosa è andato storto. Riprova.",
+      "identity_locked": "Anno di nascita e genere non possono essere modificati. Contatta l’assistenza per correggerli."
     },
     "traveler": "Viaggiatore",
     "accept": "Accetta",
@@ -219,7 +220,8 @@
     },
     "blockOnly": "Blocca soltanto",
     "reportNote": "Verrà bloccato e non potrà più vederti. Il nostro team esamina ogni segnalazione.",
-    "chatSafety": "Incontratevi in pubblico, di’ a qualcuno dove sei e mantieni i tuoi piani. Puoi bloccare o segnalare chiunque in qualsiasi momento."
+    "chatSafety": "Incontratevi in pubblico, di’ a qualcuno dove sei e mantieni i tuoi piani. Puoi bloccare o segnalare chiunque in qualsiasi momento.",
+    "identityNote": "Per la tua sicurezza, anno di nascita e genere non possono essere modificati dopo il salvataggio. Se c’è un errore, contatta l’assistenza."
   },
   "profile": {
     "title": "Profilo",

@@ -54,6 +54,9 @@ function Setup({ me }: { me: SocialMe }) {
   const today = todayIsoDate();
   const trip = trips?.find((x) => x.start_date && x.end_date && x.start_date <= today && x.end_date >= today);
   const birthYear = Number(year);
+  // Güvenlik için doğum yılı ve cinsiyet bir kez belirlenince değiştirilemez.
+  const yearLocked = me.birth_year != null;
+  const genderLocked = me.gender !== 'undisclosed';
   const valid = name.trim().length > 0 && Number.isInteger(birthYear) && birthYear > 1900 && accepted && lookingFor.length > 0;
 
   async function submit() {
@@ -80,15 +83,18 @@ function Setup({ me }: { me: SocialMe }) {
     <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <Text variant="subtitle">{t('social.setupTitle')}</Text>
       <TextInput value={name} onChangeText={setName} maxLength={60} placeholder={t('social.displayName')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.displayName')} style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]} />
-      <TextInput value={year} onChangeText={(v) => setYear(v.replace(/\D/g, '').slice(0, 4))} keyboardType="number-pad" placeholder={t('social.birthYear')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.birthYear')} style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]} />
+      <TextInput value={year} editable={!yearLocked} onChangeText={(v) => setYear(v.replace(/\D/g, '').slice(0, 4))} keyboardType="number-pad" placeholder={t('social.birthYear')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.birthYear')} style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]} />
       <Text variant="caption" color="textSecondary">
         {t('social.gender')}
       </Text>
       <View style={styles.chips}>
         {GENDERS.map((g) => (
-          <Chip key={g} label={t(`social.genders.${g}`)} selected={gender === g} onPress={() => setGender(g)} />
+          <Chip key={g} label={t(`social.genders.${g}`)} selected={gender === g} onPress={genderLocked ? undefined : () => setGender(g)} />
         ))}
       </View>
+      <Text variant="caption" color="textMuted">
+        {t('social.identityNote')}
+      </Text>
       <TextInput value={bio} onChangeText={setBio} maxLength={300} multiline placeholder={t('social.bio')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.bio')} style={[Typography.body, styles.input, styles.bio, { color: colors.text, borderColor: colors.border }]} />
       <Text variant="caption" color="textSecondary">
         {t('social.lookingFor')}

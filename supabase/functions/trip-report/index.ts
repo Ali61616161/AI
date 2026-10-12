@@ -6,7 +6,7 @@
 //     → { stats, insights | null, ai_failed: boolean }
 //
 // Gerekli sunucu sırrı: GEMINI_API_KEY (yoksa sadece istatistikler kaydedilir).
-import { userClient } from '../_shared/auth.ts';
+import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import { LANGUAGE_NAMES } from '../_shared/itinerary.ts';
@@ -69,7 +69,8 @@ Deno.serve(async (req) => {
   let insights: ReportInsights | null = null;
   let aiFailed = false;
   const apiKey = Deno.env.get('GEMINI_API_KEY');
-  if (apiKey) {
+  // AI özeti seyahat başına sınırlı; kota dolduysa sadece istatistikler kaydedilir.
+  if (apiKey && (await consumeQuota(supabase, 'trip_report', trip.id)).allowed) {
     try {
       const raw = await generateJson({
         apiBase: Deno.env.get('GEMINI_API_BASE'),

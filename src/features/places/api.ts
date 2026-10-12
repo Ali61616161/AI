@@ -91,14 +91,17 @@ export function useTripWeather(tripId: string | undefined) {
 
 /** Mekanı Google Haritalar'da açar (uygulama yüklüyse uygulamada). */
 export function openInMaps(place: { name: string; mapsUrl?: string | null; placeId?: string | null; lat?: number | null; lng?: number | null }) {
-  if (place.mapsUrl) return Linking.openURL(place.mapsUrl);
+  if (place.mapsUrl && isHttps(place.mapsUrl)) return Linking.openURL(place.mapsUrl);
   const params = new URLSearchParams({ api: '1', query: place.lat != null && place.lng != null && !place.placeId ? `${place.lat},${place.lng}` : place.name });
   if (place.placeId) params.set('query_place_id', place.placeId);
   return Linking.openURL(`https://www.google.com/maps/search/?${params}`);
 }
 
-/** Bilet ve otel bağlantılarını uygulama içi tarayıcıda açar. */
+const isHttps = (url: string) => /^https:\/\//i.test(url);
+
+/** Bilet ve otel bağlantılarını uygulama içi tarayıcıda açar (sadece https). */
 export function openBookingLink(url: string) {
+  if (!isHttps(url)) return Promise.resolve();
   return WebBrowser.openBrowserAsync(url).catch(() => Linking.openURL(url));
 }
 

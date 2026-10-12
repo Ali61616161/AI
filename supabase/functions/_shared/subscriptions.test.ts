@@ -1,6 +1,6 @@
 import { assertEquals } from 'jsr:@std/assert@1';
 
-import { planFor, productMapFromEnv, proKey, rowFromWebhook, rowsFromSubscriber, tripPassKey, tripPassPurchases } from './subscriptions.ts';
+import { planFor, productMapFromEnv, proKey, rowFromWebhook, rowsFromSubscriber, transferredFromUsers, tripPassKey, tripPassPurchases } from './subscriptions.ts';
 
 const P = productMapFromEnv(() => undefined);
 const U = '6f1c7e7a-2b1e-4c55-9a51-1c2d3e4f5a6b';
@@ -55,4 +55,11 @@ Deno.test('rowsFromSubscriber ve tripPassPurchases: REST yanıtı', () => {
   const rows = rowsFromSubscriber(U, subscriber, P, NOW);
   assertEquals(rows.map((r) => [r.plan, r.status, r.store]), [['pro_yearly', 'active', 'play_store'], ['pro_monthly', 'expired', 'app_store']]);
   assertEquals(tripPassPurchases(subscriber, P).map((p) => p.transactionId), ['rc2', 'GPA.1']);
+});
+
+Deno.test('transferredFromUsers: TRANSFER olayında eski sahipler', () => {
+  const V = '7a2d8f8b-3c2f-4d66-8b62-2d3e4f5a6b7c';
+  assertEquals(transferredFromUsers({ type: 'TRANSFER', transferred_from: [U, '$RCAnonymousID:x'], transferred_to: [V] }), [U]);
+  assertEquals(transferredFromUsers({ type: 'TRANSFER', transferred_from: [U], transferred_to: [U] }), []);
+  assertEquals(transferredFromUsers(ev('RENEWAL')), []);
 });

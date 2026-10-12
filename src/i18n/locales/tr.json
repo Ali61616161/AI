@@ -168,7 +168,8 @@
       "age_required": "Sosyal modu kullanmak için 18 yaşından büyük olmalısın.",
       "name_required": "Diğerlerinin göreceği adı yaz.",
       "women_only": "Sadece kadınlar \"sadece kadınlar\" filtresini açabilir.",
-      "unknown": "Bir şeyler ters gitti. Tekrar dene."
+      "unknown": "Bir şeyler ters gitti. Tekrar dene.",
+      "identity_locked": "Doğum yılı ve cinsiyet değiştirilemez. Düzeltme için destekle iletişime geç."
     },
     "traveler": "Gezgin",
     "accept": "Kabul et",
@@ -219,7 +220,8 @@
     },
     "blockOnly": "Sadece engelle",
     "reportNote": "Engellenecek ve seni bir daha göremeyecek. Ekibimiz her şikayeti inceler.",
-    "chatSafety": "Halka açık yerde buluş, bir arkadaşına nerede olduğunu söyle ve kendi planına sadık kal. Herkesi istediğin an engelleyebilir veya şikayet edebilirsin."
+    "chatSafety": "Halka açık yerde buluş, bir arkadaşına nerede olduğunu söyle ve kendi planına sadık kal. Herkesi istediğin an engelleyebilir veya şikayet edebilirsin.",
+    "identityNote": "Güvenliğin için doğum yılı ve cinsiyet kaydedildikten sonra değiştirilemez. Hata varsa destekle iletişime geç."
   },
   "profile": {
     "title": "Profil",

@@ -62,9 +62,13 @@ export default function ProfileScreen() {
   }
 
   async function handleSignOut() {
-    if (session && isSupabaseConfigured()) await getSupabase().auth.signOut();
-    clearOfflineData();
-    signOut();
+    try {
+      if (session && isSupabaseConfigured()) await getSupabase().auth.signOut();
+    } finally {
+      // Çıkış isteği başarısız olsa bile telefondaki seyahat verileri silinir.
+      clearOfflineData();
+      signOut();
+    }
   }
 
   return (

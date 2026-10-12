@@ -41,11 +41,14 @@ let ece;
 let mert;
 let inviteId;
 
-await step('18 yaş altı görünür olamaz; rıza olmadan görünür olunamaz', async () => {
+await step('18 yaş altı görünür olamaz, yaşını sonradan değiştiremez; rıza olmadan görünür olunamaz', async () => {
   const kid = await signIn('kid');
   const r = await goVisible(kid, { name: 'Kid', year: new Date().getFullYear() - 15, lng: 12.48, lat: 41.9 });
   assert.notEqual(r.status, 201);
   assert.match(JSON.stringify(r.data), /age_required/);
+  const older = await kid.call(`/rest/v1/profiles?id=eq.${kid.id}`, { birth_year: 1990 }, 'PATCH');
+  assert.notEqual(older.status, 204, 'doğum yılı sonradan büyütülememeli');
+  assert.match(JSON.stringify(older.data), /identity_locked/);
   const noConsent = await signIn('noconsent');
   await noConsent.call(`/rest/v1/profiles?id=eq.${noConsent.id}`, { display_name: 'X', birth_year: 1990 }, 'PATCH');
   const r2 = await noConsent.call('/rest/v1/social_profiles', { user_id: noConsent.id, is_visible: true, approx_location: 'SRID=4326;POINT(12.48 41.9)' });

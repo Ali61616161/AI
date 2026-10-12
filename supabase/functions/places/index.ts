@@ -141,6 +141,8 @@ Deno.serve(async (req) => {
     const lastForecastDay = addDays(today, MAX_FORECAST_DAYS - 1);
 
     if (isCoord(body.lat, body.lng)) {
+      const quota = await consumeQuota(supabase, 'weather', null);
+      if (!quota.allowed) return error('quota_exceeded', 402);
       const days = await fetchForecast({ lat: body.lat, lng: body.lng, days: 5, language, apiKey, apiBase: google.weatherBase });
       return json({ days: days.map((d) => ({ ...d, city: null })), available_from: null });
     }
@@ -149,6 +151,8 @@ Deno.serve(async (req) => {
     if (!trip) return error('not_found', 404);
     if (!trip.start_date || !trip.end_date || trip.end_date < today) return json({ days: [], available_from: null });
     if (trip.start_date > lastForecastDay) return json({ days: [], available_from: addDays(trip.start_date, -(MAX_FORECAST_DAYS - 1)) });
+    const quota = await consumeQuota(supabase, 'weather', trip.id);
+    if (!quota.allowed) return error('quota_exceeded', 402);
 
     const coords = await destinationCoords(supabase, trip.trip_destinations, language);
     const days = [];

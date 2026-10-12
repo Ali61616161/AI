@@ -10,7 +10,7 @@
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
-import { fetchSubscriber, productMapFromEnv, rowsFromSubscriber, tripPassKey, tripPassPurchases } from '../_shared/subscriptions.ts';
+import { fetchSubscriber, PRO_PLANS, productMapFromEnv, rowsFromSubscriber, tripPassKey, tripPassPurchases } from '../_shared/subscriptions.ts';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -45,6 +45,19 @@ Deno.serve(async (req) => {
   if (rows.length) {
     const { error: upsertError } = await admin.from('subscriptions').upsert(rows, { onConflict: 'original_transaction_id' });
     if (upsertError) return error('bad_request', 500, upsertError.message);
+  }
+  // RevenueCat'te artık bu kullanıcıda olmayan Pro abonelikler (ör. başka hesaba
+  // geri yüklenmiş) kapatılır.
+  const kept = new Set(rows.map((r) => r.plan));
+  const stale = PRO_PLANS.filter((p) => !kept.has(p));
+  if (stale.length) {
+    const { error: expireError } = await admin
+      .from('subscriptions')
+      .update({ status: 'expired' })
+      .eq('user_id', user.id)
+      .in('plan', stale)
+      .in('status', ['active', 'in_grace']);
+    if (expireError) return error('bad_request', 500, expireError.message);
   }
 
   let tripId: string | null = null;

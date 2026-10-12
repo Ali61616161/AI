@@ -46,7 +46,7 @@ export type GoVisibleInput = {
   until: string | null;
 };
 
-export type SocialErrorCode = 'age_required' | 'name_required' | 'women_only' | 'unknown';
+export type SocialErrorCode = 'age_required' | 'name_required' | 'women_only' | 'identity_locked' | 'unknown';
 
 export class SocialError extends Error {
   constructor(readonly code: SocialErrorCode) {
@@ -65,7 +65,10 @@ export function useGoVisible() {
         .from('profiles')
         .update({ display_name: input.displayName.trim().slice(0, 60), birth_year: input.birthYear, gender: input.gender, bio: input.bio.trim().slice(0, 300) || null })
         .eq('id', userId!);
-      if (profileError) throw profileError;
+      if (profileError) {
+        if ((profileError as { hint?: string }).hint === 'identity_locked') throw new SocialError('identity_locked');
+        throw profileError;
+      }
       const { error: consentError } = await supabase.from('consents').insert([
         { consent: 'social_matching', granted: true, version: CONSENT_VERSION },
         { consent: 'location', granted: true, version: CONSENT_VERSION },

@@ -119,6 +119,19 @@ export function rowFromWebhook(event: any, products: ProductMap, now = Date.now(
   };
 }
 
+export const PRO_PLANS: Plan[] = ['pro_monthly', 'pro_yearly'];
+
+/**
+ * TRANSFER olayında satın almanın taşındığı eski kullanıcılar. Bu kullanıcıların Pro
+ * kayıtları kapatılmalı; aksi halde tek satın alma birden çok hesabı açar.
+ */
+// deno-lint-ignore no-explicit-any
+export function transferredFromUsers(event: any): string[] {
+  if (event?.type !== 'TRANSFER' || !Array.isArray(event.transferred_from)) return [];
+  const to = new Set(Array.isArray(event.transferred_to) ? event.transferred_to : []);
+  return [...new Set<string>(event.transferred_from.filter((id: unknown) => isUserId(id) && !to.has(id)))];
+}
+
 /** RevenueCat REST "subscriber" yanıtından Pro abonelik kayıtları. */
 // deno-lint-ignore no-explicit-any
 export function rowsFromSubscriber(userId: string, subscriber: any, products: ProductMap, now = Date.now()): SubscriptionRow[] {

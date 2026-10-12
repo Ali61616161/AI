@@ -574,7 +574,47 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '16. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '16. Yetki sıkılaştırma: üye satırı taşınamaz, sahip değişmez, kimlik alanları kilitli, https bağlantılar, kotalar'
+reset role;
+update public.profiles set gender = 'male' where id = '00000000-0000-0000-0000-00000000000c';
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+insert into public.trips (id, title) values ('10000000-0000-0000-0000-0000000000c1', 'Can trip');
+do $$
+declare r record; i integer;
+begin
+  assert tests.throws($q$ update public.trip_members set trip_id = '10000000-0000-0000-0000-000000000001', role = 'editor'
+    where trip_id = '10000000-0000-0000-0000-0000000000c1' $q$), 'üye satırı başka seyahate taşınamamalı';
+  assert tests.throws($q$ update public.trips set owner_id = '00000000-0000-0000-0000-00000000000b'
+    where id = '10000000-0000-0000-0000-0000000000c1' $q$), 'seyahat sahibi değiştirilememeli';
+  update public.trips set title = 'Can trip 2' where id = '10000000-0000-0000-0000-0000000000c1';
+  assert tests.throws($q$ update public.profiles set gender = 'female' where id = auth.uid() $q$), 'cinsiyet sonradan değiştirilememeli';
+  assert tests.throws($q$ update public.profiles set birth_year = 2001 where id = auth.uid() $q$), 'doğum yılı sonradan değiştirilememeli';
+  update public.profiles set bio = 'merhaba', birth_year = 1995, gender = 'male' where id = auth.uid();
+  assert tests.throws($q$ update public.profiles set avatar_url = 'https://evil.test/pixel.png' where id = auth.uid() $q$), 'dış adresten profil fotoğrafı olmamalı';
+
+  for i in 1..40 loop
+    select * into r from public.consume_quota('weather');
+    assert r.allowed, format('%s. hava durumu izinli olmalı', i);
+  end loop;
+  select * into r from public.consume_quota('weather');
+  assert not r.allowed, '41. hava durumu isteği reddedilmeli';
+  for i in 1..3 loop
+    select * into r from public.consume_quota('trip_report', '10000000-0000-0000-0000-0000000000c1');
+    assert r.allowed;
+  end loop;
+  select * into r from public.consume_quota('trip_report', '10000000-0000-0000-0000-0000000000c1');
+  assert not r.allowed, 'ücretsizde seyahat başına 3 AI raporu';
+end $$;
+reset role;
+do $$ begin
+  assert tests.throws($q$ update public.plan_items set booking_url = 'javascript:alert(1)' where title = 'Trevi' $q$), 'https olmayan bilet bağlantısı reddedilmeli';
+  update public.profiles set gender = 'female' where id = '00000000-0000-0000-0000-00000000000c';
+  update public.profiles set gender = 'male' where id = '00000000-0000-0000-0000-00000000000c';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '17. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

@@ -6,7 +6,7 @@
 // JWT doğrulaması kapalı olmalı: supabase/config.toml → [functions.revenuecat-webhook] verify_jwt = false
 import { adminClient } from '../_shared/admin.ts';
 import { error, json } from '../_shared/http.ts';
-import { productMapFromEnv, rowFromWebhook } from '../_shared/subscriptions.ts';
+import { PRO_PLANS, productMapFromEnv, rowFromWebhook, transferredFromUsers } from '../_shared/subscriptions.ts';
 
 function safeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -30,6 +30,19 @@ Deno.serve(async (req) => {
   } catch {
     return error('bad_request', 400, 'body must be JSON');
   }
+  // Satın alma başka hesaba taşındıysa eski hesapların Pro erişimi kapanır.
+  const previousOwners = transferredFromUsers(body?.event);
+  if (previousOwners.length) {
+    const { error: transferError } = await admin
+      .from('subscriptions')
+      .update({ status: 'expired' })
+      .in('user_id', previousOwners)
+      .in('plan', PRO_PLANS)
+      .in('status', ['active', 'in_grace']);
+    if (transferError) return error('bad_request', 500, transferError.message);
+    return json({ ok: true });
+  }
+
   const result = rowFromWebhook(body?.event, productMapFromEnv((n) => Deno.env.get(n)));
   // Tanınmayan olaylar da 200 döner; aksi halde RevenueCat tekrar tekrar gönderir.
   if (!result) return json({ ok: true, ignored: true });
