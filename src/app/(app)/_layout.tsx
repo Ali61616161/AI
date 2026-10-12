@@ -45,6 +45,8 @@ export default function AppLayout() {
       <Stack.Screen name="saved" options={{ presentation: 'modal' }} />
       <Stack.Screen name="city-passport" options={{ presentation: 'modal' }} />
       <Stack.Screen name="spin" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="visited" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="my-docs" options={{ presentation: 'modal' }} />
     </Stack>
   );
 }

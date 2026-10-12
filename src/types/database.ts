@@ -967,6 +967,34 @@ export type Database = {
         };
         Relationships: [];
       };
+      schengen_stays: {
+        Row: {
+          created_at: string;
+          entry_on: string;
+          exit_on: string;
+          id: string;
+          note: string | null;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          entry_on: string;
+          exit_on: string;
+          id?: string;
+          note?: string | null;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          entry_on?: string;
+          exit_on?: string;
+          id?: string;
+          note?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       social_profiles: {
         Row: {
           approx_location: unknown;
@@ -1068,6 +1096,37 @@ export type Database = {
             referencedColumns: ['id'];
           },
         ];
+      };
+      travel_documents: {
+        Row: {
+          country_code: string | null;
+          created_at: string;
+          expires_on: string;
+          id: string;
+          kind: string;
+          label: string | null;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          country_code?: string | null;
+          created_at?: string;
+          expires_on: string;
+          id?: string;
+          kind: string;
+          label?: string | null;
+          user_id?: string;
+        };
+        Update: {
+          country_code?: string | null;
+          created_at?: string;
+          expires_on?: string;
+          id?: string;
+          kind?: string;
+          label?: string | null;
+          user_id?: string;
+        };
+        Relationships: [];
       };
       trip_destinations: {
         Row: {
@@ -1356,6 +1415,28 @@ export type Database = {
           },
         ];
       };
+      visited_countries: {
+        Row: {
+          country_code: string;
+          created_at: string;
+          source: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          country_code: string;
+          created_at?: string;
+          source?: string;
+          user_id?: string;
+        };
+        Update: {
+          country_code?: string;
+          created_at?: string;
+          source?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -1522,6 +1603,7 @@ export type Database = {
       };
       valid_country_codes: { Args: { p_codes: string[]; p_max: number }; Returns: boolean };
       valid_extra_visas: { Args: { p_keys: string[] }; Returns: boolean };
+      visited_percentile: { Args: Record<PropertyKey, never>; Returns: number };
     };
     Enums: {
       budget_tier: 'low' | 'mid' | 'lux';

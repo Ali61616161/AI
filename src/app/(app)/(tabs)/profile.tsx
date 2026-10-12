@@ -205,6 +205,8 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <SectionHeader title={t('profile.account')} />
         <Card padding={Spacing.xs}>
+          <ListRow icon="earth-outline" label={t('visited.title')} onPress={() => router.push('/visited')} />
+          <ListRow icon="document-text-outline" label={t('docs.title')} onPress={() => router.push('/my-docs')} />
           <ListRow icon="shield-checkmark-outline" label={t('legal.privacy')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />
           <ListRow icon="document-text-outline" label={t('legal.terms')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })} />
           <ListRow icon="reader-outline" label={t('legal.kvkk')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'kvkk' } })} />

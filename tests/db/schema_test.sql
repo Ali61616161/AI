@@ -664,7 +664,30 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
-\echo '18. Hesap silinince tüm veri silinir (KVKK/GDPR)'
+\echo '18. Gezdiğim ülkeler, belgeler, Schengen kalışları: sadece sahibi görür'
+reset role;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$
+begin
+  insert into public.visited_countries (country_code) values ('GE'), ('JP');
+  assert tests.throws($q$ insert into public.visited_countries (country_code) values ('ge') $q$), 'ülke kodu büyük harf';
+  insert into public.travel_documents (kind, country_code, expires_on) values ('passport', 'TR', current_date + 100);
+  assert tests.throws($q$ insert into public.travel_documents (kind, expires_on) values ('credit_card', current_date) $q$), 'bilinmeyen belge türü';
+  insert into public.schengen_stays (entry_on, exit_on) values (current_date - 20, current_date - 10);
+  assert tests.throws($q$ insert into public.schengen_stays (entry_on, exit_on) values (current_date, current_date - 1) $q$), 'çıkış girişten önce olamaz';
+  assert public.visited_percentile() is null, '1000 kullanıcıdan az veriyle yüzde gösterilmez';
+end $$;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$ begin
+  assert (select count(*) from public.visited_countries) = 0, 'başkasının ülkeleri görünmemeli';
+  assert (select count(*) from public.travel_documents) = 0, 'başkasının belgeleri görünmemeli';
+  assert (select count(*) from public.schengen_stays) = 0, 'başkasının kalışları görünmemeli';
+  assert tests.throws($q$ insert into public.visited_countries (user_id, country_code) values ('00000000-0000-0000-0000-00000000000c', 'FR') $q$), 'başkası adına eklenemez';
+end $$;
+
+-- ---------------------------------------------------------------------------
+\echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
 do $$ begin

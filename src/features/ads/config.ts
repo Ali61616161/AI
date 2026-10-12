@@ -22,5 +22,5 @@ export const AD_UNITS = {
 };
 
 /** Ödüllü reklamla +1 hak verilebilen özellikler (sunucudaki liste ile aynı). */
-export const REWARDABLE_FEATURES = ['nearby_search', 'text_translation', 'travel_info', 'weather'] as const;
+export const REWARDABLE_FEATURES = ['nearby_search', 'text_translation', 'travel_info', 'weather', 'spin'] as const;
 export type RewardableFeature = (typeof REWARDABLE_FEATURES)[number];

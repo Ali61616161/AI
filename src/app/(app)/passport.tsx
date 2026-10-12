@@ -94,6 +94,11 @@ export default function PassportScreen() {
             </View>
           </Card>
 
+          <View style={styles.links}>
+            <Button title={t('visited.title')} icon="earth" variant="secondary" style={styles.flex} onPress={() => router.push('/visited')} />
+            <Button title={t('docs.short')} icon="document-text" variant="secondary" style={styles.flex} onPress={() => router.push('/my-docs')} />
+          </View>
+
           <Text variant="title">{t('passport.whereTitle')}</Text>
           <View style={styles.chips}>
             {(['easy', 'evisa', 'visa_required'] as const).map((f) => (
@@ -152,4 +157,5 @@ const styles = StyleSheet.create({
   search: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, paddingHorizontal: Spacing.md, height: 46, borderRadius: Radius.md, borderWidth: 1 },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm },
   flag: { fontSize: 24 },
+  links: { flexDirection: 'row', gap: Spacing.sm, flexWrap: 'wrap' },
 });

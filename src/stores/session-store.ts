@@ -32,6 +32,8 @@ type SessionState = {
   isGuest: boolean;
   preferences: TravelPreferences;
   identity: TravelIdentity;
+  /** Gezilen ülkeler (misafirken de tutulur; girişte hesaba eşitlenir). */
+  visitedCountries: string[];
   onboardingCompleted: boolean;
   /** Tanıtım slaytları bir kez gösterilir (çıkış yapınca sıfırlanmaz). */
   introSeen: boolean;
@@ -41,6 +43,7 @@ type SessionState = {
   continueAsGuest: () => void;
   setPreferences: (patch: Partial<TravelPreferences>) => void;
   setIdentity: (patch: Partial<TravelIdentity>) => void;
+  setVisitedCountries: (codes: string[]) => void;
   setIntroSeen: () => void;
   setConsents: (consents: PendingConsents | null) => void;
   completeOnboarding: () => void;
@@ -57,6 +60,7 @@ export const useSessionStore = create<SessionState>()(
       isGuest: false,
       preferences: emptyPreferences,
       identity: emptyIdentity,
+      visitedCountries: [],
       onboardingCompleted: false,
       introSeen: false,
       consents: null,
@@ -66,10 +70,11 @@ export const useSessionStore = create<SessionState>()(
       setPreferences: (patch) => set((state) => ({ preferences: { ...state.preferences, ...patch } })),
       setIdentity: (patch) => set((state) => ({ identity: { ...state.identity, ...patch } })),
       setIntroSeen: () => set({ introSeen: true }),
+      setVisitedCountries: (codes) => set({ visitedCountries: [...new Set(codes)].sort() }),
       setConsents: (consents) => set({ consents }),
       completeOnboarding: () => set({ onboardingCompleted: true }),
       signOut: () =>
-        set({ session: null, isGuest: false, preferences: emptyPreferences, identity: emptyIdentity, onboardingCompleted: false }),
+        set({ session: null, isGuest: false, preferences: emptyPreferences, identity: emptyIdentity, visitedCountries: [], onboardingCompleted: false }),
     }),
     {
       name: 'yola.session',
@@ -78,6 +83,7 @@ export const useSessionStore = create<SessionState>()(
         isGuest: state.isGuest,
         preferences: state.preferences,
         identity: state.identity,
+        visitedCountries: state.visitedCountries,
         onboardingCompleted: state.onboardingCompleted,
         introSeen: state.introSeen,
         consents: state.consents,
@@ -85,7 +91,7 @@ export const useSessionStore = create<SessionState>()(
       // Eski kayıtlarda olmayan alanlar varsayılanla tamamlanır.
       merge: (persisted, current) => {
         const p = (persisted ?? {}) as Partial<SessionState>;
-        return { ...current, ...p, identity: { ...emptyIdentity, ...p.identity } };
+        return { ...current, ...p, identity: { ...emptyIdentity, ...p.identity }, visitedCountries: p.visitedCountries ?? [] };
       },
     },
   ),

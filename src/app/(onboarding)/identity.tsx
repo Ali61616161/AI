@@ -31,12 +31,12 @@ export default function IdentityStep() {
     const { session, identity: current } = useSessionStore.getState();
     if (session) await saveIdentityToProfile(session.user.id, current).catch((e) => console.warn('Profil kaydedilemedi', e));
     setSaving(false);
-    router.push('/companion');
+    router.push('/visited-step');
   }
 
   return (
     <Screen footer={<Button title={t('common.continue')} disabled={!identity.passport} loading={saving} onPress={next} />}>
-      <StepHeader step={1} total={4} title={t('identity.title')} subtitle={t('identity.subtitle')} />
+      <StepHeader step={1} total={5} title={t('identity.title')} subtitle={t('identity.subtitle')} />
       <IdentityForm value={identity} onChange={setIdentity} />
       <Text variant="caption" color="textMuted">
         {t('identity.disclaimer')}

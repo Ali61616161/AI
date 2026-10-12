@@ -13,7 +13,7 @@ import { fetchVerifierKeys, verifySsv, VERIFIER_KEYS_URL, type VerifierKey } fro
 import { error, json } from '../_shared/http.ts';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const FEATURES = new Set(['nearby_search', 'text_translation', 'travel_info', 'weather']);
+const FEATURES = new Set(['nearby_search', 'text_translation', 'travel_info', 'weather', 'spin']);
 
 // Google anahtarları nadiren değişir; bir gün önbellekte tutulur.
 let cached: { keys: VerifierKey[]; at: number } | null = null;

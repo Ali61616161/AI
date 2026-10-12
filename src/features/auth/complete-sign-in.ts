@@ -2,6 +2,7 @@ import type { Session } from '@supabase/supabase-js';
 import { router } from 'expo-router';
 
 import { saveIdentityToProfile, savePreferencesToProfile } from '@/features/profile/save-preferences';
+import { syncVisitedOnSignIn } from '@/features/travel/api';
 import { getSupabase } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
@@ -72,6 +73,7 @@ export async function completeSignIn(session: Session) {
   useSessionStore.getState().setSession(session);
   await syncPreferences(session.user.id).catch((e) => console.warn('Tercihler eşitlenemedi', e));
   await recordConsents(session.user.id).catch((e) => console.warn('Onaylar kaydedilemedi', e));
+  await syncVisitedOnSignIn().catch((e) => console.warn('Gezilen ülkeler eşitlenemedi', e));
   // Giriş ve doğrulama ekranları korumasız olduğu için oturum açılınca kendiliğinden
   // kapanmazlar; kullanıcıyı açabileceği ilk ekrana açıkça yönlendiriyoruz.
   const { onboardingCompleted } = useSessionStore.getState();

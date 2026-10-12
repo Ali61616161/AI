@@ -20,7 +20,7 @@ export default function BudgetStep() {
           <Button title={t('common.back')} variant="ghost" onPress={() => router.back()} />
         </>
       }>
-      <StepHeader step={3} total={4} title={t('onboarding.budgetTitle')} subtitle={t('onboarding.budgetSubtitle')} />
+      <StepHeader step={4} total={5} title={t('onboarding.budgetTitle')} subtitle={t('onboarding.budgetSubtitle')} />
       <BudgetPicker value={budget} onChange={(v) => setPreferences({ budget: v })} />
     </Screen>
   );
