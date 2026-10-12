@@ -10,4 +10,16 @@ Yola, yapay zeka destekli seyahat arkadaşın. Seyahatini gerçek rezervasyonlar
 • Puanlı seyahat raporu ve paylaşılabilir kart
 • İsteğe bağlı sosyal mod: gezginlerle güvenle, halka açık yerlerde buluş
 
-Ücretsiz başla. Yola Pro (aylık veya yıllık) ya da tek seferlik Trip Pass ile sınırsız planlama, yeniden planlama ve çeviri.
+Seyahatte değil misin? Yola kendi şehrinde de çalışır:
+• Şehrim: yakınındaki gerçek ve açık mekanlarla bu akşam ve hafta sonu planı
+• "Kararsızım": seçemiyor musun? Tek bir güzel öneri al, istersen sadece yeni yerler
+• Listelerim ve Şehir pasaportu: mekanları kaydet, keşfettiklerini takip et, rozet kazan
+• Kaçamaklar: yakınındaki bütçe dostu kısa tatiller, mesafe ve bütçeye göre
+• Çarkı çevir: sıradaki ülkeni şansa bırak, kartını paylaş
+
+Pasaportun ve seyahat geçmişin:
+• Pasaportum: pasaportun ve ek vizelerinle (Schengen, ABD, İngiltere ve daha fazlası) nerelere gidebileceğini gör
+• Gezdiğim ülkeler: dünyanın ve her kıtanın yüzde kaçını gezdiğin, ülke ve şehir sayın, rozetlerin
+• Schengen 90/180 hesaplayıcı, pasaport ve vize son kullanma hatırlatıcıları
+
+Ücretsiz başla. Yola Pro (aylık veya yıllık) ya da tek seferlik Trip Pass ile sınırsız planlama, yeniden planlama ve çeviri. Ücretsiz sürümde reklam gösterilir; Pro reklamsızdır.

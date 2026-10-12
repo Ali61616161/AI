@@ -53,21 +53,25 @@ Play Console → App access bölümüne yazın.
 | Yaklaşık konum | Evet (sosyal mod) | Evet | Hayır | Uygulama işlevi |
 | Fotoğraflar | Evet (bilet, menü) | Evet | Hayır | Uygulama işlevi |
 | Ses verisi | Hayır (konuşma telefonda yazıya dökülür; sunucuya sadece metin gider) | — | — | — |
-| Diğer kullanıcı içeriği (mesajlar, seyahatler, notlar) | Evet | Evet | Hayır | Uygulama işlevi |
+| Diğer kullanıcı içeriği (mesajlar, seyahatler, notlar, gezilen ülkeler, kaydedilen mekanlar) | Evet | Evet | Hayır | Uygulama işlevi |
+| Diğer veri: vatandaşlık/pasaport ülkesi, ek vize türleri, belge son kullanma tarihleri, Schengen giriş-çıkış tarihleri, yaşanan şehir (belge numarası alınmaz) | Evet | Evet | Hayır | Uygulama işlevi |
 | Satın alma geçmişi | Evet | Evet | Hayır | Uygulama işlevi |
 | Kullanıcı kimliği | Evet | Evet | Hayır | Uygulama işlevi |
-| Reklam / izleme verisi | Hayır | — | — | — |
+| Cihaz kimliği (reklam kimliği, IDFA) — sadece ücretsiz sürüm, AdMob | Evet | Hayır | **Evet** (kullanıcı Apple takip iznini verirse) | Üçüncü taraf reklam |
+| Ürün etkileşimi / reklam verisi (gösterim, tıklama) — AdMob | Evet | Hayır | **Evet** | Üçüncü taraf reklam, analiz |
+| Yaklaşık konum (IP üzerinden) — AdMob | Evet | Hayır | **Evet** | Üçüncü taraf reklam |
+
+Uygulama Apple takip izni (ATT) penceresini gösterdiği için "Bu uygulama sizi izlemek için veri kullanıyor mu?" sorusuna **Evet** denmelidir; aksi hâlde inceleme 5.1.2 gerekçesiyle reddedilir. Belge numarası hiçbir yerde toplanmaz.
 
 ## Google Play veri güvenliği (Data safety)
 
 - Veri toplanıyor ve aktarım sırasında şifreleniyor: **Evet**
 - Kullanıcı veri silme isteyebilir: **Evet** (uygulama içinde Profil → Hesabı sil; ayrıca web: gizlilik politikasındaki e-posta)
-- Toplananlar: e-posta, ad, kullanıcı kimliği; hassas ve yaklaşık konum; fotoğraflar; uygulama içi mesajlar; diğer kullanıcı içeriği; satın alma geçmişi
-- Paylaşım: hizmet sağlayıcılarla (Supabase, Google, RevenueCat) — Play tanımına göre "paylaşım" sayılmaz
-- Reklam: Hayır
+- Toplananlar: e-posta, ad, kullanıcı kimliği; hassas ve yaklaşık konum; fotoğraflar; uygulama içi mesajlar; diğer kullanıcı içeriği (seyahatler, gezilen ülkeler, vatandaşlık ve vize türleri, belge son kullanma tarihleri); satın alma geçmişi; **cihaz veya diğer kimlikler (reklam kimliği)**; **uygulama etkileşimleri**
+- Paylaşım: hizmet sağlayıcılarla (Supabase, Google, RevenueCat) — Play tanımına göre "paylaşım" sayılmaz. **Reklam kimliği ve uygulama etkileşimleri Google AdMob ile "Reklam veya pazarlama" amacıyla paylaşılır.**
+- Play Console → Uygulama içeriği → **Reklamlar: "Evet, uygulamamda reklam var"**; **Reklam kimliği: "Evet", amaç: Reklam veya pazarlama** (Android 13+ için `AD_ID` izni AdMob tarafından eklenir)
 
 ## Ekran görüntüleri
 
 Gerekli boyutlar: iPhone 6,9" (1320×2868) ve 6,5" (1284×2778), iPad 13" (2064×2752, `supportsTablet: true` olduğu için); Android telefon (en az 1080×1920) ve 7"/10" tablet (isteğe bağlı).
-Önerilen sıra: 1) Gün gün rota 2) Planı Değiştir 3) Bilet yükleme 4) Canlı çeviri 5) Yakında açık + harita 6) Çevrimdışı 7) Seyahat raporu 8) Araçlar.
-Gerçek cihaz/simülatör görüntüleri 15. adımda geliştirme derlemesiyle alınacak.
+Önerilen sıra (en çok 10): 1) Gün gün rota 2) Şehrim: bu akşam ne yapsak? 3) Planı Değiştir 4) Pasaportum (pasaport gücü) 5) Gezdiğim ülkeler (dünya yüzdesi) 6) Canlı çeviri 7) Çarkı çevir 8) Kaçamaklar 9) Bilet yükleme 10) Schengen 90/180.

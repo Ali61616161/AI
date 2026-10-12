@@ -1,1 +1,1 @@
-travel,trip planner,itinerary,ai,translator,offline,vacation,city guide,packing,visa,jet lag
+travel,trip planner,itinerary,ai,translator,visa,passport,schengen,getaway,city guide,offline

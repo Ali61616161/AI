@@ -1,1 +1,1 @@
-reise,reiseplaner,route,ki,übersetzer,offline,urlaub,stadtführer,packliste,visum,jetlag
+reise,reiseplaner,route,ki,übersetzer,visum,reisepass,schengen,kurztrip,urlaub,stadtführer

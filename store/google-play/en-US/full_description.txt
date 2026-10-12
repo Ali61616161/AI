@@ -10,4 +10,16 @@ Yola is your AI travel companion. It plans your trip around your real bookings, 
 • Trip report with ratings and a shareable card
 • Optional social mode: meet travelers in public places, safely
 
-Free to start. Yola Pro (monthly or yearly) or a one-time Trip Pass unlocks unlimited planning, replanning and translation.
+Not traveling? Yola works in your own city too:
+• My City: plans for tonight and the weekend with real, open places near you
+• "Decide for me": can't choose? Get one great pick, new places only if you like
+• My lists and City passport: save places, track what you discovered, earn badges
+• Getaways: budget-friendly short trips near you, by distance and budget
+• Spin the wheel: let luck pick your next country and share the card
+
+Your passport and travel history:
+• My passport: see where your passport and extra visas (Schengen, US, UK and more) let you go
+• Countries I've visited: your share of the world and each continent, countries, cities and badges
+• Schengen 90/180 calculator and passport and visa expiry reminders
+
+Free to start. Yola Pro (monthly or yearly) or a one-time Trip Pass unlocks unlimited planning, replanning and translation. The free version shows ads; Pro is ad-free.

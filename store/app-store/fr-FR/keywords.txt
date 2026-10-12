@@ -1,1 +1,1 @@
-voyage,itinéraire,planificateur,ia,traducteur,hors ligne,vacances,guide,valise,visa,décalage
+voyage,itinéraire,planificateur,ia,traducteur,visa,passeport,schengen,escapade,vacances,guide
