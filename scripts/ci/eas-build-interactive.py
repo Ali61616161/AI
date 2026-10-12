@@ -20,7 +20,7 @@ PROMPTS = [
     r'\?\s+Apple ID',           # 0: Apple girişi sorulursa dur
     r'\?\s+Password',           # 1
     r'\((?:Y/n|y/N)\)',         # 2: evet/hayır
-    r'Use arrow-keys',          # 3: seçim listesi → ilk seçenek
+    r'Use arrow-keys|Return to submit|space to select',  # 3: seçim listesi → varsayılan (cihazlar: hepsi)
     pexpect.EOF,                # 4
 ]
 while True:

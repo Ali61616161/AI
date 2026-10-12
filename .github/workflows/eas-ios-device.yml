@@ -1,0 +1,31 @@
+# iPhone'u kaydetmek için bağlantı üretir. Bağlantıyı telefonda Safari ile aç, profili
+# yükle (Ayarlar → Profil İndirildi → Yükle). Sonra "EAS iOS" iş akışını profile=preview
+# ile çalıştır: TestFlight olmadan expo.dev'den kurulabilen derleme çıkar.
+name: iPhone kaydı
+
+on:
+  workflow_dispatch:
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Sırlar
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          token=$(printf '%s' "$EXPO_TOKEN" | tr -d '[:space:]')
+          echo "::add-mask::$token"
+          { echo "EXPO_TOKEN=$token"; echo "EXPO_APPLE_TEAM_ID=$(printf '%s' "$APPLE_TEAM_ID" | tr -d '[:space:]')"; echo "EXPO_APPLE_TEAM_TYPE=INDIVIDUAL"; } >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Kayıt bağlantısı
+        run: |
+          pip install --quiet pexpect
+          python3 scripts/ci/eas-device-create.py
