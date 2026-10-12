@@ -31,6 +31,7 @@ import {
 import { daysUntil, formatDateRange, formatDayShort, formatLocalDateTime, todayIsoDate } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { NativeAdCard } from '@/features/ads/native-ad-card';
 
 function ReservationRow({ reservation: r }: { reservation: TripReservation }) {
   const { t } = useTranslation();
@@ -216,6 +217,8 @@ export default function TripScreen() {
       )}
 
       <TripTools tripId={trip.id} />
+
+      <NativeAdCard />
 
       <OfflineCard tripId={trip.id} countryCode={trip.trip_destinations[0]?.country_code ?? null} />
 

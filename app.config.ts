@@ -75,6 +75,22 @@ const config: ExpoConfig = {
         speechRecognitionPermission: `${brand.name} turns your speech into text so it can be translated.`,
       },
     ],
+    // Reklamlar (sadece ücretsiz plan). Uygulama kimlikleri AdMob panelinden alınır;
+    // ayarlanmadıysa Google'ın örnek kimlikleri kullanılır (sadece test reklamı gelir).
+    [
+      'react-native-google-mobile-ads',
+      {
+        iosAppId: process.env.ADMOB_IOS_APP_ID || 'ca-app-pub-3940256099942544~1458002511',
+        androidAppId: process.env.ADMOB_ANDROID_APP_ID || 'ca-app-pub-3940256099942544~3347511713',
+        delayAppMeasurementInit: true,
+        userTrackingUsageDescription: `${brand.name} uses this to show ads that are more relevant to you. Paid plans have no ads.`,
+        skAdNetworkItems: ['cstr6suwn9.skadnetwork'],
+      },
+    ],
+    [
+      'expo-tracking-transparency',
+      { userTrackingPermission: `${brand.name} uses this to show ads that are more relevant to you. Paid plans have no ads.` },
+    ],
     // iOS'ta Apple Haritalar kullanılır (anahtar gerekmez). Android'de Google Haritalar
     // için Android uygulamasına kısıtlı bir anahtar EAS ortam değişkeninden verilir.
     [

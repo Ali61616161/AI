@@ -417,3 +417,6 @@ enabled = true
 # RevenueCat webhook'u Supabase oturumu taşımaz; kendi Authorization sırrıyla doğrulanır.
 [functions.revenuecat-webhook]
 verify_jwt = false
+
+[functions.ad-reward]
+verify_jwt = false

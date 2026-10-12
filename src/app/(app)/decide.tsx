@@ -21,6 +21,7 @@ import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { haptic } from '@/lib/haptics';
 import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { RewardedButton } from '@/features/ads/rewarded-button';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -231,6 +232,7 @@ export default function DecideScreen() {
                 {t(`nearby.errors.${errorCode}` as 'nearby.errors.network')}
               </Text>
               {errorCode === 'quota_exceeded' && <UpgradeButton />}
+              {errorCode === 'quota_exceeded' && <RewardedButton feature="nearby_search" onRewarded={() => setErrorCode(null)} />}
             </View>
           )}
         </>

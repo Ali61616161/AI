@@ -54,6 +54,7 @@ export default function PaywallScreen() {
     { key: 'translate', free: t('paywall.free.translate'), pro: t('paywall.pro.unlimited') },
     { key: 'nearby', free: t('paywall.free.nearby'), pro: t('paywall.pro.unlimited') },
     { key: 'visa', free: t('paywall.free.visa'), pro: t('paywall.pro.unlimited') },
+    { key: 'noAds', free: t('paywall.free.noAds'), pro: t('paywall.pro.noAds') },
     { key: 'offline', free: '✓', pro: '✓' },
   ];
 
@@ -191,6 +192,7 @@ const BENEFIT_ICONS: Record<string, ComponentProps<typeof Ionicons>['name']> = {
   nearby: 'location',
   visa: 'airplane',
   offline: 'cloud-offline',
+  noAds: 'ban',
 };
 
 const styles = StyleSheet.create({

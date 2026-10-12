@@ -769,7 +769,8 @@
       "translate": "Çeviri",
       "nearby": "Yakında açık yerler",
       "visa": "Vize sorgusu",
-      "offline": "Çevrimdışı mod"
+      "offline": "Çevrimdışı mod",
+      "noAds": "Reklamlar"
     },
     "free": {
       "itinerary": "İlk 3 gün",
@@ -777,11 +778,13 @@
       "documents": "Seyahat başına 2",
       "translate": "Günde 20 metin, 5 dk konuşma, 3 fotoğraf",
       "nearby": "Günde 10",
-      "visa": "Günde 5"
+      "visa": "Günde 5",
+      "noAds": "Var"
     },
     "pro": {
       "unlimited": "Sınırsız",
-      "unlimitedDays": "Her gün"
+      "unlimitedDays": "Her gün",
+      "noAds": "Reklamsız"
     },
     "youArePro": "Yola Pro'dasın. Teşekkürler!",
     "manage": "Yönet",
@@ -863,5 +866,13 @@
     "locate": "Konumuma git",
     "needLocation": "Haritayı çevrene göre açmak ve açık yerleri canlı göstermek için konum iznine ihtiyacım var.",
     "radar": "Radar görünümü · haritalar telefonda açılır"
+  },
+  "ads": {
+    "sponsored": "Sponsorlu",
+    "watchForCredit": "Reklam izle, +1 hak kazan",
+    "rewardPending": "Hakkın ekleniyor…",
+    "rewardGranted": "+1 hak eklendi. Tekrar dene.",
+    "rewardFailed": "Ödül doğrulanamadı. Biraz sonra tekrar dene.",
+    "privacyOptions": "Reklam tercihleri"
   }
 }

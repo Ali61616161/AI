@@ -63,7 +63,9 @@ jobs:
           for f in parse-document generate-itinerary replan places translate travel-info trip-report subscription delete-account; do
             npx supabase functions deploy "$f" --project-ref "$SUPABASE_PROJECT_REF" --use-api
           done
-          npx supabase functions deploy revenuecat-webhook --project-ref "$SUPABASE_PROJECT_REF" --use-api --no-verify-jwt
+          for f in revenuecat-webhook ad-reward; do
+            npx supabase functions deploy "$f" --project-ref "$SUPABASE_PROJECT_REF" --use-api --no-verify-jwt
+          done
       - name: Özet
         if: steps.check.outputs.ready == 'true'
         run: echo "Supabase yüklendi → https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_STEP_SUMMARY"

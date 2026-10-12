@@ -4,6 +4,7 @@
 // civarında öngörülebilir mekanlar ve yağmurlu hava döndürür. Edge Function'ların
 // harita/mekan/hava yolunu gerçek anahtar olmadan uçtan uca test etmek içindir.
 // Uygulamada ve gerçek ortamda KULLANILMAZ.
+import crypto from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import http from 'node:http';
 
@@ -94,10 +95,24 @@ function send(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
+// AdMob ödüllü reklam doğrulaması (SSV): gerçek Google gibi ECDSA P-256 ile imzalar.
+const admobKeys = crypto.generateKeyPairSync('ec', { namedCurve: 'P-256' });
+const ADMOB_KEY_ID = 3335741209;
+
 http
   .createServer(async (req, res) => {
     const url = new URL(req.url, `http://localhost:${PORT}`);
     if (url.pathname === '/calls') return send(res, 200, calls);
+    if (url.pathname === '/__admob/keys') {
+      const spki = admobKeys.publicKey.export({ type: 'spki', format: 'der' }).toString('base64');
+      return send(res, 200, { keys: [{ keyId: ADMOB_KEY_ID, pem: '', base64: spki }] });
+    }
+    if (url.pathname === '/__admob/sign') {
+      // Test: verilen sorguyu imzalar ve Google'ın göndereceği tam sorguyu döner.
+      const query = url.searchParams.get('query') ?? '';
+      const signature = crypto.sign('sha256', Buffer.from(query), admobKeys.privateKey).toString('base64url');
+      return send(res, 200, { query: `${query}&signature=${signature}&key_id=${ADMOB_KEY_ID}` });
+    }
     const chunks = [];
     for await (const c of req) chunks.push(c);
 

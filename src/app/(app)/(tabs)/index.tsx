@@ -25,6 +25,7 @@ import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Gradients, Motion, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { NativeAdCard } from '@/features/ads/native-ad-card';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -127,6 +128,8 @@ export default function TodayScreen() {
           ))}
         </View>
       </Animated.View>
+
+      <NativeAdCard />
 
       {endedTrip && (
         <Animated.View entering={enter(3)}>

@@ -769,7 +769,8 @@
       "translate": "Übersetzung",
       "nearby": "In der Nähe geöffnet",
       "visa": "Visumabfragen",
-      "offline": "Offline-Modus"
+      "offline": "Offline-Modus",
+      "noAds": "Werbung"
     },
     "free": {
       "itinerary": "Erste 3 Tage",
@@ -777,11 +778,13 @@
       "documents": "2 pro Reise",
       "translate": "20 Texte, 5 Min. Gespräch, 3 Fotos pro Tag",
       "nearby": "10 pro Tag",
-      "visa": "5 pro Tag"
+      "visa": "5 pro Tag",
+      "noAds": "Ja"
     },
     "pro": {
       "unlimited": "Unbegrenzt",
-      "unlimitedDays": "Jeden Tag"
+      "unlimitedDays": "Jeden Tag",
+      "noAds": "Werbefrei"
     },
     "youArePro": "Du hast Yola Pro. Danke!",
     "manage": "Verwalten",
@@ -863,5 +866,13 @@
     "locate": "Zu meinem Standort",
     "needLocation": "Ich brauche deinen Standort, um die Karte auf dich zu zentrieren und geöffnete Orte live zu zeigen.",
     "radar": "Radaransicht · die volle Karte gibt es auf dem Handy"
+  },
+  "ads": {
+    "sponsored": "Gesponsert",
+    "watchForCredit": "Werbung ansehen, +1 erhalten",
+    "rewardPending": "Guthaben wird hinzugefügt…",
+    "rewardGranted": "+1 hinzugefügt. Versuch es nochmal.",
+    "rewardFailed": "Belohnung nicht bestätigt. Versuch es gleich noch einmal.",
+    "privacyOptions": "Werbeeinstellungen"
   }
 }

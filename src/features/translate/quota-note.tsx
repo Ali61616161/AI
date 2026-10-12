@@ -5,6 +5,7 @@ import { Text } from '@/components/ui/text';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 
 import { useQuotaStatus } from './api';
+import { RewardedButton } from '@/features/ads/rewarded-button';
 
 /** Ücretsiz planda bugün kalan kullanımı gösterir; sınırsız planda hiçbir şey göstermez. */
 export function QuotaNote({ feature }: { feature: 'text_translation' | 'voice_translation' | 'menu_scan' }) {
@@ -22,6 +23,7 @@ export function QuotaNote({ feature }: { feature: 'text_translation' | 'voice_tr
         {label}
       </Text>
       {left === 0 && <UpgradeButton />}
+      {left === 0 && feature === 'text_translation' && <RewardedButton feature="text_translation" />}
     </>
   );
 }

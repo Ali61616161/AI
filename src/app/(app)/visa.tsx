@@ -16,6 +16,7 @@ import { flag } from '@/features/tools/emergency-numbers';
 import { useTrip } from '@/features/trips/queries';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { RewardedButton } from '@/features/ads/rewarded-button';
 
 const TONE = {
   visa_free: 'success',
@@ -70,6 +71,7 @@ export default function VisaScreen() {
             {t(`visa.errors.${errorCode}`)}
           </Text>
           {errorCode === 'quota_exceeded' && <UpgradeButton />}
+          {errorCode === 'quota_exceeded' && <RewardedButton feature="travel_info" />}
         </>
       ) : (
         data && (

@@ -44,8 +44,13 @@ const privacyEn: LegalDoc = {
         '• Google (Gemini AI for reading documents, planning and photo translation; Maps Platform for places and weather; Cloud Translation)',
         '• RevenueCat, Apple App Store and Google Play (purchases and subscriptions)',
         '• Your phone’s speech recognition provider (Apple or Google) for conversation translation',
+        '• Google AdMob (ads, free plan only)',
         'Some providers process data outside your country, including in the United States, with appropriate safeguards such as standard contractual clauses.',
       ].join('\n'),
+    },
+    {
+      heading: 'Advertising',
+      body: 'The free plan shows ads from Google AdMob; paid plans have no ads. AdMob may use your device’s advertising identifier, approximate location (from your IP address) and ad interactions to show and measure ads. On iOS we only use the advertising identifier if you allow tracking; in the EU, UK and Switzerland we ask for your consent first and you can change it in the app. Optional rewarded ads give you an extra daily use; for that, Google sends us a signed confirmation with your account ID. We never share your trips, documents or messages with advertisers.',
     },
     {
       heading: 'What other travelers see',
@@ -138,8 +143,13 @@ const privacyTr: LegalDoc = {
         '• Google (belge okuma, planlama ve fotoğraf çevirisi için Gemini; mekanlar ve hava durumu için Maps Platform; Cloud Translation)',
         '• RevenueCat, Apple App Store ve Google Play (satın alımlar ve abonelikler)',
         '• Konuşma çevirisi için telefonunun ses tanıma sağlayıcısı (Apple veya Google)',
+        '• Google AdMob (reklamlar, sadece ücretsiz planda)',
         'Bazı sağlayıcılar verileri ABD dahil yurt dışında işler; aktarım KVKK m.9 ve GDPR kapsamındaki uygun güvencelerle (ör. standart sözleşmeler) yapılır.',
       ].join('\n'),
+    },
+    {
+      heading: 'Reklamlar',
+      body: 'Ücretsiz planda Google AdMob reklamları gösterilir; ücretli planlarda reklam yoktur. AdMob reklamları göstermek ve ölçmek için cihazının reklam kimliğini, IP adresinden yaklaşık konumu ve reklam etkileşimlerini kullanabilir. iOS’ta reklam kimliğini sadece takibe izin verirsen kullanırız; AB, Birleşik Krallık ve İsviçre’de önce onayını alırız ve uygulamadan değiştirebilirsin. İsteğe bağlı ödüllü reklamlar sana ek bir günlük kullanım hakkı verir; bunun için Google bize hesap kimliğinle imzalı bir onay gönderir. Seyahatlerini, belgelerini ve mesajlarını reklamverenlerle asla paylaşmayız.',
     },
     {
       heading: 'Diğer gezginler neyi görür',

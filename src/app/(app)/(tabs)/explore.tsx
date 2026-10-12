@@ -26,6 +26,7 @@ import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { RewardedButton } from '@/features/ads/rewarded-button';
 
 const CARD_GAP = Spacing.md;
 const TAB_BAR = 96;
@@ -203,7 +204,14 @@ export default function ExploreScreen() {
             <Text variant="body" color={errorCode === 'quota_exceeded' ? 'warning' : 'danger'}>
               {t(`nearby.errors.${errorCode}` as 'nearby.errors.network')}
             </Text>
-            {errorCode === 'quota_exceeded' ? <UpgradeButton /> : <Button title={t('common.retry')} variant="secondary" size="sm" onPress={() => query.refetch()} />}
+            {errorCode === 'quota_exceeded' ? (
+              <View style={styles.cardRow}>
+                <UpgradeButton />
+                <RewardedButton feature="nearby_search" onRewarded={() => query.refetch()} />
+              </View>
+            ) : (
+              <Button title={t('common.retry')} variant="secondary" size="sm" onPress={() => query.refetch()} />
+            )}
           </View>
         ) : places.length === 0 ? (
           <View style={[styles.cardBox, { width: cardWidth, marginLeft: Spacing.xl, backgroundColor: colors.backgroundElevated, borderColor: colors.border }]}>

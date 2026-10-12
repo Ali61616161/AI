@@ -14,6 +14,7 @@ import { Screen } from '@/components/ui/screen';
 import { SectionHeader } from '@/components/ui/section-header';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
+import { adPrivacyOptionsAvailable, openAdPrivacyOptions } from '@/features/ads/privacy-options';
 import { clearOfflineData } from '@/features/offline/download';
 import { useCurrentPlan } from '@/features/subscription/purchases';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
@@ -181,6 +182,7 @@ export default function ProfileScreen() {
         <Card padding={Spacing.xs}>
           <ListRow icon="shield-checkmark-outline" label={t('legal.privacy')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />
           <ListRow icon="document-text-outline" label={t('legal.terms')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })} />
+          {adPrivacyOptionsAvailable && !isPro && <ListRow icon="megaphone-outline" label={t('ads.privacyOptions')} onPress={openAdPrivacyOptions} />}
           <ListRow icon="log-out-outline" label={t('profile.signOut')} onPress={handleSignOut} />
           {session && isSupabaseConfigured() && !confirmDelete && (
             <ListRow icon="trash-outline" label={t('profile.deleteAccount')} danger onPress={() => setConfirmDelete(true)} />

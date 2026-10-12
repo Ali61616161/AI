@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +12,7 @@ import { TripCard } from '@/features/trips/trip-card';
 import { todayIsoDate } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { NativeAdCard } from '@/features/ads/native-ad-card';
 
 type Segment = 'upcoming' | 'past';
 
@@ -59,7 +60,10 @@ export default function TripsScreen() {
       ) : list.length > 0 ? (
         <View style={styles.list}>
           {list.map((trip, index) => (
-            <TripCard key={trip.id} trip={trip} highlight={segment === 'upcoming' && index === 0} />
+            <Fragment key={trip.id}>
+              <TripCard trip={trip} highlight={segment === 'upcoming' && index === 0} />
+              {index === 0 && <NativeAdCard />}
+            </Fragment>
           ))}
           {segment === 'upcoming' && (
             <>

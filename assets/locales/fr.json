@@ -4,5 +4,6 @@
   "NSPhotoLibraryUsageDescription": "Yola utilise vos photos pour importer des captures de billets et réservations.",
   "NSLocationWhenInUseUsageDescription": "Yola utilise votre position pour afficher les lieux ouverts à proximité et adapter votre plan.",
   "NSMicrophoneUsageDescription": "Yola utilise le micro pour traduire vos conversations.",
-  "NSSpeechRecognitionUsageDescription": "Yola transforme votre voix en texte pour la traduire."
+  "NSSpeechRecognitionUsageDescription": "Yola transforme votre voix en texte pour la traduire.",
+  "NSUserTrackingUsageDescription": "Yola l'utilise pour t'afficher des publicités plus pertinentes. Les formules payantes sont sans publicité."
 }

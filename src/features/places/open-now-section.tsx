@@ -12,6 +12,7 @@ import { Spacing } from '@/theme/tokens';
 
 import { NEARBY_CATEGORY_LIST, PlacesError, useOpenNow, type NearbyCategory } from './api';
 import { PlaceRow } from './place-row';
+import { RewardedButton } from '@/features/ads/rewarded-button';
 
 const MAX_ROWS = 5;
 
@@ -75,6 +76,7 @@ export function OpenNowSection() {
             {t(`nearby.errors.${errorCode}`)}
           </Text>
           {errorCode === 'quota_exceeded' && <UpgradeButton />}
+          {errorCode === 'quota_exceeded' && <RewardedButton feature="nearby_search" onRewarded={() => query.refetch()} />}
           {errorCode !== 'quota_exceeded' && errorCode !== 'not_configured' && <Button title={t('common.retry')} variant="ghost" onPress={() => query.refetch()} />}
         </View>
       ) : query.data && query.data.length === 0 ? (

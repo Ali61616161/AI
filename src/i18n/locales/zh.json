@@ -750,7 +750,8 @@
       "translate": "翻译",
       "nearby": "附近营业",
       "visa": "签证查询",
-      "offline": "离线模式"
+      "offline": "离线模式",
+      "noAds": "广告"
     },
     "free": {
       "itinerary": "前 3 天",
@@ -758,11 +759,13 @@
       "documents": "每次行程 2 次",
       "translate": "每天 20 条文本、5 分钟对话、3 张照片",
       "nearby": "每天 10 次",
-      "visa": "每天 5 次"
+      "visa": "每天 5 次",
+      "noAds": "有"
     },
     "pro": {
       "unlimited": "无限",
-      "unlimitedDays": "全部天数"
+      "unlimitedDays": "全部天数",
+      "noAds": "无广告"
     },
     "youArePro": "你已是 Yola Pro，感谢支持！",
     "manage": "管理",
@@ -844,5 +847,13 @@
     "locate": "回到我的位置",
     "needLocation": "需要位置权限，才能以你为中心显示地图并实时展示营业中的地方。",
     "radar": "雷达视图 · 完整地图在手机上打开"
+  },
+  "ads": {
+    "sponsored": "赞助",
+    "watchForCredit": "看广告，再得 1 次",
+    "rewardPending": "正在添加次数…",
+    "rewardGranted": "已增加 1 次，请重试。",
+    "rewardFailed": "无法验证奖励，请稍后再试。",
+    "privacyOptions": "广告偏好"
   }
 }

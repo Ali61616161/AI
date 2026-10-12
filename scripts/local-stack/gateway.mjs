@@ -117,7 +117,7 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, 'http://localhost');
 
     if (url.pathname.startsWith('/rest/v1/')) return proxy(req, res, POSTGREST + url.pathname.slice('/rest/v1'.length) + url.search);
-    if (url.pathname.startsWith('/functions/v1/')) return proxy(req, res, FUNCTIONS + url.pathname.slice('/functions/v1'.length));
+    if (url.pathname.startsWith('/functions/v1/')) return proxy(req, res, FUNCTIONS + url.pathname.slice('/functions/v1'.length) + url.search);
 
     if (url.pathname === '/auth/v1/otp') return send(res, 200, {});
     if (url.pathname === '/auth/v1/verify') {

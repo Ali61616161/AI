@@ -67,6 +67,7 @@ if [ "${FAKE_GEMINI:-}" = "1" ]; then
   setsid node scripts/local-stack/fake-google.mjs >"$LOG_DIR/fake-google.log" 2>&1 &
   echo $! >>"$LOG_DIR/pids"
   export REVENUECAT_SECRET_KEY=test-rc-secret REVENUECAT_WEBHOOK_AUTH=test-webhook-auth REVENUECAT_API_BASE=http://127.0.0.1:54341
+  export ADMOB_VERIFIER_KEYS_URL=http://127.0.0.1:54341/__admob/keys
   export GOOGLE_MAPS_API_KEY=test-key GOOGLE_PLACES_API_BASE=http://127.0.0.1:54341 GOOGLE_WEATHER_API_BASE=http://127.0.0.1:54341 GOOGLE_TRANSLATE_API_BASE=http://127.0.0.1:54341
 fi
 
