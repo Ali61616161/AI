@@ -4,6 +4,7 @@
   "slug": "yola",
   "scheme": "yola",
   "bundleId": "com.akturangroup.yola",
+  "easOwner": "akturan-group",
   "easProjectId": "3076678a-5de5-4564-9880-249ef48ab0b7",
   "colors": {
     "coral": "#FF6B4A",

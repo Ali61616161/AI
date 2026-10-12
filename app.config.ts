@@ -6,6 +6,7 @@ import languages from './src/i18n/languages.json';
 const config: ExpoConfig = {
   name: brand.name,
   slug: brand.slug,
+  owner: brand.easOwner,
   scheme: brand.scheme,
   version: '1.0.0',
   orientation: 'portrait',
