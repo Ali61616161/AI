@@ -212,7 +212,7 @@
     "writeMessage": "Nachricht schreiben",
     "chatClosed": "Der Chat öffnet sich, wenn die Einladung angenommen wurde.",
     "shareMeeting": "Treffen teilen",
-    "shareMeetingText": "Ich treffe {{name}} am {{time}} im/in {{place}}. {{maps}}",
+    "shareMeetingText": "Ich treffe {{name}} am {{time}}, Treffpunkt: {{place}}. {{maps}}",
     "report": "Melden",
     "reportTitle": "Was ist passiert?",
     "reasons": {
@@ -327,7 +327,7 @@
     "create": "Reisegerüst erstellen",
     "createFailed": "Reise konnte nicht erstellt werden: {{message}}",
     "nothingSelected": "Wähle mindestens eine Buchung aus.",
-    "fixDates": "Korrigiere die ungültigen Daten.",
+    "fixDates": "Korrigiere die ungültigen Datumsangaben.",
     "summary": "{{dates}} · {{cities}}"
   },
   "reservationType": {
@@ -346,7 +346,7 @@
     "planSoon": "Die Route Tag für Tag kommt in Schritt 5.",
     "notFound": "Reise nicht gefunden.",
     "reference": "Code: {{code}}",
-    "changeDates": "Daten ändern",
+    "changeDates": "Reisedaten ändern",
     "versions": "Planverlauf"
   },
   "plan": {
@@ -356,7 +356,7 @@
     "generate": "Route erstellen",
     "regenerate": "Route neu erstellen",
     "generating1": "Orte passend zu deinem Budget werden ausgewählt…",
-    "generating2": "Rund um deine Buchungen eingeplant…",
+    "generating2": "Wird rund um deine Buchungen eingeplant…",
     "generating3": "Öffnungszeiten und Wege werden geprüft…",
     "generatingHint": "Das kann etwa eine Minute dauern.",
     "dayLabel": "Tag {{n}}",
@@ -381,7 +381,7 @@
     }
   },
   "dates": {
-    "title": "Daten ändern",
+    "title": "Reisedaten ändern",
     "subtitle": "Verkürze oder verlängere deine Reise. Deine Buchungen werden nie gelöscht.",
     "start": "Beginn",
     "end": "Ende",
@@ -392,10 +392,10 @@
     "removedDays_other": "{{count}} Tage fallen weg",
     "addedDays_one": "{{count}} Tag kommt dazu",
     "addedDays_other": "{{count}} Tage kommen dazu",
-    "outside": "Buchungen außerhalb der neuen Daten: {{list}}",
+    "outside": "Buchungen außerhalb der neuen Reisedaten: {{list}}",
     "uncovered": "Du brauchst eine Unterkunft: Für die Nächte am {{list}} gibt es keine Hotelbuchung.",
     "highlights": "Ich versuche, diese Highlights der weggefallenen Tage in die übrigen Tage einzuplanen: {{list}}",
-    "noChange": "Die Daten sind unverändert.",
+    "noChange": "Die Reisedaten sind unverändert.",
     "apply": "Übernehmen",
     "resultTitle": "Plan aktualisiert",
     "removedTitle": "Aus dem Plan entfernt",
@@ -408,7 +408,7 @@
     "active": "Aktiv",
     "reason": {
       "initial": "Erster Plan",
-      "dates_changed": "Daten geändert",
+      "dates_changed": "Reisedaten geändert",
       "replan": "Neu erstellt",
       "crisis": "Plan ändern",
       "manual_edit": "Manuell bearbeitet"
@@ -419,7 +419,7 @@
     "noDiff": "Gleich wie der aktive Plan.",
     "restore": "Zu dieser Version zurück",
     "restored": "Zu dieser Version gewechselt.",
-    "dates": "Daten: {{dates}}"
+    "dates": "Reisedaten: {{dates}}"
   },
   "nearby": {
     "title": "Jetzt geöffnet in deiner Nähe",
@@ -430,7 +430,7 @@
       "restaurant": "Restaurants",
       "cafe": "Cafés",
       "museum": "Museen",
-      "attraction": "Sehenswürdigkeiten",
+      "attraction": "Sehenswertes",
       "pharmacy": "Apotheken",
       "supermarket": "Supermärkte",
       "atm": "Geldautomaten",
@@ -511,14 +511,14 @@
     "detected": "Erkannt: {{language}}",
     "copy": "Kopieren",
     "myLanguage": "Deine Sprache",
-    "theirLanguage": "Ihre Sprache",
+    "theirLanguage": "Sprache der anderen Person",
     "conversationHint": "Tippe auf deine Taste und sprich. Die Übersetzung wird für die andere Person vorgelesen, dann tippt sie auf ihre.",
     "listening": "Ich höre zu…",
     "translating": "Wird übersetzt…",
     "speakMine": "Auf {{language}} sprechen",
     "speakTheirs": "Die andere Person spricht {{language}}",
     "micDenied": "Erlaube Mikrofon und Spracherkennung in den Einstellungen, um den Gesprächsmodus zu nutzen.",
-    "noSpeech": "Nicht verstanden. Versuche es etwas näher noch einmal.",
+    "noSpeech": "Nicht verstanden. Versuch es noch einmal etwas näher am Mikrofon.",
     "speechFailed": "Die Spracherkennung wurde beendet. Versuche es erneut.",
     "speechUnavailable": "Spracherkennung ist auf diesem Gerät nicht verfügbar.",
     "translateInto": "Übersetzen in",
@@ -698,7 +698,7 @@
     "beforeEast_other": "Geh an den {{count}} Tagen vor dem Flug jeden Tag 1 Stunde früher schlafen und steh früher auf.",
     "beforeWest_one": "Geh {{count}} Tag vor dem Flug 1 Stunde später schlafen und steh später auf.",
     "beforeWest_other": "Geh an den {{count}} Tagen vor dem Flug jeden Tag 1 Stunde später schlafen und steh später auf.",
-    "onBoard": "Stell beim Einsteigen die Uhr auf die Zielzeit und schlaf oder bleib wach entsprechend.",
+    "onBoard": "Stell beim Einsteigen deine Uhr auf die Zielzeit und richte Schlafen und Wachbleiben danach aus.",
     "lightEast": "Hol dir am Zielort Morgenlicht und meide abends helles Licht.",
     "lightWest": "Hol dir am Zielort am Nachmittag und Abend Tageslicht und bleib bis zur lokalen Schlafenszeit wach.",
     "caffeine": "Kein Koffein in den 6 Stunden vor der neuen Schlafenszeit.",
@@ -783,7 +783,7 @@
     },
     "pro": {
       "unlimited": "Unbegrenzt",
-      "unlimitedDays": "Jeden Tag",
+      "unlimitedDays": "Alle Tage",
       "noAds": "Werbefrei"
     },
     "youArePro": "Du hast Yola Pro. Danke!",
@@ -817,7 +817,7 @@
   },
   "newTrip": {
     "title": "Neue Reise",
-    "subtitle": "Noch keine Tickets? Starte mit einer Stadt und Daten.",
+    "subtitle": "Noch keine Tickets? Starte mit einer Stadt und den Reisedaten.",
     "create": "Reise erstellen",
     "city": "Stadt",
     "country": "Land",
@@ -852,20 +852,22 @@
     "spinning": "Ich wähle…",
     "result": "Deine Wahl",
     "openNow": "Jetzt geöffnet",
-    "pickedFrom": "Aus {{count}} geöffneten Orten gewählt",
     "go": "Route",
     "again": "Noch einer",
     "change": "Auswahl ändern",
-    "noneLeft": "Keine weiteren geöffneten Orte. Vergrößere die Entfernung oder wähle etwas anderes."
+    "noneLeft": "Keine weiteren geöffneten Orte. Vergrößere die Entfernung oder wähle etwas anderes.",
+    "pickedFrom_one": "Aus {{count}} geöffneten Ort gewählt",
+    "pickedFrom_other": "Aus {{count}} geöffneten Orten gewählt"
   },
   "explore": {
     "title": "Entdecken",
     "live": "Live",
-    "openCount": "{{count}} Orte jetzt geöffnet",
     "searchArea": "In diesem Bereich suchen",
     "locate": "Zu meinem Standort",
     "needLocation": "Ich brauche deinen Standort, um die Karte auf dich zu zentrieren und geöffnete Orte live zu zeigen.",
-    "radar": "Radaransicht · die volle Karte gibt es auf dem Handy"
+    "radar": "Radaransicht · die volle Karte gibt es auf dem Handy",
+    "openCount_one": "{{count}} Ort jetzt geöffnet",
+    "openCount_other": "{{count}} Orte jetzt geöffnet"
   },
   "ads": {
     "sponsored": "Gesponsert",

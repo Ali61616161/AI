@@ -461,7 +461,7 @@
     "button": "酒店",
     "viewOnBooking": "在 Booking.com 查看价格",
     "empty": "未找到符合此预算的酒店。",
-    "disclosure": "通过这些链接预订时，Yola 可能获得佣金，您的价格不变。"
+    "disclosure": "通过这些链接预订时，Yola 可能获得佣金，你的价格不变。"
   },
   "offline": {
     "banner": "当前离线。正在显示已保存的行程、计划和文件。",
@@ -833,20 +833,20 @@
     "spinning": "正在挑选…",
     "result": "为你选中",
     "openNow": "正在营业",
-    "pickedFrom": "从 {{count}} 个正在营业的地方中选出",
     "go": "导航",
     "again": "换一个",
     "change": "重新选择",
-    "noneLeft": "这个类型没有更多营业中的地方了。扩大距离或换个类型吧。"
+    "noneLeft": "这个类型没有更多营业中的地方了。扩大距离或换个类型吧。",
+    "pickedFrom_other": "从 {{count}} 个正在营业的地方中选出"
   },
   "explore": {
     "title": "探索",
     "live": "实时",
-    "openCount": "{{count}} 个地方正在营业",
     "searchArea": "搜索此区域",
     "locate": "回到我的位置",
     "needLocation": "需要位置权限，才能以你为中心显示地图并实时展示营业中的地方。",
-    "radar": "雷达视图 · 完整地图在手机上打开"
+    "radar": "雷达视图 · 完整地图在手机上打开",
+    "openCount_other": "{{count}} 个地方正在营业"
   },
   "ads": {
     "sponsored": "赞助",

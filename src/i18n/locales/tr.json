@@ -852,20 +852,22 @@
     "spinning": "Seçiyorum…",
     "result": "Bugünkü seçimin",
     "openNow": "Şu an açık",
-    "pickedFrom": "Şu an açık {{count}} yer arasından seçildi",
     "go": "Yol tarifi al",
     "again": "Başka bir tane",
     "change": "Seçimi değiştir",
-    "noneLeft": "Bu seçimde gösterecek açık yer kalmadı. Mesafeyi artır ya da başka bir şey seç."
+    "noneLeft": "Bu seçimde gösterecek açık yer kalmadı. Mesafeyi artır ya da başka bir şey seç.",
+    "pickedFrom_one": "Şu an açık {{count}} yer arasından seçildi",
+    "pickedFrom_other": "Şu an açık {{count}} yer arasından seçildi"
   },
   "explore": {
     "title": "Keşfet",
     "live": "Canlı",
-    "openCount": "{{count}} yer şu an açık",
     "searchArea": "Bu bölgede ara",
     "locate": "Konumuma git",
     "needLocation": "Haritayı çevrene göre açmak ve açık yerleri canlı göstermek için konum iznine ihtiyacım var.",
-    "radar": "Radar görünümü · haritalar telefonda açılır"
+    "radar": "Radar görünümü · haritalar telefonda açılır",
+    "openCount_one": "{{count}} yer şu an açık",
+    "openCount_other": "{{count}} yer şu an açık"
   },
   "ads": {
     "sponsored": "Sponsorlu",

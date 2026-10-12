@@ -168,7 +168,7 @@
       "nightlife": "Salir de noche",
       "nature": "Naturaleza"
     },
-    "consent": "Tengo 18 años o más, acepto quedar solo en lugares públicos y las normas de la comunidad, y permito mostrar mi ubicación aproximada (unos 1 km).",
+    "consent": "Tengo 18 años o más, acepto quedar solo en lugares públicos y cumplir las normas de la comunidad, y permito que se muestre mi ubicación aproximada (aprox. 1 km).",
     "errors": {
       "age_required": "Debes tener 18 años o más para usar el modo social.",
       "name_required": "Escribe el nombre visible para otros.",
@@ -318,8 +318,8 @@
     "fieldReference": "Código de reserva",
     "fieldStart": "Inicio",
     "fieldEnd": "Fin",
-    "fieldFrom": "Desde",
-    "fieldTo": "Hasta",
+    "fieldFrom": "Origen",
+    "fieldTo": "Destino",
     "fieldCity": "Ciudad",
     "fieldAddress": "Dirección",
     "dateHint": "Formato: 2026-11-01 14:30",
@@ -430,7 +430,7 @@
       "restaurant": "Restaurantes",
       "cafe": "Cafeterías",
       "museum": "Museos",
-      "attraction": "Lugares de interés",
+      "attraction": "Qué ver",
       "pharmacy": "Farmacias",
       "supermarket": "Supermercados",
       "atm": "Cajeros",
@@ -460,7 +460,7 @@
     "closedTemporarily": "Cerrado temporalmente: compruébalo antes de ir"
   },
   "weather": {
-    "rain": "{{percent}} % lluvia",
+    "rain": "{{percent}} % de lluvia",
     "availableFrom": "Pronóstico disponible a partir del {{date}}"
   },
   "hotels": {
@@ -511,7 +511,7 @@
     "detected": "Detectado: {{language}}",
     "copy": "Copiar",
     "myLanguage": "Tu idioma",
-    "theirLanguage": "Su idioma",
+    "theirLanguage": "Idioma de la otra persona",
     "conversationHint": "Pulsa tu botón y habla. La traducción se lee en voz alta para la otra persona; luego ella pulsa el suyo.",
     "listening": "Escuchando…",
     "translating": "Traduciendo…",
@@ -582,7 +582,7 @@
     "paidBy": "Pagado por",
     "splitWith": "Dividir entre",
     "addPerson": "Añadir persona",
-    "settleUp": "Ajustar cuentas",
+    "settleUp": "Saldar cuentas",
     "emptyTitle": "Aún no hay gastos",
     "emptyBody": "Registra gastos en cualquier moneda; Yola los convierte al presupuesto del viaje y los divide con tus acompañantes.",
     "splitCount_one": "dividido con {{count}} persona",
@@ -670,7 +670,7 @@
     },
     "maxStay_one": "Hasta {{count}} día",
     "maxStay_other": "Hasta {{count}} días",
-    "documents": "Suelen pedir en frontera",
+    "documents": "Suelen pedirse en la frontera",
     "notes": "Conviene saber",
     "official": "Página oficial",
     "disclaimer": "Las normas de entrada cambian a menudo. Es orientación general generada por IA, no asesoramiento legal: confírmalo siempre con la embajada o la web oficial del gobierno antes de viajar.",
@@ -691,7 +691,7 @@
     "east_other": "{{count}} horas más (vuelo hacia el este)",
     "west_one": "{{count}} hora menos (vuelo hacia el oeste)",
     "west_other": "{{count}} horas menos (vuelo hacia el oeste)",
-    "recovery_one": "Unos {{count}} día para adaptarte",
+    "recovery_one": "Aprox. {{count}} día para adaptarte",
     "recovery_other": "Unos {{count}} días para adaptarte",
     "noneTip": "Disfruta: tu reloj biológico no cambia.",
     "beforeEast_one": "Durante {{count}} día antes de volar, acuéstate y levántate 1 hora antes.",
@@ -852,20 +852,22 @@
     "spinning": "Eligiendo…",
     "result": "Tu elección",
     "openNow": "Abierto ahora",
-    "pickedFrom": "Elegido entre {{count}} sitios abiertos ahora",
     "go": "Cómo llegar",
     "again": "Otro",
     "change": "Cambiar elección",
-    "noneLeft": "No quedan sitios abiertos para esta elección. Amplía la distancia o elige otra cosa."
+    "noneLeft": "No quedan sitios abiertos para esta elección. Amplía la distancia o elige otra cosa.",
+    "pickedFrom_one": "Elegido entre {{count}} sitio abierto ahora",
+    "pickedFrom_other": "Elegido entre {{count}} sitios abiertos ahora"
   },
   "explore": {
     "title": "Explorar",
     "live": "En vivo",
-    "openCount": "{{count}} sitios abiertos ahora",
     "searchArea": "Buscar en esta zona",
     "locate": "Ir a mi ubicación",
     "needLocation": "Necesito acceso a la ubicación para centrar el mapa en ti y mostrar sitios abiertos en vivo.",
-    "radar": "Vista radar · el mapa completo se abre en el móvil"
+    "radar": "Vista radar · el mapa completo se abre en el móvil",
+    "openCount_one": "{{count}} sitio abierto ahora",
+    "openCount_other": "{{count}} sitios abiertos ahora"
   },
   "ads": {
     "sponsored": "Patrocinado",

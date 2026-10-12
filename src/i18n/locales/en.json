@@ -852,20 +852,22 @@
     "spinning": "Picking…",
     "result": "Your pick",
     "openNow": "Open now",
-    "pickedFrom": "Picked from {{count}} places open now",
     "go": "Get directions",
     "again": "Another one",
     "change": "Change my pick",
-    "noneLeft": "No more open places for this pick. Increase the distance or choose something else."
+    "noneLeft": "No more open places for this pick. Increase the distance or choose something else.",
+    "pickedFrom_one": "Picked from {{count}} place open now",
+    "pickedFrom_other": "Picked from {{count}} places open now"
   },
   "explore": {
     "title": "Explore",
     "live": "Live",
-    "openCount": "{{count}} places open now",
     "searchArea": "Search this area",
     "locate": "Go to my location",
     "needLocation": "I need location access to center the map on you and show open places live.",
-    "radar": "Radar view · the full map opens on your phone"
+    "radar": "Radar view · the full map opens on your phone",
+    "openCount_one": "{{count}} place open now",
+    "openCount_other": "{{count}} places open now"
   },
   "ads": {
     "sponsored": "Sponsored",
