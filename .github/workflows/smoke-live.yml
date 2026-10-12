@@ -1,0 +1,60 @@
+# Canlı servis kontrolü: geçici bir test hesabıyla gerçek Supabase fonksiyonlarını çağırır
+# (Gemini, Google Places/Weather/Translation) ve sonucu özetler; sonunda hesabı siler.
+# Anahtar veya kişisel veri yazdırmaz. Elle çalışır (Actions → Canlı kontrol → Run).
+# Gerekli sırlar: SUPABASE_ACCESS_TOKEN, SUPABASE_PROJECT_REF.
+name: Canlı kontrol
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kontrol
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          set -u
+          ref=$(printf '%s' "$SUPABASE_PROJECT_REF" | tr -d '[:space:]')
+          token=$(printf '%s' "$SUPABASE_ACCESS_TOKEN" | tr -d '[:space:]')
+          echo "::add-mask::$token"
+          keys=$(curl -sSf -H "Authorization: Bearer $token" "https://api.supabase.com/v1/projects/$ref/api-keys?reveal=true")
+          service=$(echo "$keys" | jq -r '(map(select(.name == "service_role")) + map(select(.type == "secret")))[0].api_key')
+          anon=$(echo "$keys" | jq -r '(map(select(.name == "anon")) + map(select(.type == "publishable")))[0].api_key')
+          echo "::add-mask::$service"
+          base="https://$ref.supabase.co"
+          sum() { echo "$1" | tee -a "$GITHUB_STEP_SUMMARY"; }
+
+          sum "### Sunucu sırları"
+          names=$(curl -sSf -H "Authorization: Bearer $token" "https://api.supabase.com/v1/projects/$ref/secrets" | jq -r '.[].name')
+          for n in GEMINI_API_KEY GOOGLE_MAPS_API_KEY GOOGLE_TRANSLATE_API_KEY REVENUECAT_SECRET_KEY REVENUECAT_WEBHOOK_AUTH; do
+            if echo "$names" | grep -qx "$n"; then sum "- ✅ $n"; else sum "- ❌ $n eksik"; fi
+          done
+
+          # Geçici test hesabı (rastgele şifre, sonunda silinir).
+          email="smoke-$(date +%s)-$RANDOM@yola-test.invalid"
+          pass=$(openssl rand -base64 24)
+          echo "::add-mask::$pass"
+          uid=$(curl -sSf -X POST "$base/auth/v1/admin/users" -H "apikey: $service" -H "Authorization: Bearer $service" -H 'Content-Type: application/json' \
+            -d "$(jq -n --arg e "$email" --arg p "$pass" '{email: $e, password: $p, email_confirm: true, user_metadata: {language: "tr"}}')" | jq -r '.id')
+          trap 'curl -s -X DELETE "$base/auth/v1/admin/users/$uid" -H "apikey: $service" -H "Authorization: Bearer $service" >/dev/null' EXIT
+          jwt=$(curl -sSf -X POST "$base/auth/v1/token?grant_type=password" -H "apikey: $anon" -H 'Content-Type: application/json' \
+            -d "$(jq -n --arg e "$email" --arg p "$pass" '{email: $e, password: $p}')" | jq -r '.access_token')
+          echo "::add-mask::$jwt"
+          curl -sS -X PATCH "$base/rest/v1/profiles?id=eq.$uid" -H "apikey: $anon" -H "Authorization: Bearer $jwt" -H 'Content-Type: application/json' \
+            -d '{"home_city":"İstanbul","home_country":"TR","passport_country":"TR"}' >/dev/null
+
+          call() { curl -sS -o /tmp/out.json -w '%{http_code}' -X POST "$base/functions/v1/$1" -H "apikey: $anon" -H "Authorization: Bearer $jwt" -H 'Content-Type: application/json' -d "$2"; }
+          check() {
+            code=$(call "$2" "$3")
+            if [ "$code" = 200 ]; then sum "- ✅ $1 — $(jq -r "$4" /tmp/out.json 2>/dev/null | head -c 160)"
+            else sum "- ❌ $1 — HTTP $code $(jq -r '.error.code // empty' /tmp/out.json 2>/dev/null)"; fi
+          }
+          sum "### Servisler"
+          check "Google Places (açık yerler)" places '{"action":"open_now","lat":41.0369,"lng":28.985,"category":"cafe"}' '"\(.places | length) yer, ör. \(.places[0].name // "-")"'
+          check "Google Weather" places '{"action":"weather","lat":41.0369,"lng":28.985}' '"\(.days | length) gün tahmin"'
+          check "Google Translation" translate '{"mode":"text","text":"Good morning","target":"tr"}' '.translation // .text // "çeviri geldi"'
+          check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
+          check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'
