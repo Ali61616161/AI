@@ -1,4 +1,4 @@
-"""EAS iOS derlemesini etkileşimli modda çalıştırır ve kimlik bilgisi sorularını
+"""EAS derlemesini (iOS veya Android) etkileşimli modda çalıştırır ve kimlik bilgisi sorularını
 varsayılan cevapla (Enter) geçer. Sadece ilk sertifika/profil kurulumu için kullanılır;
 App Store Connect API anahtarı ortam değişkenlerinden okunur. Apple ID/şifre sorulursa durur."""
 import os
@@ -6,7 +6,10 @@ import sys
 
 import pexpect
 
-cmd = ['eas-cli@latest', 'build', '--platform', 'ios', '--profile', 'production', '--wait']
+# Kullanım: eas-build-interactive.py [platform] [profil]  (varsayılan: ios production)
+platform = sys.argv[1] if len(sys.argv) > 1 else 'ios'
+profile = sys.argv[2] if len(sys.argv) > 2 else 'production'
+cmd = ['eas-cli@latest', 'build', '--platform', platform, '--profile', profile, '--wait']
 # EAS, CI değişkenlerini görünce soruları kapatır; ilk kurulum için bu süreçte gizlenir.
 env = {k: v for k, v in os.environ.items() if k not in ('CI', 'GITHUB_ACTIONS', 'CONTINUOUS_INTEGRATION', 'BUILD_NUMBER', 'RUN_ID')}
 env['TERM'] = 'xterm-256color'

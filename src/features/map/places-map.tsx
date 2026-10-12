@@ -6,13 +6,19 @@ import { Text } from '@/components/ui/text';
 import { Radius } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+import { nativeMapsAvailable } from './availability';
+import { RouteCard } from './route-card';
 import type { PlacesMapProps } from './types';
 
 /**
  * Durakları numaralı işaretlerle ve sırasıyla çizgiyle gösterir. iOS'ta Apple
  * Haritalar, Android'de Google Haritalar kullanılır.
  */
-export function PlacesMap({ points, height = 220, onSelect }: PlacesMapProps) {
+export function PlacesMap(props: PlacesMapProps) {
+  return nativeMapsAvailable ? <NativePlacesMap {...props} /> : <RouteCard {...props} />;
+}
+
+function NativePlacesMap({ points, height = 220, onSelect }: PlacesMapProps) {
   const { colors, isDark } = useTheme();
   const ref = useRef<MapView>(null);
   if (points.length === 0) return null;

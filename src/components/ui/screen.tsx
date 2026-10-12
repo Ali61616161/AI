@@ -31,7 +31,7 @@ export function Screen({ children, footer, scroll = true, edges = ['top', 'botto
     <View style={styles.fill}>
       <Aurora variant={aurora} />
       <SafeAreaView edges={edges} style={styles.fill}>
-        <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'web' ? undefined : 'padding'}>
           {body}
           {footer && <View style={styles.footer}>{footer}</View>}
         </KeyboardAvoidingView>

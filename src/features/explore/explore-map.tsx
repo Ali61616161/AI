@@ -8,7 +8,10 @@ import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } fr
 import { Gradients } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+import { nativeMapsAvailable } from '@/features/map/availability';
+
 import { DARK_MAP_STYLE } from './map-style';
+import { RadarMap } from './radar-map';
 import type { ExploreMapHandle, ExploreMapProps } from './types';
 
 /** Seçili işaretin etrafında nabız gibi büyüyüp sönen halka. */
@@ -37,7 +40,7 @@ function Pin({ selected, icon }: { selected: boolean; icon: ExploreMapProps['ico
  * Canlı keşif haritası: koyu tema, hafif eğik (3D) kamera, kullanıcının canlı konumu
  * ve şu an açık yerler. iOS'ta Apple Haritalar, Android'de Google Haritalar.
  */
-export const ExploreMap = forwardRef<ExploreMapHandle, ExploreMapProps>(function ExploreMap(
+const NativeExploreMap = forwardRef<ExploreMapHandle, ExploreMapProps>(function NativeExploreMap(
   { center, places, selectedId, icon, onSelect, onMove, bottomInset, topInset },
   ref,
 ) {
@@ -97,4 +100,9 @@ const styles = StyleSheet.create({
   pinWrap: { width: 92, height: 92, alignItems: 'center', justifyContent: 'center' },
   pin: { alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'rgba(255,255,255,0.9)', shadowColor: '#000', shadowOpacity: 0.4, shadowRadius: 6, shadowOffset: { width: 0, height: 3 } },
   pulse: { position: 'absolute', width: 80, height: 80, borderRadius: 40, backgroundColor: '#FF5A6E' },
+});
+
+/** Android'de harita anahtarı yoksa radar görünümü (aksi halde uygulama çöker). */
+export const ExploreMap = forwardRef<ExploreMapHandle, ExploreMapProps>(function ExploreMap(props, ref) {
+  return nativeMapsAvailable ? <NativeExploreMap ref={ref} {...props} /> : <RadarMap ref={ref} {...props} />;
 });

@@ -121,6 +121,8 @@ const config: ExpoConfig = {
   },
   extra: {
     eas: { projectId: brand.easProjectId },
+    // Android'de Google Haritalar anahtarı derlemeye eklendi mi (yoksa harita yerine radar).
+    androidMapsKey: Boolean(process.env.GOOGLE_MAPS_ANDROID_API_KEY),
   },
 };
 

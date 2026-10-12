@@ -1,0 +1,79 @@
+# Android uygulamasını EAS'te derler.
+#   preview    → telefona doğrudan yüklenebilen APK (paylaşılabilir indirme bağlantısı)
+#   production → Google Play'e yüklenecek AAB; play_track verilirse Play Console'a gönderir
+# Gerekli GitHub sırrı: EXPO_TOKEN. Play'e otomatik gönderim için ayrıca
+# GOOGLE_PLAY_SERVICE_ACCOUNT_JSON (Play Console → Kurulum → API erişimi).
+# İlk Play yüklemesi Google kuralı gereği Play Console'dan elle yapılır.
+name: EAS Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Derleme profili
+        type: choice
+        options: [preview, production]
+        default: preview
+      setup_credentials:
+        description: İlk kez imza anahtarı (keystore) oluştur (etkileşimli kurulum)
+        type: boolean
+        default: false
+      play_track:
+        description: "production derlemesini Play'e gönder: internal / alpha (kapalı test) / boş = gönderme"
+        required: false
+        default: ''
+
+concurrency:
+  group: eas-android
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Sırlar tanımlı mı
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then echo "EXPO_TOKEN eksik" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; fi
+          token=$(printf '%s' "$EXPO_TOKEN" | tr -d '[:space:]')
+          echo "::add-mask::$token"
+          echo "EXPO_TOKEN=$token" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Derle (EAS, ilk imza anahtarı kurulumu)
+        if: inputs.setup_credentials
+        env:
+          PROFILE: ${{ inputs.profile }}
+        run: |
+          pip install --quiet pexpect
+          python3 scripts/ci/eas-build-interactive.py android "$PROFILE"
+      - name: Derle (EAS)
+        if: ${{ !inputs.setup_credentials }}
+        env:
+          PROFILE: ${{ inputs.profile }}
+        run: npx eas-cli@latest build --platform android --profile "$PROFILE" --non-interactive --wait --json > build.json
+      - name: Derleme bağlantısı
+        if: ${{ !inputs.setup_credentials }}
+        run: |
+          url=$(jq -r '.[0].artifacts.buildUrl // empty' build.json)
+          page="https://expo.dev/accounts/akturan-group/projects/yola/builds/$(jq -r '.[0].id' build.json)"
+          echo "Derleme sayfası: $page" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ -n "$url" ] && echo "Dosya: $url" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Google Play'e gönder
+        if: inputs.profile == 'production' && inputs.play_track != ''
+        env:
+          PLAY_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          TRACK: ${{ inputs.play_track }}
+        run: |
+          if [ -z "$PLAY_JSON" ]; then echo "GOOGLE_PLAY_SERVICE_ACCOUNT_JSON eksik" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; fi
+          printf '%s' "$PLAY_JSON" > "$RUNNER_TEMP/play.json"
+          jq --arg path "$RUNNER_TEMP/play.json" --arg track "$TRACK" \
+             '.submit.production.android = {serviceAccountKeyPath: $path, track: $track, releaseStatus: "completed"}' \
+             eas.json > "$RUNNER_TEMP/eas.json" && cp "$RUNNER_TEMP/eas.json" eas.json
+          npx eas-cli@latest submit --platform android --profile production --latest --non-interactive --wait
