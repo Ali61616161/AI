@@ -29,7 +29,7 @@ npx supabase functions deploy revenuecat-webhook --no-verify-jwt
 | Değişken | API'ler |
 |---|---|
 | `GOOGLE_MAPS_API_KEY` (sunucu) | Places API (New), Weather API, Cloud Translation API — anahtarı bu API'lerle sınırlayın |
-| `GOOGLE_MAPS_ANDROID_API_KEY` (uygulama) | Maps SDK for Android — anahtarı `app.yola` paketi ve imza SHA-1 ile sınırlayın |
+| `GOOGLE_MAPS_ANDROID_API_KEY` (uygulama) | Maps SDK for Android — anahtarı `com.akturangroup.yola` paketi ve imza SHA-1 ile sınırlayın |
 | `GEMINI_API_KEY` | Google AI Studio |
 
 Not: Google Places içerik saklama kuralları gereği plan kalemlerindeki puan/yorum sayısı `place_checked_at` ile tutulur; uzun süreli saklama yerine periyodik yenileme veya gösterimde canlı sorgu kararı bu adımda verilecek.

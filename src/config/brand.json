@@ -3,7 +3,8 @@
   "storeName": "Yola: AI Travel Planner",
   "slug": "yola",
   "scheme": "yola",
-  "bundleId": "app.yola",
+  "bundleId": "com.akturangroup.yola",
+  "easProjectId": "3076678a-5de5-4564-9880-249ef48ab0b7",
   "colors": {
     "coral": "#FF6B4A",
     "coralSoft": "#FF8A5C",

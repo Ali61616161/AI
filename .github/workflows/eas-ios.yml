@@ -1,0 +1,80 @@
+# iOS uygulamasını EAS'te derler ve isteğe bağlı olarak TestFlight'a gönderir.
+# Gerekli GitHub sırları (Settings → Secrets and variables → Actions):
+#   EXPO_TOKEN, ASC_KEY_ID, ASC_ISSUER_ID, ASC_API_KEY_P8, APPLE_TEAM_ID
+# Elle çalışır (Actions → EAS iOS → Run workflow).
+name: EAS iOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      asc_app_id:
+        description: App Store Connect uygulama numarası (Apple ID). Boşsa TestFlight'a gönderilmez.
+        required: false
+        default: ''
+      team_type:
+        description: Apple geliştirici hesabı türü
+        type: choice
+        options: [COMPANY_OR_ORGANIZATION, INDIVIDUAL]
+        default: COMPANY_OR_ORGANIZATION
+
+concurrency:
+  group: eas-ios
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Sırlar tanımlı mı
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          missing=""
+          for name in EXPO_TOKEN ASC_KEY_ID ASC_ISSUER_ID ASC_API_KEY_P8 APPLE_TEAM_ID; do
+            [ -z "${!name}" ] && missing="$missing $name"
+          done
+          if [ -n "$missing" ]; then
+            echo "Eksik sırlar:$missing" | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          # Anahtar depo dışına yazılır; derleme arşivine girmez.
+          key="$RUNNER_TEMP/asc-api-key.p8"
+          printf '%s\n' "$ASC_API_KEY_P8" | tr -d '\r' > "$key"
+          token=$(printf '%s' "$EXPO_TOKEN" | tr -d '[:space:]')
+          key_id=$(printf '%s' "$ASC_KEY_ID" | tr -d '[:space:]')
+          issuer=$(printf '%s' "$ASC_ISSUER_ID" | tr -d '[:space:]')
+          team=$(printf '%s' "$APPLE_TEAM_ID" | tr -d '[:space:]')
+          echo "::add-mask::$token"
+          {
+            echo "EXPO_TOKEN=$token"
+            echo "EXPO_ASC_API_KEY_PATH=$key"
+            echo "EXPO_ASC_KEY_ID=$key_id"
+            echo "EXPO_ASC_ISSUER_ID=$issuer"
+            echo "EXPO_APPLE_TEAM_ID=$team"
+            echo "EXPO_APPLE_TEAM_TYPE=${{ inputs.team_type }}"
+          } >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Expo hesabı
+        run: npx eas-cli@latest whoami
+      - name: Derle (EAS)
+        run: npx eas-cli@latest build --platform ios --profile production --non-interactive --wait
+      - name: TestFlight'a gönder
+        if: inputs.asc_app_id != ''
+        env:
+          ASC_APP_ID: ${{ inputs.asc_app_id }}
+        run: |
+          jq --arg app "$ASC_APP_ID" --arg path "$EXPO_ASC_API_KEY_PATH" \
+             --arg kid "$EXPO_ASC_KEY_ID" --arg iss "$EXPO_ASC_ISSUER_ID" \
+             '.submit.production.ios = {ascAppId: $app, ascApiKeyPath: $path, ascApiKeyId: $kid, ascApiKeyIssuerId: $iss}' \
+             eas.json > "$RUNNER_TEMP/eas.json" && cp "$RUNNER_TEMP/eas.json" eas.json
+          npx eas-cli@latest submit --platform ios --profile production --latest --non-interactive --wait
