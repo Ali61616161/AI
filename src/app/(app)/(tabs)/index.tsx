@@ -7,6 +7,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
+import { DirIcon } from '@/components/ui/dir-icon';
 import { Card } from '@/components/ui/card';
 import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -112,7 +113,7 @@ export default function TodayScreen() {
                 {t('today.quick.decideBody')}
               </Text>
             </View>
-            <Ionicons name="arrow-forward" size={20} color="#FFFFFF" />
+            <DirIcon name="arrow-forward" size={20} color="#FFFFFF" />
           </LinearGradient>
         </Tap>
         <View style={styles.quickRow}>
@@ -142,7 +143,7 @@ export default function TodayScreen() {
                   {t('report.ctaBody')}
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+              <DirIcon name="chevron-forward" size={18} color={colors.textMuted} />
             </View>
           </Card>
         </Animated.View>

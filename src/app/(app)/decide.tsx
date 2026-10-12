@@ -178,14 +178,14 @@ export default function DecideScreen() {
                     {selected ? (
                       <LinearGradient colors={Gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.tile}>
                         <Ionicons name={g.icon} size={26} color="#FFFFFF" />
-                        <Text variant="caption" numberOfLines={1} style={styles.white}>
+                        <Text variant="caption" numberOfLines={2} style={[styles.white, styles.center]}>
                           {t(`decide.groups.${g.key}`)}
                         </Text>
                       </LinearGradient>
                     ) : (
                       <View style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: StyleSheet.hairlineWidth * 2 }]}>
                         <Ionicons name={g.icon} size={26} color={colors.textSecondary} />
-                        <Text variant="caption" numberOfLines={1}>
+                        <Text variant="caption" numberOfLines={2} style={styles.center}>
                           {t(`decide.groups.${g.key}`)}
                         </Text>
                       </View>

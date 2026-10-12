@@ -5,6 +5,7 @@ import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
+import { DirIcon } from '@/components/ui/dir-icon';
 import { Card } from '@/components/ui/card';
 import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -211,7 +212,7 @@ export default function TripScreen() {
                 {t('report.ctaBody')}
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+            <DirIcon name="chevron-forward" size={18} color={colors.textSecondary} />
           </View>
         </Card>
       )}

@@ -5,6 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Tap } from '@/components/ui/tap';
+import { DirIcon } from '@/components/ui/dir-icon';
 import { Text } from '@/components/ui/text';
 import { daysUntil, formatDateRange, todayIsoDate } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
@@ -50,7 +51,7 @@ export function TripCard({ trip, highlight = false }: { trip: TripListItem; high
               </View>
             )}
             <View style={styles.arrow}>
-              <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+              <DirIcon name="arrow-forward" size={18} color="#FFFFFF" />
             </View>
           </View>
           <View style={styles.heroBottom}>
@@ -113,7 +114,7 @@ export function TripCard({ trip, highlight = false }: { trip: TripListItem; high
             </Text>
           </View>
         </View>
-        <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+        <DirIcon name="chevron-forward" size={18} color={colors.textMuted} />
       </View>
     </Tap>
   );

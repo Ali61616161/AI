@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import type { ComponentProps } from 'react';
 import { ActivityIndicator, StyleSheet, View, type PressableProps, type StyleProp, type ViewStyle } from 'react-native';
 
+import { useFlipStyle } from '@/lib/rtl';
 import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -20,6 +21,7 @@ type Props = Omit<PressableProps, 'children' | 'style'> & {
 
 export function Button({ title, variant = 'primary', size = 'md', icon, loading = false, disabled, style, ...rest }: Props) {
   const { colors } = useTheme();
+  const flip = useFlipStyle();
   const filled = variant === 'primary' || variant === 'danger';
   const foreground = filled ? colors.onPrimary : variant === 'ghost' ? colors.text : colors.text;
   const height = size === 'sm' ? 42 : 54;
@@ -28,7 +30,7 @@ export function Button({ title, variant = 'primary', size = 'md', icon, loading 
     <ActivityIndicator color={foreground} />
   ) : (
     <View style={styles.row}>
-      {icon && <Ionicons name={icon} size={size === 'sm' ? 16 : 18} color={foreground} />}
+      {icon && <Ionicons name={icon} size={size === 'sm' ? 16 : 18} color={foreground} style={icon.includes('forward') ? flip : undefined} />}
       <Text variant={size === 'sm' ? 'caption' : 'bodyStrong'} numberOfLines={1} style={{ color: foreground }}>
         {title}
       </Text>

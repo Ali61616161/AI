@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { LanguagePicker } from '@/components/settings/language-picker';
 import { Button } from '@/components/ui/button';
+import { DirIcon } from '@/components/ui/dir-icon';
 import { Card } from '@/components/ui/card';
 import { IconBadge } from '@/components/ui/icon-badge';
 import { Screen } from '@/components/ui/screen';
@@ -134,7 +135,7 @@ export default function ProfileScreen() {
                 {isPro ? t('paywall.manageHint') : t('paywall.upgradeHint')}
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color={isPro ? colors.textSecondary : '#FFFFFF'} />
+            <DirIcon name="chevron-forward" size={18} color={isPro ? colors.textSecondary : '#FFFFFF'} />
           </View>
         </Card>
       )}
@@ -222,7 +223,7 @@ function ListRow({ icon, label, onPress, danger = false }: { icon: ComponentProp
         <Text variant="body" color={danger ? 'danger' : 'text'} style={styles.flex}>
           {label}
         </Text>
-        <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+        <DirIcon name="chevron-forward" size={16} color={colors.textMuted} />
       </View>
     </Tap>
   );

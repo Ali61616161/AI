@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
+import { GradientBg } from '@/components/ui/gradient-bg';
+import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { useTripWeather } from '@/features/places/api';
 import { usePacking, usePackingMutations, useProfileCountries, type PackingRow } from '@/features/tools/api';
@@ -121,15 +123,20 @@ export default function PackingScreen() {
           accessibilityLabel={t('packing.addPlaceholder')}
           style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.surface }]}
         />
-        <Button
-          title={t('packing.add')}
-          variant="secondary"
+        <Tap
+          accessibilityRole="button"
+          accessibilityLabel={t('packing.add')}
           disabled={!label.trim()}
+          feedback="press"
           onPress={() => {
             add.mutate([{ label: label.trim().slice(0, 80), category: 'extras', quantity: 1, source: 'manual' }]);
             setLabel('');
-          }}
-        />
+          }}>
+          <View style={styles.addButton}>
+            <GradientBg />
+            <Ionicons name="add" size={26} color="#FFFFFF" />
+          </View>
+        </Tap>
       </View>
     </Screen>
   );
@@ -143,5 +150,6 @@ const styles = StyleSheet.create({
   check: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   flex: { flex: 1 },
   addRow: { flexDirection: 'row', gap: Spacing.sm, alignItems: 'center' },
-  input: { flex: 1, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },
+  input: { flex: 1, minHeight: 54, paddingHorizontal: Spacing.lg, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth * 2 },
+  addButton: { width: 54, height: 54, borderRadius: 27, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
 });

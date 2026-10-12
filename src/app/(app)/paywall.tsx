@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   heroBadge: { width: 84, height: 84, borderRadius: 30, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)' },
   centerText: { textAlign: 'center' },
   benefit: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.sm, paddingVertical: Spacing.md },
-  proValue: { maxWidth: 96, textAlign: 'right' },
+  proValue: { maxWidth: 112, textAlign: 'right' },
   state: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.lg, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth * 2 },
   flex: { flex: 1, gap: 2 },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },

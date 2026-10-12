@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Card } from '@/components/ui/card';
+import { DirIcon } from '@/components/ui/dir-icon';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
@@ -199,7 +200,7 @@ export default function ExpensesScreen() {
           {transfers.map((x) => (
             <View key={`${x.from}-${x.to}`} style={[styles.transfer, { backgroundColor: colors.surfaceMuted }]}>
               <Text variant="bodyStrong">{x.from}</Text>
-              <Ionicons name="arrow-forward" size={16} color={colors.textSecondary} />
+              <DirIcon name="arrow-forward" size={16} color={colors.textSecondary} />
               <Text variant="bodyStrong" style={styles.flex}>
                 {x.to}
               </Text>

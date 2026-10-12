@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, View } from 'react-native';
 
+import { useFlipStyle } from '@/lib/rtl';
 import { Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -10,6 +11,7 @@ import { Text } from './text';
 /** Bölüm başlığı; isteğe bağlı sağda "tümü" bağlantısı. */
 export function SectionHeader({ title, overline, action, onAction }: { title: string; overline?: string; action?: string; onAction?: () => void }) {
   const { colors } = useTheme();
+  const flip = useFlipStyle();
   return (
     <View style={styles.row}>
       <View style={styles.texts}>
@@ -25,7 +27,7 @@ export function SectionHeader({ title, overline, action, onAction }: { title: st
           <Text variant="caption" color="primary">
             {action}
           </Text>
-          <Ionicons name="arrow-forward" size={14} color={colors.primary} />
+          <Ionicons name="arrow-forward" size={14} color={colors.primary} style={flip} />
         </Tap>
       )}
     </View>
@@ -33,7 +35,7 @@ export function SectionHeader({ title, overline, action, onAction }: { title: st
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'flex-end', gap: Spacing.md },
-  texts: { flex: 1, gap: Spacing.xxs },
+  row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', columnGap: Spacing.md, rowGap: Spacing.xs },
+  texts: { flexShrink: 1, gap: Spacing.xxs },
   action: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xxs, paddingBottom: 3 },
 });
