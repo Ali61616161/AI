@@ -60,12 +60,21 @@ jobs:
       - name: Edge Function'lar
         if: steps.check.outputs.ready == 'true'
         run: |
+          # Supabase'in sunucu tarafı paketleme hatası (500) verirse Docker ile paketleyip yeniden dener;
+          # bir fonksiyon başarısız olsa da diğerleri yüklenir, iş sonda hata verir.
+          failed=""
+          deploy() {
+            npx supabase functions deploy "$@" --project-ref "$SUPABASE_PROJECT_REF" --use-api \
+              || npx supabase functions deploy "$@" --project-ref "$SUPABASE_PROJECT_REF" \
+              || failed="$failed $1"
+          }
           for f in parse-document generate-itinerary replan places translate travel-info trip-report subscription delete-account city; do
-            npx supabase functions deploy "$f" --project-ref "$SUPABASE_PROJECT_REF" --use-api
+            deploy "$f"
           done
           for f in revenuecat-webhook ad-reward; do
-            npx supabase functions deploy "$f" --project-ref "$SUPABASE_PROJECT_REF" --use-api --no-verify-jwt
+            deploy "$f" --no-verify-jwt
           done
+          if [ -n "$failed" ]; then echo "::error::Yüklenemeyen fonksiyonlar:$failed"; exit 1; fi
       - name: Özet
         if: steps.check.outputs.ready == 'true'
         run: echo "Supabase yüklendi → https://$SUPABASE_PROJECT_REF.supabase.co" >> "$GITHUB_STEP_SUMMARY"
