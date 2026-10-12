@@ -30,7 +30,8 @@ const config: ExpoConfig = {
       NSPrivacyTracking: false,
     },
   },
-  // iOS'ta uygulama adı ve izin metinleri cihaz diline göre gösterilir.
+  // iOS'ta uygulama adı ve izin metinleri cihaz diline göre gösterilir (dosyalarda "ios" altında;
+  // Android'e yazılsaydı varsayılan karşılığı olmadığı için sürüm lint'i derlemeyi durdururdu).
   locales: Object.fromEntries(languages.map((l) => [l.code, `./assets/locales/${l.code}.json`])),
   android: {
     package: brand.bundleId,
