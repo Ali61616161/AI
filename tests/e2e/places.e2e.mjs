@@ -9,11 +9,14 @@ import assert from 'node:assert/strict';
 const BASE = process.env.SUPABASE_URL ?? 'http://localhost:54321';
 const ANON = process.env.ANON_KEY;
 const FAKE_GOOGLE = process.env.FAKE_GOOGLE_URL ?? 'http://127.0.0.1:54341';
+// Fonksiyonlar ayrı bir sunucuda çalıştırılıyorsa (ör. FUNCTIONS_URL=http://127.0.0.1:8010).
+const FUNCTIONS = process.env.FUNCTIONS_URL ?? `${BASE}/functions/v1`;
 assert.ok(ANON, 'ANON_KEY gerekli');
 
 let token = ANON;
 async function call(path, body, method = 'POST', extra = {}) {
-  const res = await fetch(`${BASE}${path}`, {
+  const url = path.startsWith('/functions/v1/') ? `${FUNCTIONS}${path.slice('/functions/v1'.length)}` : `${BASE}${path}`;
+  const res = await fetch(url, {
     method,
     headers: { apikey: ANON, authorization: `Bearer ${token}`, 'content-type': 'application/json', ...extra },
     body: body === undefined ? undefined : JSON.stringify(body),

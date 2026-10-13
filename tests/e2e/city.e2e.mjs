@@ -12,8 +12,11 @@ const ANON = process.env.ANON_KEY;
 assert.ok(ANON, 'ANON_KEY gerekli');
 
 let token = ANON;
+// Fonksiyonlar ayrı bir sunucuda çalıştırılıyorsa (ör. FUNCTIONS_URL=http://127.0.0.1:8010).
+const FUNCTIONS = process.env.FUNCTIONS_URL ?? `${BASE}/functions/v1`;
 async function call(path, body, method = 'POST') {
-  const res = await fetch(`${BASE}${path}`, {
+  const url = path.startsWith('/functions/v1/') ? `${FUNCTIONS}${path.slice('/functions/v1'.length)}` : `${BASE}${path}`;
+  const res = await fetch(url, {
     method,
     headers: { apikey: ANON, authorization: `Bearer ${token}`, 'content-type': 'application/json', prefer: 'return=representation' },
     body: body === undefined ? undefined : JSON.stringify(body),
@@ -71,6 +74,8 @@ await step('Kaçamak: bulunamayan ve çok uzak yer elenir, bütçeye uyanlar ucu
   const tivoli = r.data.getaways[0];
   assert.equal(tivoli.total, 40);
   assert.ok(tivoli.distanceKm > 20 && tivoli.distanceKm < 40, `Tivoli ~28 km, gelen ${tivoli.distanceKm}`);
+  assert.ok(tivoli.tickets.length >= 1 && tivoli.tickets.every((t) => t.url.startsWith('https://')), 'kaçamakta bilet bağlantısı olmalı');
+  assert.equal(tivoli.tickets.at(-1).partner, 'rome2rio');
   assert.match(tivoli.directionsUrl, /^https:\/\/www\.google\.com\/maps\/dir\/\?api=1&origin=Roma%2C%20IT&destination=Tivoli%2C%20IT&travelmode=transit$/);
   assert.equal((await city({ action: 'getaways', days: 2, budget_per_person: 300 })).status, 402, 'ücretsizde haftada bir kaçamak araması');
 });
