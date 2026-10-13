@@ -562,7 +562,7 @@ html,body{width:${W}px;height:${H}px;overflow:hidden;background:#070B16}
  linear-gradient(180deg,#0C1222 0%,#070B16 60%,#04060C 100%)}
 .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:${Math.round(W / 12)}px ${Math.round(W / 12)}px;mask-image:linear-gradient(180deg,#000 0%,transparent 55%)}
 .cap{position:absolute;left:6%;right:6%;top:${device.caption.top}px;height:${device.caption.area - device.caption.top - 40}px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.cap h1{font-family:${font};font-weight:${lang === 'zh' ? 900 : 700};font-size:${size}px;line-height:1.18;color:#fff;letter-spacing:${lang === 'ar' || lang === 'zh' ? 0 : -0.01}em;text-wrap:balance;text-shadow:0 6px 40px rgba(255,61,127,.35)}
+.cap h1{font-family:${font};font-weight:${lang === 'zh' ? 900 : 700};font-size:${size}px;line-height:1.18;color:#fff;letter-spacing:${lang === 'ar' || lang === 'zh' ? 0 : -0.01}em;text-wrap:balance;${lang === 'zh' ? 'word-break:keep-all;' : ''}text-shadow:0 6px 40px rgba(255,61,127,.35)}
 .bar{width:${Math.round(W * 0.12)}px;height:${Math.round(size * 0.09)}px;border-radius:99px;margin-top:${Math.round(size * 0.35)}px;background:linear-gradient(90deg,#FF7A45,#FF3D7F,#7C5CFF)}
 .device{position:absolute;left:50%;top:${device.caption.area}px;transform:translateX(-50%);padding:${bezel}px;border-radius:${radius + bezel}px;
  background:linear-gradient(145deg,#2a3150,#0b0f1c 40%,#1a2036);box-shadow:0 0 0 2px rgba(255,255,255,.10) inset,0 40px 120px rgba(0,0,0,.65),0 0 140px rgba(255,61,127,.20)}
