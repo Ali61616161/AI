@@ -66,6 +66,7 @@
     "@types/react": "~19.2.2",
     "deno": "^2.9.6",
     "eslint": "^9.39.5",
+    "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "supabase": "^2.120.0",
     "typescript": "~6.0.3"

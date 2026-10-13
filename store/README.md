@@ -75,3 +75,28 @@ Uygulama Apple takip izni (ATT) penceresini gösterdiği için "Bu uygulama sizi
 
 Gerekli boyutlar: iPhone 6,9" (1320×2868) ve 6,5" (1284×2778), iPad 13" (2064×2752, `supportsTablet: true` olduğu için); Android telefon (en az 1080×1920) ve 7"/10" tablet (isteğe bağlı).
 Önerilen sıra (en çok 10): 1) Gün gün rota 2) Şehrim: bu akşam ne yapsak? 3) Planı Değiştir 4) Pasaportum (pasaport gücü) 5) Gezdiğim ülkeler (dünya yüzdesi) 6) Canlı çeviri 7) Çarkı çevir 8) Kaçamaklar 9) Bilet yükleme 10) Schengen 90/180.
+
+Hazır görüntüler (9 dil × 10 ekran, bu sırayla `NN-<ad>.png`):
+
+| Klasör | Boyut | Yükleneceği yer |
+| --- | --- | --- |
+| `screenshots/ios-6.9/<ASC dili>/` | 1320×2868 | App Store Connect → iPhone 6,9" (6,5" için de kullanılabilir; ASC küçültür) |
+| `screenshots/ipad-13/<ASC dili>/` | 2064×2752 | App Store Connect → iPad 13" |
+| `screenshots/android-phone/<Play dili>/` | 1080×1920 | Play Console → Telefon ekran görüntüleri |
+
+Dil klasörleri `app-store/` ve `google-play/` altındakilerle aynı adı taşır (ör. ASC `zh-Hans`, Play `zh-CN`).
+
+Yeniden üretmek (görüntüler uygulamanın gerçek web derlemesinden alınır):
+
+```bash
+# 1) Yerel test yığını (Postgres + PostGIS, PostgREST, Edge Function'lar, sahte Gemini/Google)
+POSTGREST_BIN=/yol/postgrest PGHOST=127.0.0.1 PGPORT=54329 PGUSER=postgres FAKE_GEMINI=1 DEV_DB=yola_shots scripts/local-stack/start.sh
+# 2) Demo kullanıcıyı yazar, web derlemesini alır, görüntüleri çeker ve birleştirir (~25 dk)
+LOG_DIR=<start.sh çıktısındaki klasör> PGHOST=127.0.0.1 PGPORT=54329 PGUSER=postgres DEV_DB=yola_shots node store/screenshots/make.mjs
+#    Seçenekler: --langs tr,en  --devices ios,ipad,android  --screens 1,5  --dist <hazır web derlemesi>
+```
+
+- Betik sadece yerel yığına bağlanır (`localhost`); anahtarlar ortam değişkeni olarak verilir, dosyaya yazılmaz. `DEV_DB` veritabanındaki demo kullanıcı (`demo@yola.app`, Pro) her çalıştırmada silinip yeniden yazılır.
+- Başlıklar `make.mjs` içindeki `CAPTIONS` tablosunda; AI'ın üreteceği demo içerik (Roma rotası, İstanbul akşam planı, kaçamaklar, "Planı Değiştir" cevabı, çeviri konuşması) `content.mjs` içinde, 9 dilde. Uygulama metinleri dil dosyalarından gelir.
+- PNG'ler `pngquant` ile sıkıştırılır (PATH'te yoksa `npx -p pngquant-bin` ile geçici indirilir).
+- `screenshots/fonts/`: başlık yazı tipleri (Noto Kufi Arabic, Noto Sans SC alt kümesi; SIL Open Font License). Çince başlıklar değişirse alt küme yeniden indirilmelidir (Google Fonts `text=` parametresi).
