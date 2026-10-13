@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { LogoMark } from '@/components/brand/logo-mark';
 import { Text } from '@/components/ui/text';
+import { formatPercent } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 
 import type { VisitedSummary } from '../../../supabase/functions/_shared/continents.ts';
@@ -21,7 +22,7 @@ export function VisitedCard({ summary, cities, cardRef }: { summary: VisitedSumm
         </Text>
         <View style={styles.bigRow}>
           <Text variant="hero" style={styles.white}>
-            %{summary.percent}
+            {formatPercent(summary.percent)}
           </Text>
           <Text variant="body" style={[styles.soft, styles.bigLabel]}>
             {t('visited.ofWorld')}
@@ -65,7 +66,7 @@ export function VisitedCard({ summary, cities, cardRef }: { summary: VisitedSumm
                 <View style={[styles.fill, { width: `${Math.max(b.percent, b.visited ? 3 : 0)}%` }]} />
               </View>
               <Text variant="caption" style={[styles.white, styles.barValue]}>
-                %{b.percent}
+                {formatPercent(b.percent)}
               </Text>
             </View>
           ))}

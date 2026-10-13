@@ -67,3 +67,8 @@ export function formatMoney(amount: number, currency: string): string {
     return `${Math.round(amount)} ${currency}`;
   }
 }
+
+/** Yüzdeyi dile göre gösterir: "12.6%" (en), "%12,6" (tr), "12,6 %" (fr). */
+export function formatPercent(value: number): string {
+  return new Intl.NumberFormat(currentLanguage(), { style: 'percent', maximumFractionDigits: 1 }).format(value / 100);
+}
