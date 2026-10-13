@@ -1268,5 +1268,58 @@
     "exit": "Uscita",
     "addStay": "Aggiungi soggiorno",
     "schengenNote": "Contano sia il giorno di ingresso sia quello di uscita. Solo indicativo; verifica con il calcolatore per soggiorni brevi dell’UE."
+  },
+  "route": {
+    "title": "Come ci arrivo?",
+    "myLocation": "La mia posizione",
+    "howToGet": "Come arrivarci",
+    "mode": {
+      "transit": "Mezzi pubblici",
+      "drive": "Auto",
+      "walk": "A piedi"
+    },
+    "needLocation": "Consenti l’accesso alla posizione per vedere i percorsi da dove sei.",
+    "noTransit": "Nessun mezzo pubblico trovato per questo percorso.",
+    "noRoute": "Nessun percorso trovato.",
+    "noTransitHint": "Prova in auto o a piedi, oppure guarda le opzioni di viaggio qui sotto.",
+    "ticketsTitle": "Biglietti e opzioni di viaggio",
+    "ticketsHint": "Confronta treni, autobus, traghetti e voli per questo viaggio.",
+    "startNavigation": "Avvia il percorso in Mappe",
+    "direct": "Diretto",
+    "officialSite": "{{agency}} · sito ufficiale",
+    "affiliateNote": "Alcuni link sono di partner; Yola può ricevere una commissione senza costi aggiuntivi per te.",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "transfers_one": "{{count}} cambio",
+    "transfers_other": "{{count}} cambi",
+    "walk_one": "{{count}} min a piedi",
+    "walk_other": "{{count}} min a piedi",
+    "stops_one": "{{count}} fermata",
+    "stops_other": "{{count}} fermate",
+    "ticketMode": {
+      "train": "Treno",
+      "bus": "Autobus",
+      "ferry": "Traghetto",
+      "flight": "Volo",
+      "car": "Noleggio auto"
+    },
+    "vehicle": {
+      "train": "Treno",
+      "high_speed_train": "Treno alta velocità",
+      "subway": "Metro",
+      "tram": "Tram",
+      "bus": "Autobus",
+      "ferry": "Traghetto",
+      "cable_car": "Funivia",
+      "funicular": "Funicolare",
+      "other": "Trasporto"
+    },
+    "errors": {
+      "quota_exceeded": "Hai raggiunto il limite di percorsi di oggi. Illimitati con Pro.",
+      "not_configured": "I percorsi non sono ancora disponibili.",
+      "upstream_failed": "Impossibile caricare i percorsi. Riprova.",
+      "network": "Nessuna connessione. Riprova."
+    },
+    "between": "{{from}} → {{to}}: come arrivare"
   }
 }

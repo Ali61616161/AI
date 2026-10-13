@@ -117,6 +117,35 @@ await step('Hava durumu: her gün kendi şehriyle, Google şemasına uygun istek
   assert.deepEqual(calls.filter((c) => c.errors.length), [], "Google'a şemada olmayan alan gönderilmemeli");
 });
 
+await step('Nasıl giderim: tren ve feribot adımları, işletmeci sitesi, feribota bilet bağlantısı', async () => {
+  const r = await places({ action: 'route', origin: { lat: 46.69, lng: 7.86 }, destination: { address: 'Spiez' }, origin_name: 'Interlaken', destination_name: 'Spiez', country_code: 'ch' });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  const [route] = r.data.routes;
+  assert.equal(route.durationMin, 90);
+  assert.deepEqual(route.fare, { amount: 34, currency: 'CHF' });
+  assert.deepEqual(route.steps.map((s) => s.transit?.vehicle ?? s.mode), ['walk', 'train', 'ferry']);
+  assert.equal(route.steps[1].transit.agencyUrl, 'https://www.jungfrau.ch/');
+  assert.deepEqual(route.steps[1].tickets, [], 'bölgesel trene bilet bağlantısı gerekmez');
+  assert.equal(route.steps[2].tickets[0].partner, 'rome2rio');
+  assert.equal(route.steps[2].tickets[0].mode, 'ferry');
+  assert.match(r.data.navigation_url, /^https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=Spiez&travelmode=transit&origin=46\.69%2C7\.86$/);
+  const call = (await (await fetch(`${FAKE_GOOGLE}/calls`)).json()).filter((c) => c.api === 'routes').at(-1);
+  assert.deepEqual(call.errors, []);
+  assert.equal(call.body.travelMode, 'TRANSIT');
+});
+
+await step('Toplu taşıma yoksa yolculuk bilet seçenekleri (uçak, tren) ve araba güzergahı', async () => {
+  const r = await places({ action: 'route', origin: { address: 'Istanbul' }, destination: { address: 'Test Island' }, mode: 'transit' });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  assert.deepEqual(r.data.routes, []);
+  assert.ok(r.data.tickets.length >= 1 && r.data.tickets.every((t) => t.url.startsWith('https://')));
+  assert.ok(r.data.tickets.some((t) => t.partner === 'rome2rio'));
+  const car = await places({ action: 'route', origin: { address: 'Istanbul' }, destination: { address: 'Sile' }, mode: 'drive' });
+  assert.equal(car.status, 200);
+  assert.deepEqual([car.data.routes[0].durationMin, car.data.routes[0].steps.length], [45, 0]);
+  assert.equal((await places({ action: 'route', origin: { lat: 999, lng: 0 }, destination: { address: 'x' } })).status, 400);
+});
+
 await step('Ücretsiz planda günde 10 yakın arama; 11. reddedilir', async () => {
   // 3 açık yer + 1 otel araması yapıldı; 6 tane daha izinli.
   for (let i = 0; i < 6; i++) assert.equal((await places({ action: 'open_now', ...ROME, category: 'museum' })).status, 200);

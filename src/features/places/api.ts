@@ -38,7 +38,7 @@ export class PlacesError extends Error {
   }
 }
 
-async function invokePlaces<T>(body: Record<string, unknown>): Promise<T> {
+export async function invokePlaces<T>(body: Record<string, unknown>): Promise<T> {
   const { data, error } = await getSupabase().functions.invoke('places', { body });
   if (error) {
     let code: PlacesErrorCode = 'network';

@@ -1268,5 +1268,58 @@
     "exit": "Salida",
     "addStay": "Añadir estancia",
     "schengenNote": "Cuentan tanto el día de entrada como el de salida. Solo orientativo; compruébalo con la calculadora de estancias cortas de la UE."
+  },
+  "route": {
+    "title": "¿Cómo llego?",
+    "myLocation": "Mi ubicación",
+    "howToGet": "Cómo llegar",
+    "mode": {
+      "transit": "Transporte público",
+      "drive": "Coche",
+      "walk": "A pie"
+    },
+    "needLocation": "Permite el acceso a la ubicación para ver rutas desde donde estás.",
+    "noTransit": "No hay transporte público para esta ruta.",
+    "noRoute": "No se encontró ninguna ruta.",
+    "noTransitHint": "Prueba en coche o a pie, o mira las opciones de viaje de abajo.",
+    "ticketsTitle": "Billetes y opciones de viaje",
+    "ticketsHint": "Compara trenes, autobuses, ferris y vuelos para este viaje.",
+    "startNavigation": "Iniciar ruta en Mapas",
+    "direct": "Directo",
+    "officialSite": "{{agency}} · web oficial",
+    "affiliateNote": "Algunos enlaces son de socios; Yola puede recibir una comisión sin coste extra para ti.",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "transfers_one": "{{count}} transbordo",
+    "transfers_other": "{{count}} transbordos",
+    "walk_one": "Camina {{count}} min",
+    "walk_other": "Camina {{count}} min",
+    "stops_one": "{{count}} parada",
+    "stops_other": "{{count}} paradas",
+    "ticketMode": {
+      "train": "Tren",
+      "bus": "Autobús",
+      "ferry": "Ferri",
+      "flight": "Vuelo",
+      "car": "Alquiler de coche"
+    },
+    "vehicle": {
+      "train": "Tren",
+      "high_speed_train": "Tren de alta velocidad",
+      "subway": "Metro",
+      "tram": "Tranvía",
+      "bus": "Autobús",
+      "ferry": "Ferri",
+      "cable_car": "Teleférico",
+      "funicular": "Funicular",
+      "other": "Transporte"
+    },
+    "errors": {
+      "quota_exceeded": "Has alcanzado el límite de rutas de hoy. Ilimitado con Pro.",
+      "not_configured": "Las rutas aún no están disponibles.",
+      "upstream_failed": "No se pudieron cargar las rutas. Inténtalo de nuevo.",
+      "network": "Sin conexión. Inténtalo de nuevo."
+    },
+    "between": "{{from}} → {{to}}: cómo llegar"
   }
 }

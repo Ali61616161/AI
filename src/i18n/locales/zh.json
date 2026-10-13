@@ -1235,5 +1235,54 @@
     "exit": "出境",
     "addStay": "添加停留",
     "schengenNote": "入境日和出境日均计入。仅供参考，请以欧盟短期停留计算器为准。"
+  },
+  "route": {
+    "title": "怎么去？",
+    "myLocation": "我的位置",
+    "howToGet": "怎么去",
+    "mode": {
+      "transit": "公共交通",
+      "drive": "驾车",
+      "walk": "步行"
+    },
+    "needLocation": "允许访问位置，即可查看从你所在位置出发的路线。",
+    "noTransit": "此路线没有找到公共交通。",
+    "noRoute": "未找到路线。",
+    "noTransitHint": "试试驾车或步行，或查看下方的出行选项。",
+    "ticketsTitle": "车票与出行选项",
+    "ticketsHint": "比较此行程的火车、巴士、渡轮和航班。",
+    "startNavigation": "在地图中开始导航",
+    "direct": "直达",
+    "officialSite": "{{agency}} · 官网",
+    "affiliateNote": "部分链接为合作伙伴链接；Yola 可能获得佣金，你无需额外付费。",
+    "minutes_other": "{{count}} 分钟",
+    "transfers_other": "换乘 {{count}} 次",
+    "walk_other": "步行 {{count}} 分钟",
+    "stops_other": "{{count}} 站",
+    "ticketMode": {
+      "train": "火车",
+      "bus": "巴士",
+      "ferry": "渡轮",
+      "flight": "航班",
+      "car": "租车"
+    },
+    "vehicle": {
+      "train": "火车",
+      "high_speed_train": "高铁",
+      "subway": "地铁",
+      "tram": "有轨电车",
+      "bus": "巴士",
+      "ferry": "渡轮",
+      "cable_car": "缆车",
+      "funicular": "索道缆车",
+      "other": "公共交通"
+    },
+    "errors": {
+      "quota_exceeded": "今日路线次数已用完。Pro 不限次数。",
+      "not_configured": "路线功能暂不可用。",
+      "upstream_failed": "暂时无法加载路线，请重试。",
+      "network": "没有网络连接，请重试。"
+    },
+    "between": "{{from}} → {{to}}：怎么去"
   }
 }

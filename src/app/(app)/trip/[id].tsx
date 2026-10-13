@@ -141,6 +141,31 @@ export default function TripScreen() {
           {trip.trip_destinations.map((d) => (
             <Chip key={d.id} icon="location-outline" label={`${d.city} · ${formatDateRange(d.arrive_on, d.depart_on)}`} />
           ))}
+          {/* Şehirler arası geçiş: güzergah ve tren/otobüs/feribot/uçak bileti. */}
+          {trip.trip_destinations.slice(1).map((d, i) => {
+            const prev = trip.trip_destinations[i];
+            const place = (x: typeof d) => (x.country_code ? `${x.city}, ${x.country_code}` : x.city);
+            return (
+              <Chip
+                key={`route-${d.id}`}
+                icon="git-branch-outline"
+                label={t('route.between', { from: prev.city, to: d.city })}
+                onPress={() =>
+                  router.push({
+                    pathname: '/route',
+                    params: {
+                      fromAddress: place(prev),
+                      fromName: prev.city,
+                      toAddress: place(d),
+                      toName: d.city,
+                      country: prev.country_code ?? '',
+                      ...(prev.depart_on ? { departAt: `${prev.depart_on}T08:00:00Z` } : {}),
+                    },
+                  })
+                }
+              />
+            );
+          })}
         </View>
       )}
 

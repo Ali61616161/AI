@@ -38,6 +38,7 @@ export default function AppLayout() {
       <Stack.Screen name="trip-new" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-documents" options={{ presentation: 'modal' }} />
       <Stack.Screen name="decide" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="route" options={{ presentation: 'modal' }} />
       <Stack.Screen name="social" />
       <Stack.Screen name="passport" options={{ presentation: 'modal' }} />
       <Stack.Screen name="evening" options={{ presentation: 'modal' }} />

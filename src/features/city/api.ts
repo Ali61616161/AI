@@ -5,6 +5,7 @@ import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
 import type { Getaway, Mood, StopKind, Transport, When } from '../../../supabase/functions/_shared/city.ts';
+import type { TicketOption } from '../../../supabase/functions/_shared/transport.ts';
 
 export type { Mood, StopKind, Transport, When };
 
@@ -36,7 +37,7 @@ export type EveningPlan = {
   stops: EveningStop[];
 };
 
-export type GetawayResult = Getaway & { directionsUrl: string };
+export type GetawayResult = Getaway & { directionsUrl: string; tickets?: TicketOption[] };
 export type GetawaysResponse = { city: string; currency: string; days: number; budget_per_person: number; getaways: GetawayResult[] };
 
 export type CityErrorCode = 'quota_exceeded' | 'not_configured' | 'no_home_city' | 'ai_failed' | 'network';

@@ -1268,5 +1268,58 @@
     "exit": "Exit",
     "addStay": "Add stay",
     "schengenNote": "Entry and exit days both count. For guidance only; check with the EU short-stay calculator."
+  },
+  "route": {
+    "title": "How do I get there?",
+    "myLocation": "My location",
+    "howToGet": "How to get there",
+    "mode": {
+      "transit": "Public transport",
+      "drive": "Car",
+      "walk": "Walk"
+    },
+    "needLocation": "Allow location access to see routes from where you are.",
+    "noTransit": "No public transport found for this route.",
+    "noRoute": "No route found.",
+    "noTransitHint": "Try car or walking, or check the travel options below.",
+    "ticketsTitle": "Tickets and travel options",
+    "ticketsHint": "Compare trains, buses, ferries and flights for this trip.",
+    "startNavigation": "Start directions in Maps",
+    "direct": "Direct",
+    "officialSite": "{{agency}} · official site",
+    "affiliateNote": "Some links are partner links; Yola may earn a commission at no extra cost to you.",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "transfers_one": "{{count}} transfer",
+    "transfers_other": "{{count}} transfers",
+    "walk_one": "Walk {{count}} min",
+    "walk_other": "Walk {{count}} min",
+    "stops_one": "{{count}} stop",
+    "stops_other": "{{count}} stops",
+    "ticketMode": {
+      "train": "Train",
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "flight": "Flight",
+      "car": "Car rental"
+    },
+    "vehicle": {
+      "train": "Train",
+      "high_speed_train": "High-speed train",
+      "subway": "Metro",
+      "tram": "Tram",
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "cable_car": "Cable car",
+      "funicular": "Funicular",
+      "other": "Transit"
+    },
+    "errors": {
+      "quota_exceeded": "You've reached today's route limit. Unlimited with Pro.",
+      "not_configured": "Routes aren't available yet.",
+      "upstream_failed": "Couldn't load routes right now. Try again.",
+      "network": "No connection. Try again."
+    },
+    "between": "{{from}} → {{to}}: how to get there"
   }
 }

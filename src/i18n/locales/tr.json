@@ -1268,5 +1268,58 @@
     "exit": "Çıkış",
     "addStay": "Kalış ekle",
     "schengenNote": "Giriş ve çıkış günleri sayılır. Bilgi amaçlıdır; AB'nin kısa kalış hesaplayıcısından da kontrol et."
+  },
+  "route": {
+    "title": "Nasıl giderim?",
+    "myLocation": "Konumum",
+    "howToGet": "Nasıl giderim?",
+    "mode": {
+      "transit": "Toplu taşıma",
+      "drive": "Araba",
+      "walk": "Yürüyüş"
+    },
+    "needLocation": "Bulunduğun yerden güzergah görmek için konum izni ver.",
+    "noTransit": "Bu güzergahta toplu taşıma bulunamadı.",
+    "noRoute": "Güzergah bulunamadı.",
+    "noTransitHint": "Araba veya yürüyüşü dene ya da aşağıdaki yolculuk seçeneklerine bak.",
+    "ticketsTitle": "Bilet ve yolculuk seçenekleri",
+    "ticketsHint": "Bu yolculuk için tren, otobüs, feribot ve uçakları karşılaştır.",
+    "startNavigation": "Haritada yol tarifini başlat",
+    "direct": "Aktarmasız",
+    "officialSite": "{{agency}} · resmi site",
+    "affiliateNote": "Bazı bağlantılar ortaklık bağlantısıdır; Yola sana ek ücret yansımadan komisyon kazanabilir.",
+    "minutes_one": "{{count}} dk",
+    "minutes_other": "{{count}} dk",
+    "transfers_one": "{{count}} aktarma",
+    "transfers_other": "{{count}} aktarma",
+    "walk_one": "{{count}} dk yürü",
+    "walk_other": "{{count}} dk yürü",
+    "stops_one": "{{count}} durak",
+    "stops_other": "{{count}} durak",
+    "ticketMode": {
+      "train": "Tren",
+      "bus": "Otobüs",
+      "ferry": "Feribot",
+      "flight": "Uçak",
+      "car": "Araç kiralama"
+    },
+    "vehicle": {
+      "train": "Tren",
+      "high_speed_train": "Hızlı tren",
+      "subway": "Metro",
+      "tram": "Tramvay",
+      "bus": "Otobüs",
+      "ferry": "Feribot",
+      "cable_car": "Teleferik",
+      "funicular": "Füniküler",
+      "other": "Toplu taşıma"
+    },
+    "errors": {
+      "quota_exceeded": "Bugünkü güzergah hakkını kullandın. Pro'da sınırsız.",
+      "not_configured": "Güzergahlar henüz kullanılamıyor.",
+      "upstream_failed": "Güzergah şu an yüklenemedi. Tekrar dene.",
+      "network": "Bağlantı yok. Tekrar dene."
+    },
+    "between": "{{from}} → {{to}} nasıl gidilir"
   }
 }

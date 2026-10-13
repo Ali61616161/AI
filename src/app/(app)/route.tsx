@@ -1,0 +1,254 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Chip } from '@/components/ui/chip';
+import { ModalHeader } from '@/components/ui/modal-header';
+import { Screen } from '@/components/ui/screen';
+import { SectionHeader } from '@/components/ui/section-header';
+import { SkeletonCard } from '@/components/ui/skeleton';
+import { Tap } from '@/components/ui/tap';
+import { Text } from '@/components/ui/text';
+import { openBookingLink, PlacesError } from '@/features/places/api';
+import { getCurrentLocation } from '@/features/plan/replan';
+import { UpgradeButton } from '@/features/subscription/upgrade-button';
+import { useRoute, VEHICLE_ICONS, type RouteChoice, type RouteMode, type RoutePoint, type RouteStepWithTickets } from '@/features/transport/api';
+import { TicketLinks } from '@/features/transport/ticket-links';
+import { formatMoney } from '@/lib/format';
+import { Radius, Spacing } from '@/theme/tokens';
+import { useTheme } from '@/theme/use-theme';
+
+const MODES: { key: RouteMode; icon: 'train' | 'car' | 'walk' }[] = [
+  { key: 'transit', icon: 'train' },
+  { key: 'drive', icon: 'car' },
+  { key: 'walk', icon: 'walk' },
+];
+
+type Params = {
+  toLat?: string;
+  toLng?: string;
+  toName?: string;
+  toAddress?: string;
+  fromLat?: string;
+  fromLng?: string;
+  fromName?: string;
+  fromAddress?: string;
+  country?: string;
+  departAt?: string;
+};
+
+function point(lat?: string, lng?: string, address?: string): RoutePoint | null {
+  const la = Number(lat);
+  const ln = Number(lng);
+  if (lat && lng && Number.isFinite(la) && Number.isFinite(ln)) return { lat: la, lng: ln };
+  return address ? { address } : null;
+}
+
+/** "Nasıl giderim?": tren, metro, tramvay, otobüs, feribot, teleferik; araba ve yürüyüş. */
+export default function RouteScreen() {
+  const { t } = useTranslation();
+  const p = useLocalSearchParams<Params>();
+  const destination = point(p.toLat, p.toLng, p.toAddress ?? p.toName);
+  const given = point(p.fromLat, p.fromLng, p.fromAddress);
+  const [here, setHere] = useState<RoutePoint | null | 'denied'>(null);
+  const [mode, setMode] = useState<RouteMode>('transit');
+
+  // Başlangıç verilmediyse kullanıcının konumu kullanılır.
+  const needHere = given === null;
+  useEffect(() => {
+    if (!needHere) return;
+    let alive = true;
+    getCurrentLocation().then((c) => alive && setHere(c ?? 'denied'));
+    return () => {
+      alive = false;
+    };
+  }, [needHere]);
+
+  const origin = given ?? (here && here !== 'denied' ? here : null);
+  const query = useRoute({
+    origin,
+    destination,
+    mode,
+    originName: p.fromName ?? null,
+    destinationName: p.toName ?? p.toAddress ?? null,
+    countryCode: p.country ?? null,
+    departAt: p.departAt ?? null,
+  });
+  const data = query.data;
+
+  return (
+    <Screen>
+      <ModalHeader title={t('route.title')} subtitle={`${p.fromName ?? t('route.myLocation')} → ${p.toName ?? p.toAddress ?? ''}`} />
+
+      <View style={styles.modes}>
+        {MODES.map((m) => (
+          <Chip key={m.key} icon={m.icon} label={t(`route.mode.${m.key}`)} selected={mode === m.key} onPress={() => setMode(m.key)} />
+        ))}
+      </View>
+
+      {!given && here === 'denied' && (
+        <Card>
+          <Text variant="body">{t('route.needLocation')}</Text>
+        </Card>
+      )}
+
+      {query.isLoading && (
+        <>
+          <SkeletonCard lines={3} />
+          <SkeletonCard lines={3} />
+        </>
+      )}
+
+      {query.error && <RouteErrorNote error={query.error} />}
+
+      {data && (
+        <>
+          {data.routes.length === 0 ? (
+            <Card>
+              <Text variant="bodyStrong">{mode === 'transit' ? t('route.noTransit') : t('route.noRoute')}</Text>
+              <Text variant="body" color="textSecondary">
+                {t('route.noTransitHint')}
+              </Text>
+            </Card>
+          ) : (
+            data.routes.map((r, i) => <RouteCard key={i} route={r} best={i === 0} />)
+          )}
+
+          {data.tickets.length > 0 && (
+            <View style={styles.section}>
+              <SectionHeader title={t('route.ticketsTitle')} />
+              <Card>
+                <Text variant="body" color="textSecondary">
+                  {t('route.ticketsHint')}
+                </Text>
+                <TicketLinks options={data.tickets} showModes />
+              </Card>
+            </View>
+          )}
+
+          <Button title={t('route.startNavigation')} icon="navigate" onPress={() => Linking.openURL(data.navigation_url)} />
+        </>
+      )}
+    </Screen>
+  );
+}
+
+function RouteCard({ route, best }: { route: RouteChoice; best: boolean }) {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const transfers = Math.max(route.steps.filter((s) => s.transit).length - 1, 0);
+  return (
+    <Card variant={best ? 'glow' : 'glass'}>
+      <View style={styles.summary}>
+        <View style={styles.flex}>
+          <Text variant="subtitle">{route.durationText ?? t('route.minutes', { count: route.durationMin })}</Text>
+          <Text variant="caption" color="textSecondary">
+            {[
+              route.departAt && route.arriveAt ? `${route.departAt} → ${route.arriveAt}` : null,
+              route.distanceText,
+              route.steps.some((s) => s.transit) ? (transfers ? t('route.transfers', { count: transfers }) : t('route.direct')) : null,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </Text>
+        </View>
+        {(route.fareText || route.fare) && (
+          <View style={[styles.fare, { backgroundColor: colors.surfaceMuted }]}>
+            <Text variant="caption">{route.fareText ?? formatMoney(route.fare!.amount, route.fare!.currency)}</Text>
+          </View>
+        )}
+      </View>
+      {route.steps.map((s, i) => (
+        <StepRow key={i} step={s} />
+      ))}
+    </Card>
+  );
+}
+
+function StepRow({ step }: { step: RouteStepWithTickets }) {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const tr = step.transit;
+  if (!tr) {
+    return (
+      <View style={styles.step}>
+        <Ionicons name="walk" size={18} color={colors.textSecondary} />
+        <Text variant="caption" color="textSecondary" style={styles.flex}>
+          {t('route.walk', { count: step.durationMin })}
+        </Text>
+      </View>
+    );
+  }
+  const lineLabel = tr.lineShort ?? tr.line ?? tr.vehicleName ?? t(`route.vehicle.${tr.vehicle}`);
+  return (
+    <View style={styles.step}>
+      <Ionicons name={VEHICLE_ICONS[tr.vehicle]} size={18} color={colors.primary} />
+      <View style={styles.flex}>
+        <View style={styles.lineRow}>
+          <View style={[styles.pill, { backgroundColor: tr.color ?? colors.primary }]}>
+            <Text variant="caption" style={{ color: tr.textColor ?? '#FFFFFF' }} numberOfLines={1}>
+              {lineLabel}
+            </Text>
+          </View>
+          {tr.headsign && (
+            <Text variant="caption" color="textSecondary" numberOfLines={1} style={styles.flex}>
+              → {tr.headsign}
+            </Text>
+          )}
+        </View>
+        <Text variant="bodyStrong" numberOfLines={2}>
+          {[tr.departAt, tr.from].filter(Boolean).join(' ')} → {[tr.arriveAt, tr.to].filter(Boolean).join(' ')}
+        </Text>
+        <Text variant="caption" color="textMuted">
+          {[t(`route.vehicle.${tr.vehicle}`), tr.stops !== null ? t('route.stops', { count: tr.stops }) : null, t('route.minutes', { count: step.durationMin })]
+            .filter(Boolean)
+            .join(' · ')}
+        </Text>
+        {tr.agency && (
+          <Tap
+            accessibilityRole="link"
+            disabled={!tr.agencyUrl}
+            onPress={() => tr.agencyUrl && openBookingLink(tr.agencyUrl)}
+            feedback="select"
+            style={styles.agency}
+          >
+            <Ionicons name="business-outline" size={14} color={tr.agencyUrl ? colors.primary : colors.textMuted} />
+            <Text variant="caption" color={tr.agencyUrl ? 'primary' : 'textMuted'} numberOfLines={1}>
+              {tr.agencyUrl ? t('route.officialSite', { agency: tr.agency }) : tr.agency}
+            </Text>
+          </Tap>
+        )}
+        <TicketLinks options={step.tickets} />
+      </View>
+    </View>
+  );
+}
+
+function RouteErrorNote({ error }: { error: unknown }) {
+  const { t } = useTranslation();
+  const code = error instanceof PlacesError ? error.code : 'network';
+  return (
+    <Card>
+      <Text variant="bodyStrong" color={code === 'quota_exceeded' ? 'warning' : 'danger'}>
+        {t(`route.errors.${code}`)}
+      </Text>
+      {code === 'quota_exceeded' && <UpgradeButton />}
+    </Card>
+  );
+}
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+  modes: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  section: { gap: Spacing.md },
+  summary: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  fare: { paddingHorizontal: Spacing.sm, paddingVertical: 4, borderRadius: Radius.sm },
+  step: { flexDirection: 'row', alignItems: 'flex-start', gap: Spacing.md, paddingTop: Spacing.sm },
+  lineRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+  pill: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, maxWidth: 180 },
+  agency: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 2 },
+});

@@ -1268,5 +1268,58 @@
     "exit": "Sortie",
     "addStay": "Ajouter un séjour",
     "schengenNote": "Les jours d’entrée et de sortie comptent tous les deux. À titre indicatif uniquement ; vérifie avec le calculateur de court séjour de l’UE."
+  },
+  "route": {
+    "title": "Comment y aller ?",
+    "myLocation": "Ma position",
+    "howToGet": "Comment y aller",
+    "mode": {
+      "transit": "Transports en commun",
+      "drive": "Voiture",
+      "walk": "À pied"
+    },
+    "needLocation": "Autorisez la localisation pour voir les itinéraires depuis votre position.",
+    "noTransit": "Aucun transport en commun trouvé pour ce trajet.",
+    "noRoute": "Aucun itinéraire trouvé.",
+    "noTransitHint": "Essayez en voiture ou à pied, ou consultez les options de voyage ci-dessous.",
+    "ticketsTitle": "Billets et options de voyage",
+    "ticketsHint": "Comparez trains, bus, ferries et vols pour ce trajet.",
+    "startNavigation": "Lancer l’itinéraire dans Plans",
+    "direct": "Direct",
+    "officialSite": "{{agency}} · site officiel",
+    "affiliateNote": "Certains liens sont des liens partenaires ; Yola peut toucher une commission sans frais pour vous.",
+    "minutes_one": "{{count}} min",
+    "minutes_other": "{{count}} min",
+    "transfers_one": "{{count}} correspondance",
+    "transfers_other": "{{count}} correspondances",
+    "walk_one": "{{count}} min à pied",
+    "walk_other": "{{count}} min à pied",
+    "stops_one": "{{count}} arrêt",
+    "stops_other": "{{count}} arrêts",
+    "ticketMode": {
+      "train": "Train",
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "flight": "Vol",
+      "car": "Location de voiture"
+    },
+    "vehicle": {
+      "train": "Train",
+      "high_speed_train": "Train à grande vitesse",
+      "subway": "Métro",
+      "tram": "Tramway",
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "cable_car": "Téléphérique",
+      "funicular": "Funiculaire",
+      "other": "Transport"
+    },
+    "errors": {
+      "quota_exceeded": "Limite d’itinéraires du jour atteinte. Illimité avec Pro.",
+      "not_configured": "Les itinéraires ne sont pas encore disponibles.",
+      "upstream_failed": "Impossible de charger les itinéraires. Réessayez.",
+      "network": "Pas de connexion. Réessayez."
+    },
+    "between": "{{from}} → {{to}} : comment y aller"
   }
 }

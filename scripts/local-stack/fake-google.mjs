@@ -149,6 +149,44 @@ http
       return send(res, 200, searchText(body));
     }
 
+    // Routes API (computeRoutes): İsviçre örneği (bölgesel tren + feribot); "Island" adresine toplu taşıma yok.
+    if (req.method === 'POST' && url.pathname === '/directions/v2:computeRoutes') {
+      const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
+      const mask = req.headers['x-goog-fieldmask'] ?? '';
+      const errors = [];
+      if (!req.headers['x-goog-api-key']) errors.push('API key missing');
+      if (!mask.split(',').every((f) => f.startsWith('routes.'))) errors.push(`Invalid field mask: ${mask}`);
+      if (!['TRANSIT', 'DRIVE', 'WALK'].includes(body.travelMode)) errors.push('bad travelMode');
+      for (const k of ['origin', 'destination']) if (!body[k]?.address && !body[k]?.location?.latLng) errors.push(`${k} missing`);
+      const allowed = ['origin', 'destination', 'travelMode', 'languageCode', 'units', 'computeAlternativeRoutes', 'departureTime', 'routingPreference'];
+      for (const k of Object.keys(body)) if (!allowed.includes(k)) errors.push(`unknown field ${k}`);
+      calls.push({ api: 'routes', body, errors });
+      if (errors.length) return send(res, 400, { error: { code: 400, status: 'INVALID_ARGUMENT', message: errors.join('; ') } });
+      if (body.travelMode === 'TRANSIT' && /island/i.test(body.destination.address ?? '')) return send(res, 200, {});
+      if (body.travelMode !== 'TRANSIT') return send(res, 200, { routes: [{ duration: '2700s', distanceMeters: 42000, localizedValues: { duration: { text: 'TEST 45 min' } } }] });
+      return send(res, 200, {
+        routes: [{
+          duration: '5400s',
+          distanceMeters: 61000,
+          travelAdvisory: { transitFare: { currencyCode: 'CHF', units: '34' } },
+          legs: [{ steps: [
+            { travelMode: 'WALK', staticDuration: '240s', distanceMeters: 300 },
+            { travelMode: 'TRANSIT', staticDuration: '2100s', transitDetails: {
+              headsign: 'Grindelwald', stopCount: 4,
+              stopDetails: { departureStop: { name: 'Interlaken Ost' }, arrivalStop: { name: 'Grindelwald' } },
+              localizedValues: { departureTime: { time: { text: '09:05' } }, arrivalTime: { time: { text: '09:40' } } },
+              transitLine: { name: 'Berner Oberland-Bahn', nameShort: 'R61', color: '#e2001a', agencies: [{ name: 'BOB', uri: 'http://www.jungfrau.ch/' }], vehicle: { type: 'RAIL' } },
+            } },
+            { travelMode: 'TRANSIT', staticDuration: '1800s', transitDetails: {
+              stopDetails: { departureStop: { name: 'Interlaken West' }, arrivalStop: { name: 'Spiez' }, departureTime: '2030-06-01T10:00:00Z' },
+              localizedValues: { departureTime: { time: { text: '12:00' } }, arrivalTime: { time: { text: '12:30' } } },
+              transitLine: { name: 'BLS Schiff', agencies: [{ name: 'BLS', uri: 'https://www.bls.ch/' }], vehicle: { type: 'FERRY' } },
+            } },
+          ] }],
+        }],
+      });
+    }
+
     if (req.method === 'POST' && url.pathname === `/${schema.translate.servicePath}v2`) {
       const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
       const errors = validate(schema.translate.schemas, 'TranslateTextRequest', body);

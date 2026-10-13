@@ -28,11 +28,34 @@ npx supabase functions deploy revenuecat-webhook --no-verify-jwt
 
 | Değişken | API'ler |
 |---|---|
-| `GOOGLE_MAPS_API_KEY` (sunucu) | Places API (New), Weather API, Cloud Translation API — anahtarı bu API'lerle sınırlayın |
+| `GOOGLE_MAPS_API_KEY` (sunucu) | Places API (New), Weather API, Cloud Translation API, **Routes API** ("Nasıl giderim?" toplu taşıma/araba/yürüyüş güzergahı) — anahtarı bu API'lerle sınırlayın |
 | `GOOGLE_MAPS_ANDROID_API_KEY` (uygulama) | Maps SDK for Android — anahtarı `com.akturangroup.yola` paketi ve imza SHA-1 ile sınırlayın |
 | `GEMINI_API_KEY` | Google AI Studio |
 
 Not: Google Places içerik saklama kuralları gereği plan kalemlerindeki puan/yorum sayısı `place_checked_at` ile tutulur; uzun süreli saklama yerine periyodik yenileme veya gösterimde canlı sorgu kararı bu adımda verilecek.
+
+### Ulaşım ve ortaklık (affiliate) bağlantıları
+
+Güzergahlar Google Routes API'den gelir: Google'a tarifelerini veren dünyadaki ulusal ve özel
+demiryolları, bölgesel trenler, metro, tramvay, otobüs, feribot, teleferik ve fünikülerler. Her adımda
+işletmecinin resmi sitesi gösterilir. Bilet bağlantıları `supabase/functions/_shared/transport.ts`
+içinde araç ve bölgeye göre seçilir. Kimlik girilmeden de çalışır (Rome2rio her yer/her araç,
+Google Flights uçuş), ama komisyon kazanılmaz. Ortaklık programına kabul edilince panelden alınan
+"deep link" şablonu Supabase sırrı olarak eklenir. Yer tutucular: `{from} {to} {date} {adults} {lang} {from_iata} {to_iata}`.
+
+| Sır | Ortak | Kullanıldığı yer |
+|---|---|---|
+| `AFFILIATE_BOOKING_URL` | Booking.com | Otel önerileri |
+| `AFFILIATE_GETYOURGUIDE_URL`, `AFFILIATE_TIQETS_URL` | GetYourGuide, Tiqets | Müze/etkinlik biletleri |
+| `AFFILIATE_TRAINLINE_URL`, `AFFILIATE_OMIO_URL` | Trainline, Omio | Avrupa tren/otobüs (Omio uçak da) |
+| `AFFILIATE_12GO_URL` | 12Go | Asya tren, otobüs, feribot |
+| `AFFILIATE_FERRYHOPPER_URL` | Ferryhopper | Avrupa feribotları |
+| `AFFILIATE_BUSBUD_URL` | Busbud | Amerika ve dünya otobüsleri |
+| `AFFILIATE_KIWI_URL`, `AFFILIATE_SKYSCANNER_URL` | Kiwi.com, Skyscanner | Uçuşlar |
+| `AFFILIATE_DISCOVERCARS_URL` | DiscoverCars | Araç kiralama (araba ile kaçamaklar) |
+| `AFFILIATE_ROME2RIO_URL` | Rome2rio | Varsayılan yedeğin yerine (isteğe bağlı) |
+
+Şablon `https://` ile başlamalı ve en az bir yer tutucu içermelidir; aksi hâlde yok sayılır.
 
 ## 3. RevenueCat ve mağaza ürünleri
 

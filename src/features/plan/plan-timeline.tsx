@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -80,13 +81,14 @@ function Badge({ icon, label, tone = 'muted' }: { icon?: IconName; label: string
   );
 }
 
-function TimelineItem({ item, last, city }: { item: PlanItemRow; last: boolean; city: string | null }) {
+function TimelineItem({ item, last, city, from }: { item: PlanItemRow; last: boolean; city: string | null; from: PlanItemRow | null }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const time = item.starts_at ? formatTime(item.starts_at, item.timezone) : '';
   const endTime = item.ends_at ? formatTime(item.ends_at, item.timezone) : null;
   const closed = item.place_status === 'CLOSED_PERMANENTLY' || item.place_status === 'CLOSED_TEMPORARILY';
   const mappable = !item.is_locked && item.kind !== 'transport' && Boolean(item.place_name || item.lat !== null);
+  const routable = isRoutable(item);
   const title =
     item.category === 'check_in' ? `${t('plan.checkIn')} · ${item.title}` : item.category === 'check_out' ? `${t('plan.checkOut')} · ${item.title}` : item.title;
 
@@ -143,7 +145,7 @@ function TimelineItem({ item, last, city }: { item: PlanItemRow; last: boolean; 
             <Badge icon={item.is_indoor ? 'home-outline' : 'sunny-outline'} label={item.is_indoor ? t('plan.indoor') : t('plan.outdoor')} />
           )}
         </View>
-        {(mappable || item.booking_url) && (
+        {(mappable || routable || item.booking_url) && (
           <View style={styles.actions}>
             {mappable && (
               <Chip
@@ -160,12 +162,32 @@ function TimelineItem({ item, last, city }: { item: PlanItemRow; last: boolean; 
                 }
               />
             )}
+            {routable && <Chip icon="git-branch-outline" label={t('route.howToGet')} onPress={() => openRoute(item, from, city)} />}
             {item.booking_url && <Chip icon="ticket-outline" label={t('place.buyTicket')} onPress={() => openBookingLink(item.booking_url!)} />}
           </View>
         )}
       </View>
     </View>
   );
+}
+
+/** Yol tarifi verilebilecek durak: ulaşım kalemi değil ve konumu ya da adı belli. */
+const isRoutable = (i: PlanItemRow) => i.kind !== 'transport' && Boolean(i.lat !== null || i.place_name);
+
+const placeLabel = (i: PlanItemRow, city: string | null) => [i.place_name ?? i.title, i.lat === null ? city : null].filter(Boolean).join(', ');
+
+/** "Nasıl giderim?": bir önceki duraktan (yoksa kullanıcının konumundan) bu durağa. */
+function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: string | null) {
+  const coords = (i: PlanItemRow, prefix: 'to' | 'from') => (i.lat !== null && i.lng !== null ? { [`${prefix}Lat`]: String(i.lat), [`${prefix}Lng`]: String(i.lng) } : {});
+  router.push({
+    pathname: '/route',
+    params: {
+      ...coords(item, 'to'),
+      toName: placeLabel(item, city),
+      ...(from && from.lat !== null ? { ...coords(from, 'from'), fromName: placeLabel(from, city) } : {}),
+      ...(from?.ends_at ? { departAt: from.ends_at } : {}),
+    },
+  });
 }
 
 export function DayTimeline({ day, weather }: { day: PlanDayRow; weather?: DayForecast | null }) {
@@ -193,7 +215,15 @@ export function DayTimeline({ day, weather }: { day: PlanDayRow; weather?: DayFo
           {t('plan.emptyDay')}
         </Text>
       ) : (
-        day.plan_items.map((item, index) => <TimelineItem key={item.id} item={item} city={day.city} last={index === day.plan_items.length - 1} />)
+        day.plan_items.map((item, index) => (
+          <TimelineItem
+            key={item.id}
+            item={item}
+            city={day.city}
+            last={index === day.plan_items.length - 1}
+            from={day.plan_items.slice(0, index).findLast(isRoutable) ?? null}
+          />
+        ))
       )}
     </View>
   );

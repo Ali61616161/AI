@@ -1268,5 +1268,58 @@
     "exit": "Ausreise",
     "addStay": "Aufenthalt hinzufügen",
     "schengenNote": "Ein- und Ausreisetag zählen beide mit. Nur zur Orientierung; prüf es mit dem Kurzaufenthaltsrechner der EU."
+  },
+  "route": {
+    "title": "Wie komme ich hin?",
+    "myLocation": "Mein Standort",
+    "howToGet": "Wie komme ich hin?",
+    "mode": {
+      "transit": "Öffentlich",
+      "drive": "Auto",
+      "walk": "Zu Fuß"
+    },
+    "needLocation": "Erlaube den Standortzugriff, um Routen ab deinem Standort zu sehen.",
+    "noTransit": "Für diese Strecke wurden keine öffentlichen Verkehrsmittel gefunden.",
+    "noRoute": "Keine Route gefunden.",
+    "noTransitHint": "Versuch es mit Auto oder zu Fuß oder sieh dir die Reiseoptionen unten an.",
+    "ticketsTitle": "Tickets und Reiseoptionen",
+    "ticketsHint": "Vergleiche Züge, Busse, Fähren und Flüge für diese Reise.",
+    "startNavigation": "Route in Karten starten",
+    "direct": "Direkt",
+    "officialSite": "{{agency}} · offizielle Website",
+    "affiliateNote": "Einige Links sind Partnerlinks; Yola erhält ggf. eine Provision, ohne Mehrkosten für dich.",
+    "minutes_one": "{{count}} Min.",
+    "minutes_other": "{{count}} Min.",
+    "transfers_one": "{{count}} Umstieg",
+    "transfers_other": "{{count}} Umstiege",
+    "walk_one": "{{count}} Min. zu Fuß",
+    "walk_other": "{{count}} Min. zu Fuß",
+    "stops_one": "{{count}} Halt",
+    "stops_other": "{{count}} Halte",
+    "ticketMode": {
+      "train": "Zug",
+      "bus": "Bus",
+      "ferry": "Fähre",
+      "flight": "Flug",
+      "car": "Mietwagen"
+    },
+    "vehicle": {
+      "train": "Zug",
+      "high_speed_train": "Hochgeschwindigkeitszug",
+      "subway": "U-Bahn",
+      "tram": "Straßenbahn",
+      "bus": "Bus",
+      "ferry": "Fähre",
+      "cable_car": "Seilbahn",
+      "funicular": "Standseilbahn",
+      "other": "ÖPNV"
+    },
+    "errors": {
+      "quota_exceeded": "Tageslimit für Routen erreicht. Unbegrenzt mit Pro.",
+      "not_configured": "Routen sind noch nicht verfügbar.",
+      "upstream_failed": "Routen konnten nicht geladen werden. Versuch es erneut.",
+      "network": "Keine Verbindung. Versuch es erneut."
+    },
+    "between": "{{from}} → {{to}}: Anreise"
   }
 }

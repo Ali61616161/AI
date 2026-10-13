@@ -18,6 +18,7 @@ import { CityErrorNote } from '@/features/city/city-error';
 import { nextWeekendDates } from '@/features/city/dates';
 import { COMPANIONS } from '@/features/profile/options';
 import { flag } from '@/features/tools/emergency-numbers';
+import { TicketLinks } from '@/features/transport/ticket-links';
 import { CityArt } from '@/features/trips/city-art';
 import { formatMoney } from '@/lib/format';
 import { useCityStore } from '@/stores/city-store';
@@ -102,8 +103,20 @@ function GetawayCard({ g, index, days, currency, budget }: { g: GetawayResult; i
               style={styles.flex}
               onPress={() => router.push({ pathname: '/trip-new', params: { city: g.city, country: g.countryCode ?? '', start, end } })}
             />
-            <Button title={t('city.directions')} icon="navigate" variant="secondary" size="sm" style={styles.flex} onPress={() => Linking.openURL(g.directionsUrl)} />
+            <Button
+              title={t('city.directions')}
+              icon="navigate"
+              variant="secondary"
+              size="sm"
+              style={styles.flex}
+              onPress={() =>
+                g.lat !== null && g.lng !== null
+                  ? router.push({ pathname: '/route', params: { toLat: String(g.lat), toLng: String(g.lng), toName: g.city, country: g.countryCode ?? '' } })
+                  : Linking.openURL(g.directionsUrl)
+              }
+            />
           </View>
+          <TicketLinks options={g.tickets ?? []} showModes />
         </View>
       </Card>
     </Animated.View>

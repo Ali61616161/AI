@@ -5,7 +5,7 @@
 //     → { city, title, summary, weather, stops[] (Google ile doğrulanmış mekan bilgisiyle) }   (kota: city_plan)
 //   POST { "action": "getaways", "days": 1-3, "budget_per_person", "transport": "any"|"public"|"car",
 //          "companion", "exclude"?: string[] }
-//     → { city, currency, getaways[] (mesafe gerçek koordinatla, yol tarifi bağlantısı) }        (kota: getaway)
+//     → { city, currency, getaways[] (mesafe gerçek koordinatla, yol tarifi ve bilet bağlantıları) }        (kota: getaway)
 //
 // Şehir, profildeki yaşanan şehirdir (home_city); koordinatı yoksa bir kez bulunup ~1 km
 // hassasiyetle profile yazılır. Gerekli sırlar: GEMINI_API_KEY, GOOGLE_MAPS_API_KEY.
@@ -30,6 +30,7 @@ import { googleConfig } from '../_shared/enrich.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import { cityRequest, PlacesError, searchText, verifyPlanDays } from '../_shared/places.ts';
+import { ticketOptions, transportTemplatesFromEnv } from '../_shared/transport.ts';
 import { fetchCurrent, weatherForPrompt } from '../_shared/weather.ts';
 
 const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
@@ -193,6 +194,7 @@ Deno.serve(async (req) => {
       }),
     );
     const out = filterGetaways(list, origin, coords, { days, budgetPerPerson });
+    const templates = transportTemplatesFromEnv((name) => Deno.env.get(name));
     return json({
       city,
       currency,
@@ -201,6 +203,8 @@ Deno.serve(async (req) => {
       getaways: out.map((g) => ({
         ...g,
         directionsUrl: directionsUrl(country ? `${city}, ${country}` : city, g.countryCode ? `${g.city}, ${g.countryCode}` : g.city, g.travelMode),
+        // Bilet (tren/otobüs/feribot/uçak) veya araç kiralama bağlantıları; bölgeye göre ortak.
+        tickets: ticketOptions({ mode: g.travelMode, from: city, to: g.city, country, lang: language }, templates, 3),
       })),
       quota: { plan: quota.plan, remaining: quota.remaining },
     });

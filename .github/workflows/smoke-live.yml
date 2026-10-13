@@ -55,6 +55,7 @@ jobs:
           sum "### Servisler"
           check "Google Places (açık yerler)" places '{"action":"open_now","lat":41.0369,"lng":28.985,"category":"cafe"}' '"\(.places | length) yer, ör. \(.places[0].name // "-")"'
           check "Google Weather" places '{"action":"weather","lat":41.0369,"lng":28.985}' '"\(.days | length) gün tahmin"'
+          check "Google Routes (Nasıl giderim: Interlaken → Grindelwald)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"origin_name":"Interlaken","destination_name":"Grindelwald","country_code":"CH"}' '"\(.routes | length) güzergah; ilk: \([.routes[0].steps[] | (.transit.lineShort // .transit.line // .mode)] | join(" → ")) (\(.routes[0].durationMin) dk)"'
           check "Google Translation" translate '{"mode":"text","text":"Good morning","target":"tr"}' '.translation // .text // "çeviri geldi"'
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
           check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'
