@@ -1330,5 +1330,45 @@
     "noTrip": "Bugün seyahat yok — bu akşam için fikirler Yola'da",
     "noPlan": "Planını oluşturmak için Yola'yı aç",
     "dayDone": "Bugünlük bu kadar — akşamın keyfini çıkar"
+  },
+  "engagement": {
+    "tripReminder": {
+      "yourTrip": "seyahatin",
+      "day_before": {
+        "title": "Yarın {{city}}! ✈️",
+        "body": "Bavul listen, biletlerin ve belgelerin hazır mı? Yola'da tek dokunuşla kontrol et."
+      },
+      "start_day": {
+        "title": "İyi yolculuklar! {{city}} seni bekliyor",
+        "body": "Bugünün planı hazır. Şu an açık yerler ve hava durumu için dokun."
+      }
+    }
+  },
+  "referral": {
+    "title": "Arkadaşını davet et",
+    "subtitle": "İkiniz de 7 gün Pro kazanın",
+    "needAccount": "Davet kodu için ücretsiz hesap oluştur.",
+    "heroTitle": "Paylaş, birlikte Pro olun",
+    "heroBody": "Arkadaşın Yola'yı indirip kodunu girince ikinize de 7 gün Pro hediye.",
+    "copy": "Kopyalamak için dokun",
+    "copied": "Kopyalandı ✓",
+    "share": "Kodumu paylaş",
+    "shareMessage": "Yola ile seyahatlerimi yapay zeka planlıyor ✈️ Davet kodumla ikimiz de 7 gün Pro kazanıyoruz: {{code}}\n{{url}}",
+    "count_one": "{{count}} arkadaşın katıldı 🎉",
+    "count_other": "{{count}} arkadaşın katıldı 🎉",
+    "haveCode": "Davet kodun mu var?",
+    "haveCodeHint": "Arkadaşının kodunu gir, ikiniz de 7 gün Pro kazanın.",
+    "codeLabel": "Davet kodu",
+    "redeem": "Kodu kullan",
+    "redeemed": "Tebrikler! {{days}} gün Pro hesabına eklendi.",
+    "terms": "Kod, hesabın açıldıktan sonraki 30 gün içinde bir kez kullanılabilir. Davet eden en fazla 20 ödül kazanabilir.",
+    "errors": {
+      "invalid_code": "Bu kod bulunamadı. Harfleri kontrol et.",
+      "own_code": "Kendi kodunu kullanamazsın.",
+      "already_redeemed": "Daha önce bir davet kodu kullandın.",
+      "too_late": "Davet kodu sadece yeni hesaplarda (ilk 30 gün) kullanılabilir.",
+      "referrer_limit": "Bu kodun ödül hakkı doldu.",
+      "network": "Bağlantı yok. Tekrar dene."
+    }
   }
 }

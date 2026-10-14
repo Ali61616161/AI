@@ -1330,5 +1330,45 @@
     "noTrip": "Hoy no hay viaje — abre Yola para ver ideas para esta noche",
     "noPlan": "Abre Yola para crear tu plan",
     "dayDone": "Eso es todo por hoy — disfruta de la noche"
+  },
+  "engagement": {
+    "tripReminder": {
+      "yourTrip": "tu viaje",
+      "day_before": {
+        "title": "¡Mañana: {{city}}! ✈️",
+        "body": "¿Lista de equipaje, billetes y documentos listos? Revísalos en Yola con un toque."
+      },
+      "start_day": {
+        "title": "¡Buen viaje! {{city}} te espera",
+        "body": "El plan de hoy está listo. Toca para ver lugares abiertos y el tiempo."
+      }
+    }
+  },
+  "referral": {
+    "title": "Invita a un amigo",
+    "subtitle": "Ambos ganáis 7 días de Pro",
+    "needAccount": "Crea una cuenta gratis para obtener tu código.",
+    "heroTitle": "Comparte y sed Pro juntos",
+    "heroBody": "Cuando tu amigo instale Yola e introduzca tu código, ambos recibís 7 días de Pro.",
+    "copy": "Toca para copiar",
+    "copied": "Copiado ✓",
+    "share": "Compartir mi código",
+    "shareMessage": "Yola planifica mis viajes con IA ✈️ Con mi código ambos ganamos 7 días de Pro: {{code}}\n{{url}}",
+    "count_one": "Se ha unido {{count}} amigo 🎉",
+    "count_other": "Se han unido {{count}} amigos 🎉",
+    "haveCode": "¿Tienes un código de invitación?",
+    "haveCodeHint": "Introduce el código de tu amigo y ambos ganáis 7 días de Pro.",
+    "codeLabel": "Código de invitación",
+    "redeem": "Usar código",
+    "redeemed": "¡Listo! Se han añadido {{days}} días de Pro.",
+    "terms": "El código se puede usar una vez, en los 30 días tras crear la cuenta. Cada persona puede ganar hasta 20 premios.",
+    "errors": {
+      "invalid_code": "No encontramos ese código. Revisa las letras.",
+      "own_code": "No puedes usar tu propio código.",
+      "already_redeemed": "Ya has usado un código de invitación.",
+      "too_late": "Los códigos solo sirven para cuentas nuevas (primeros 30 días).",
+      "referrer_limit": "Este código ha alcanzado su límite de premios.",
+      "network": "Sin conexión. Inténtalo de nuevo."
+    }
   }
 }

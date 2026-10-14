@@ -1330,5 +1330,45 @@
     "noTrip": "Nessun viaggio oggi — apri Yola per idee per stasera",
     "noPlan": "Apri Yola per creare il tuo piano",
     "dayDone": "Per oggi è tutto — goditi la serata"
+  },
+  "engagement": {
+    "tripReminder": {
+      "yourTrip": "il tuo viaggio",
+      "day_before": {
+        "title": "Domani: {{city}}! ✈️",
+        "body": "Lista valigia, biglietti e documenti pronti? Controllali in Yola con un tocco."
+      },
+      "start_day": {
+        "title": "Buon viaggio! {{city}} ti aspetta",
+        "body": "Il piano di oggi è pronto. Tocca per i luoghi aperti e il meteo."
+      }
+    }
+  },
+  "referral": {
+    "title": "Invita un amico",
+    "subtitle": "Ricevete entrambi 7 giorni di Pro",
+    "needAccount": "Crea un account gratuito per avere il tuo codice.",
+    "heroTitle": "Condividi e diventate Pro insieme",
+    "heroBody": "Quando il tuo amico installa Yola e inserisce il tuo codice, ricevete entrambi 7 giorni di Pro.",
+    "copy": "Tocca per copiare",
+    "copied": "Copiato ✓",
+    "share": "Condividi il mio codice",
+    "shareMessage": "Yola pianifica i miei viaggi con l’IA ✈️ Con il mio codice riceviamo entrambi 7 giorni di Pro: {{code}}\n{{url}}",
+    "count_one": "Si è unito {{count}} amico 🎉",
+    "count_other": "Si sono uniti {{count}} amici 🎉",
+    "haveCode": "Hai un codice invito?",
+    "haveCodeHint": "Inserisci il codice del tuo amico e ricevete entrambi 7 giorni di Pro.",
+    "codeLabel": "Codice invito",
+    "redeem": "Usa il codice",
+    "redeemed": "Fatto! {{days}} giorni di Pro aggiunti.",
+    "terms": "Il codice si usa una volta, entro 30 giorni dalla creazione dell’account. Ogni persona può ottenere al massimo 20 premi.",
+    "errors": {
+      "invalid_code": "Codice non trovato. Controlla le lettere.",
+      "own_code": "Non puoi usare il tuo codice.",
+      "already_redeemed": "Hai già usato un codice invito.",
+      "too_late": "I codici valgono solo per i nuovi account (primi 30 giorni).",
+      "referrer_limit": "Questo codice ha raggiunto il limite di premi.",
+      "network": "Nessuna connessione. Riprova."
+    }
   }
 }

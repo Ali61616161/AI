@@ -1330,5 +1330,45 @@
     "noTrip": "Heute keine Reise — öffne Yola für Ideen für heute Abend",
     "noPlan": "Öffne Yola, um deinen Plan zu erstellen",
     "dayDone": "Das war's für heute — genieß den Abend"
+  },
+  "engagement": {
+    "tripReminder": {
+      "yourTrip": "deine Reise",
+      "day_before": {
+        "title": "Morgen: {{city}}! ✈️",
+        "body": "Packliste, Tickets und Dokumente bereit? Mit einem Tipp in Yola prüfen."
+      },
+      "start_day": {
+        "title": "Gute Reise! {{city}} wartet",
+        "body": "Der heutige Plan ist fertig. Tippe für geöffnete Orte und das Wetter."
+      }
+    }
+  },
+  "referral": {
+    "title": "Freunde einladen",
+    "subtitle": "Ihr bekommt beide 7 Tage Pro",
+    "needAccount": "Erstelle ein kostenloses Konto für deinen Einladungscode.",
+    "heroTitle": "Teilen und gemeinsam Pro werden",
+    "heroBody": "Wenn dein Freund Yola installiert und deinen Code eingibt, bekommt ihr beide 7 Tage Pro.",
+    "copy": "Zum Kopieren tippen",
+    "copied": "Kopiert ✓",
+    "share": "Meinen Code teilen",
+    "shareMessage": "Yola plant meine Reisen mit KI ✈️ Mit meinem Code bekommen wir beide 7 Tage Pro: {{code}}\n{{url}}",
+    "count_one": "{{count}} Freund ist dabei 🎉",
+    "count_other": "{{count}} Freunde sind dabei 🎉",
+    "haveCode": "Hast du einen Einladungscode?",
+    "haveCodeHint": "Gib den Code deines Freundes ein und ihr bekommt beide 7 Tage Pro.",
+    "codeLabel": "Einladungscode",
+    "redeem": "Code einlösen",
+    "redeemed": "Geschafft! {{days}} Tage Pro wurden hinzugefügt.",
+    "terms": "Ein Code kann einmal innerhalb von 30 Tagen nach Kontoerstellung eingelöst werden. Pro Einladendem maximal 20 Belohnungen.",
+    "errors": {
+      "invalid_code": "Code nicht gefunden. Prüfe die Buchstaben.",
+      "own_code": "Du kannst deinen eigenen Code nicht verwenden.",
+      "already_redeemed": "Du hast bereits einen Einladungscode verwendet.",
+      "too_late": "Einladungscodes gelten nur für neue Konten (erste 30 Tage).",
+      "referrer_limit": "Dieser Code hat sein Belohnungslimit erreicht.",
+      "network": "Keine Verbindung. Versuch es erneut."
+    }
   }
 }

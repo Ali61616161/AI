@@ -6,7 +6,7 @@
 // JWT doğrulaması kapalı olmalı: supabase/config.toml → [functions.revenuecat-webhook] verify_jwt = false
 import { adminClient } from '../_shared/admin.ts';
 import { error, json } from '../_shared/http.ts';
-import { COMPLIMENTARY_PRODUCT_ID, PRO_PLANS, productMapFromEnv, rowFromWebhook, transferredFromUsers } from '../_shared/subscriptions.ts';
+import { PROMO_PRODUCTS_FILTER, PRO_PLANS, productMapFromEnv, rowFromWebhook, transferredFromUsers } from '../_shared/subscriptions.ts';
 
 function safeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
       .update({ status: 'expired' })
       .in('user_id', previousOwners)
       .in('plan', PRO_PLANS)
-      .neq('product_id', COMPLIMENTARY_PRODUCT_ID)
+      .not('product_id', 'in', PROMO_PRODUCTS_FILTER)
       .in('status', ['active', 'in_grace']);
     if (transferError) return error('bad_request', 500, transferError.message);
     return json({ ok: true });

@@ -122,6 +122,10 @@ export function rowFromWebhook(event: any, products: ProductMap, now = Date.now(
 export const PRO_PLANS: Plan[] = ['pro_monthly', 'pro_yearly'];
 /** Elle verilen (bağış) Pro'nun ürün kimliği. Mağaza eşitlemesi bu kayıtları kapatmaz. */
 export const COMPLIMENTARY_PRODUCT_ID = 'yola_complimentary';
+/** Arkadaşını davet et ödülü (7 gün Pro). */
+export const REFERRAL_PRODUCT_ID = 'yola_referral';
+/** Mağazadan gelmeyen Pro kayıtları; eşitleme bunları kapatmaz. PostgREST "in" filtresi biçiminde. */
+export const PROMO_PRODUCTS_FILTER = `(${COMPLIMENTARY_PRODUCT_ID},${REFERRAL_PRODUCT_ID})`;
 
 /**
  * TRANSFER olayında satın almanın taşındığı eski kullanıcılar. Bu kullanıcıların Pro

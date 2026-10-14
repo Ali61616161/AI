@@ -687,6 +687,33 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
+\echo '18b. Arkadaşını davet et: kod, tek kullanım, ikisine 7 gün Pro'
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$
+declare v_code text;
+begin
+  v_code := public.my_referral_code();
+  assert v_code ~ '^[A-HJ-NP-Z2-9]{6}$', 'kod 6 karakter, karışan harf yok';
+  assert public.my_referral_code() = v_code, 'kod sabit kalmalı';
+  assert (public.redeem_referral(v_code) ->> 'reason') = 'own_code', 'kendi kodu kullanılamaz';
+  assert tests.throws($q$ update public.profiles set referral_code = 'AAAAAA' where id = auth.uid() $q$), 'kod elle değiştirilemez';
+  perform set_config('tests.code', v_code, false);
+end $$;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$ begin
+  assert (public.redeem_referral('ZZZZZZ') ->> 'reason') = 'invalid_code', 'olmayan kod';
+  assert (public.redeem_referral(lower(current_setting('tests.code'))) ->> 'ok')::boolean, 'küçük harfle de çalışır';
+  assert (public.redeem_referral(current_setting('tests.code')) ->> 'reason') = 'already_redeemed', 'ikinci kez kullanılamaz';
+  assert public.current_plan() = 'pro_monthly', 'davet edilene 7 gün Pro';
+  assert tests.throws($q$ insert into public.referrals (referred_id, referrer_id) values (auth.uid(), auth.uid()) $q$), 'doğrudan eklenemez';
+end $$;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$ begin
+  assert exists (select 1 from public.subscriptions where user_id = auth.uid() and product_id = 'yola_referral' and expires_at > now() + interval '6 days'), 'davet edene de 7 gün Pro';
+  assert public.referral_count() = 1, 'davet sayısı';
+end $$;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

@@ -2,6 +2,9 @@ import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { TripDraft } from '@/features/documents/build-trip';
+import { notePositiveMoment } from '@/features/engagement/rating';
+import { scheduleTripReminders } from '@/features/engagement/trip-reminders';
+import { requestReminderPermission } from '@/features/travel/reminders';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import type { Json } from '@/types/database';
@@ -31,11 +34,14 @@ export function useTrips() {
         .neq('status', 'cancelled')
         .order('start_date', { ascending: true, nullsFirst: false });
       if (error) throw error;
-      return data.map((trip) => ({
+      const trips = data.map((trip) => ({
         ...trip,
         trip_destinations: [...trip.trip_destinations].sort((a, b) => a.position - b.position),
         reservation_count: trip.reservations[0]?.count ?? 0,
       }));
+      // Seyahat öncesi hatırlatmalar her listede yeniden kurulur (tarih değişse de doğru kalır).
+      scheduleTripReminders(trips.map((t) => ({ id: t.id, start_date: t.start_date, status: t.status, city: t.trip_destinations[0]?.city ?? null }))).catch(() => undefined);
+      return trips;
     },
   });
 }
@@ -127,6 +133,8 @@ export function useCreateTripFromDocuments() {
     onSuccess: (tripId) => {
       queryClient.invalidateQueries({ queryKey: ['trips'] });
       queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
+      // İlk seyahatte hatırlatma bildirimleri için izin istenir.
+      requestReminderPermission().catch(() => false);
     },
   });
 }
@@ -264,6 +272,9 @@ export function useGenerateItinerary(tripId: string) {
       }
       return data as { plan_version_id: string; days_planned: number; days_total: number; truncated: boolean };
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['plan', tripId] }),
+    onSuccess: () => {
+      notePositiveMoment();
+      return queryClient.invalidateQueries({ queryKey: ['plan', tripId] });
+    },
   });
 }

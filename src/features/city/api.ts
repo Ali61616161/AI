@@ -1,6 +1,7 @@
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { notePositiveMoment } from '@/features/engagement/rating';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
@@ -66,6 +67,7 @@ export function useEveningPlan() {
   return useMutation({
     mutationFn: (input: { when: When; companion: string; budget: string; moods: Mood[]; lat?: number; lng?: number }) =>
       invokeCity<EveningPlan>({ action: 'evening', ...input, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
+    onSuccess: () => notePositiveMoment(),
   });
 }
 

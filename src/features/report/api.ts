@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { notePositiveMoment } from '@/features/engagement/rating';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
@@ -50,6 +51,7 @@ export function useGenerateReport(tripId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['trip-report', tripId] });
       queryClient.invalidateQueries({ queryKey: ['trips'] });
+      notePositiveMoment();
     },
   });
 }

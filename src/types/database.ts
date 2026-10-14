@@ -742,6 +742,7 @@ export type Database = {
           home_currency: string;
           home_lat: number | null;
           home_lng: number | null;
+          referral_code: string | null;
           id: string;
           identity_verified_at: string | null;
           interests: string[];
@@ -767,6 +768,7 @@ export type Database = {
           home_currency?: string;
           home_lat?: number | null;
           home_lng?: number | null;
+          referral_code?: string | null;
           id: string;
           identity_verified_at?: string | null;
           interests?: string[];
@@ -791,6 +793,7 @@ export type Database = {
           home_currency?: string;
           home_lat?: number | null;
           home_lng?: number | null;
+          referral_code?: string | null;
           id?: string;
           identity_verified_at?: string | null;
           interests?: string[];
@@ -827,6 +830,25 @@ export type Database = {
           id?: never;
           transaction_id?: string;
           user_id?: string;
+        };
+        Relationships: [];
+      };
+      referrals: {
+        Row: {
+          created_at: string;
+          referred_id: string;
+          referrer_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          referred_id: string;
+          referrer_id: string;
+        };
+        Update: {
+          created_at?: string;
+          referred_id?: string;
+          referrer_id?: string;
         };
         Relationships: [];
       };
@@ -1603,6 +1625,9 @@ export type Database = {
       };
       valid_country_codes: { Args: { p_codes: string[]; p_max: number }; Returns: boolean };
       valid_extra_visas: { Args: { p_keys: string[] }; Returns: boolean };
+      my_referral_code: { Args: Record<PropertyKey, never>; Returns: string };
+      redeem_referral: { Args: { p_code: string }; Returns: Json };
+      referral_count: { Args: Record<PropertyKey, never>; Returns: number };
       visited_percentile: { Args: Record<PropertyKey, never>; Returns: number };
     };
     Enums: {

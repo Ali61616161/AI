@@ -4,11 +4,13 @@ import { useEffect } from 'react';
 import { identifyPurchaser } from '@/features/subscription/purchases';
 import { useSessionStore } from '@/stores/session-store';
 import { useAdsBootstrap } from '@/features/ads/use-ads-bootstrap';
+import { useNotificationLinks } from '@/features/engagement/notification-links';
 import { useSyncWidget } from '@/features/widget/use-sync-widget';
 
 export default function AppLayout() {
   const userId = useSessionStore((s) => s.session?.user.id ?? null);
   useAdsBootstrap();
+  useNotificationLinks();
   useSyncWidget();
   // Satın almalar Supabase kullanıcısına bağlanır (RevenueCat app_user_id).
   useEffect(() => {
@@ -41,6 +43,7 @@ export default function AppLayout() {
       <Stack.Screen name="trip-documents" options={{ presentation: 'modal' }} />
       <Stack.Screen name="decide" options={{ presentation: 'modal' }} />
       <Stack.Screen name="route" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="refer" options={{ presentation: 'modal' }} />
       <Stack.Screen name="social" />
       <Stack.Screen name="passport" options={{ presentation: 'modal' }} />
       <Stack.Screen name="evening" options={{ presentation: 'modal' }} />

@@ -117,7 +117,8 @@ const config: ExpoConfig = {
         imageWidth: 120,
       },
     ],
-    // En sonda olmalı: önceki eklentilerin eklediği push yetkisini kaldırır.
+    // Önceki eklentilerin eklediği push yetkisini kaldırır. expo-widgets'tan ÖNCE kalmalı:
+    // expo-widgets yetkiyi yeniden ekler ve bu sıra onu da temizler (prebuild ile doğrulandı).
     './plugins/without-push-entitlement',
     // iOS ana ekran widget'ı "Bugünün planı" (src/features/widget). Android'de expo-widgets henüz yok.
     // Push yetkisi kaldırma eklentisinden SONRA olmalı: aksi halde aps-environment geri eklenir.

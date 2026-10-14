@@ -1293,5 +1293,44 @@
     "noTrip": "今天没有行程 — 打开 Yola 看看今晚去哪儿",
     "noPlan": "打开 Yola 生成你的计划",
     "dayDone": "今天的安排就到这里 — 享受夜晚吧"
+  },
+  "engagement": {
+    "tripReminder": {
+      "yourTrip": "你的旅行",
+      "day_before": {
+        "title": "明天出发：{{city}}！✈️",
+        "body": "行李清单、车票和证件都准备好了吗？在 Yola 里一键检查。"
+      },
+      "start_day": {
+        "title": "旅途愉快！{{city}} 在等你",
+        "body": "今天的行程已就绪。点按查看正在营业的地点和天气。"
+      }
+    }
+  },
+  "referral": {
+    "title": "邀请好友",
+    "subtitle": "你们都能获得 7 天 Pro",
+    "needAccount": "创建免费账户即可获得邀请码。",
+    "heroTitle": "分享，一起成为 Pro",
+    "heroBody": "好友安装 Yola 并输入你的邀请码后，你们都将获得 7 天 Pro。",
+    "copy": "点按复制",
+    "copied": "已复制 ✓",
+    "share": "分享我的邀请码",
+    "shareMessage": "Yola 用 AI 规划我的旅行 ✈️ 用我的邀请码，我们都能获得 7 天 Pro：{{code}}\n{{url}}",
+    "count_other": "已有 {{count}} 位好友加入 🎉",
+    "haveCode": "有邀请码吗？",
+    "haveCodeHint": "输入好友的邀请码，你们都能获得 7 天 Pro。",
+    "codeLabel": "邀请码",
+    "redeem": "使用邀请码",
+    "redeemed": "成功！已为你的账户添加 {{days}} 天 Pro。",
+    "terms": "邀请码只能在创建账户后 30 天内使用一次。每位邀请人最多可获得 20 次奖励。",
+    "errors": {
+      "invalid_code": "找不到该邀请码，请检查字母。",
+      "own_code": "不能使用自己的邀请码。",
+      "already_redeemed": "你已经使用过邀请码。",
+      "too_late": "邀请码仅适用于新账户（前 30 天）。",
+      "referrer_limit": "该邀请码的奖励次数已用完。",
+      "network": "没有网络连接，请重试。"
+    }
   }
 }

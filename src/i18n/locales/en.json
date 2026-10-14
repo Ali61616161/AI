@@ -1330,5 +1330,45 @@
     "noTrip": "No trip today — open Yola for tonight's ideas",
     "noPlan": "Open Yola to build your plan",
     "dayDone": "That's all for today — enjoy your evening"
+  },
+  "engagement": {
+    "tripReminder": {
+      "yourTrip": "your trip",
+      "day_before": {
+        "title": "Tomorrow: {{city}}! ✈️",
+        "body": "Packing list, tickets and documents ready? Check them in Yola with one tap."
+      },
+      "start_day": {
+        "title": "Have a great trip! {{city}} awaits",
+        "body": "Today's plan is ready. Tap for places open now and the weather."
+      }
+    }
+  },
+  "referral": {
+    "title": "Invite a friend",
+    "subtitle": "You both get 7 days of Pro",
+    "needAccount": "Create a free account to get your invite code.",
+    "heroTitle": "Share and go Pro together",
+    "heroBody": "When your friend installs Yola and enters your code, you both get 7 days of Pro.",
+    "copy": "Tap to copy",
+    "copied": "Copied ✓",
+    "share": "Share my code",
+    "shareMessage": "Yola plans my trips with AI ✈️ Use my invite code and we both get 7 days of Pro: {{code}}\n{{url}}",
+    "count_one": "{{count}} friend joined 🎉",
+    "count_other": "{{count}} friends joined 🎉",
+    "haveCode": "Have an invite code?",
+    "haveCodeHint": "Enter your friend's code and you both get 7 days of Pro.",
+    "codeLabel": "Invite code",
+    "redeem": "Use code",
+    "redeemed": "Done! {{days}} days of Pro added to your account.",
+    "terms": "A code can be used once, within 30 days of creating your account. Each inviter can earn up to 20 rewards.",
+    "errors": {
+      "invalid_code": "We couldn't find that code. Check the letters.",
+      "own_code": "You can't use your own code.",
+      "already_redeemed": "You've already used an invite code.",
+      "too_late": "Invite codes only work for new accounts (first 30 days).",
+      "referrer_limit": "This code has reached its reward limit.",
+      "network": "No connection. Try again."
+    }
   }
 }

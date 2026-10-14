@@ -1330,5 +1330,45 @@
     "noTrip": "Pas de voyage aujourd'hui — ouvre Yola pour des idées pour ce soir",
     "noPlan": "Ouvre Yola pour créer ton programme",
     "dayDone": "C'est tout pour aujourd'hui — profite de ta soirée"
+  },
+  "engagement": {
+    "tripReminder": {
+      "yourTrip": "ton voyage",
+      "day_before": {
+        "title": "Demain : {{city}} ! ✈️",
+        "body": "Liste de valise, billets et documents prêts ? Vérifie-les dans Yola en un geste."
+      },
+      "start_day": {
+        "title": "Bon voyage ! {{city}} t’attend",
+        "body": "Le plan du jour est prêt. Touche pour les lieux ouverts et la météo."
+      }
+    }
+  },
+  "referral": {
+    "title": "Invite un ami",
+    "subtitle": "Vous gagnez tous les deux 7 jours de Pro",
+    "needAccount": "Crée un compte gratuit pour obtenir ton code.",
+    "heroTitle": "Partage et passez Pro ensemble",
+    "heroBody": "Quand ton ami installe Yola et saisit ton code, vous recevez tous les deux 7 jours de Pro.",
+    "copy": "Touche pour copier",
+    "copied": "Copié ✓",
+    "share": "Partager mon code",
+    "shareMessage": "Yola planifie mes voyages avec l’IA ✈️ Avec mon code, on gagne tous les deux 7 jours de Pro : {{code}}\n{{url}}",
+    "count_one": "{{count}} ami a rejoint 🎉",
+    "count_other": "{{count}} amis ont rejoint 🎉",
+    "haveCode": "Tu as un code d’invitation ?",
+    "haveCodeHint": "Saisis le code de ton ami et vous gagnez tous les deux 7 jours de Pro.",
+    "codeLabel": "Code d’invitation",
+    "redeem": "Utiliser le code",
+    "redeemed": "C’est fait ! {{days}} jours de Pro ajoutés.",
+    "terms": "Un code s’utilise une fois, dans les 30 jours suivant la création du compte. Chaque parrain peut gagner jusqu’à 20 récompenses.",
+    "errors": {
+      "invalid_code": "Code introuvable. Vérifie les lettres.",
+      "own_code": "Tu ne peux pas utiliser ton propre code.",
+      "already_redeemed": "Tu as déjà utilisé un code d’invitation.",
+      "too_late": "Les codes ne valent que pour les nouveaux comptes (30 premiers jours).",
+      "referrer_limit": "Ce code a atteint sa limite de récompenses.",
+      "network": "Pas de connexion. Réessaie."
+    }
   }
 }
