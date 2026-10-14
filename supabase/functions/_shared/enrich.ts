@@ -33,7 +33,7 @@ export async function destinationCoords(supabase: SupabaseClient, destinations: 
     }
     if (!apiKey) continue;
     try {
-      const [place] = await searchText({ apiKey, apiBase: placesBase, body: cityRequest(d.country_code ? `${d.city}, ${d.country_code}` : d.city, language), fields: ['id', 'location'] });
+      const [place] = await searchText({ apiKey, apiBase: placesBase, body: cityRequest(d.country_code ? `${d.city}, ${d.country_code}` : d.city, language), fields: ['id', 'displayName', 'location'] });
       if (place?.lat == null || place.lng == null) continue;
       out[d.city.toLowerCase()] = { lat: place.lat, lng: place.lng };
       await supabase

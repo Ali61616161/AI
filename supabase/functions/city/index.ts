@@ -76,9 +76,9 @@ Deno.serve(async (req) => {
   async function homeCoords(): Promise<{ lat: number; lng: number } | null> {
     if (profile!.home_lat !== null && profile!.home_lng !== null) return { lat: Number(profile!.home_lat), lng: Number(profile!.home_lng) };
     const query = country ? `${city}, ${country}` : city;
-    let [place] = await searchText({ apiKey: mapsKey, apiBase: google.placesBase, body: cityRequest(query, language), fields: ['id', 'location'] });
+    let [place] = await searchText({ apiKey: mapsKey, apiBase: google.placesBase, body: cityRequest(query, language), fields: ['id', 'displayName', 'location'] });
     // Bazı büyük şehirler (ör. İstanbul) Google'da "locality" değil il olarak kayıtlı; türsüz tekrar aranır.
-    if (place?.lat == null) [place] = await searchText({ apiKey: mapsKey, apiBase: google.placesBase, body: { textQuery: query, pageSize: 1, languageCode: language }, fields: ['id', 'location'] });
+    if (place?.lat == null) [place] = await searchText({ apiKey: mapsKey, apiBase: google.placesBase, body: { textQuery: query, pageSize: 1, languageCode: language }, fields: ['id', 'displayName', 'location'] });
     if (place?.lat == null || place.lng == null) return null;
     await supabase.from('profiles').update({ home_lat: round2(place.lat), home_lng: round2(place.lng) }).eq('id', user.id);
     return { lat: place.lat, lng: place.lng };
@@ -189,7 +189,7 @@ Deno.serve(async (req) => {
     await Promise.all(
       list.slice(0, 8).map(async (g) => {
         try {
-          const [place] = await searchText({ apiKey: mapsKey, apiBase: google.placesBase, body: cityRequest(g.countryCode ? `${g.city}, ${g.countryCode}` : g.city, language), fields: ['id', 'location'] });
+          const [place] = await searchText({ apiKey: mapsKey, apiBase: google.placesBase, body: cityRequest(g.countryCode ? `${g.city}, ${g.countryCode}` : g.city, language), fields: ['id', 'displayName', 'location'] });
           coords[g.city.toLowerCase()] = place?.lat != null && place.lng != null ? { lat: place.lat, lng: place.lng } : null;
         } catch {
           coords[g.city.toLowerCase()] = null;
