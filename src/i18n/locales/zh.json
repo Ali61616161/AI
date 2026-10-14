@@ -1284,5 +1284,14 @@
       "network": "没有网络连接，请重试。"
     },
     "between": "{{from}} → {{to}}：怎么去"
+  },
+  "widget": {
+    "title": "今日计划",
+    "day": "第 {{day}} 天",
+    "dayOf": "第 {{day}}/{{total}} 天",
+    "startsOn": "{{date}} 出发",
+    "noTrip": "今天没有行程 — 打开 Yola 看看今晚去哪儿",
+    "noPlan": "打开 Yola 生成你的计划",
+    "dayDone": "今天的安排就到这里 — 享受夜晚吧"
   }
 }

@@ -1321,5 +1321,14 @@
       "network": "Bağlantı yok. Tekrar dene."
     },
     "between": "{{from}} → {{to}} nasıl gidilir"
+  },
+  "widget": {
+    "title": "Bugünün planı",
+    "day": "{{day}}. gün",
+    "dayOf": "Gün {{day}}/{{total}}",
+    "startsOn": "{{date}} başlıyor",
+    "noTrip": "Bugün seyahat yok — bu akşam için fikirler Yola'da",
+    "noPlan": "Planını oluşturmak için Yola'yı aç",
+    "dayDone": "Bugünlük bu kadar — akşamın keyfini çıkar"
   }
 }

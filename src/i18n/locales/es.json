@@ -1321,5 +1321,14 @@
       "network": "Sin conexión. Inténtalo de nuevo."
     },
     "between": "{{from}} → {{to}}: cómo llegar"
+  },
+  "widget": {
+    "title": "Plan de hoy",
+    "day": "Día {{day}}",
+    "dayOf": "Día {{day}}/{{total}}",
+    "startsOn": "Empieza el {{date}}",
+    "noTrip": "Hoy no hay viaje — abre Yola para ver ideas para esta noche",
+    "noPlan": "Abre Yola para crear tu plan",
+    "dayDone": "Eso es todo por hoy — disfruta de la noche"
   }
 }

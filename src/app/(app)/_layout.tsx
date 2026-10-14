@@ -4,10 +4,12 @@ import { useEffect } from 'react';
 import { identifyPurchaser } from '@/features/subscription/purchases';
 import { useSessionStore } from '@/stores/session-store';
 import { useAdsBootstrap } from '@/features/ads/use-ads-bootstrap';
+import { useSyncWidget } from '@/features/widget/use-sync-widget';
 
 export default function AppLayout() {
   const userId = useSessionStore((s) => s.session?.user.id ?? null);
   useAdsBootstrap();
+  useSyncWidget();
   // Satın almalar Supabase kullanıcısına bağlanır (RevenueCat app_user_id).
   useEffect(() => {
     identifyPurchaser(userId);

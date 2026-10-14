@@ -119,6 +119,21 @@ const config: ExpoConfig = {
     ],
     // En sonda olmalı: önceki eklentilerin eklediği push yetkisini kaldırır.
     './plugins/without-push-entitlement',
+    // iOS ana ekran widget'ı "Bugünün planı" (src/features/widget). Android'de expo-widgets henüz yok.
+    // Push yetkisi kaldırma eklentisinden SONRA olmalı: aksi halde aps-environment geri eklenir.
+    [
+      'expo-widgets',
+      {
+        widgets: [
+          {
+            name: 'TodaysPlan',
+            displayName: "Today's plan",
+            description: 'Your trip day and the next stops in your plan.',
+            supportedFamilies: ['systemSmall', 'systemMedium'],
+          },
+        ],
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

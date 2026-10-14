@@ -1321,5 +1321,14 @@
       "network": "Pas de connexion. Réessayez."
     },
     "between": "{{from}} → {{to}} : comment y aller"
+  },
+  "widget": {
+    "title": "Programme du jour",
+    "day": "Jour {{day}}",
+    "dayOf": "Jour {{day}}/{{total}}",
+    "startsOn": "Début le {{date}}",
+    "noTrip": "Pas de voyage aujourd'hui — ouvre Yola pour des idées pour ce soir",
+    "noPlan": "Ouvre Yola pour créer ton programme",
+    "dayDone": "C'est tout pour aujourd'hui — profite de ta soirée"
   }
 }

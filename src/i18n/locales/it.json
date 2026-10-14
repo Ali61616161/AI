@@ -1321,5 +1321,14 @@
       "network": "Nessuna connessione. Riprova."
     },
     "between": "{{from}} → {{to}}: come arrivare"
+  },
+  "widget": {
+    "title": "Il piano di oggi",
+    "day": "Giorno {{day}}",
+    "dayOf": "Giorno {{day}}/{{total}}",
+    "startsOn": "Inizia il {{date}}",
+    "noTrip": "Nessun viaggio oggi — apri Yola per idee per stasera",
+    "noPlan": "Apri Yola per creare il tuo piano",
+    "dayDone": "Per oggi è tutto — goditi la serata"
   }
 }
