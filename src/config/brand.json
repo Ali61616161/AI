@@ -13,9 +13,9 @@
     "aqua": "#2EC4B6"
   },
   "legal": {
-    "_note": "Veri sorumlusu gerçek kişi (şahıs geliştirici). Adres yayından önce doldurulmalı.",
+    "_note": "Veri sorumlusu gerçek kişi (şahıs geliştirici).",
     "company": "Dursun Ali Akturan (Akturan Group)",
-    "address": "[ŞİRKET ADRESİ]",
+    "address": "Büyükçekmece, İstanbul, Türkiye",
     "email": "info@akturangroup.com",
     "supportEmail": "info@akturangroup.com",
     "effectiveDate": "2026-10-12",
