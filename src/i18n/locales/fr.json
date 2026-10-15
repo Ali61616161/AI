@@ -63,7 +63,11 @@
     "passwordLabel": "Mot de passe",
     "usePassword": "Se connecter avec un mot de passe",
     "useCode": "Se connecter avec un code e-mail",
-    "passwordSubtitle": "Connecte-toi avec l’e-mail et le mot de passe de ton compte."
+    "passwordSubtitle": "Connecte-toi avec l’e-mail et le mot de passe de ton compte.",
+    "continueWithGoogle": "Continuer avec Google",
+    "orWithEmail": "ou par e-mail",
+    "socialError": "Échec de la connexion. Veuillez réessayer.",
+    "acceptFirst": "Veuillez d'abord accepter les conditions."
   },
   "onboarding": {
     "companionTitle": "Avec qui voyages-tu ?",

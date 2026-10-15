@@ -108,12 +108,12 @@ export const Radius = {
 } as const;
 
 /**
- * Yazı tipleri: başlıklarda geometrik "Unbounded", metinde "Manrope" (ikisi de
+ * Yazı tipleri: başlıkta ve metinde sade "Manrope" (ikisi de
  * Latin ve Kiril). Arapça ve Çincede sistem yazı tipi kullanılır (Text bileşeni).
  */
 export const Fonts = {
-  display: 'Unbounded_600SemiBold',
-  displayBold: 'Unbounded_700Bold',
+  display: 'Manrope_700Bold',
+  displayBold: 'Manrope_800ExtraBold',
   regular: 'Manrope_500Medium',
   medium: 'Manrope_600SemiBold',
   bold: 'Manrope_700Bold',
@@ -121,16 +121,16 @@ export const Fonts = {
 } as const;
 
 export const Typography = {
-  hero: { fontFamily: Fonts.displayBold, fontSize: 38, lineHeight: 44, letterSpacing: -1, fontWeight: '700' },
-  display: { fontFamily: Fonts.display, fontSize: 30, lineHeight: 36, letterSpacing: -0.6, fontWeight: '600' },
-  title: { fontFamily: Fonts.display, fontSize: 22, lineHeight: 28, letterSpacing: -0.3, fontWeight: '600' },
+  hero: { fontFamily: Fonts.displayBold, fontSize: 38, lineHeight: 44, letterSpacing: -0.5, fontWeight: '700' },
+  display: { fontFamily: Fonts.display, fontSize: 30, lineHeight: 36, letterSpacing: -0.3, fontWeight: '600' },
+  title: { fontFamily: Fonts.display, fontSize: 22, lineHeight: 28, letterSpacing: -0.1, fontWeight: '600' },
   heading: { fontFamily: Fonts.display, fontSize: 18, lineHeight: 24, letterSpacing: -0.2, fontWeight: '600' },
   subtitle: { fontFamily: Fonts.heavy, fontSize: 18, lineHeight: 24, letterSpacing: -0.2, fontWeight: '800' },
   body: { fontFamily: Fonts.regular, fontSize: 16, lineHeight: 23, fontWeight: '500' },
   bodyStrong: { fontFamily: Fonts.bold, fontSize: 16, lineHeight: 22, fontWeight: '700' },
   caption: { fontFamily: Fonts.medium, fontSize: 13, lineHeight: 18, fontWeight: '600' },
-  overline: { fontFamily: Fonts.heavy, fontSize: 11, lineHeight: 14, letterSpacing: 1.4, textTransform: 'uppercase', fontWeight: '800' },
-  stat: { fontFamily: Fonts.displayBold, fontSize: 28, lineHeight: 32, letterSpacing: -0.8, fontWeight: '700' },
+  overline: { fontFamily: Fonts.heavy, fontSize: 11, lineHeight: 14, letterSpacing: 1, textTransform: 'uppercase', fontWeight: '800' },
+  stat: { fontFamily: Fonts.displayBold, fontSize: 28, lineHeight: 32, letterSpacing: -0.4, fontWeight: '700' },
 } as const;
 
 export type TypographyVariant = keyof typeof Typography;

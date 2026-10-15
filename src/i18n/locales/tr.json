@@ -63,7 +63,11 @@
     "passwordLabel": "Şifre",
     "usePassword": "Şifreyle giriş yap",
     "useCode": "E-posta koduyla giriş yap",
-    "passwordSubtitle": "Hesabının e-postası ve şifresiyle giriş yap."
+    "passwordSubtitle": "Hesabının e-postası ve şifresiyle giriş yap.",
+    "continueWithGoogle": "Google ile devam et",
+    "orWithEmail": "veya e-posta ile",
+    "socialError": "Giriş yapılamadı. Lütfen tekrar deneyin.",
+    "acceptFirst": "Lütfen önce koşulları kabul edin."
   },
   "onboarding": {
     "companionTitle": "Kiminle seyahat ediyorsun?",

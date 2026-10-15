@@ -33,9 +33,16 @@ const i18n = i18next.createInstance();
 
 const STORAGE_KEY = 'yola.language';
 
+/**
+ * Cihazın tercih ettiği diller sırayla denenir (ör. [de-CH, en-US] → de); hiçbiri
+ * desteklenmiyorsa İngilizce. Dil sonradan Profil → Dil'den değiştirilebilir.
+ */
 function detectDeviceLanguage(): LanguageCode {
-  const code = getLocales()[0]?.languageCode;
-  return isSupportedLanguage(code) ? code : FALLBACK_LANGUAGE;
+  for (const locale of getLocales()) {
+    const code = locale.languageCode?.toLowerCase();
+    if (isSupportedLanguage(code)) return code;
+  }
+  return FALLBACK_LANGUAGE;
 }
 
 async function readStoredLanguage(): Promise<LanguageCode | null> {

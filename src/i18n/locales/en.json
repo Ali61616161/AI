@@ -63,7 +63,11 @@
     "passwordLabel": "Password",
     "usePassword": "Sign in with a password",
     "useCode": "Sign in with an email code",
-    "passwordSubtitle": "Sign in with your account's email and password."
+    "passwordSubtitle": "Sign in with your account's email and password.",
+    "continueWithGoogle": "Continue with Google",
+    "orWithEmail": "or with email",
+    "socialError": "Sign-in failed. Please try again.",
+    "acceptFirst": "Please accept the terms first."
   },
   "onboarding": {
     "companionTitle": "Who are you traveling with?",

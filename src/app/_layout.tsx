@@ -1,5 +1,4 @@
 import { Manrope_500Medium, Manrope_600SemiBold, Manrope_700Bold, Manrope_800ExtraBold } from '@expo-google-fonts/manrope';
-import { Unbounded_600SemiBold, Unbounded_700Bold } from '@expo-google-fonts/unbounded';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { useFonts } from 'expo-font';
@@ -37,8 +36,6 @@ export default function RootLayout() {
   const appearanceHydrated = useStoreHydrated(useAppearanceStore);
   // Yazı tipleri yüklenemezse (ör. bozuk önbellek) sistem yazı tipiyle devam edilir.
   const [fontsLoaded, fontError] = useFonts({
-    Unbounded_600SemiBold,
-    Unbounded_700Bold,
     Manrope_500Medium,
     Manrope_600SemiBold,
     Manrope_700Bold,

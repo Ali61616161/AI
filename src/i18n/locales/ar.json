@@ -63,7 +63,11 @@
     "passwordLabel": "كلمة المرور",
     "usePassword": "الدخول بكلمة مرور",
     "useCode": "الدخول برمز البريد",
-    "passwordSubtitle": "سجّل الدخول ببريد حسابك وكلمة المرور."
+    "passwordSubtitle": "سجّل الدخول ببريد حسابك وكلمة المرور.",
+    "continueWithGoogle": "المتابعة باستخدام Google",
+    "orWithEmail": "أو بالبريد الإلكتروني",
+    "socialError": "تعذّر تسجيل الدخول. حاول مرة أخرى.",
+    "acceptFirst": "يرجى قبول الشروط أولاً."
   },
   "onboarding": {
     "companionTitle": "مع من تسافر؟",

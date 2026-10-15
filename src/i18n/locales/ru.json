@@ -63,7 +63,11 @@
     "passwordLabel": "Пароль",
     "usePassword": "Войти по паролю",
     "useCode": "Войти по коду из письма",
-    "passwordSubtitle": "Войди с помощью email и пароля своего аккаунта."
+    "passwordSubtitle": "Войди с помощью email и пароля своего аккаунта.",
+    "continueWithGoogle": "Продолжить с Google",
+    "orWithEmail": "или по e-mail",
+    "socialError": "Не удалось войти. Попробуйте ещё раз.",
+    "acceptFirst": "Сначала примите условия."
   },
   "onboarding": {
     "companionTitle": "С кем ты путешествуешь?",

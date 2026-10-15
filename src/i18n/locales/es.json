@@ -63,7 +63,11 @@
     "passwordLabel": "Contraseña",
     "usePassword": "Entrar con contraseña",
     "useCode": "Entrar con código por correo",
-    "passwordSubtitle": "Inicia sesión con el correo y la contraseña de tu cuenta."
+    "passwordSubtitle": "Inicia sesión con el correo y la contraseña de tu cuenta.",
+    "continueWithGoogle": "Continuar con Google",
+    "orWithEmail": "o con correo",
+    "socialError": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+    "acceptFirst": "Acepta primero los términos."
   },
   "onboarding": {
     "companionTitle": "¿Con quién viajas?",

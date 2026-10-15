@@ -15,6 +15,8 @@ const config: ExpoConfig = {
   ios: {
     bundleIdentifier: brand.bundleId,
     supportsTablet: true,
+    // "Apple ile giriş" yetkisi (Google ile giriş sunulduğu için Apple da zorunlu, 4.8).
+    usesAppleSignIn: true,
     infoPlist: {
       // Sadece standart HTTPS şifrelemesi kullanılır (ihracat beyanı gerekmez).
       ITSAppUsesNonExemptEncryption: false,
@@ -52,6 +54,7 @@ const config: ExpoConfig = {
   },
   plugins: [
     'expo-router',
+    'expo-apple-authentication',
     'expo-secure-store',
     [
       'expo-image-picker',

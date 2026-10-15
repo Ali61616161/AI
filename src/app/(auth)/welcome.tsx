@@ -6,7 +6,6 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { OrbitHero } from '@/components/brand/orbit-hero';
-import { LanguagePicker } from '@/components/settings/language-picker';
 import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
@@ -65,13 +64,6 @@ export default function WelcomeScreen() {
             </View>
           ))}
         </View>
-      </Animated.View>
-
-      <Animated.View entering={FadeInDown.delay(240).duration(600)} style={styles.section}>
-        <Text variant="overline" color="textMuted">
-          {t('language.subtitle')}
-        </Text>
-        <LanguagePicker />
       </Animated.View>
     </Screen>
   );

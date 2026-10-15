@@ -63,7 +63,11 @@
     "passwordLabel": "Passwort",
     "usePassword": "Mit Passwort anmelden",
     "useCode": "Mit E-Mail-Code anmelden",
-    "passwordSubtitle": "Melde dich mit E-Mail und Passwort deines Kontos an."
+    "passwordSubtitle": "Melde dich mit E-Mail und Passwort deines Kontos an.",
+    "continueWithGoogle": "Weiter mit Google",
+    "orWithEmail": "oder mit E-Mail",
+    "socialError": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
+    "acceptFirst": "Bitte akzeptiere zuerst die Bedingungen."
   },
   "onboarding": {
     "companionTitle": "Mit wem reist du?",

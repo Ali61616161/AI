@@ -63,7 +63,11 @@
     "passwordLabel": "Password",
     "usePassword": "Accedi con password",
     "useCode": "Accedi con codice email",
-    "passwordSubtitle": "Accedi con l’email e la password del tuo account."
+    "passwordSubtitle": "Accedi con l’email e la password del tuo account.",
+    "continueWithGoogle": "Continua con Google",
+    "orWithEmail": "o con email",
+    "socialError": "Accesso non riuscito. Riprova.",
+    "acceptFirst": "Accetta prima i termini."
   },
   "onboarding": {
     "companionTitle": "Con chi viaggi?",

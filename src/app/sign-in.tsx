@@ -1,5 +1,7 @@
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -13,6 +15,9 @@ import { useSessionStore } from '@/stores/session-store';
 import { completeSignIn } from '@/features/auth/complete-sign-in';
 import { LEGAL_VERSION } from '@/features/legal/content';
 import { ConsentBox } from '@/features/legal/consent-box';
+import { isAppleSignInAvailable, signInWithApple, signInWithGoogle, type SocialResult } from '@/features/auth/social-sign-in';
+import { useTheme } from '@/theme/use-theme';
+import { Radius, Spacing } from '@/theme/tokens';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -29,6 +34,27 @@ export default function SignInScreen() {
   const saved = useSessionStore((s) => s.consents);
   const setConsents = useSessionStore((s) => s.setConsents);
   const [consent, setConsent] = useState({ accepted: saved?.version === LEGAL_VERSION, marketing: saved?.marketing ?? false });
+
+  const { isDark } = useTheme();
+  const [appleAvailable, setAppleAvailable] = useState(false);
+  useEffect(() => {
+    isAppleSignInAvailable().then(setAppleAvailable);
+  }, []);
+
+  // Apple / Google: sözleşme onayı yine şart; iptal edilirse sessizce geri dönülür.
+  async function social(run: () => Promise<SocialResult>) {
+    setError(null);
+    setLoading(true);
+    rememberConsent();
+    const result = await run();
+    if ('session' in result) {
+      await completeSignIn(result.session);
+    } else if ('error' in result) {
+      setError(t('auth.socialError'));
+      console.warn('social sign-in failed', result.error);
+    }
+    setLoading(false);
+  }
 
   // Onaylar telefonda tutulur, giriş tamamlanınca hesaba yazılır (complete-sign-in).
   function rememberConsent() {
@@ -100,6 +126,29 @@ export default function SignInScreen() {
         </>
       }>
       <StepHeader step={1} total={2} title={t('auth.signInTitle')} subtitle={withPassword ? t('auth.passwordSubtitle') : t('auth.signInSubtitle')} />
+      {configured && (
+        <View style={styles.social}>
+          {appleAvailable && (
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
+              buttonStyle={isDark ? AppleAuthentication.AppleAuthenticationButtonStyle.WHITE : AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+              cornerRadius={Radius.lg}
+              style={[styles.appleButton, !consent.accepted && styles.disabled]}
+              onPress={() => (consent.accepted ? social(signInWithApple) : setError(t('auth.acceptFirst')))}
+            />
+          )}
+          <Button
+            title={t('auth.continueWithGoogle')}
+            icon="logo-google"
+            variant="secondary"
+            disabled={!consent.accepted || loading}
+            onPress={() => social(signInWithGoogle)}
+          />
+          <Text variant="caption" color="textMuted" style={styles.or}>
+            {t('auth.orWithEmail')}
+          </Text>
+        </View>
+      )}
       {configured ? (
         <TextField
           label={t('auth.emailLabel')}
@@ -142,3 +191,10 @@ export default function SignInScreen() {
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  social: { gap: Spacing.sm },
+  appleButton: { height: 52, width: '100%' },
+  disabled: { opacity: 0.45 },
+  or: { textAlign: 'center', marginTop: Spacing.xs },
+});

@@ -63,7 +63,11 @@
     "passwordLabel": "密码",
     "usePassword": "使用密码登录",
     "useCode": "使用邮箱验证码登录",
-    "passwordSubtitle": "使用账户的邮箱和密码登录。"
+    "passwordSubtitle": "使用账户的邮箱和密码登录。",
+    "continueWithGoogle": "使用 Google 继续",
+    "orWithEmail": "或使用邮箱",
+    "socialError": "登录失败，请重试。",
+    "acceptFirst": "请先接受条款。"
   },
   "onboarding": {
     "companionTitle": "你和谁一起旅行？",
