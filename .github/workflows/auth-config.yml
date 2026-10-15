@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       apply:
-        description: Apple girişi ve yola:// dönüş adresini aç (true/false)
+        description: Apple girişi, yola:// dönüş adresi ve 6 haneli e-posta kodu (true/false)
         default: 'false'
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
             current=$(curl -sSf -H "Authorization: Bearer $token" "$api" | jq -r '.uri_allow_list // ""')
             list=$(printf '%s' "$current" | tr ',' '\n' | grep -v '^$' | { cat; echo 'yola://auth-callback'; echo 'yola://**'; } | sort -u | paste -sd, -)
             curl -sSf -X PATCH -H "Authorization: Bearer $token" -H 'Content-Type: application/json' "$api" \
-              -d "$(jq -n --arg list "$list" '{external_apple_enabled: true, external_apple_client_id: "com.akturangroup.yola", uri_allow_list: $list}')" > /dev/null
+              -d "$(jq -n --arg list "$list" '{external_apple_enabled: true, external_apple_client_id: "com.akturangroup.yola", uri_allow_list: $list, mailer_otp_length: 6}')" > /dev/null
             echo "### Uygulandı" | tee -a "$GITHUB_STEP_SUMMARY"
             show
           fi
