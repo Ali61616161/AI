@@ -692,24 +692,34 @@ call tests.login('00000000-0000-0000-0000-00000000000b');
 do $$
 declare v_code text;
 begin
-  v_code := public.my_referral_code();
+  v_code := public.my_referral_code('device-of-b-123');
   assert v_code ~ '^[A-HJ-NP-Z2-9]{6}$', 'kod 6 karakter, karışan harf yok';
   assert public.my_referral_code() = v_code, 'kod sabit kalmalı';
-  assert (public.redeem_referral(v_code) ->> 'reason') = 'own_code', 'kendi kodu kullanılamaz';
+  assert (public.redeem_referral(v_code, 'device-of-b-123') ->> 'reason') = 'own_code', 'kendi kodu kullanılamaz';
   assert tests.throws($q$ update public.profiles set referral_code = 'AAAAAA' where id = auth.uid() $q$), 'kod elle değiştirilemez';
   perform set_config('tests.code', v_code, false);
 end $$;
 call tests.login('00000000-0000-0000-0000-00000000000c');
 do $$ begin
-  assert (public.redeem_referral('ZZZZZZ') ->> 'reason') = 'invalid_code', 'olmayan kod';
-  assert (public.redeem_referral(lower(current_setting('tests.code'))) ->> 'ok')::boolean, 'küçük harfle de çalışır';
-  assert (public.redeem_referral(current_setting('tests.code')) ->> 'reason') = 'already_redeemed', 'ikinci kez kullanılamaz';
+  assert (public.redeem_referral(current_setting('tests.code')) ->> 'reason') = 'device_required', 'cihaz kimliği şart';
+  assert (public.redeem_referral(current_setting('tests.code'), 'device-of-b-123') ->> 'reason') = 'own_code', 'davet edenin cihazındaki ikinci hesap kullanamaz';
+  assert (public.redeem_referral('ZZZZZZ', 'device-of-c-456') ->> 'reason') = 'invalid_code', 'olmayan kod';
+  assert (public.redeem_referral(lower(current_setting('tests.code')), 'device-of-c-456') ->> 'ok')::boolean, 'küçük harfle de çalışır';
+  assert (public.redeem_referral(current_setting('tests.code'), 'device-of-c-456') ->> 'reason') = 'already_redeemed', 'ikinci kez kullanılamaz';
   assert public.current_plan() = 'pro_monthly', 'davet edilene 7 gün Pro';
   assert tests.throws($q$ insert into public.referrals (referred_id, referrer_id) values (auth.uid(), auth.uid()) $q$), 'doğrudan eklenemez';
 end $$;
 call tests.login('00000000-0000-0000-0000-00000000000b');
 do $$ begin
-  assert exists (select 1 from public.subscriptions where user_id = auth.uid() and product_id = 'yola_referral' and expires_at > now() + interval '6 days'), 'davet edene de 7 gün Pro';
+  assert not exists (select 1 from public.subscriptions where user_id = auth.uid() and product_id = 'yola_referral'), 'davet edilen plan yapmadan ödül yok';
+  assert public.referral_count() = 0, 'henüz ödül kazandıran yok';
+end $$;
+reset role;
+insert into public.usage_events (user_id, feature) values ('00000000-0000-0000-0000-00000000000c', 'itinerary_generation');
+insert into public.usage_events (user_id, feature) values ('00000000-0000-0000-0000-00000000000c', 'city_plan');
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$ begin
+  assert (select count(*) from public.subscriptions where user_id = auth.uid() and product_id = 'yola_referral' and expires_at > now() + interval '6 days') = 1, 'ilk planla davet edene bir kez 7 gün Pro';
   assert public.referral_count() = 1, 'davet sayısı';
 end $$;
 

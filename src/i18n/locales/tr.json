@@ -1361,14 +1361,15 @@
     "codeLabel": "Davet kodu",
     "redeem": "Kodu kullan",
     "redeemed": "Tebrikler! {{days}} gün Pro hesabına eklendi.",
-    "terms": "Kod, hesabın açıldıktan sonraki 30 gün içinde bir kez kullanılabilir. Davet eden en fazla 20 ödül kazanabilir.",
+    "terms": "Kod, hesabın açıldıktan sonraki 30 gün içinde ve cihaz başına bir kez kullanılabilir. Davet edenin ödülü, arkadaşı ilk planını oluşturunca verilir (en fazla 20).",
     "errors": {
       "invalid_code": "Bu kod bulunamadı. Harfleri kontrol et.",
       "own_code": "Kendi kodunu kullanamazsın.",
       "already_redeemed": "Daha önce bir davet kodu kullandın.",
       "too_late": "Davet kodu sadece yeni hesaplarda (ilk 30 gün) kullanılabilir.",
-      "referrer_limit": "Bu kodun ödül hakkı doldu.",
-      "network": "Bağlantı yok. Tekrar dene."
+      "network": "Bağlantı yok. Tekrar dene.",
+      "device_required": "Bu cihaz desteklenmiyor. Uygulamayı telefonunda kullan.",
+      "device_used": "Bu cihazda daha önce bir davet kodu kullanıldı."
     }
   }
 }

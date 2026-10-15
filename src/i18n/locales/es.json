@@ -1361,14 +1361,15 @@
     "codeLabel": "Código de invitación",
     "redeem": "Usar código",
     "redeemed": "¡Listo! Se han añadido {{days}} días de Pro.",
-    "terms": "El código se puede usar una vez, en los 30 días tras crear la cuenta. Cada persona puede ganar hasta 20 premios.",
+    "terms": "El código se puede usar una vez por dispositivo, en los 30 días tras crear la cuenta. Quien invita recibe su premio cuando su amigo crea su primer plan (hasta 20).",
     "errors": {
       "invalid_code": "No encontramos ese código. Revisa las letras.",
       "own_code": "No puedes usar tu propio código.",
       "already_redeemed": "Ya has usado un código de invitación.",
       "too_late": "Los códigos solo sirven para cuentas nuevas (primeros 30 días).",
-      "referrer_limit": "Este código ha alcanzado su límite de premios.",
-      "network": "Sin conexión. Inténtalo de nuevo."
+      "network": "Sin conexión. Inténtalo de nuevo.",
+      "device_required": "Este dispositivo no es compatible. Usa la app en tu móvil.",
+      "device_used": "Ya se ha usado un código de invitación en este dispositivo."
     }
   }
 }

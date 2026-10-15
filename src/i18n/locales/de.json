@@ -1361,14 +1361,15 @@
     "codeLabel": "Einladungscode",
     "redeem": "Code einlösen",
     "redeemed": "Geschafft! {{days}} Tage Pro wurden hinzugefügt.",
-    "terms": "Ein Code kann einmal innerhalb von 30 Tagen nach Kontoerstellung eingelöst werden. Pro Einladendem maximal 20 Belohnungen.",
+    "terms": "Ein Code kann einmal pro Gerät innerhalb von 30 Tagen nach Kontoerstellung eingelöst werden. Die Belohnung für Einladende gibt es, wenn der Freund seinen ersten Plan erstellt (max. 20).",
     "errors": {
       "invalid_code": "Code nicht gefunden. Prüfe die Buchstaben.",
       "own_code": "Du kannst deinen eigenen Code nicht verwenden.",
       "already_redeemed": "Du hast bereits einen Einladungscode verwendet.",
       "too_late": "Einladungscodes gelten nur für neue Konten (erste 30 Tage).",
-      "referrer_limit": "Dieser Code hat sein Belohnungslimit erreicht.",
-      "network": "Keine Verbindung. Versuch es erneut."
+      "network": "Keine Verbindung. Versuch es erneut.",
+      "device_required": "Dieses Gerät wird nicht unterstützt. Nutze die App auf deinem Handy.",
+      "device_used": "Auf diesem Gerät wurde bereits ein Einladungscode verwendet."
     }
   }
 }

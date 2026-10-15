@@ -1361,14 +1361,15 @@
     "codeLabel": "Code d’invitation",
     "redeem": "Utiliser le code",
     "redeemed": "C’est fait ! {{days}} jours de Pro ajoutés.",
-    "terms": "Un code s’utilise une fois, dans les 30 jours suivant la création du compte. Chaque parrain peut gagner jusqu’à 20 récompenses.",
+    "terms": "Un code s’utilise une fois par appareil, dans les 30 jours suivant la création du compte. Le parrain reçoit sa récompense quand son ami crée son premier plan (jusqu’à 20).",
     "errors": {
       "invalid_code": "Code introuvable. Vérifie les lettres.",
       "own_code": "Tu ne peux pas utiliser ton propre code.",
       "already_redeemed": "Tu as déjà utilisé un code d’invitation.",
       "too_late": "Les codes ne valent que pour les nouveaux comptes (30 premiers jours).",
-      "referrer_limit": "Ce code a atteint sa limite de récompenses.",
-      "network": "Pas de connexion. Réessaie."
+      "network": "Pas de connexion. Réessaie.",
+      "device_required": "Cet appareil n’est pas pris en charge. Utilise l’app sur ton téléphone.",
+      "device_used": "Un code d’invitation a déjà été utilisé sur cet appareil."
     }
   }
 }

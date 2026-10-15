@@ -1361,14 +1361,15 @@
     "codeLabel": "Invite code",
     "redeem": "Use code",
     "redeemed": "Done! {{days}} days of Pro added to your account.",
-    "terms": "A code can be used once, within 30 days of creating your account. Each inviter can earn up to 20 rewards.",
+    "terms": "A code can be used once per device, within 30 days of creating your account. The inviter's reward arrives when their friend creates a first plan (up to 20).",
     "errors": {
       "invalid_code": "We couldn't find that code. Check the letters.",
       "own_code": "You can't use your own code.",
       "already_redeemed": "You've already used an invite code.",
       "too_late": "Invite codes only work for new accounts (first 30 days).",
-      "referrer_limit": "This code has reached its reward limit.",
-      "network": "No connection. Try again."
+      "network": "No connection. Try again.",
+      "device_required": "This device isn't supported. Use the app on your phone.",
+      "device_used": "An invite code has already been used on this device."
     }
   }
 }

@@ -743,6 +743,7 @@ export type Database = {
           home_lat: number | null;
           home_lng: number | null;
           referral_code: string | null;
+          device_hash: string | null;
           id: string;
           identity_verified_at: string | null;
           interests: string[];
@@ -836,8 +837,10 @@ export type Database = {
       referrals: {
         Row: {
           created_at: string;
+          device_hash: string | null;
           referred_id: string;
           referrer_id: string;
+          referrer_rewarded: boolean;
         };
         ComputedFields: never;
         Insert: {
@@ -1625,8 +1628,8 @@ export type Database = {
       };
       valid_country_codes: { Args: { p_codes: string[]; p_max: number }; Returns: boolean };
       valid_extra_visas: { Args: { p_keys: string[] }; Returns: boolean };
-      my_referral_code: { Args: Record<PropertyKey, never>; Returns: string };
-      redeem_referral: { Args: { p_code: string }; Returns: Json };
+      my_referral_code: { Args: { p_device?: string }; Returns: string };
+      redeem_referral: { Args: { p_code: string; p_device?: string }; Returns: Json };
       referral_count: { Args: Record<PropertyKey, never>; Returns: number };
       visited_percentile: { Args: Record<PropertyKey, never>; Returns: number };
     };
