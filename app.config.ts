@@ -38,7 +38,7 @@ const config: ExpoConfig = {
   android: {
     package: brand.bundleId,
     adaptiveIcon: {
-      backgroundColor: brand.colors.coral,
+      backgroundColor: brand.colors.midnight,
       foregroundImage: './assets/images/android-icon-foreground.png',
       backgroundImage: './assets/images/android-icon-background.png',
       monochromeImage: './assets/images/android-icon-monochrome.png',
