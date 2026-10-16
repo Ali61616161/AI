@@ -82,6 +82,10 @@ jobs:
           python3 scripts/ci/eas-build-interactive.py ios "${{ inputs.profile }}"
       - name: Derle (EAS)
         if: ${{ !inputs.setup_credentials }}
+        env:
+          # Apple API, widget'ın App Groups yetkisini otomatik açarken hata veriyor; yetkiler
+          # Apple Developer'da elle açılır (group.com.akturangroup.yola), EAS sadece profil üretir.
+          EXPO_NO_CAPABILITY_SYNC: '1'
         run: npx eas-cli@latest build --platform ios --profile "${{ inputs.profile }}" --non-interactive --wait
       - name: Kurulum bağlantısı
         if: inputs.profile == 'preview'
