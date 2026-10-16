@@ -25,6 +25,12 @@
       "extends": "base",
       "environment": "production",
       "autoIncrement": true
+    },
+    "production-widget": {
+      "extends": "production",
+      "env": {
+        "ENABLE_WIDGET": "1"
+      }
     }
   },
   "submit": {
