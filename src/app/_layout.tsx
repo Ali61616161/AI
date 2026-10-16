@@ -94,6 +94,7 @@ export default function RootLayout() {
             {/* Misafir kullanıcı uygulamanın içinden de hesap açabilsin diye korumasız. */}
             <Stack.Screen name="sign-in" options={{ presentation: 'modal' }} />
             <Stack.Screen name="verify" options={{ presentation: 'modal' }} />
+            <Stack.Screen name="set-password" options={{ presentation: 'modal', gestureEnabled: false }} />
             <Stack.Screen name="legal" options={{ presentation: 'modal' }} />
           </Stack>
         </ThemeProvider>

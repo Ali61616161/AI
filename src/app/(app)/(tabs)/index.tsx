@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { DirIcon } from '@/components/ui/dir-icon';
 import { Card } from '@/components/ui/card';
-import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
 import { IconBadge } from '@/components/ui/icon-badge';
 import { Screen } from '@/components/ui/screen';
@@ -18,7 +17,6 @@ import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { useIsOnline } from '@/features/offline/use-online';
 import { OpenNowSection } from '@/features/places/open-now-section';
-import { BUDGETS, COMPANIONS } from '@/features/profile/options';
 import { useTrips } from '@/features/trips/queries';
 import { TripCard } from '@/features/trips/trip-card';
 import { isoDateDaysAgo, todayIsoDate } from '@/lib/format';
@@ -49,11 +47,8 @@ const enter = (i: number) => FadeInDown.delay(i * Motion.stagger).springify().da
 export default function TodayScreen() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const preferences = useSessionStore((s) => s.preferences);
   const session = useSessionStore((s) => s.session);
   const online = useIsOnline();
-  const companion = COMPANIONS.find((c) => c.value === preferences.companion);
-  const budget = BUDGETS.find((b) => b.value === preferences.budget);
   const { data: trips } = useTrips();
   const today = todayIsoDate();
   const nextTrip = trips?.find((trip) => !trip.end_date || trip.end_date >= today);
@@ -168,16 +163,84 @@ export default function TodayScreen() {
         </Animated.View>
       )}
 
-      {(companion || budget) && (
-        <Animated.View entering={enter(5)} style={styles.section}>
-          <SectionHeader title={t('today.yourProfile')} action={t('profile.editPreferences')} onAction={() => router.push('/preferences')} />
-          <View style={styles.chips}>
-            {companion && <Chip icon={companion.icon} label={t(`companion.${companion.value}`)} />}
-            {budget && <Chip icon={budget.icon} label={t(`budget.${budget.value}`)} />}
-            {preferences.interests.slice(0, 4).map((i) => (
-              <Chip key={i} label={t(`interest.${i}` as 'interest.art')} />
-            ))}
-          </View>
+      {!nextTrip && (
+        <Animated.View entering={enter(1)}>
+          <MyCitySection />
+        </Animated.View>
+      )}
+
+      <Animated.View entering={enter(1)}>
+        {nextTrip ? (
+          <TripCard trip={nextTrip} highlight />
+        ) : (
+          <EmptyState icon="airplane" title={t('today.noTripTitle')} description={t('today.noTripDescription')}>
+            <Button title={t('today.uploadTicket')} icon="cloud-upload-outline" onPress={() => router.push('/ticket')} />
+            <Button title={t('today.createManually')} variant="secondary" onPress={() => router.push('/trip-new')} />
+          </EmptyState>
+        )}
+      </Animated.View>
+
+      <Animated.View entering={enter(2)} style={styles.section}>
+        <Tap accessibilityRole="button" accessibilityLabel={t('decide.title')} onPress={() => router.push('/decide')} scaleTo={0.98} style={styles.decideShadow}>
+          <LinearGradient colors={Gradients.accent} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.decide}>
+            <View pointerEvents="none" style={styles.decideRing} />
+            <View pointerEvents="none" style={styles.decideRing2} />
+            <View style={styles.decideIcon}>
+              <Ionicons name="dice" size={28} color="#FFFFFF" />
+            </View>
+            <View style={styles.flex}>
+              <Text variant="subtitle" style={styles.white}>
+                {t('today.quick.decideTitle')}
+              </Text>
+              <Text variant="caption" style={styles.whiteSoft}>
+                {t('today.quick.decideBody')}
+              </Text>
+            </View>
+            <DirIcon name="arrow-forward" size={20} color="#FFFFFF" />
+          </LinearGradient>
+        </Tap>
+        <View style={styles.quickRow}>
+          {quick.map((q) => (
+            <Tap key={q.label} accessibilityRole="button" accessibilityLabel={q.label} onPress={() => router.push(q.href)} style={styles.flex} scaleTo={0.95}>
+              <View style={[styles.quickTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <IconBadge icon={q.icon} size={40} />
+                <Text variant="caption" numberOfLines={1}>
+                  {q.label}
+                </Text>
+              </View>
+            </Tap>
+          ))}
+        </View>
+      </Animated.View>
+
+      {nextTrip && (
+        <Animated.View entering={enter(3)}>
+          <MyCitySection />
+        </Animated.View>
+      )}
+
+      <NativeAdCard />
+
+      {endedTrip && (
+        <Animated.View entering={enter(3)}>
+          <Card variant="glow" onPress={() => router.push({ pathname: '/trip-report', params: { tripId: endedTrip.id } })} accessibilityLabel={t('report.endedTitle', { trip: endedTrip.title })}>
+            <View style={styles.rowCenter}>
+              <IconBadge icon="trophy" tone="gradient" />
+              <View style={styles.flex}>
+                <Text variant="bodyStrong">{t('report.endedTitle', { trip: endedTrip.title })}</Text>
+                <Text variant="caption" color="textSecondary">
+                  {t('report.ctaBody')}
+                </Text>
+              </View>
+              <DirIcon name="chevron-forward" size={18} color={colors.textMuted} />
+            </View>
+          </Card>
+        </Animated.View>
+      )}
+
+      {session && isSupabaseConfigured() && online && (
+        <Animated.View entering={enter(4)}>
+          <OpenNowSection />
         </Animated.View>
       )}
 

@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -8,10 +8,12 @@ import { StepHeader } from '@/components/ui/step-header';
 import { TextField } from '@/components/ui/text-field';
 import { completeSignIn } from '@/features/auth/complete-sign-in';
 import { getSupabase } from '@/lib/supabase';
+import { useSessionStore } from '@/stores/session-store';
 
 export default function VerifyScreen() {
   const { t } = useTranslation();
-  const { email } = useLocalSearchParams<{ email: string }>();
+  const { email, mode } = useLocalSearchParams<{ email: string; mode?: 'signup' | 'reset' }>();
+  const needsPassword = mode === 'signup' || mode === 'reset';
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -29,12 +31,18 @@ export default function VerifyScreen() {
       setError(t('auth.invalidCode'));
       return;
     }
-    await completeSignIn(data.session);
     setLoading(false);
+    // Kayıt ve şifre sıfırlama: oturum açıldı, girişi tamamlamadan önce şifre belirlenir.
+    if (needsPassword) {
+      useSessionStore.getState().setSession(data.session);
+      router.replace({ pathname: '/set-password', params: { mode } });
+      return;
+    }
+    await completeSignIn(data.session);
   }
 
   async function resend() {
-    await getSupabase().auth.signInWithOtp({ email });
+    await getSupabase().auth.signInWithOtp({ email, options: { shouldCreateUser: mode === 'signup' } });
   }
 
   return (
@@ -45,7 +53,7 @@ export default function VerifyScreen() {
           <Button title={t('auth.resend')} variant="ghost" onPress={resend} />
         </>
       }>
-      <StepHeader step={2} total={2} title={t('auth.codeTitle')} subtitle={t('auth.codeSubtitle', { email })} />
+      <StepHeader step={2} total={needsPassword ? 3 : 2} title={t('auth.codeTitle')} subtitle={t('auth.codeSubtitle', { email })} />
       <TextField
         label={t('auth.codeLabel')}
         value={code}

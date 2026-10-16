@@ -28,7 +28,7 @@ export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [withPassword, setWithPassword] = useState(false);
+  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>('signin');
   const [password, setPassword] = useState('');
   const configured = isSupabaseConfigured();
   const saved = useSessionStore((s) => s.consents);
@@ -56,12 +56,18 @@ export default function SignInScreen() {
     setLoading(false);
   }
 
+  function switchMode(next: typeof mode) {
+    setMode(next);
+    setError(null);
+    setPassword('');
+  }
+
   // Onaylar telefonda tutulur, giriş tamamlanınca hesaba yazılır (complete-sign-in).
   function rememberConsent() {
     setConsents({ version: LEGAL_VERSION, marketing: consent.marketing });
   }
 
-  // Şifreyle giriş: mağaza inceleme hesabı gibi e-posta kodu alamayan hesaplar için.
+  // Giriş: e-posta + şifre. Kayıt ve şifre sıfırlama: e-postaya kod → yeni şifre (set-password).
   async function signInWithPassword() {
     const value = email.trim().toLowerCase();
     if (!EMAIL_PATTERN.test(value) || !password) {
@@ -93,23 +99,29 @@ export default function SignInScreen() {
     const { error: otpError } = await getSupabase().auth.signInWithOtp({
       email: value,
       // Yeni kullanıcının profili bu dille oluşturulur (handle_new_user tetikleyicisi).
-      options: { data: { language: currentLanguage() } },
+      // Şifre sıfırlamada yeni hesap açılmaz; kayıtlı olmayan e-postaya kod gitmez.
+      options: { shouldCreateUser: mode === 'signup', data: { language: currentLanguage() } },
     });
     setLoading(false);
     if (otpError) {
-      setError(otpError.message);
+      // Hesap bulunamadı: hangi e-postaların kayıtlı olduğu belli olmasın diye genel mesaj.
+      setError(mode === 'reset' ? t('auth.resetError') : otpError.message);
       return;
     }
-    router.push({ pathname: '/verify', params: { email: value } });
+    router.push({ pathname: '/verify', params: { email: value, mode } });
   }
+
+  const primary = mode === 'signin' ? signInWithPassword : sendCode;
+  const title = mode === 'signin' ? t('auth.signInTitle') : mode === 'signup' ? t('auth.signUpTitle') : t('auth.resetTitle');
+  const subtitle = mode === 'signin' ? t('auth.signInSubtitle') : mode === 'signup' ? t('auth.signUpSubtitle') : t('auth.resetSubtitle');
 
   return (
     <Screen
       footer={
         <>
           <Button
-            title={withPassword ? t('auth.signInWithPassword') : t('auth.sendCode')}
-            onPress={withPassword ? signInWithPassword : sendCode}
+            title={mode === 'signin' ? t('auth.signInWithPassword') : t('auth.sendCode')}
+            onPress={primary}
             loading={loading}
             disabled={!configured || !consent.accepted}
           />
@@ -125,7 +137,7 @@ export default function SignInScreen() {
           )}
         </>
       }>
-      <StepHeader step={1} total={2} title={t('auth.signInTitle')} subtitle={withPassword ? t('auth.passwordSubtitle') : t('auth.signInSubtitle')} />
+      <StepHeader step={1} total={mode === 'signin' ? 1 : 3} title={title} subtitle={subtitle} />
       {configured && (
         <View style={styles.social}>
           {appleAvailable && (
@@ -160,11 +172,11 @@ export default function SignInScreen() {
           autoComplete="email"
           keyboardType="email-address"
           textContentType="emailAddress"
-          returnKeyType={withPassword ? 'next' : 'send'}
-          onSubmitEditing={withPassword ? undefined : sendCode}
+          returnKeyType={mode === 'signin' ? 'next' : 'send'}
+          onSubmitEditing={mode === 'signin' ? undefined : sendCode}
         />
       ) : null}
-      {configured && withPassword && (
+      {configured && mode === 'signin' && (
         <TextField
           label={t('auth.passwordLabel')}
           value={password}
@@ -179,7 +191,14 @@ export default function SignInScreen() {
       )}
       {configured && <ConsentBox value={consent} onChange={setConsent} />}
       {configured ? (
-        <Button title={withPassword ? t('auth.useCode') : t('auth.usePassword')} variant="ghost" onPress={() => setWithPassword((v) => !v)} />
+        <View style={styles.links}>
+          {mode === 'signin' && <Button title={t('auth.forgotPassword')} variant="ghost" onPress={() => switchMode('reset')} />}
+          <Button
+            title={mode === 'signup' ? t('auth.haveAccount') : mode === 'signin' ? t('auth.noAccount') : t('auth.backToSignIn')}
+            variant="ghost"
+            onPress={() => switchMode(mode === 'signin' ? 'signup' : 'signin')}
+          />
+        </View>
       ) : (
         <Text variant="body" color="warning">
           {t('auth.notConfigured')}
@@ -196,5 +215,6 @@ const styles = StyleSheet.create({
   social: { gap: Spacing.sm },
   appleButton: { height: 52, width: '100%' },
   disabled: { opacity: 0.45 },
+  links: { gap: Spacing.xs },
   or: { textAlign: 'center', marginTop: Spacing.xs },
 });
