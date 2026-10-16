@@ -124,20 +124,26 @@ const config: ExpoConfig = {
     // expo-widgets yetkiyi yeniden ekler ve bu sıra onu da temizler (prebuild ile doğrulandı).
     './plugins/without-push-entitlement',
     // iOS ana ekran widget'ı "Bugünün planı" (src/features/widget). Android'de expo-widgets henüz yok.
+    // Widget uzantısının imza profili Apple ID girişi gerektirdiği için (API anahtarı yetmiyor)
+    // varsayılan KAPALI; imza hazır olunca ENABLE_WIDGET=1 ile açılır. Kod kapalıyken zararsızdır.
     // Push yetkisi kaldırma eklentisinden SONRA olmalı: aksi halde aps-environment geri eklenir.
-    [
-      'expo-widgets',
-      {
-        widgets: [
-          {
-            name: 'TodaysPlan',
-            displayName: "Today's plan",
-            description: 'Your trip day and the next stops in your plan.',
-            supportedFamilies: ['systemSmall', 'systemMedium'],
-          },
-        ],
-      },
-    ],
+    ...(process.env.ENABLE_WIDGET === '1'
+      ? ([
+          [
+            'expo-widgets',
+            {
+              widgets: [
+                {
+                  name: 'TodaysPlan',
+                  displayName: "Today's plan",
+                  description: 'Your trip day and the next stops in your plan.',
+                  supportedFamilies: ['systemSmall', 'systemMedium'],
+                },
+              ],
+            },
+          ],
+        ] as NonNullable<ExpoConfig['plugins']>)
+      : []),
   ],
   experiments: {
     typedRoutes: true,
