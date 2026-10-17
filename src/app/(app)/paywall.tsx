@@ -5,6 +5,7 @@ import { useState, type ComponentProps } from 'react';
 import { ActivityIndicator, Linking, Platform, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { LogoMark } from '@/components/brand/logo-mark';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { IconBadge } from '@/components/ui/icon-badge';
@@ -82,9 +83,9 @@ export default function PaywallScreen() {
       <ModalHeader title="" />
       <View style={styles.hero}>
         <View style={styles.badgeGlow}>
-          <LinearGradient colors={Gradients.sunset} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.heroBadge}>
-            <Ionicons name="diamond" size={34} color="#FFFFFF" />
-          </LinearGradient>
+          <View style={styles.heroBadge}>
+            <LogoMark size={84} />
+          </View>
         </View>
         <Text variant="hero" style={styles.centerText}>
           Yola Pro
@@ -198,7 +199,7 @@ const BENEFIT_ICONS: Record<string, ComponentProps<typeof Ionicons>['name']> = {
 const styles = StyleSheet.create({
   hero: { alignItems: 'center', gap: Spacing.sm, marginTop: -Spacing.xl },
   badgeGlow: { borderRadius: 30, shadowColor: '#FF6B4A', shadowOpacity: 0.6, shadowRadius: 28, shadowOffset: { width: 0, height: 10 }, elevation: 10, marginBottom: Spacing.sm },
-  heroBadge: { width: 84, height: 84, borderRadius: 30, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'rgba(255,255,255,0.3)' },
+  heroBadge: { width: 84, height: 84 },
   centerText: { textAlign: 'center' },
   benefit: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.sm, paddingVertical: Spacing.md },
   proValue: { maxWidth: 112, textAlign: 'right' },

@@ -1,42 +1,36 @@
-import Svg, { Circle, Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Image, StyleSheet, View } from 'react-native';
 
 import { Brand } from '@/config/brand';
 
 type Props = {
   size?: number;
-  /** false ise arka plansız, sadece "y" işareti çizilir (ör. koyu yüzeyler üzerinde). */
+  /** false ise arka plansız, sadece işaret çizilir (ör. koyu yüzeyler üzerinde). */
   withBackground?: boolean;
+  /** İşaretin rengi (arka plansızken mercan, arka planlıyken beyaz kullanılır). */
   color?: string;
 };
 
-/**
- * Yola logosu: ikiye ayrılan bir yol gibi çizilmiş küçük "y" harfi.
- * Kuyruğu bir rota çizgisi gibi kıvrılıp varış noktasında bitiyor.
- * assets/brand/logo-mark.svg ile aynı geometriyi kullanır.
- */
+// Şeffaf arka planlı Yola işareti (kuş biçimli "Y"). Uygulama ikonuyla aynı çizim.
+const MARK = require('../../../assets/images/splash-icon.png');
+
+/** Yola logosu. tintColor ile istenen renge boyanır; çizim şeffaf PNG'den gelir. */
 export function LogoMark({ size = 64, withBackground = true, color = '#FFFFFF' }: Props) {
+  if (!withBackground) {
+    return <Image source={MARK} style={{ width: size, height: size, tintColor: color }} resizeMode="contain" accessibilityIgnoresInvertColors />;
+  }
   return (
-    <Svg width={size} height={size} viewBox="0 0 100 100">
-      {withBackground && (
-        <>
-          <Defs>
-            <LinearGradient id="yolaBg" x1="0" y1="0" x2="1" y2="1">
-              <Stop offset="0" stopColor={Brand.colors.coralSoft} />
-              <Stop offset="1" stopColor={Brand.colors.coral} />
-            </LinearGradient>
-          </Defs>
-          <Rect width="100" height="100" rx="24" fill="url(#yolaBg)" />
-        </>
-      )}
-      <Path
-        d="M33 24 L54.5 51 M73 24 L47 62 Q42 69 37 73"
-        stroke={color}
-        strokeWidth={9}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
+    <View style={{ width: size, height: size }}>
+      <LinearGradient
+        colors={[Brand.colors.midnight, Brand.colors.midnight]}
+        style={[StyleSheet.absoluteFill, { borderRadius: size * 0.24 }]}
       />
-      <Circle cx="27" cy="80" r="6" fill={color} />
-    </Svg>
+      <Image
+        source={MARK}
+        style={{ width: size, height: size, tintColor: Brand.colors.coral, transform: [{ scale: 0.68 }] }}
+        resizeMode="contain"
+        accessibilityIgnoresInvertColors
+      />
+    </View>
   );
 }
