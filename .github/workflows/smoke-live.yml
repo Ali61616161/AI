@@ -60,6 +60,16 @@ jobs:
           fi
           check "Google Weather" places '{"action":"weather","lat":41.0369,"lng":28.985}' '"\(.days | length) gün tahmin"'
           check "Google Routes (Nasıl giderim: Interlaken → Grindelwald)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"origin_name":"Interlaken","destination_name":"Grindelwald","country_code":"CH"}' '"\(.routes | length) güzergah; ilk: \([.routes[0].steps[] | (.transit.lineShort // .transit.line // .mode)] | join(" → ")) (\(.routes[0].durationMin) dk)"'
+          check "Rota çizgisi (uygulama içi harita)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"country_code":"CH"}' '"çizgi \(.routes[0].polyline | length) karakter"'
+          # Sohbet: konumdan en fazla ~3 km uzakta GERÇEK yerler önermeli (Büyükçekmece).
+          code=$(call replan '{"mode":"crisis","message":"Yağmur başladı, 1 km içinde kapalı bir yer bul","location":{"lat":41.0214,"lng":28.5778},"timezone":"Europe/Istanbul"}')
+          if [ "$code" = 200 ]; then
+            far=$(jq -r '[.suggestions[] | select(.lat != null) | (((.lat - 41.0214) * 111) as $a | ((.lng - 28.5778) * 83.9) as $b | (($a * $a + $b * $b) | sqrt))] | if length == 0 then "yok" else (max * 10 | round / 10 | tostring) end' /tmp/out.json)
+            n=$(jq '.suggestions | length' /tmp/out.json)
+            if [ "$far" = "yok" ]; then sum "- ⚠️ Sohbet: $n öneri ama konumlu yer yok"
+            elif awk "BEGIN{exit !($far <= 3)}"; then sum "- ✅ Sohbet (yakın yer): $n öneri, en uzağı $far km"
+            else sum "- ❌ Sohbet (yakın yer): en uzak öneri $far km (3 km'den fazla)"; fi
+          else sum "- ❌ Sohbet (replan) — HTTP $code $(jq -r '"\(.error.code // "")"' /tmp/out.json | head -c 100)"; fi
           check "Google Translation" translate '{"mode":"text","text":"Good morning","target":"tr"}' '.translation // .text // "çeviri geldi"'
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
           check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'
