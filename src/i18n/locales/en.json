@@ -1447,5 +1447,38 @@
     "next": "Up next",
     "hopWalk": "~{{min}} min walk from the previous stop · {{km}} km",
     "hopFar": "~{{km}} km from the previous stop · see directions"
+  },
+  "tripQuestions": {
+    "title": "For this trip",
+    "subtitle": "All optional. Anything you skip follows your profile preferences; the more you tell us, the more the plan fits you.",
+    "companion": "Who with?",
+    "budget": "Budget",
+    "budgetOther": "Other",
+    "dailyBudget": "Daily budget (per person)",
+    "dailyBudgetHint": "For food, entry fees and local transport. The plan is adjusted to it.",
+    "currency": "Currency",
+    "budgetInvalid": "Enter a valid amount (e.g. 120).",
+    "transport": "How will you get around?",
+    "transports": {
+      "transit": "Public transport",
+      "car": "Car",
+      "mixed": "Mixed / no preference"
+    },
+    "interests": "Your interests",
+    "hotels": "Your hotel bookings",
+    "hotelsHint": "Add your hotel if you have one: the plan follows its location and check-in/out times. Empty dates use the trip dates.",
+    "hotel": "Hotel {{n}}",
+    "removeHotel": "Remove",
+    "hotelName": "Hotel name",
+    "hotelAddress": "Address (optional)",
+    "checkIn": "Check-in (YYYY-MM-DD)",
+    "checkOut": "Check-out (YYYY-MM-DD)",
+    "hotelNameRequired": "Enter the hotel name.",
+    "hotelDatesInvalid": "Use YYYY-MM-DD; check-out can't be before check-in.",
+    "addHotel": "Add hotel",
+    "notes": "Tell us about your trip",
+    "notesPlaceholder": "e.g. It's our honeymoon, we love sea views, we don't want to walk much, and we really want to see the Rhine Falls…",
+    "notesCount": "{{count}} / {{max}} characters",
+    "fixAnswers": "Check the budget or hotel details."
   }
 }

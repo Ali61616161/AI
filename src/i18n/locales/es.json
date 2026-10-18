@@ -1447,5 +1447,38 @@
     "next": "A continuación",
     "hopWalk": "~{{min}} min a pie desde la parada anterior · {{km}} km",
     "hopFar": "~{{km}} km desde la parada anterior · mira cómo llegar"
+  },
+  "tripQuestions": {
+    "title": "Para este viaje",
+    "subtitle": "Todo es opcional. Lo que omitas sigue las preferencias de tu perfil; cuanto más nos cuentes, mejor se ajusta el plan.",
+    "companion": "¿Con quién?",
+    "budget": "Presupuesto",
+    "budgetOther": "Otro",
+    "dailyBudget": "Presupuesto diario (por persona)",
+    "dailyBudgetHint": "Para comida, entradas y transporte local. El plan se ajusta a él.",
+    "currency": "Moneda",
+    "budgetInvalid": "Escribe un importe válido (p. ej. 120).",
+    "transport": "¿Cómo te moverás?",
+    "transports": {
+      "transit": "Transporte público",
+      "car": "Coche",
+      "mixed": "Mixto / me da igual"
+    },
+    "interests": "Tus intereses",
+    "hotels": "Tus reservas de hotel",
+    "hotelsHint": "Añade tu hotel si lo tienes: el plan sigue su ubicación y los horarios de entrada y salida. Sin fechas se usan las del viaje.",
+    "hotel": "Hotel {{n}}",
+    "removeHotel": "Quitar",
+    "hotelName": "Nombre del hotel",
+    "hotelAddress": "Dirección (opcional)",
+    "checkIn": "Entrada (AAAA-MM-DD)",
+    "checkOut": "Salida (AAAA-MM-DD)",
+    "hotelNameRequired": "Escribe el nombre del hotel.",
+    "hotelDatesInvalid": "Usa AAAA-MM-DD; la salida no puede ser antes de la entrada.",
+    "addHotel": "Añadir hotel",
+    "notes": "Cuéntanos tu viaje",
+    "notesPlaceholder": "p. ej. Es nuestra luna de miel, nos encantan las vistas al mar, no queremos caminar mucho y queremos ver las cataratas del Rin…",
+    "notesCount": "{{count}} / {{max}} caracteres",
+    "fixAnswers": "Revisa el presupuesto o los datos del hotel."
   }
 }

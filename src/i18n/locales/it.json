@@ -1447,5 +1447,38 @@
     "next": "Prossima",
     "hopWalk": "~{{min}} min a piedi dalla tappa precedente · {{km}} km",
     "hopFar": "~{{km}} km dalla tappa precedente · vedi indicazioni"
+  },
+  "tripQuestions": {
+    "title": "Per questo viaggio",
+    "subtitle": "Tutto facoltativo. Ciò che salti segue le preferenze del tuo profilo; più ci racconti, più il piano ti somiglia.",
+    "companion": "Con chi?",
+    "budget": "Budget",
+    "budgetOther": "Altro",
+    "dailyBudget": "Budget giornaliero (a persona)",
+    "dailyBudgetHint": "Per cibo, ingressi e trasporti locali. Il piano si adatta.",
+    "currency": "Valuta",
+    "budgetInvalid": "Inserisci un importo valido (es. 120).",
+    "transport": "Come ti sposterai?",
+    "transports": {
+      "transit": "Mezzi pubblici",
+      "car": "Auto",
+      "mixed": "Misto / indifferente"
+    },
+    "interests": "I tuoi interessi",
+    "hotels": "Le tue prenotazioni d’hotel",
+    "hotelsHint": "Aggiungi il tuo hotel: il piano segue la posizione e gli orari di check-in e check-out. Senza date si usano quelle del viaggio.",
+    "hotel": "Hotel {{n}}",
+    "removeHotel": "Rimuovi",
+    "hotelName": "Nome dell’hotel",
+    "hotelAddress": "Indirizzo (facoltativo)",
+    "checkIn": "Check-in (AAAA-MM-GG)",
+    "checkOut": "Check-out (AAAA-MM-GG)",
+    "hotelNameRequired": "Inserisci il nome dell’hotel.",
+    "hotelDatesInvalid": "Usa AAAA-MM-GG; il check-out non può precedere il check-in.",
+    "addHotel": "Aggiungi hotel",
+    "notes": "Raccontaci il tuo viaggio",
+    "notesPlaceholder": "es. È la nostra luna di miele, amiamo la vista mare, non vogliamo camminare molto e vogliamo vedere le cascate del Reno…",
+    "notesCount": "{{count}} / {{max}} caratteri",
+    "fixAnswers": "Controlla budget o dati dell’hotel."
   }
 }

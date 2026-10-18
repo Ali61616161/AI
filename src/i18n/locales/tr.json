@@ -1447,5 +1447,38 @@
     "next": "Sıradaki",
     "hopWalk": "Öncekinden ~{{min}} dk yürüyüş · {{km}} km",
     "hopFar": "Öncekinden ~{{km}} km · yol tarifine bak"
+  },
+  "tripQuestions": {
+    "title": "Bu seyahat için",
+    "subtitle": "Hepsi isteğe bağlı. Boş bıraktıkların profilindeki tercihlerle devam eder; ne kadar çok bilgi verirsen plan o kadar sana göre olur.",
+    "companion": "Kiminle?",
+    "budget": "Bütçe",
+    "budgetOther": "Diğer",
+    "dailyBudget": "Günlük bütçe (kişi başı)",
+    "dailyBudgetHint": "Yemek, giriş ücretleri ve yerel ulaşım için. Plan buna göre ayarlanır.",
+    "currency": "Para birimi",
+    "budgetInvalid": "Geçerli bir tutar yaz (ör. 120).",
+    "transport": "Şehir içinde nasıl gezeceksin?",
+    "transports": {
+      "transit": "Toplu taşıma",
+      "car": "Araba",
+      "mixed": "Karışık / fark etmez"
+    },
+    "interests": "İlgi alanların",
+    "hotels": "Otel rezervasyonların",
+    "hotelsHint": "Otelin varsa ekle: plan konumuna ve giriş-çıkış saatlerine göre yapılır. Tarih boşsa seyahat tarihleri kullanılır.",
+    "hotel": "Otel {{n}}",
+    "removeHotel": "Kaldır",
+    "hotelName": "Otel adı",
+    "hotelAddress": "Adres (isteğe bağlı)",
+    "checkIn": "Giriş (YYYY-AA-GG)",
+    "checkOut": "Çıkış (YYYY-AA-GG)",
+    "hotelNameRequired": "Otel adını yaz.",
+    "hotelDatesInvalid": "Tarihleri YYYY-AA-GG biçiminde yaz; çıkış girişten önce olamaz.",
+    "addHotel": "Otel ekle",
+    "notes": "Seyahatini anlat",
+    "notesPlaceholder": "Örn. Balayındayız, deniz manzaralı yerleri seviyoruz, çok yürümek istemiyoruz, Ren Şelalesi'ni mutlaka görmek istiyoruz…",
+    "notesCount": "{{count}} / {{max}} karakter",
+    "fixAnswers": "Bütçe veya otel bilgilerini kontrol et."
   }
 }

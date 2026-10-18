@@ -1296,6 +1296,8 @@ export type Database = {
           end_date: string | null;
           id: string;
           interests: string[];
+          local_transport: string;
+          notes: string | null;
           owner_id: string;
           start_date: string | null;
           status: Database['public']['Enums']['trip_status'];
@@ -1316,6 +1318,8 @@ export type Database = {
           end_date?: string | null;
           id?: string;
           interests?: string[];
+          local_transport?: string;
+          notes?: string | null;
           owner_id?: string;
           start_date?: string | null;
           status?: Database['public']['Enums']['trip_status'];
@@ -1335,6 +1339,8 @@ export type Database = {
           end_date?: string | null;
           id?: string;
           interests?: string[];
+          local_transport?: string;
+          notes?: string | null;
           owner_id?: string;
           start_date?: string | null;
           status?: Database['public']['Enums']['trip_status'];

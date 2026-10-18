@@ -12,7 +12,8 @@ import { TextField } from '@/components/ui/text-field';
 import { COUNTRIES, localCountryName } from '@/features/tools/countries';
 import { flag } from '@/features/tools/emergency-numbers';
 import { useCreateManualTrip } from '@/features/trips/queries';
-import { useSessionStore } from '@/stores/session-store';
+import { normalizeAnswers } from '@/features/trips/trip-answers';
+import { TripQuestions, useDefaultTripAnswers } from '@/features/trips/trip-questions';
 import { Spacing } from '@/theme/tokens';
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -20,7 +21,6 @@ const DATE = /^\d{4}-\d{2}-\d{2}$/;
 /** Bilet yüklemeden seyahat oluşturma: şehir, ülke ve tarihler. */
 export default function NewTripScreen() {
   const { t, i18n } = useTranslation();
-  const preferences = useSessionStore((s) => s.preferences);
   const create = useCreateManualTrip();
   // Kaçamak ve Çark'tan gelindiğinde şehir, ülke ve tarihler hazır gelir.
   const prefill = useLocalSearchParams<{ city?: string; country?: string; start?: string; end?: string }>();
@@ -29,6 +29,11 @@ export default function NewTripScreen() {
   const [start, setStart] = useState(prefill.start && DATE.test(prefill.start) ? prefill.start : '');
   const [end, setEnd] = useState(prefill.end && DATE.test(prefill.end) ? prefill.end : '');
   const [title, setTitle] = useState('');
+  const defaults = useDefaultTripAnswers();
+  const [answers, setAnswers] = useState(defaults);
+  const [showErrors, setShowErrors] = useState(false);
+  const normalized = useMemo(() => normalizeAnswers(answers), [answers]);
+  const answerErrors = normalized.budgetError || normalized.hotelError !== null;
   const options = useMemo(
     () => COUNTRIES.map((c) => ({ value: c.code, label: `${flag(c.code)}  ${localCountryName(c.code, i18n.language)}` })).sort((a, b) => a.label.slice(4).localeCompare(b.label.slice(4), i18n.language)),
     [i18n.language],
@@ -38,15 +43,18 @@ export default function NewTripScreen() {
   const valid = city.trim().length > 1 && country !== null && datesValid;
 
   async function submit() {
+    setShowErrors(true);
+    if (answerErrors) return;
     const id = await create.mutateAsync({
       title: title.trim() || city.trim(),
       start,
       end,
       city: city.trim(),
       countryCode: country,
-      companion: preferences.companion ?? 'solo',
-      budget: preferences.budget ?? 'mid',
-      interests: preferences.interests,
+      companion: answers.companion,
+      budget: normalized.budgetTier,
+      interests: answers.interests,
+      answers,
     });
     router.replace({ pathname: '/trip/[id]', params: { id } });
   }
@@ -81,6 +89,7 @@ export default function NewTripScreen() {
           {t('common.error')}
         </Text>
       )}
+      <TripQuestions value={answers} onChange={setAnswers} tripStart={DATE.test(start) ? start : null} tripEnd={DATE.test(end) ? end : null} errors={showErrors ? normalized : null} />
       <Text variant="caption" color="textMuted">
         {t('newTrip.hint')}
       </Text>

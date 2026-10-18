@@ -28,6 +28,6 @@ export function buildPlanOptions(form: {
   if (form.stepFree) options.step_free = true;
   if (form.interests.length && !sameInterests(form.interests, form.profileInterests)) options.interests = form.interests;
   const notes = form.notes.trim();
-  if (notes) options.notes = notes.slice(0, 300);
+  if (notes) options.notes = notes.slice(0, 1000);
   return options;
 }

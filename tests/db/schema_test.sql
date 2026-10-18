@@ -724,6 +724,21 @@ do $$ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
+\echo '18c. Seyahat soruları: ulaşım türü, günlük bütçe ve 1000 karakterlik not'
+reset role;
+call tests.login('00000000-0000-0000-0000-00000000000a');
+do $$ begin
+  update public.trips set local_transport = 'car', notes = repeat('a', 1000), budget_amount = 120, budget_currency = 'EUR'
+    where id = '10000000-0000-0000-0000-000000000001';
+  assert (select local_transport from public.trips where id = '10000000-0000-0000-0000-000000000001') = 'car', 'ulaşım türü kaydedilir';
+  assert (select char_length(notes) from public.trips where id = '10000000-0000-0000-0000-000000000001') = 1000, '1000 karakter not kabul edilir';
+  assert tests.throws($q$ update public.trips set notes = repeat('a', 1001) where id = '10000000-0000-0000-0000-000000000001' $q$), 'not 1000 karakteri geçemez';
+  assert tests.throws($q$ update public.trips set local_transport = 'rocket' where id = '10000000-0000-0000-0000-000000000001' $q$), 'geçersiz ulaşım türü reddedilir';
+  assert (select local_transport from public.trips where id = '10000000-0000-0000-0000-000000000002') = 'mixed' or not exists (select 1 from public.trips where id = '10000000-0000-0000-0000-000000000002'), 'varsayılan karışık';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

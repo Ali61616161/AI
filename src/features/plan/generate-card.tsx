@@ -125,7 +125,7 @@ export function GenerateCard({
               value={notes}
               onChangeText={setNotes}
               multiline
-              maxLength={300}
+              maxLength={1000}
             />
           </View>
         )}

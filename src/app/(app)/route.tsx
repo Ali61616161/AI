@@ -60,7 +60,7 @@ export default function RouteScreen() {
   const destination = point(p.toLat, p.toLng, p.toAddress ?? p.toName);
   const given = point(p.fromLat, p.fromLng, p.fromAddress);
   const [here, setHere] = useState<RoutePoint | null | 'denied'>(null);
-  const [mode, setMode] = useState<RouteMode>('transit');
+  const [modeChoice, setModeChoice] = useState<RouteMode | null>(null);
   const [selected, setSelected] = useState(0);
 
   // Başlangıç verilmediyse kullanıcının konumu kullanılır.
@@ -77,6 +77,8 @@ export default function RouteScreen() {
   // Hedef bulunduğun yerden çok uzaksa (uçuş gerekir) "Konumum"dan rota anlamsız olur; seyahatte
   // otel ya da varış havalimanı biliniyorsa rota oradan başlar.
   const { data: trip } = useTrip(p.tripId);
+  // Seyahatte araba seçildiyse rota araba, aksi halde toplu taşıma ile açılır; kullanıcı değiştirebilir.
+  const mode: RouteMode = modeChoice ?? (trip?.local_transport === 'car' ? 'drive' : 'transit');
   const dest = destination && 'lat' in destination ? destination : null;
   const far = !given && here !== null && here !== 'denied' && 'lat' in here && dest !== null && isFar(here, dest);
   const tripOrigin = far && trip ? pickTripOrigin(trip.reservations) : null;
@@ -107,7 +109,7 @@ export default function RouteScreen() {
       <View style={styles.modes}>
         {MODES.map((m) => (
           <Chip key={m.key} icon={m.icon} label={t(`route.mode.${m.key}`)} selected={mode === m.key} onPress={() => {
-              setMode(m.key);
+              setModeChoice(m.key);
               setSelected(0);
             }} />
         ))}

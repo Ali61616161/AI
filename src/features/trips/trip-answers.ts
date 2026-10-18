@@ -1,0 +1,113 @@
+// Seyahat kurulurken sorulan cevapların saf mantığı (arayüz bağımlılığı yok; Deno testleri bunu içe aktarır).
+import { localToUtcIso } from '../../../supabase/functions/_shared/documents.ts';
+
+export type Companion = 'solo' | 'couple' | 'family' | 'friends';
+export type BudgetChoice = 'low' | 'mid' | 'lux' | 'custom';
+export type LocalTransport = 'transit' | 'car' | 'mixed';
+export type BudgetTier = 'low' | 'mid' | 'lux';
+
+export const NOTES_MAX = 1000;
+export const MAX_HOTELS = 3;
+const DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+export type HotelInput = { name: string; address: string; checkIn: string; checkOut: string };
+
+export type TripAnswers = {
+  companion: Companion;
+  budget: BudgetChoice;
+  /** "Diğer" bütçe seçildiğinde kişi başı günlük tutar (metin; "1.250,50" gibi biçimler kabul edilir). */
+  dailyBudget: string;
+  currency: string;
+  interests: string[];
+  transport: LocalTransport;
+  notes: string;
+  hotels: HotelInput[];
+};
+
+export const emptyHotel = (): HotelInput => ({ name: '', address: '', checkIn: '', checkOut: '' });
+
+/** "120", "1.250,50", "1,250.50", "₺ 900" → sayı; geçersiz veya ≤0 ise null. */
+export function parseAmount(text: string): number | null {
+  const cleaned = text.replace(/[^\d.,]/g, '');
+  if (!cleaned) return null;
+  const lastDot = cleaned.lastIndexOf('.');
+  const lastComma = cleaned.lastIndexOf(',');
+  let normalized: string;
+  if (lastDot >= 0 && lastComma >= 0) {
+    const decimalSep = lastDot > lastComma ? '.' : ',';
+    normalized = cleaned.split(decimalSep === '.' ? ',' : '.').join('').replace(decimalSep, '.');
+  } else if (lastComma >= 0 || lastDot >= 0) {
+    const sep = lastComma >= 0 ? ',' : '.';
+    const parts = cleaned.split(sep);
+    // Tek ayırıcı ve sonrasında tam 3 hane: binlik ayırıcı ("1.250"); aksi halde ondalık.
+    normalized = parts.length === 2 && parts[1].length !== 3 ? `${parts[0]}.${parts[1]}` : parts.join('');
+  } else {
+    normalized = cleaned;
+  }
+  const value = Number(normalized);
+  return Number.isFinite(value) && value > 0 && value <= 1_000_000 ? Math.round(value * 100) / 100 : null;
+}
+
+export function isCurrencyCode(value: string): boolean {
+  return /^[A-Za-z]{3}$/.test(value.trim());
+}
+
+export type HotelIssue = 'name' | 'dates' | null;
+
+/** Boş ad = satır yok sayılır (null). Geçersiz tarih veya ters sıra hata verir; boş tarih seyahat tarihlerine düşer. */
+export function hotelIssue(h: HotelInput): HotelIssue | 'empty' {
+  if (!h.name.trim() && !h.address.trim() && !h.checkIn.trim() && !h.checkOut.trim()) return 'empty';
+  if (!h.name.trim()) return 'name';
+  const inn = h.checkIn.trim();
+  const out = h.checkOut.trim();
+  if ((inn && !DATE.test(inn)) || (out && !DATE.test(out))) return 'dates';
+  if (inn && out && out < inn) return 'dates';
+  return null;
+}
+
+export type NormalizedAnswers = {
+  budgetTier: BudgetTier;
+  /** Kişi başı günlük tutar ve para birimi; yalnızca "Diğer" bütçe seçilip geçerli tutar girildiyse. */
+  budgetAmount: { amount: number; currency: string } | null;
+  notes: string | null;
+  hotels: HotelInput[];
+  /** İlk hatalı otel satırının sırası ve nedeni; yoksa null. */
+  hotelError: { index: number; issue: Exclude<HotelIssue, null> } | null;
+  budgetError: boolean;
+};
+
+export function normalizeAnswers(a: TripAnswers): NormalizedAnswers {
+  const custom = a.budget === 'custom';
+  const amount = custom ? parseAmount(a.dailyBudget) : null;
+  const hotels: HotelInput[] = [];
+  let hotelError: NormalizedAnswers['hotelError'] = null;
+  a.hotels.forEach((h, index) => {
+    const issue = hotelIssue(h);
+    if (issue === 'empty') return;
+    if (issue) hotelError ??= { index, issue };
+    else hotels.push(h);
+  });
+  return {
+    budgetTier: a.budget === 'low' || a.budget === 'lux' ? a.budget : 'mid',
+    budgetAmount: amount !== null && isCurrencyCode(a.currency) ? { amount, currency: a.currency.trim().toUpperCase() } : null,
+    notes: a.notes.replace(/\s+$/g, '').trim().slice(0, NOTES_MAX) || null,
+    hotels,
+    hotelError,
+    budgetError: custom && (amount === null || !isCurrencyCode(a.currency)),
+  };
+}
+
+/** Otel girişi: seyahat tarihleri varsayılandır; giriş 15:00, çıkış 11:00 (saat dilimi bilinmediği için UTC kabul edilir). */
+export function hotelReservationRow(h: HotelInput, tripId: string, trip: { start: string | null; end: string | null }) {
+  const checkIn = h.checkIn.trim() || trip.start || null;
+  const checkOut = h.checkOut.trim() || trip.end || checkIn;
+  if (!checkIn || !checkOut) return null;
+  return {
+    trip_id: tripId,
+    type: 'hotel' as const,
+    title: h.name.trim().slice(0, 200),
+    address: h.address.trim().slice(0, 300) || null,
+    starts_at: localToUtcIso(`${checkIn}T15:00`, null),
+    ends_at: localToUtcIso(`${checkOut > checkIn ? checkOut : checkIn}T11:00`, null),
+  };
+}

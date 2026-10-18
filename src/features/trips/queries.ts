@@ -3,6 +3,7 @@ import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { TripDraft } from '@/features/documents/build-trip';
+import { hotelReservationRow, normalizeAnswers, type TripAnswers } from './trip-answers';
 import { notePositiveMoment } from '@/features/engagement/rating';
 import { scheduleTripReminders } from '@/features/engagement/trip-reminders';
 import { requestReminderPermission } from '@/features/travel/reminders';
@@ -14,7 +15,7 @@ const TRIP_LIST_SELECT =
   'id, title, status, start_date, end_date, trip_destinations(city, country_code, position), reservations(count)';
 
 const TRIP_DETAIL_SELECT =
-  'id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, adults, children, interests, ' +
+  'id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, budget_amount, local_transport, notes, adults, children, interests, ' +
   'trip_destinations(id, city, country_code, arrive_on, depart_on, position), ' +
   'reservations(id, type, title, provider_name, reference_code, starts_at, ends_at, start_timezone, end_timezone, ' +
   'origin_name, origin_code, destination_name, destination_code, address, details)';
@@ -94,6 +95,10 @@ export type TripDetail = {
   budget_tier: string;
   companion_type: string;
   budget_currency: string | null;
+  /** Kişi başı günlük bütçe (budget_currency cinsinden); doluysa bütçe düzeyi yerine geçer. */
+  budget_amount: number | null;
+  local_transport: 'transit' | 'car' | 'mixed';
+  notes: string | null;
   adults: number;
   children: number;
   interests: string[];
@@ -108,12 +113,46 @@ export type TripDetail = {
   reservations: TripReservation[];
 };
 
+/**
+ * Seyahat kurulurken verilen cevapları (ulaşım türü, not, günlük bütçe, oteller) kaydeder.
+ * Seyahat zaten oluştuğu için hata olursa sessizce atlanır: seyahat varsayılanlarla devam eder.
+ */
+export async function applyTripAnswers(tripId: string, answers: TripAnswers, trip: { start: string | null; end: string | null }) {
+  try {
+    const n = normalizeAnswers(answers);
+    const supabase = getSupabase();
+    const { error } = await supabase
+      .from('trips')
+      .update({
+        local_transport: answers.transport,
+        notes: n.notes,
+        ...(n.budgetAmount ? { budget_amount: n.budgetAmount.amount, budget_currency: n.budgetAmount.currency } : {}),
+      })
+      .eq('id', tripId);
+    if (error) throw error;
+    const rows = n.hotels.map((h) => hotelReservationRow(h, tripId, trip)).filter((r): r is NonNullable<typeof r> => r !== null);
+    if (rows.length) {
+      const { error: hotelError } = await supabase.from('reservations').insert(rows);
+      if (hotelError) throw hotelError;
+    }
+  } catch (e) {
+    console.warn('Seyahat cevapları kaydedilemedi', e);
+  }
+}
+
+/** Cevaplardan profil tercihleri yerine seyahate özel tercihleri üretir (verilmediyse profildekiler). */
+function tripPreferences(answers: TripAnswers | undefined) {
+  const { preferences } = useSessionStore.getState();
+  if (!answers) return { companion: preferences.companion, budget: preferences.budget, interests: preferences.interests };
+  return { companion: answers.companion, budget: normalizeAnswers(answers).budgetTier, interests: answers.interests };
+}
+
 /** Onaylanan belgelerden seyahat oluşturur (veya tripId verilirse mevcut seyahate ekler). */
 export function useCreateTripFromDocuments() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { draft: TripDraft; documentIds: string[]; tripId?: string }) => {
-      const { preferences } = useSessionStore.getState();
+    mutationFn: async (input: { draft: TripDraft; documentIds: string[]; tripId?: string; answers?: TripAnswers }) => {
+      const preferences = tripPreferences(input.answers);
       const { data, error } = await getSupabase().rpc('create_trip_from_documents', {
         p_trip: {
           title: input.draft.title,
@@ -129,6 +168,8 @@ export function useCreateTripFromDocuments() {
         p_trip_id: input.tripId,
       });
       if (error) throw error;
+      // Yeni seyahatte cevaplar (ulaşım, not, bütçe, oteller) kaydedilir; mevcut seyahate belge eklerken sorulmaz.
+      if (input.answers && !input.tripId) await applyTripAnswers(data, input.answers, { start: input.draft.start_date, end: input.draft.end_date });
       return data;
     },
     onSuccess: (tripId) => {
@@ -144,7 +185,7 @@ export function useCreateTripFromDocuments() {
 export function useCreateManualTrip() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { title: string; start: string; end: string; city: string; countryCode: string | null; companion: string; budget: string; interests: string[] }) => {
+    mutationFn: async (input: { title: string; start: string; end: string; city: string; countryCode: string | null; companion: string; budget: string; interests: string[]; answers?: TripAnswers }) => {
       const { data, error } = await getSupabase().rpc('create_trip_manual', {
         p_title: input.title,
         p_start: input.start,
@@ -155,6 +196,7 @@ export function useCreateManualTrip() {
         p_interests: input.interests,
       });
       if (error) throw error;
+      if (input.answers) await applyTripAnswers(data as string, input.answers, { start: input.start, end: input.end });
       return data as string;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['trips'] }),

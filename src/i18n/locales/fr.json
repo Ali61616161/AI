@@ -1447,5 +1447,38 @@
     "next": "Ensuite",
     "hopWalk": "~{{min}} min à pied depuis l’étape précédente · {{km}} km",
     "hopFar": "~{{km}} km depuis l’étape précédente · voir l’itinéraire"
+  },
+  "tripQuestions": {
+    "title": "Pour ce voyage",
+    "subtitle": "Tout est facultatif. Ce que tu laisses vide suit les préférences de ton profil ; plus tu en dis, plus le plan te correspond.",
+    "companion": "Avec qui ?",
+    "budget": "Budget",
+    "budgetOther": "Autre",
+    "dailyBudget": "Budget par jour (par personne)",
+    "dailyBudgetHint": "Pour les repas, les entrées et les transports locaux. Le plan s’y adapte.",
+    "currency": "Devise",
+    "budgetInvalid": "Saisis un montant valide (ex. 120).",
+    "transport": "Comment te déplaceras-tu ?",
+    "transports": {
+      "transit": "Transports en commun",
+      "car": "Voiture",
+      "mixed": "Mixte / peu importe"
+    },
+    "interests": "Tes centres d’intérêt",
+    "hotels": "Tes réservations d’hôtel",
+    "hotelsHint": "Ajoute ton hôtel : le plan suit son emplacement et les heures d’arrivée et de départ. Sans dates, celles du voyage sont utilisées.",
+    "hotel": "Hôtel {{n}}",
+    "removeHotel": "Retirer",
+    "hotelName": "Nom de l’hôtel",
+    "hotelAddress": "Adresse (facultatif)",
+    "checkIn": "Arrivée (AAAA-MM-JJ)",
+    "checkOut": "Départ (AAAA-MM-JJ)",
+    "hotelNameRequired": "Saisis le nom de l’hôtel.",
+    "hotelDatesInvalid": "Utilise AAAA-MM-JJ ; le départ ne peut pas précéder l’arrivée.",
+    "addHotel": "Ajouter un hôtel",
+    "notes": "Parle-nous de ton voyage",
+    "notesPlaceholder": "ex. C’est notre lune de miel, on adore les vues sur la mer, on ne veut pas trop marcher et on veut absolument voir les chutes du Rhin…",
+    "notesCount": "{{count}} / {{max}} caractères",
+    "fixAnswers": "Vérifie le budget ou les infos de l’hôtel."
   }
 }

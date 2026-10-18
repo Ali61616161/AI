@@ -13,6 +13,8 @@ import { buildTripDraft, type DraftItem } from '@/features/documents/build-trip'
 import { RESERVATION_ICONS, TRANSPORT_TYPES } from '@/features/documents/reservation-icons';
 import { useUploadStore } from '@/features/documents/upload-store';
 import { useCreateTripFromDocuments } from '@/features/trips/queries';
+import { normalizeAnswers } from '@/features/trips/trip-answers';
+import { TripQuestions, useDefaultTripAnswers } from '@/features/trips/trip-questions';
 import { formatDateRange } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -178,6 +180,11 @@ export default function TicketReviewScreen() {
   const createTrip = useCreateTripFromDocuments();
   const [dateErrors, setDateErrors] = useState<Record<string, Partial<Record<DateField, boolean>>>>({});
   const [formError, setFormError] = useState<string | null>(null);
+  // Yeni seyahat kurulurken seyahate özel sorular (mevcut seyahate belge eklerken sorulmaz).
+  const defaults = useDefaultTripAnswers();
+  const [answers, setAnswers] = useState(defaults);
+  const [showErrors, setShowErrors] = useState(false);
+  const normalized = useMemo(() => normalizeAnswers(answers), [answers]);
 
   const selected = useMemo(() => items.filter((i) => !excluded.includes(i.key)), [items, excluded]);
   const hasDateErrors = selected.some((i) => dateErrors[i.key]?.start || dateErrors[i.key]?.end);
@@ -209,9 +216,13 @@ export default function TicketReviewScreen() {
     setFormError(null);
     if (!selected.length) return setFormError(t('review.nothingSelected'));
     if (hasDateErrors || !draft) return setFormError(t('review.fixDates'));
+    if (!tripId && (normalized.budgetError || normalized.hotelError)) {
+      setShowErrors(true);
+      return setFormError(t('tripQuestions.fixAnswers'));
+    }
     try {
       const documentIds = [...new Set(selected.map((i) => i.documentId))];
-      const id = await createTrip.mutateAsync({ draft, documentIds, tripId });
+      const id = await createTrip.mutateAsync({ draft, documentIds, tripId, answers: tripId ? undefined : answers });
       reset();
       if (router.canDismiss()) router.dismissAll();
       router.push({ pathname: '/trip/[id]', params: { id } });
@@ -250,6 +261,7 @@ export default function TicketReviewScreen() {
           onDateText={(field, text) => onDateText(item, field, text)}
         />
       ))}
+      {!tripId && <TripQuestions value={answers} onChange={setAnswers} tripStart={draft?.start_date ?? null} tripEnd={draft?.end_date ?? null} errors={showErrors ? normalized : null} />}
     </Screen>
   );
 }
