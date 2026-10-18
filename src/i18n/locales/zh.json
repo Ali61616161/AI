@@ -1004,7 +1004,7 @@
     "tiles": {
       "evening": {
         "title": "今晚去哪？",
-        "body": "AI 帮你安排今晚或周末"
+        "body": "为今晚或周末安排行程"
       },
       "getaway": {
         "title": "小旅行",

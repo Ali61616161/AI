@@ -1,5 +1,4 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router, type Href } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -12,18 +11,19 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { useSessionStore } from '@/stores/session-store';
-import { Gradients, Radius, Spacing } from '@/theme/tokens';
+import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { useCityStats } from './api';
 
-type Tile = { key: 'evening' | 'getaway' | 'spin' | 'saved'; icon: ComponentProps<typeof Ionicons>['name']; href: Href; colors: readonly [string, string, ...string[]] };
+type Row = { key: 'evening' | 'getaway' | 'spin' | 'decide' | 'saved'; icon: ComponentProps<typeof Ionicons>['name']; href: Href };
 
-const TILES: Tile[] = [
-  { key: 'evening', icon: 'sparkles', href: '/evening', colors: Gradients.sunset },
-  { key: 'getaway', icon: 'compass', href: '/getaway', colors: Gradients.accent },
-  { key: 'spin', icon: 'aperture', href: '/spin', colors: Gradients.primary },
-  { key: 'saved', icon: 'bookmark', href: '/saved', colors: ['#3D8BFF', '#7C5CFF'] },
+const ROWS: Row[] = [
+  { key: 'evening', icon: 'moon-outline', href: '/evening' },
+  { key: 'getaway', icon: 'compass-outline', href: '/getaway' },
+  { key: 'spin', icon: 'aperture-outline', href: '/spin' },
+  { key: 'decide', icon: 'dice-outline', href: '/decide' },
+  { key: 'saved', icon: 'bookmark-outline', href: '/saved' },
 ];
 
 /** Ana ekrandaki Şehrim bölümü: tatil dışında da her hafta açılacak kısayollar. */
@@ -48,24 +48,29 @@ export function MyCitySection() {
           </View>
         </Card>
       )}
-      <View style={styles.grid}>
-        {TILES.filter((tile) => signedIn || tile.key === 'spin').map((tile) => (
-          <Tap key={tile.key} accessibilityRole="button" accessibilityLabel={t(`city.tiles.${tile.key}.title`)} onPress={() => router.push(tile.href)} scaleTo={0.96} style={styles.tileWrap}>
-            <LinearGradient colors={tile.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.tile}>
-              <View pointerEvents="none" style={styles.ring} />
-              <View style={styles.tileIcon}>
-                <Ionicons name={tile.icon} size={22} color="#FFFFFF" />
+      <Card padding={0}>
+        {ROWS.filter((row) => signedIn || row.key === 'spin' || row.key === 'decide').map((row, i) => (
+          <Tap
+            key={row.key}
+            accessibilityRole="button"
+            accessibilityLabel={row.key === 'decide' ? t('today.quick.decideTitle') : t(`city.tiles.${row.key}.title`)}
+            onPress={() => router.push(row.href)}
+            feedback="select">
+            <View style={[styles.listRow, i > 0 && { borderTopWidth: StyleSheet.hairlineWidth * 2, borderTopColor: colors.border }]}>
+              <IconBadge icon={row.icon} size={38} />
+              <View style={styles.flex}>
+                <Text variant="bodyStrong" numberOfLines={1}>
+                  {row.key === 'decide' ? t('today.quick.decideTitle') : t(`city.tiles.${row.key}.title`)}
+                </Text>
+                <Text variant="caption" color="textMuted" numberOfLines={1}>
+                  {row.key === 'decide' ? t('today.quick.decideBody') : t(`city.tiles.${row.key}.body`)}
+                </Text>
               </View>
-              <Text variant="bodyStrong" style={styles.white} numberOfLines={1}>
-                {t(`city.tiles.${tile.key}.title`)}
-              </Text>
-              <Text variant="caption" style={styles.whiteSoft} numberOfLines={2}>
-                {t(`city.tiles.${tile.key}.body`)}
-              </Text>
-            </LinearGradient>
+              <DirIcon name="chevron-forward" size={16} color={colors.textMuted} />
+            </View>
           </Tap>
         ))}
-      </View>
+      </Card>
       {signedIn && stats && stats.places > 0 && (
         <Tap accessibilityRole="button" onPress={() => router.push('/city-passport')} feedback="select">
           <View style={[styles.streak, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -84,13 +89,7 @@ export function MyCitySection() {
 const styles = StyleSheet.create({
   section: { gap: Spacing.md },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  listRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md },
   flex: { flex: 1 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md },
-  tileWrap: { width: '47%', flexGrow: 1 },
-  tile: { borderRadius: Radius.xl, padding: Spacing.lg, gap: 4, minHeight: 130, overflow: 'hidden' },
-  ring: { position: 'absolute', right: -30, top: -30, width: 110, height: 110, borderRadius: 55, borderWidth: 1, borderColor: 'rgba(255,255,255,0.25)' },
-  tileIcon: { width: 40, height: 40, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.22)', marginBottom: Spacing.xs },
-  white: { color: '#FFFFFF' },
-  whiteSoft: { color: 'rgba(255,255,255,0.85)' },
   streak: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },
 });

@@ -12,7 +12,6 @@ import { Card } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
 import { IconBadge } from '@/components/ui/icon-badge';
 import { Screen } from '@/components/ui/screen';
-import { SectionHeader } from '@/components/ui/section-header';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { useIsOnline } from '@/features/offline/use-online';
@@ -35,12 +34,6 @@ function greetingKey(hour: number) {
   if (hour >= 18 && hour < 23) return 'today.greetingEvening' as const;
   return 'today.greetingNight' as const;
 }
-
-const FEATURES: { icon: IconName; key: 'featureReplan' | 'featureOffline' | 'featureMenu' }[] = [
-  { icon: 'sparkles', key: 'featureReplan' },
-  { icon: 'cloud-offline', key: 'featureOffline' },
-  { icon: 'restaurant', key: 'featureMenu' },
-];
 
 const enter = (i: number) => FadeInDown.delay(i * Motion.stagger).springify().damping(Motion.enter.damping);
 
@@ -82,12 +75,6 @@ export default function TodayScreen() {
         </Tap>
       </Animated.View>
 
-      {!nextTrip && (
-        <Animated.View entering={enter(1)}>
-          <MyCitySection />
-        </Animated.View>
-      )}
-
       <Animated.View entering={enter(1)}>
         {nextTrip ? (
           <TripCard trip={nextTrip} highlight />
@@ -99,46 +86,22 @@ export default function TodayScreen() {
         )}
       </Animated.View>
 
-      <Animated.View entering={enter(2)} style={styles.section}>
-        <Tap accessibilityRole="button" accessibilityLabel={t('decide.title')} onPress={() => router.push('/decide')} scaleTo={0.98} style={styles.decideShadow}>
-          <LinearGradient colors={Gradients.accent} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.decide}>
-            <View pointerEvents="none" style={styles.decideRing} />
-            <View pointerEvents="none" style={styles.decideRing2} />
-            <View style={styles.decideIcon}>
-              <Ionicons name="dice" size={28} color="#FFFFFF" />
-            </View>
-            <View style={styles.flex}>
-              <Text variant="subtitle" style={styles.white}>
-                {t('today.quick.decideTitle')}
-              </Text>
-              <Text variant="caption" style={styles.whiteSoft}>
-                {t('today.quick.decideBody')}
+      <Animated.View entering={enter(2)} style={styles.pills}>
+        {quick.map((q) => (
+          <Tap key={q.label} accessibilityRole="button" accessibilityLabel={q.label} onPress={() => router.push(q.href)} scaleTo={0.96} style={styles.flex}>
+            <View style={[styles.pill, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Ionicons name={q.icon} size={18} color={colors.primary} />
+              <Text variant="caption" numberOfLines={1} style={styles.pillText}>
+                {q.label}
               </Text>
             </View>
-            <DirIcon name="arrow-forward" size={20} color="#FFFFFF" />
-          </LinearGradient>
-        </Tap>
-        <View style={styles.quickRow}>
-          {quick.map((q) => (
-            <Tap key={q.label} accessibilityRole="button" accessibilityLabel={q.label} onPress={() => router.push(q.href)} style={styles.flex} scaleTo={0.95}>
-              <View style={[styles.quickTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <IconBadge icon={q.icon} size={40} />
-                <Text variant="caption" numberOfLines={1}>
-                  {q.label}
-                </Text>
-              </View>
-            </Tap>
-          ))}
-        </View>
+          </Tap>
+        ))}
       </Animated.View>
 
-      {nextTrip && (
-        <Animated.View entering={enter(3)}>
-          <MyCitySection />
-        </Animated.View>
-      )}
-
-      <NativeAdCard />
+      <Animated.View entering={enter(3)}>
+        <MyCitySection />
+      </Animated.View>
 
       {endedTrip && (
         <Animated.View entering={enter(3)}>
@@ -163,21 +126,7 @@ export default function TodayScreen() {
         </Animated.View>
       )}
 
-      {!nextTrip && (
-        <Animated.View entering={enter(6)} style={styles.section}>
-          <SectionHeader title={t('today.featuresTitle')} />
-          {FEATURES.map((f) => (
-            <Card key={f.key} padding={Spacing.md}>
-              <View style={styles.rowCenter}>
-                <IconBadge icon={f.icon} />
-                <Text variant="body" style={styles.flex}>
-                  {t(`today.${f.key}`)}
-                </Text>
-              </View>
-            </Card>
-          ))}
-        </Animated.View>
-      )}
+      <NativeAdCard />
     </Screen>
   );
 }
@@ -187,16 +136,10 @@ const styles = StyleSheet.create({
   headerText: { flex: 1, gap: Spacing.xxs },
   avatar: { width: 46, height: 46, borderRadius: 23, alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'rgba(255,255,255,0.25)' },
   white: { color: '#FFFFFF' },
-  whiteSoft: { color: 'rgba(255,255,255,0.85)' },
   section: { gap: Spacing.md },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   flex: { flex: 1 },
   rowCenter: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  decideShadow: { borderRadius: Radius.xl, shadowColor: '#7C5CFF', shadowOpacity: 0.35, shadowRadius: 20, shadowOffset: { width: 0, height: 10 }, elevation: 6 },
-  decide: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, padding: Spacing.lg, borderRadius: Radius.xl, overflow: 'hidden' },
-  decideRing: { position: 'absolute', right: -40, top: -50, width: 160, height: 160, borderRadius: 80, borderWidth: 1, borderColor: 'rgba(255,255,255,0.22)' },
-  decideRing2: { position: 'absolute', right: -10, top: -20, width: 100, height: 100, borderRadius: 50, borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)' },
-  decideIcon: { width: 52, height: 52, borderRadius: 18, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.2)' },
-  quickRow: { flexDirection: 'row', gap: Spacing.md },
-  quickTile: { alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.lg, paddingHorizontal: Spacing.sm, borderRadius: Radius.lg, borderWidth: StyleSheet.hairlineWidth * 2 },
+  pills: { flexDirection: 'row', gap: Spacing.sm },
+  pill: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Spacing.xs, paddingVertical: Spacing.md, paddingHorizontal: Spacing.sm, borderRadius: Radius.xl, borderWidth: StyleSheet.hairlineWidth * 2 },
+  pillText: { flexShrink: 1 },
 });

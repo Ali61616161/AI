@@ -1027,7 +1027,7 @@
     "tiles": {
       "evening": {
         "title": "¿Esta noche?",
-        "body": "Un plan con IA para esta noche o el fin de semana"
+        "body": "Un plan para esta noche o el fin de semana"
       },
       "getaway": {
         "title": "Escapada",
