@@ -30,7 +30,7 @@ export default function TripsScreen() {
   const list = segment === 'upcoming' ? upcoming : past;
 
   return (
-    <Screen edges={['top']} tabBarSpace>
+    <Screen edges={['top']} tabBarSpace tabName="trips">
       <Text variant="display">{t('trips.title')}</Text>
 
       <View style={[styles.segments, { backgroundColor: colors.surfaceMuted }]} accessibilityRole="tablist">

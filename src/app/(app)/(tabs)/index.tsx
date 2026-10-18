@@ -58,7 +58,7 @@ export default function TodayScreen() {
   ];
 
   return (
-    <Screen edges={['top']} tabBarSpace>
+    <Screen edges={['top']} tabBarSpace tabName="index">
       <Animated.View entering={enter(0)} style={styles.header}>
         <View style={styles.headerText}>
           <Text variant="overline" color="textMuted">

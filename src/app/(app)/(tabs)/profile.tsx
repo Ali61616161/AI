@@ -92,7 +92,7 @@ export default function ProfileScreen() {
   ];
 
   return (
-    <Screen edges={['top']} tabBarSpace>
+    <Screen edges={['top']} tabBarSpace tabName="profile">
       <Text variant="display">{t('profile.title')}</Text>
 
       <Card variant="glow" gradient={Gradients.accent}>

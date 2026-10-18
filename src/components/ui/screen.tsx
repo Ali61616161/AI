@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
+import { useResetScrollOnTabEnter } from '@/lib/tab-scroll';
 import { Spacing } from '@/theme/tokens';
 
 import { Aurora } from './aurora';
@@ -15,12 +16,16 @@ type Props = {
   /** Sekme ekranlarında içerik yüzen alt menünün altında kalmasın diye boşluk. */
   tabBarSpace?: boolean;
   aurora?: 'default' | 'subtle';
+  /** Sekme ekranının adı: başka bir sekmeden bu sekmeye geçilince içerik en üstten başlar. */
+  tabName?: string;
 };
 
-export function Screen({ children, footer, scroll = true, edges = ['top', 'bottom'], tabBarSpace = false, aurora = 'default' }: Props) {
+export function Screen({ children, footer, scroll = true, edges = ['top', 'bottom'], tabBarSpace = false, aurora = 'default', tabName }: Props) {
+  const scrollRef = useRef<ScrollView>(null);
+  useResetScrollOnTabEnter(tabName, scrollRef);
   const bottomSpace = tabBarSpace ? { paddingBottom: 120 } : null;
   const body = scroll ? (
-    <ScrollView contentContainerStyle={[styles.content, bottomSpace]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+    <ScrollView ref={scrollRef} contentContainerStyle={[styles.content, bottomSpace]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
       {children}
     </ScrollView>
   ) : (
