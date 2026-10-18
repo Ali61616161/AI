@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 
 import { useTrips } from '@/features/trips/queries';
 import { todayIsoDate } from '@/lib/format';
@@ -18,11 +18,11 @@ export function useEndedTripPrompt() {
   const { data: trips } = useTrips();
   const seen = useEndedTripStore((s) => s.seen);
   // Kayıtlı "gösterildi" listesi telefondan yüklenmeden karar verilmez (yoksa aynı pencere tekrar çıkabilir).
-  const [hydrated, setHydrated] = useState(() => useEndedTripStore.persist.hasHydrated());
-  useEffect(() => {
-    setHydrated(useEndedTripStore.persist.hasHydrated());
-    return useEndedTripStore.persist.onFinishHydration(() => setHydrated(true));
-  }, []);
+  const hydrated = useSyncExternalStore(
+    (onChange) => useEndedTripStore.persist.onFinishHydration(onChange),
+    () => useEndedTripStore.persist.hasHydrated(),
+    () => false,
+  );
 
   useEffect(() => {
     if (shownThisSession || !hydrated) return;
