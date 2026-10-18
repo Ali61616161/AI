@@ -1429,5 +1429,15 @@
       "device_required": "Este dispositivo no es compatible. Usa la app en tu móvil.",
       "device_used": "Ya se ha usado un código de invitación en este dispositivo."
     }
+  },
+  "live": {
+    "open": "Vista en vivo",
+    "subtitle": "{{city}} · {{count}} paradas",
+    "emptyTitle": "No hay paradas que mostrar en el mapa",
+    "emptyBody": "Los lugares de este día aún no tienen ubicación. Prueba con otro día.",
+    "now": "Ahora",
+    "next": "A continuación",
+    "hopWalk": "~{{min}} min a pie desde la parada anterior · {{km}} km",
+    "hopFar": "~{{km}} km desde la parada anterior · mira cómo llegar"
   }
 }

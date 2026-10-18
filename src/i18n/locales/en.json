@@ -1429,5 +1429,15 @@
       "device_required": "This device isn't supported. Use the app on your phone.",
       "device_used": "An invite code has already been used on this device."
     }
+  },
+  "live": {
+    "open": "Live view",
+    "subtitle": "{{city}} · {{count}} stops",
+    "emptyTitle": "No stops to show on the map",
+    "emptyBody": "The places for this day have no location yet. Try another day.",
+    "now": "Now",
+    "next": "Up next",
+    "hopWalk": "~{{min}} min walk from the previous stop · {{km}} km",
+    "hopFar": "~{{km}} km from the previous stop · see directions"
   }
 }

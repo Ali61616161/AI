@@ -185,7 +185,7 @@ const isRoutable = (i: PlanItemRow) => i.kind !== 'transport' && Boolean(i.lat !
 const placeLabel = (i: PlanItemRow, city: string | null) => [i.place_name ?? i.title, i.lat === null ? city : null].filter(Boolean).join(', ');
 
 /** "Nasıl giderim?": bir önceki duraktan (yoksa kullanıcının konumundan) bu durağa. */
-function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: string | null) {
+export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: string | null) {
   const coords = (i: PlanItemRow, prefix: 'to' | 'from') => (i.lat !== null && i.lng !== null ? { [`${prefix}Lat`]: String(i.lat), [`${prefix}Lng`]: String(i.lng) } : {});
   router.push({
     pathname: '/route',

@@ -1429,5 +1429,15 @@
       "device_required": "Dieses Gerät wird nicht unterstützt. Nutze die App auf deinem Handy.",
       "device_used": "Auf diesem Gerät wurde bereits ein Einladungscode verwendet."
     }
+  },
+  "live": {
+    "open": "Live-Ansicht",
+    "subtitle": "{{city}} · {{count}} Stopps",
+    "emptyTitle": "Keine Stopps für die Karte",
+    "emptyBody": "Für die Orte dieses Tages gibt es noch keinen Standort. Probiere einen anderen Tag.",
+    "now": "Jetzt",
+    "next": "Als Nächstes",
+    "hopWalk": "~{{min}} Min. zu Fuß vom letzten Stopp · {{km}} km",
+    "hopFar": "~{{km}} km vom letzten Stopp · siehe Route"
   }
 }

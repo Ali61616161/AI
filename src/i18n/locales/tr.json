@@ -1429,5 +1429,15 @@
       "device_required": "Bu cihaz desteklenmiyor. Uygulamayı telefonunda kullan.",
       "device_used": "Bu cihazda daha önce bir davet kodu kullanıldı."
     }
+  },
+  "live": {
+    "open": "Canlı görünüm",
+    "subtitle": "{{city}} · {{count}} durak",
+    "emptyTitle": "Haritada gösterilecek durak yok",
+    "emptyBody": "Bu günün duraklarının konumu henüz bulunamadı. Başka bir gün seçmeyi dene.",
+    "now": "Şimdi",
+    "next": "Sıradaki",
+    "hopWalk": "Öncekinden ~{{min}} dk yürüyüş · {{km}} km",
+    "hopFar": "Öncekinden ~{{km}} km · yol tarifine bak"
   }
 }

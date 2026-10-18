@@ -206,6 +206,14 @@ export default function TripScreen() {
               </Text>
             )}
             {mapPoints.length > 0 && (
+              <Chip
+                icon="navigate-circle-outline"
+                label={t('live.open')}
+                selected
+                onPress={() => router.push({ pathname: '/trip-live', params: { tripId: trip.id, day: String(dayIndex) } })}
+              />
+            )}
+            {mapPoints.length > 0 && (
               <View style={styles.mapBlock}>
                 <Pressable accessibilityRole="button" accessibilityState={{ expanded: showMap }} onPress={() => setShowMap((v) => !v)} style={styles.mapToggle}>
                   <Ionicons name="map-outline" size={16} color={colors.primary} />

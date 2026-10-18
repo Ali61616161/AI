@@ -1429,5 +1429,15 @@
       "device_required": "Questo dispositivo non è supportato. Usa l’app sul telefono.",
       "device_used": "Su questo dispositivo è già stato usato un codice invito."
     }
+  },
+  "live": {
+    "open": "Vista dal vivo",
+    "subtitle": "{{city}} · {{count}} tappe",
+    "emptyTitle": "Nessuna tappa da mostrare sulla mappa",
+    "emptyBody": "I luoghi di questo giorno non hanno ancora una posizione. Prova un altro giorno.",
+    "now": "Ora",
+    "next": "Prossima",
+    "hopWalk": "~{{min}} min a piedi dalla tappa precedente · {{km}} km",
+    "hopFar": "~{{km}} km dalla tappa precedente · vedi indicazioni"
   }
 }

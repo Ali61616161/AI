@@ -1429,5 +1429,15 @@
       "device_required": "Cet appareil n’est pas pris en charge. Utilise l’app sur ton téléphone.",
       "device_used": "Un code d’invitation a déjà été utilisé sur cet appareil."
     }
+  },
+  "live": {
+    "open": "Vue en direct",
+    "subtitle": "{{city}} · {{count}} étapes",
+    "emptyTitle": "Aucune étape à afficher sur la carte",
+    "emptyBody": "Les lieux de ce jour n’ont pas encore de position. Essaie un autre jour.",
+    "now": "Maintenant",
+    "next": "Ensuite",
+    "hopWalk": "~{{min}} min à pied depuis l’étape précédente · {{km}} km",
+    "hopFar": "~{{km}} km depuis l’étape précédente · voir l’itinéraire"
   }
 }
