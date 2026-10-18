@@ -809,7 +809,12 @@
       "local_life": "Local life",
       "relaxed_pace": "Relaxed pace",
       "busy_pace": "Busy pace"
-    }
+    },
+    "promptTitle": "How was your trip?",
+    "promptSubtitle": "{{trip}} is over. Rate it and get your trip report.",
+    "promptRate": "Rate {{trip}}",
+    "promptCreate": "Create report",
+    "promptLater": "Not now"
   },
   "paywall": {
     "subtitle": "Plan every day, replan without limits and translate freely.",

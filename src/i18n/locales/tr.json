@@ -809,7 +809,12 @@
       "local_life": "Yerel yaşam",
       "relaxed_pace": "Sakin tempo",
       "busy_pace": "Yoğun tempo"
-    }
+    },
+    "promptTitle": "Seyahatin nasıldı?",
+    "promptSubtitle": "{{trip}} sona erdi. Puan ver ve seyahat raporunu al.",
+    "promptRate": "{{trip}} için puan ver",
+    "promptCreate": "Raporu oluştur",
+    "promptLater": "Şimdi değil"
   },
   "paywall": {
     "subtitle": "Her günü planla, sınırsız yeniden planla ve dilediğince çevir.",

@@ -885,7 +885,12 @@
       "local_life": "الحياة المحلية",
       "relaxed_pace": "وتيرة هادئة",
       "busy_pace": "وتيرة مزدحمة"
-    }
+    },
+    "promptTitle": "كيف كانت رحلتك؟",
+    "promptSubtitle": "انتهت رحلة {{trip}}. قيّمها واحصل على تقرير رحلتك.",
+    "promptRate": "قيّم {{trip}}",
+    "promptCreate": "إنشاء التقرير",
+    "promptLater": "ليس الآن"
   },
   "paywall": {
     "subtitle": "خطّط لكل يوم وأعد التخطيط بلا حدود وترجم بحرية.",

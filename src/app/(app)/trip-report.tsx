@@ -23,14 +23,17 @@ import { useTheme } from '@/theme/use-theme';
 export default function TripReportScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const { tripId } = useLocalSearchParams<{ tripId: string }>();
+  const { tripId, overall: overallParam } = useLocalSearchParams<{ tripId: string; overall?: string }>();
   const { data: trip } = useTrip(tripId);
   const { data: plan } = useActivePlan(tripId);
   const { data: report, isLoading } = useTripReport(tripId);
   const { data: ratings } = usePlaceRatings(tripId);
   const rate = useRatePlace(tripId);
   const generate = useGenerateReport(tripId);
-  const [overall, setOverall] = useState<number | null>(null);
+  const [overall, setOverall] = useState<number | null>(() => {
+    const n = Number(overallParam);
+    return Number.isInteger(n) && n >= 1 && n <= 5 ? n : null;
+  });
   const [route, setRoute] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const cardRef = useRef<View>(null);

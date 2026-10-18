@@ -809,7 +809,12 @@
       "local_life": "Vie locale",
       "relaxed_pace": "Rythme tranquille",
       "busy_pace": "Rythme soutenu"
-    }
+    },
+    "promptTitle": "Comment était ton voyage ?",
+    "promptSubtitle": "{{trip}} est terminé. Note-le et obtiens ton rapport de voyage.",
+    "promptRate": "Noter {{trip}}",
+    "promptCreate": "Créer le rapport",
+    "promptLater": "Pas maintenant"
   },
   "paywall": {
     "subtitle": "Planifie chaque jour, replanifie sans limite et traduis librement.",

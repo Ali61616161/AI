@@ -790,7 +790,12 @@
       "local_life": "当地生活",
       "relaxed_pace": "悠闲节奏",
       "busy_pace": "紧凑节奏"
-    }
+    },
+    "promptTitle": "旅行怎么样？",
+    "promptSubtitle": "{{trip}} 已结束。给它打个分，生成你的旅行报告。",
+    "promptRate": "为 {{trip}} 打分",
+    "promptCreate": "生成报告",
+    "promptLater": "以后再说"
   },
   "paywall": {
     "subtitle": "规划每一天，无限次调整计划，畅享翻译。",

@@ -5,6 +5,7 @@ import { identifyPurchaser } from '@/features/subscription/purchases';
 import { useSessionStore } from '@/stores/session-store';
 import { useAdsBootstrap } from '@/features/ads/use-ads-bootstrap';
 import { useNotificationLinks } from '@/features/engagement/notification-links';
+import { useEndedTripPrompt } from '@/features/report/use-ended-trip-prompt';
 import { useSyncWidget } from '@/features/widget/use-sync-widget';
 
 export default function AppLayout() {
@@ -12,6 +13,7 @@ export default function AppLayout() {
   useAdsBootstrap();
   useNotificationLinks();
   useSyncWidget();
+  useEndedTripPrompt();
   // Satın almalar Supabase kullanıcısına bağlanır (RevenueCat app_user_id).
   useEffect(() => {
     identifyPurchaser(userId);
@@ -36,6 +38,7 @@ export default function AppLayout() {
       <Stack.Screen name="visa" options={{ presentation: 'modal' }} />
       <Stack.Screen name="jetlag" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-report" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="trip-ended" options={{ presentation: 'modal' }} />
       <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
       <Stack.Screen name="invite" options={{ presentation: 'modal' }} />
       <Stack.Screen name="chat/[id]" />

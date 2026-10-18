@@ -809,7 +809,12 @@
       "local_life": "Lokales Leben",
       "relaxed_pace": "Entspanntes Tempo",
       "busy_pace": "Volles Programm"
-    }
+    },
+    "promptTitle": "Wie war deine Reise?",
+    "promptSubtitle": "{{trip}} ist vorbei. Bewerte sie und hol dir deinen Reisebericht.",
+    "promptRate": "{{trip}} bewerten",
+    "promptCreate": "Bericht erstellen",
+    "promptLater": "Jetzt nicht"
   },
   "paywall": {
     "subtitle": "Plane jeden Tag, plane unbegrenzt neu und übersetze frei.",

@@ -809,7 +809,12 @@
       "local_life": "Vida local",
       "relaxed_pace": "Ritmo tranquilo",
       "busy_pace": "Ritmo intenso"
-    }
+    },
+    "promptTitle": "¿Qué tal tu viaje?",
+    "promptSubtitle": "{{trip}} ha terminado. Valóralo y obtén tu informe de viaje.",
+    "promptRate": "Valorar {{trip}}",
+    "promptCreate": "Crear informe",
+    "promptLater": "Ahora no"
   },
   "paywall": {
     "subtitle": "Planifica cada día, replanifica sin límites y traduce sin parar.",
