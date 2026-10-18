@@ -498,7 +498,19 @@
     "reviews_one": "{{formatted}} yorum",
     "reviews_other": "{{formatted}} yorum",
     "closedPermanently": "Kalıcı olarak kapanmış — bu durağı değiştirmeyi düşün",
-    "closedTemporarily": "Geçici olarak kapalı — gitmeden kontrol et"
+    "closedTemporarily": "Geçici olarak kapalı — gitmeden kontrol et",
+    "details": "Fotoğraflar ve ayrıntılar",
+    "hours": "Çalışma saatleri",
+    "open": "Şu an açık",
+    "closed": "Şu an kapalı",
+    "directions": "Yol tarifi",
+    "website": "Web sitesi",
+    "call": "Ara",
+    "googleMaps": "Google Haritalar",
+    "photoBy": "Fotoğraf: {{name}}",
+    "loadError": "Ayrıntılar yüklenemedi. Yine de yol tarifi alabilirsin.",
+    "quotaReached": "Bugünkü mekân kartı hakkın doldu. Pro ile daha fazlasına bak.",
+    "poweredBy": "Veriler Google Haritalar'dan"
   },
   "weather": {
     "rain": "%{{percent}} yağmur",

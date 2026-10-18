@@ -1,6 +1,19 @@
 import { assertEquals, assertRejects } from 'jsr:@std/assert@1';
 
-import { distanceMeters, fieldMask, normalizePlace, PlacesError, searchText, verifyPlanDays, VERIFY_FIELDS } from './places.ts';
+import { GOOGLE_SCHEMA, validatePath } from './google/validate.ts';
+import {
+  distanceMeters,
+  fetchPhotoUri,
+  fetchPlaceDetails,
+  fieldMask,
+  normalizePlace,
+  normalizePlaceDetails,
+  PLACE_DETAIL_FIELDS,
+  PlacesError,
+  searchText,
+  verifyPlanDays,
+  VERIFY_FIELDS,
+} from './places.ts';
 
 const ROME = { lat: 41.9028, lng: 12.4964 };
 const raw = (id: string, name: string, lat = 41.906, lng = 12.4536, extra: Record<string, unknown> = {}) => ({
@@ -120,4 +133,79 @@ Deno.test('verifyPlanDays: paylaşılan önbellekle ikinci çağrı Google\'a gi
   const second = await verifyPlanDays([{ city: 'Roma', items: [item('Pantheon')] }], { apiKey: 'k', language: 'en', cache, fetchImpl });
   assertEquals(calls.length, 1);
   assertEquals((second.days[0].items[0] as Record<string, unknown>).google_place_id, 'p');
+});
+
+const PLACE_ID = 'ChIJN1t_tDeuEmsRUsoyG83frY4';
+const detailRaw = () =>
+  raw(PLACE_ID, 'Galata Tower', 41.0256, 28.9744, {
+    primaryTypeDisplayName: { text: 'Tourist attraction' },
+    websiteUri: 'https://galatakulesi.example/',
+    nationalPhoneNumber: '0212 000 00 00',
+    editorialSummary: { text: 'A medieval stone tower.' },
+    currentOpeningHours: { openNow: true },
+    regularOpeningHours: { weekdayDescriptions: ['Monday: 9:00 AM – 7:00 PM', 'Tuesday: 9:00 AM – 7:00 PM'] },
+    photos: [
+      { name: `places/${PLACE_ID}/photos/AUy1`, widthPx: 4000, heightPx: 3000, authorAttributions: [{ displayName: 'A. Photographer', uri: 'https://maps.google.com/contrib/1' }] },
+      { name: `places/${PLACE_ID}/photos/AUy2`, authorAttributions: [] },
+      { name: '../../etc/passwd' },
+      { name: `places/${PLACE_ID}/photos/AUy3` },
+      { name: `places/${PLACE_ID}/photos/AUy4` },
+      { name: `places/${PLACE_ID}/photos/AUy5` },
+    ],
+  });
+
+Deno.test('mekân kartı: istenen her alan Google Place şemasında var', () => {
+  for (const field of PLACE_DETAIL_FIELDS) assertEquals(validatePath(GOOGLE_SCHEMA.places.schemas, 'GoogleMapsPlacesV1Place', field), null, field);
+});
+
+Deno.test('mekân kartı: fotoğraf adresi parametreleri Google yöntem şemasında var', () => {
+  const params = GOOGLE_SCHEMA.places.methods['v1/{+name}'];
+  for (const p of ['maxWidthPx', 'skipHttpRedirect']) assertEquals(params.includes(p), true, p);
+});
+
+Deno.test('normalizePlaceDetails: ayrıntılar, saatler ve en fazla 4 güvenli fotoğraf adı', () => {
+  const d = normalizePlaceDetails(detailRaw())!;
+  assertEquals(d.name, 'Galata Tower');
+  assertEquals(d.typeLabel, 'Tourist attraction');
+  assertEquals(d.website, 'https://galatakulesi.example/');
+  assertEquals(d.phone, '0212 000 00 00');
+  assertEquals(d.summary, 'A medieval stone tower.');
+  assertEquals(d.openNow, true);
+  assertEquals(d.hours.length, 2);
+  // Geçersiz ad ("../../etc/passwd") elenir, en fazla 4 fotoğraf kalır.
+  assertEquals(d.photoRefs.map((p) => p.name.split('/').pop()), ['AUy1', 'AUy2', 'AUy3', 'AUy4']);
+  assertEquals(d.photoRefs[0].author, 'A. Photographer');
+  assertEquals(d.photoRefs[1].author, null);
+  assertEquals(normalizePlaceDetails({ id: 'x' }), null);
+});
+
+Deno.test('fetchPlaceDetails: GET, anahtar ve alan maskesi başlıkta; geçersiz kimlik çağrı yapmaz', async () => {
+  const seen: { url: string; headers: Record<string, string> }[] = [];
+  const fetchImpl = ((url: string, init: RequestInit) => {
+    seen.push({ url, headers: init.headers as Record<string, string> });
+    return Promise.resolve(new Response(JSON.stringify(detailRaw()), { status: 200 }));
+  }) as unknown as typeof fetch;
+  const d = await fetchPlaceDetails({ apiKey: 'k1', placeId: PLACE_ID, language: 'tr', fetchImpl });
+  assertEquals(d?.name, 'Galata Tower');
+  assertEquals(seen[0].url, `https://places.googleapis.com/v1/places/${PLACE_ID}?languageCode=tr`);
+  assertEquals(seen[0].headers['X-Goog-Api-Key'], 'k1');
+  assertEquals(seen[0].headers['X-Goog-FieldMask'], PLACE_DETAIL_FIELDS.join(','));
+  assertEquals(await fetchPlaceDetails({ apiKey: 'k', placeId: '../x', language: 'en', fetchImpl }), null);
+  assertEquals(seen.length, 1);
+});
+
+Deno.test('fetchPhotoUri: skipHttpRedirect ile adres alır, anahtar sadece başlıkta; geçersiz ad reddedilir', async () => {
+  const seen: { url: string; headers: Record<string, string> }[] = [];
+  const fetchImpl = ((url: string, init: RequestInit) => {
+    seen.push({ url, headers: init.headers as Record<string, string> });
+    return Promise.resolve(new Response(JSON.stringify({ name: 'x', photoUri: 'https://lh3.googleusercontent.com/abc' }), { status: 200 }));
+  }) as unknown as typeof fetch;
+  const uri = await fetchPhotoUri({ apiKey: 'secret', photoName: `places/${PLACE_ID}/photos/AUy1`, fetchImpl });
+  assertEquals(uri, 'https://lh3.googleusercontent.com/abc');
+  assertEquals(seen[0].url, `https://places.googleapis.com/v1/places/${PLACE_ID}/photos/AUy1/media?maxWidthPx=900&skipHttpRedirect=true`);
+  assertEquals(seen[0].url.includes('secret'), false);
+  assertEquals(seen[0].headers['X-Goog-Api-Key'], 'secret');
+  assertEquals(await fetchPhotoUri({ apiKey: 'k', photoName: 'places/../..', fetchImpl }), null);
+  const http = (() => Promise.resolve(new Response(JSON.stringify({ photoUri: 'http://insecure/x' }), { status: 200 }))) as unknown as typeof fetch;
+  assertEquals(await fetchPhotoUri({ apiKey: 'k', photoName: `places/${PLACE_ID}/photos/AUy1`, fetchImpl: http }), null);
 });

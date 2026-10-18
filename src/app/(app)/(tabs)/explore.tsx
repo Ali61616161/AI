@@ -19,6 +19,7 @@ import { Text } from '@/components/ui/text';
 import { ExploreMap } from '@/features/explore/explore-map';
 import { distanceM, type Coords, type ExploreMapHandle } from '@/features/explore/types';
 import { formatDistance, NEARBY_CATEGORY_LIST, openInMaps, PlacesError, useOpenNow, type NearbyCategory, type Place } from '@/features/places/api';
+import { openPlaceCard } from '@/features/places/place-card-api';
 import { PlaceMeta } from '@/features/places/place-row';
 import { useDeviceLocation } from '@/features/places/use-device-location';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
@@ -240,7 +241,7 @@ export default function ExploreScreen() {
               const selected = item.id === selectedId;
               return (
                 <Animated.View entering={FadeIn.delay(index * 40)} style={{ width: cardWidth }}>
-                  <Card variant={selected ? 'glow' : 'solid'} padding={Spacing.lg} onPress={() => select(item.id, 'list')} accessibilityLabel={item.name}>
+                  <Card variant={selected ? 'glow' : 'solid'} padding={Spacing.lg} onPress={() => (selected ? openPlaceCard({ id: item.id, name: item.name, address: item.address, lat: item.lat, lng: item.lng, mapsUrl: item.mapsUrl }) : select(item.id, 'list'))} accessibilityLabel={item.name}>
                     <View style={styles.cardRow}>
                       <IconBadge icon={icon} tone={selected ? 'gradient' : 'soft'} size={46} />
                       <View style={styles.flex}>

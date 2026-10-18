@@ -491,7 +491,19 @@
     "buyTicket": "门票",
     "reviews_other": "{{formatted}} 条评价",
     "closedPermanently": "已永久停业——建议更换此站",
-    "closedTemporarily": "暂时停业——出发前请确认"
+    "closedTemporarily": "暂时停业——出发前请确认",
+    "details": "照片与详情",
+    "hours": "营业时间",
+    "open": "营业中",
+    "closed": "已打烊",
+    "directions": "路线",
+    "website": "网站",
+    "call": "拨打",
+    "googleMaps": "Google 地图",
+    "photoBy": "照片：{{name}}",
+    "loadError": "无法加载详情，但仍可获取路线。",
+    "quotaReached": "今天的地点卡片次数已用完。升级 Pro 查看更多。",
+    "poweredBy": "数据来自 Google 地图"
   },
   "weather": {
     "rain": "降雨 {{percent}}%",

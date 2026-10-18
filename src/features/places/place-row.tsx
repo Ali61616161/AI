@@ -7,7 +7,8 @@ import { Text } from '@/components/ui/text';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-import { formatDistance, openInMaps, type Place } from './api';
+import { formatDistance, type Place } from './api';
+import { openPlaceCard } from './place-card-api';
 
 /** Puan, yorum sayısı, fiyat seviyesi ve mesafeyi tek satırda gösterir. */
 export function PlaceMeta({ rating, ratingCount, priceLevel, distanceM }: Pick<Place, 'rating' | 'ratingCount' | 'priceLevel' | 'distanceM'>) {
@@ -49,9 +50,9 @@ export function PlaceRow({ place, children }: { place: Place; children?: ReactNo
   return (
     <View style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <Pressable
-        accessibilityRole="link"
-        accessibilityHint={t('map.openInMaps')}
-        onPress={() => openInMaps({ name: place.name, mapsUrl: place.mapsUrl, placeId: place.id, lat: place.lat, lng: place.lng })}
+        accessibilityRole="button"
+        accessibilityHint={t('place.details')}
+        onPress={() => openPlaceCard({ id: place.id, name: place.name, address: place.address, lat: place.lat, lng: place.lng, mapsUrl: place.mapsUrl })}
         style={styles.main}>
         <View style={styles.text}>
           <Text variant="bodyStrong" numberOfLines={1}>
@@ -64,7 +65,7 @@ export function PlaceRow({ place, children }: { place: Place; children?: ReactNo
             </Text>
           )}
         </View>
-        <Ionicons name="navigate-outline" size={20} color={colors.primary} />
+        <Ionicons name="images-outline" size={20} color={colors.primary} />
       </Pressable>
       {children}
     </View>

@@ -54,6 +54,10 @@ jobs:
           }
           sum "### Servisler"
           check "Google Places (açık yerler)" places '{"action":"open_now","lat":41.0369,"lng":28.985,"category":"cafe"}' '"\(.places | length) yer, ör. \(.places[0].name // "-")"'
+          pid=$(jq -r '.places[0].id // empty' /tmp/out.json 2>/dev/null)
+          if [ -n "$pid" ]; then
+            check "Google mekân kartı (ayrıntı + fotoğraf)" places "$(jq -n --arg p "$pid" '{action:"place",place_id:$p}')" '"\(.place.name) · \(.place.photos | length) fotoğraf · \(.place.hours | length) gün saat · puan \(.place.rating)"'
+          fi
           check "Google Weather" places '{"action":"weather","lat":41.0369,"lng":28.985}' '"\(.days | length) gün tahmin"'
           check "Google Routes (Nasıl giderim: Interlaken → Grindelwald)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"origin_name":"Interlaken","destination_name":"Grindelwald","country_code":"CH"}' '"\(.routes | length) güzergah; ilk: \([.routes[0].steps[] | (.transit.lineShort // .transit.line // .mode)] | join(" → ")) (\(.routes[0].durationMin) dk)"'
           check "Google Translation" translate '{"mode":"text","text":"Good morning","target":"tr"}' '.translation // .text // "çeviri geldi"'

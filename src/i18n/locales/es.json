@@ -498,7 +498,19 @@
     "reviews_one": "{{formatted}} reseña",
     "reviews_other": "{{formatted}} reseñas",
     "closedPermanently": "Cerrado permanentemente: considera cambiar esta parada",
-    "closedTemporarily": "Cerrado temporalmente: compruébalo antes de ir"
+    "closedTemporarily": "Cerrado temporalmente: compruébalo antes de ir",
+    "details": "Fotos y detalles",
+    "hours": "Horario",
+    "open": "Abierto ahora",
+    "closed": "Cerrado ahora",
+    "directions": "Cómo llegar",
+    "website": "Sitio web",
+    "call": "Llamar",
+    "googleMaps": "Google Maps",
+    "photoBy": "Foto: {{name}}",
+    "loadError": "No se pudieron cargar los detalles. Aún puedes ver cómo llegar.",
+    "quotaReached": "Has usado las fichas de lugares de hoy. Consigue más con Pro.",
+    "poweredBy": "Datos de Google Maps"
   },
   "weather": {
     "rain": "{{percent}} % de lluvia",

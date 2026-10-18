@@ -498,7 +498,19 @@
     "reviews_one": "{{formatted}} recensione",
     "reviews_other": "{{formatted}} recensioni",
     "closedPermanently": "Chiuso definitivamente: valuta di sostituire questa tappa",
-    "closedTemporarily": "Chiuso temporaneamente: verifica prima di andare"
+    "closedTemporarily": "Chiuso temporaneamente: verifica prima di andare",
+    "details": "Foto e dettagli",
+    "hours": "Orari",
+    "open": "Aperto ora",
+    "closed": "Chiuso ora",
+    "directions": "Indicazioni",
+    "website": "Sito web",
+    "call": "Chiama",
+    "googleMaps": "Google Maps",
+    "photoBy": "Foto: {{name}}",
+    "loadError": "Impossibile caricare i dettagli. Puoi comunque ottenere le indicazioni.",
+    "quotaReached": "Hai usato le schede dei luoghi di oggi. Altre con Pro.",
+    "poweredBy": "Dati da Google Maps"
   },
   "weather": {
     "rain": "{{percent}}% pioggia",

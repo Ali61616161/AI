@@ -498,7 +498,19 @@
     "reviews_one": "{{formatted}} avis",
     "reviews_other": "{{formatted}} avis",
     "closedPermanently": "Définitivement fermé — pense à remplacer cette étape",
-    "closedTemporarily": "Fermé temporairement — vérifie avant d’y aller"
+    "closedTemporarily": "Fermé temporairement — vérifie avant d’y aller",
+    "details": "Photos et détails",
+    "hours": "Horaires",
+    "open": "Ouvert maintenant",
+    "closed": "Fermé actuellement",
+    "directions": "Itinéraire",
+    "website": "Site web",
+    "call": "Appeler",
+    "googleMaps": "Google Maps",
+    "photoBy": "Photo : {{name}}",
+    "loadError": "Impossible de charger les détails. Tu peux quand même obtenir l’itinéraire.",
+    "quotaReached": "Tu as utilisé les fiches de lieux du jour. Plus avec Pro.",
+    "poweredBy": "Données de Google Maps"
   },
   "weather": {
     "rain": "{{percent}} % de pluie",

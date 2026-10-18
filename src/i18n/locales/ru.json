@@ -512,7 +512,19 @@
     "reviews_many": "{{formatted}} отзывов",
     "reviews_other": "{{formatted}} отзыва",
     "closedPermanently": "Закрыто навсегда — лучше заменить эту остановку",
-    "closedTemporarily": "Временно закрыто — проверь перед визитом"
+    "closedTemporarily": "Временно закрыто — проверь перед визитом",
+    "details": "Фото и подробности",
+    "hours": "Часы работы",
+    "open": "Сейчас открыто",
+    "closed": "Сейчас закрыто",
+    "directions": "Маршрут",
+    "website": "Сайт",
+    "call": "Позвонить",
+    "googleMaps": "Google Карты",
+    "photoBy": "Фото: {{name}}",
+    "loadError": "Не удалось загрузить подробности. Маршрут всё равно можно построить.",
+    "quotaReached": "Лимит карточек мест на сегодня исчерпан. Больше — с Pro.",
+    "poweredBy": "Данные Google Карт"
   },
   "weather": {
     "rain": "Дождь {{percent}}%",

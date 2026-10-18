@@ -498,7 +498,19 @@
     "reviews_one": "{{formatted}} review",
     "reviews_other": "{{formatted}} reviews",
     "closedPermanently": "Permanently closed — consider replacing this stop",
-    "closedTemporarily": "Temporarily closed — check before you go"
+    "closedTemporarily": "Temporarily closed — check before you go",
+    "details": "Photos and details",
+    "hours": "Opening hours",
+    "open": "Open now",
+    "closed": "Closed now",
+    "directions": "Directions",
+    "website": "Website",
+    "call": "Call",
+    "googleMaps": "Google Maps",
+    "photoBy": "Photo: {{name}}",
+    "loadError": "Couldn't load the details. You can still get directions.",
+    "quotaReached": "You've used today's place cards. See more with Pro.",
+    "poweredBy": "Data from Google Maps"
   },
   "weather": {
     "rain": "{{percent}}% rain",

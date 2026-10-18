@@ -498,7 +498,19 @@
     "reviews_one": "{{formatted}} Bewertung",
     "reviews_other": "{{formatted}} Bewertungen",
     "closedPermanently": "Dauerhaft geschlossen – ersetze diesen Stopp",
-    "closedTemporarily": "Vorübergehend geschlossen – vorher prüfen"
+    "closedTemporarily": "Vorübergehend geschlossen – vorher prüfen",
+    "details": "Fotos und Details",
+    "hours": "Öffnungszeiten",
+    "open": "Jetzt geöffnet",
+    "closed": "Jetzt geschlossen",
+    "directions": "Route",
+    "website": "Website",
+    "call": "Anrufen",
+    "googleMaps": "Google Maps",
+    "photoBy": "Foto: {{name}}",
+    "loadError": "Details konnten nicht geladen werden. Eine Route bekommst du trotzdem.",
+    "quotaReached": "Du hast die heutigen Ortskarten aufgebraucht. Mehr gibt es mit Pro.",
+    "poweredBy": "Daten von Google Maps"
   },
   "weather": {
     "rain": "{{percent}} % Regen",

@@ -5,6 +5,8 @@
 //     → { places[] }                         (kota: nearby_search)
 //   POST { "action": "hotels", "trip_id", "destination_id"? }
 //     → { city, checkin, checkout, places[] (booking_url ile) }   (kota: nearby_search)
+//   POST { "action": "place", "place_id" }
+//     → { place: { ad, puan, saatler, web, telefon, özet, photos[] (en fazla 4, kısa ömürlü adresler) } }   (kota: place_details)
 //   POST { "action": "weather", "trip_id" }  veya  { "action": "weather", "lat", "lng" }
 //     → { days[]: { date, city, max, min, condition, description, iconUri, rainChance },
 //         available_from }  (tahmin en fazla 10 gün ileriyi kapsar)
@@ -20,7 +22,7 @@ import { hotelLink, templatesFromEnv } from '../_shared/affiliate.ts';
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { destinationCoords, googleConfig } from '../_shared/enrich.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
-import { distanceMeters, hotelRequest, isNearbyCategory, openNowRequest, PlacesError, searchText } from '../_shared/places.ts';
+import { distanceMeters, fetchPhotoUri, fetchPlaceDetails, hotelRequest, isNearbyCategory, openNowRequest, PLACE_ID_PATTERN, PlacesError, searchText } from '../_shared/places.ts';
 import { computeRoutes, type RouteMode, type RoutePoint, RoutesError, type VehicleKind } from '../_shared/routes.ts';
 import type { TripDestination } from '../_shared/trip-context.ts';
 import { navigationUrl, type TicketMode, type TicketOption, ticketOptions, transportTemplatesFromEnv } from '../_shared/transport.ts';
@@ -101,8 +103,10 @@ Deno.serve(async (req) => {
         return await weather();
       case 'route':
         return await route();
+      case 'place':
+        return await placeCard();
       default:
-        return error('bad_request', 400, 'action must be open_now, hotels, weather or route');
+        return error('bad_request', 400, 'action must be open_now, hotels, weather, route or place');
     }
   } catch (e) {
     if (e instanceof RoutesError) {
@@ -129,6 +133,22 @@ Deno.serve(async (req) => {
     // Google openNow filtresine rağmen kapalı veya kalıcı kapalı dönebilir; elenir.
     const open = places.filter((p) => p.openNow !== false && p.status !== 'CLOSED_PERMANENTLY' && p.status !== 'CLOSED_TEMPORARILY');
     return json({ places: open, quota: { plan: quota.plan, remaining: quota.remaining } });
+  }
+
+  async function placeCard() {
+    if (typeof body.place_id !== 'string' || !PLACE_ID_PATTERN.test(body.place_id)) return error('bad_request', 400, 'place_id is required');
+    const quota = await consumeQuota(supabase, 'place_details', null);
+    if (!quota.allowed) return error('quota_exceeded', 402);
+    const details = await fetchPlaceDetails({ apiKey, apiBase: google.placesBase, placeId: body.place_id, language });
+    if (!details) return error('not_found', 404);
+    // Fotoğraf adresleri paralel alınır; biri başarısız olsa kart yine gösterilir.
+    const settled = await Promise.allSettled(details.photoRefs.map((ref) => fetchPhotoUri({ apiKey, apiBase: google.placesBase, photoName: ref.name })));
+    const photos = details.photoRefs.flatMap((ref, i) => {
+      const r = settled[i];
+      return r.status === 'fulfilled' && r.value ? [{ uri: r.value, author: ref.author, authorUrl: ref.authorUrl }] : [];
+    });
+    const { photoRefs: _refs, ...place } = details;
+    return json({ place: { ...place, photos }, quota: { plan: quota.plan, remaining: quota.remaining } });
   }
 
   async function hotels() {

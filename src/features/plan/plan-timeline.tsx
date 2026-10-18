@@ -1,3 +1,4 @@
+import { openPlaceCard } from '@/features/places/place-card-api';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -147,6 +148,13 @@ function TimelineItem({ item, last, city, from }: { item: PlanItemRow; last: boo
         </View>
         {(mappable || routable || item.booking_url) && (
           <View style={styles.actions}>
+            {item.google_place_id && (
+              <Chip
+                icon="images-outline"
+                label={t('place.details')}
+                onPress={() => openPlaceCard({ id: item.google_place_id!, name: item.place_name ?? item.title, address: item.address, lat: item.lat, lng: item.lng, mapsUrl: item.maps_url })}
+              />
+            )}
             {mappable && (
               <Chip
                 icon="navigate-outline"

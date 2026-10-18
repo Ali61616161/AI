@@ -526,7 +526,19 @@
     "reviews_many": "{{formatted}} مراجعة",
     "reviews_other": "{{formatted}} مراجعة",
     "closedPermanently": "مغلق نهائيًا — فكّر في استبدال هذه المحطة",
-    "closedTemporarily": "مغلق مؤقتًا — تحقق قبل الذهاب"
+    "closedTemporarily": "مغلق مؤقتًا — تحقق قبل الذهاب",
+    "details": "الصور والتفاصيل",
+    "hours": "ساعات العمل",
+    "open": "مفتوح الآن",
+    "closed": "مغلق الآن",
+    "directions": "الاتجاهات",
+    "website": "الموقع الإلكتروني",
+    "call": "اتصال",
+    "googleMaps": "خرائط Google",
+    "photoBy": "الصورة: {{name}}",
+    "loadError": "تعذّر تحميل التفاصيل. يمكنك مع ذلك الحصول على الاتجاهات.",
+    "quotaReached": "استهلكت بطاقات الأماكن لهذا اليوم. المزيد مع Pro.",
+    "poweredBy": "البيانات من خرائط Google"
   },
   "weather": {
     "rain": "مطر {{percent}}٪",

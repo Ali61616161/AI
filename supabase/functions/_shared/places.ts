@@ -352,3 +352,103 @@ export async function verifyPlanDays<T extends VerifiableItem, D extends { city:
   }));
   return { days: out, lookups: entries.length, verified, failed };
 }
+
+// ---------------------------------------------------------------------------
+// Mekân kartı: Place Details (New) + fotoğraflar
+// ---------------------------------------------------------------------------
+
+/** Mekân kartı için istenen alanlar (GET alan maskesi, "places." öneki yok). */
+export const PLACE_DETAIL_FIELDS = [
+  'id',
+  'displayName',
+  'primaryTypeDisplayName',
+  'formattedAddress',
+  'location',
+  'rating',
+  'userRatingCount',
+  'priceLevel',
+  'googleMapsUri',
+  'websiteUri',
+  'nationalPhoneNumber',
+  'editorialSummary',
+  'businessStatus',
+  'currentOpeningHours.openNow',
+  'regularOpeningHours.weekdayDescriptions',
+  'photos',
+] as const;
+
+export const MAX_PLACE_PHOTOS = 4;
+export const PHOTO_WIDTH_PX = 900;
+
+/** Google yer kimlikleri harf, rakam, "-" ve "_" içerir. */
+export const PLACE_ID_PATTERN = /^[A-Za-z0-9_-]{10,200}$/;
+const PHOTO_NAME_PATTERN = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/;
+
+export type PlacePhotoRef = { name: string; author: string | null; authorUrl: string | null };
+
+export type PlaceDetails = Omit<Place, 'distanceM' | 'openNow'> & {
+  typeLabel: string | null;
+  website: string | null;
+  phone: string | null;
+  summary: string | null;
+  openNow: boolean | null;
+  hours: string[];
+  photoRefs: PlacePhotoRef[];
+};
+
+const httpsUrl = (v: unknown) => (typeof v === 'string' && v.startsWith('https://') ? v : null);
+
+export function normalizePlaceDetails(raw: unknown): PlaceDetails | null {
+  const base = normalizePlace(raw);
+  if (!base) return null;
+  // deno-lint-ignore no-explicit-any
+  const p = raw as any;
+  const hours: string[] = Array.isArray(p.regularOpeningHours?.weekdayDescriptions)
+    ? p.regularOpeningHours.weekdayDescriptions.map(str).filter((h: string | null): h is string => h !== null).slice(0, 7)
+    : [];
+  const photoRefs: PlacePhotoRef[] = (Array.isArray(p.photos) ? p.photos : [])
+    // deno-lint-ignore no-explicit-any
+    .filter((ph: any) => typeof ph?.name === 'string' && PHOTO_NAME_PATTERN.test(ph.name))
+    .slice(0, MAX_PLACE_PHOTOS)
+    // deno-lint-ignore no-explicit-any
+    .map((ph: any) => ({ name: ph.name, author: str(ph.authorAttributions?.[0]?.displayName), authorUrl: httpsUrl(ph.authorAttributions?.[0]?.uri) }));
+  const { distanceM: _distance, ...rest } = base;
+  return {
+    ...rest,
+    typeLabel: str(p.primaryTypeDisplayName?.text),
+    website: httpsUrl(p.websiteUri),
+    phone: str(p.nationalPhoneNumber),
+    summary: str(p.editorialSummary?.text),
+    hours,
+    photoRefs,
+  };
+}
+
+async function googleGet(url: string, apiKey: string, fieldMask: string | null, fetchImpl: typeof fetch | undefined, timeoutMs = 10_000): Promise<unknown> {
+  const res = await (fetchImpl ?? fetch)(url, {
+    headers: { 'X-Goog-Api-Key': apiKey, ...(fieldMask ? { 'X-Goog-FieldMask': fieldMask } : {}) },
+    signal: AbortSignal.timeout(timeoutMs),
+  }).catch((e) => {
+    throw new PlacesError(`places request failed: ${e instanceof Error ? e.message : String(e)}`, null);
+  });
+  if (!res.ok) throw new PlacesError(`places http ${res.status}: ${(await res.text()).slice(0, 300)}`, res.status);
+  return res.json();
+}
+
+/** Yer kimliğiyle mekân ayrıntıları (GET v1/places/{id}). */
+export async function fetchPlaceDetails(options: { apiKey: string; placeId: string; language: string; fetchImpl?: typeof fetch; apiBase?: string }): Promise<PlaceDetails | null> {
+  if (!PLACE_ID_PATTERN.test(options.placeId)) return null;
+  const url = `${options.apiBase ?? PLACES_API_BASE}/v1/places/${options.placeId}?languageCode=${encodeURIComponent(options.language)}`;
+  return normalizePlaceDetails(await googleGet(url, options.apiKey, PLACE_DETAIL_FIELDS.join(','), options.fetchImpl));
+}
+
+/**
+ * Fotoğraf için kısa ömürlü, anahtarsız bir görsel adresi. skipHttpRedirect ile Google
+ * görselin kendisi yerine adresini döndürür; böylece API anahtarı istemciye hiç gitmez.
+ */
+export async function fetchPhotoUri(options: { apiKey: string; photoName: string; maxWidthPx?: number; fetchImpl?: typeof fetch; apiBase?: string }): Promise<string | null> {
+  if (!PHOTO_NAME_PATTERN.test(options.photoName)) return null;
+  const url = `${options.apiBase ?? PLACES_API_BASE}/v1/${options.photoName}/media?maxWidthPx=${options.maxWidthPx ?? PHOTO_WIDTH_PX}&skipHttpRedirect=true`;
+  const data = (await googleGet(url, options.apiKey, null, options.fetchImpl)) as { photoUri?: unknown };
+  return httpsUrl(data?.photoUri);
+}
