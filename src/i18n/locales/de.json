@@ -1378,7 +1378,8 @@
       "upstream_failed": "Routen konnten nicht geladen werden. Versuch es erneut.",
       "network": "Keine Verbindung. Versuch es erneut."
     },
-    "between": "{{from}} → {{to}}: Anreise"
+    "between": "{{from}} → {{to}}: Anreise",
+    "farStart": "Du bist weit von diesem Ort entfernt. Die Route beginnt bei {{from}}."
   },
   "widget": {
     "title": "Heutiger Plan",

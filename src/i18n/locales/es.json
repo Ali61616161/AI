@@ -1378,7 +1378,8 @@
       "upstream_failed": "No se pudieron cargar las rutas. Inténtalo de nuevo.",
       "network": "Sin conexión. Inténtalo de nuevo."
     },
-    "between": "{{from}} → {{to}}: cómo llegar"
+    "between": "{{from}} → {{to}}: cómo llegar",
+    "farStart": "Estás lejos de este lugar. He iniciado la ruta desde {{from}}."
   },
   "widget": {
     "title": "Plan de hoy",

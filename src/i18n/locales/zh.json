@@ -1341,7 +1341,8 @@
       "upstream_failed": "暂时无法加载路线，请重试。",
       "network": "没有网络连接，请重试。"
     },
-    "between": "{{from}} → {{to}}：怎么去"
+    "between": "{{from}} → {{to}}：怎么去",
+    "farStart": "你离这里很远，已从 {{from}} 开始规划路线。"
   },
   "widget": {
     "title": "今日计划",

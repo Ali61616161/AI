@@ -153,6 +153,9 @@ export function shortenRules(currentDays: StoredDay[], keepDates: string[], high
 // Anlık durum (kriz) yeniden planlaması
 // ---------------------------------------------------------------------------
 
+/** Konumun çevresindeki gerçek (Google Places), şu an açık yerler; model sadece bunlardan seçer. */
+export type NearbyCandidate = { name: string; type: string | null; rating: number | null; distanceM: number | null; address: string | null };
+
 export type CrisisContext = {
   language: string;
   message: string;
@@ -171,6 +174,8 @@ export type CrisisContext = {
   remaining: { time: string; title: string; place: string | null }[];
   /** Günün kalanındaki kilitli duraklar (uçuş, otel girişi...). */
   fixedLater: { time: string; title: string }[];
+  /** Konuma yakın gerçek yerler (varsa öneriler bunlardan seçilir). */
+  nearby?: NearbyCandidate[];
 };
 
 export const CRISIS_RESPONSE_SCHEMA = {
@@ -211,6 +216,9 @@ export function buildCrisisPrompt(ctx: CrisisContext): string {
     : ctx.city ?? 'unknown';
   const remaining = ctx.remaining.length ? ctx.remaining.map((r) => `${r.time} ${r.title}${r.place ? ` @ ${r.place}` : ''}`).join('; ') : 'nothing planned';
   const fixed = ctx.fixedLater.length ? ctx.fixedLater.map((f) => `${f.time} ${f.title}`).join('; ') : 'none';
+  const nearby = (ctx.nearby ?? [])
+    .map((p) => `- ${p.name}${p.type ? ` [${p.type}]` : ''}${p.rating !== null ? `, rating ${p.rating}` : ''}${p.distanceM !== null ? `, ${p.distanceM} m away` : ''}${p.address ? `, ${p.address}` : ''}`)
+    .join('\n');
 
   return `You are a travel assistant helping a traveler who is on their trip right now.
 
@@ -231,7 +239,7 @@ What to do:
 - If the situation affects today's plan (weather, delay, closure, fatigue, budget, time gap), set change_plan true and give a new plan for the rest of today in items. Start no earlier than 15 minutes from now and keep every fixed booking reachable.
 - If it is only a question, set change_plan false and put 1-4 suggestions in items.
 - Prefer places within about 1 km or a short transit ride from the location. If it is raining or cold, prefer is_indoor places.
-- Only suggest real places you are confident exist; otherwise name an area or street.
+${nearby ? `- Real places open right now near the traveler (from Google Maps, nearest first):\n${nearby}\n  Suggest ONLY places from this list, copying the name exactly into place_name, and prefer the closest ones that fit the request. Never suggest a place that is not in the list. If nothing fits, say so honestly in the reply and give the best available one.` : '- Only suggest real places you are confident exist; otherwise name an area or street.'}
 - estimated_cost per person in local currency with its ISO 4217 code; titles and descriptions in ${LANGUAGE_NAMES[ctx.language] ?? 'English'}; keep place_name in its local name.`;
 }
 

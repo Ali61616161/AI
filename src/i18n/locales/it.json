@@ -1378,7 +1378,8 @@
       "upstream_failed": "Impossibile caricare i percorsi. Riprova.",
       "network": "Nessuna connessione. Riprova."
     },
-    "between": "{{from}} → {{to}}: come arrivare"
+    "between": "{{from}} → {{to}}: come arrivare",
+    "farStart": "Sei lontano da questo posto. Ho avviato il percorso da {{from}}."
   },
   "widget": {
     "title": "Il piano di oggi",

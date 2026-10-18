@@ -15,6 +15,8 @@ import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { openBookingLink, PlacesError } from '@/features/places/api';
 import { getCurrentLocation } from '@/features/plan/replan';
+import { isFar, pickTripOrigin } from '@/features/transport/route-origin';
+import { useTrip } from '@/features/trips/queries';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { useRoute, VEHICLE_ICONS, type RouteChoice, type RouteMode, type RoutePoint, type RouteStepWithTickets } from '@/features/transport/api';
 import { TicketLinks } from '@/features/transport/ticket-links';
@@ -39,6 +41,8 @@ type Params = {
   fromAddress?: string;
   country?: string;
   departAt?: string;
+  /** Seyahat: kullanıcı hedeften çok uzaktaysa rota otelden/varış noktasından başlatılır. */
+  tripId?: string;
 };
 
 function point(lat?: string, lng?: string, address?: string): RoutePoint | null {
@@ -68,12 +72,18 @@ export default function RouteScreen() {
     };
   }, [needHere]);
 
-  const origin = given ?? (here && here !== 'denied' ? here : null);
+  // Hedef bulunduğun yerden çok uzaksa (uçuş gerekir) "Konumum"dan rota anlamsız olur; seyahatte
+  // otel ya da varış havalimanı biliniyorsa rota oradan başlar.
+  const { data: trip } = useTrip(p.tripId);
+  const dest = destination && 'lat' in destination ? destination : null;
+  const far = !given && here !== null && here !== 'denied' && 'lat' in here && dest !== null && isFar(here, dest);
+  const tripOrigin = far && trip ? pickTripOrigin(trip.reservations) : null;
+  const origin: RoutePoint | null = given ?? (tripOrigin ? { address: tripOrigin.address } : here && here !== 'denied' ? here : null);
   const query = useRoute({
     origin,
     destination,
     mode,
-    originName: p.fromName ?? null,
+    originName: p.fromName ?? tripOrigin?.name ?? null,
     destinationName: p.toName ?? p.toAddress ?? null,
     countryCode: p.country ?? null,
     departAt: p.departAt ?? null,
@@ -82,7 +92,15 @@ export default function RouteScreen() {
 
   return (
     <Screen>
-      <ModalHeader title={t('route.title')} subtitle={`${p.fromName ?? t('route.myLocation')} → ${p.toName ?? p.toAddress ?? ''}`} />
+      <ModalHeader title={t('route.title')} subtitle={`${p.fromName ?? tripOrigin?.name ?? t('route.myLocation')} → ${p.toName ?? p.toAddress ?? ''}`} />
+
+      {tripOrigin && (
+        <Card variant="solid" padding={Spacing.md}>
+          <Text variant="caption" color="textSecondary">
+            {t('route.farStart', { from: tripOrigin.name })}
+          </Text>
+        </Card>
+      )}
 
       <View style={styles.modes}>
         {MODES.map((m) => (

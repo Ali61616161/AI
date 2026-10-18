@@ -15,7 +15,7 @@
 // İsteğe bağlı: GOOGLE_MAPS_API_KEY (anlık hava ve mekan doğrulama), AFFILIATE_*.
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.ts';
-import type { Place } from '../_shared/places.ts';
+import { openNowRequest, type Place, searchText } from '../_shared/places.ts';
 import { fetchCurrent, weatherForPrompt } from '../_shared/weather.ts';
 import { isValidTimeZone, utcToLocal } from '../_shared/documents.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
@@ -40,6 +40,7 @@ import {
   storedDayToPayload,
   type PayloadDay,
   type StoredDay,
+  type NearbyCandidate,
 } from '../_shared/replan.ts';
 import { loadProfile, loadTrip, type LoadedTrip } from '../_shared/trip-context.ts';
 
@@ -49,6 +50,28 @@ const MAX_DAYS = 30;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const toStored = (days: PayloadDay[]): StoredDay[] => days.map((d) => ({ ...d, plan_items: d.items }));
+
+const NEARBY_CATEGORIES_FOR_CRISIS = ['restaurant', 'cafe', 'museum', 'attraction'] as const;
+
+/** Konumun 1,5 km çevresindeki şu an açık yerler (en yakın önce, en fazla 14). Hata olursa boş liste. */
+async function nearbyCandidates(origin: { lat: number; lng: number }, language: string, apiKey: string, apiBase?: string): Promise<NearbyCandidate[]> {
+  const lists = await Promise.all(
+    NEARBY_CATEGORIES_FOR_CRISIS.map((category) =>
+      searchText({ apiKey, apiBase, origin, body: openNowRequest({ ...origin, category, language, radius: 1500, pageSize: 6 }) }).catch((e) => {
+        console.warn('replan crisis: nearby search failed', e instanceof Error ? e.message : String(e));
+        return [] as Place[];
+      }),
+    ),
+  );
+  const seen = new Set<string>();
+  return lists
+    .flat()
+    .filter((p) => p.openNow !== false && p.status !== 'CLOSED_PERMANENTLY' && p.status !== 'CLOSED_TEMPORARILY' && !seen.has(p.id) && seen.add(p.id))
+    .sort((a, b) => (a.distanceM ?? 1e9) - (b.distanceM ?? 1e9))
+    .slice(0, 14)
+    .map((p) => ({ name: p.name, type: p.type, rating: p.rating, distanceM: p.distanceM, address: p.address }));
+}
+
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -121,6 +144,9 @@ Deno.serve(async (req) => {
         });
     }
     const localTime = (iso: string, itemTz: string | null) => utcToLocal(iso, itemTz ?? timezone).slice(11);
+    // Konum varsa çevredeki gerçek, şu an açık yerler aday listesi olarak modele verilir; model
+    // yer uydurmaz ve öneriler gerçekten yakın olur (sadece koordinatla yer adı uydurma sorunu).
+    const nearby: NearbyCandidate[] = location && google.apiKey ? await nearbyCandidates(location, profile.language, google.apiKey, google.placesBase) : [];
 
     let raw: unknown;
     try {
@@ -142,6 +168,7 @@ Deno.serve(async (req) => {
           currency: trip?.ctx.currency ?? profile.currency,
           remaining: later.filter((i) => !i.is_locked).map((i) => ({ time: localTime(i.starts_at!, i.timezone), title: i.title, place: i.place_name })),
           fixedLater: later.filter((i) => i.is_locked).map((i) => ({ time: localTime(i.starts_at!, i.timezone), title: i.title })),
+          nearby,
         }),
         responseSchema: CRISIS_RESPONSE_SCHEMA,
         timeoutMs: 60_000,

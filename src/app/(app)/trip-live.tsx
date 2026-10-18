@@ -187,7 +187,7 @@ export default function TripLiveScreen() {
                           onPress={() => openPlaceCard({ id: item.google_place_id!, name: item.place_name ?? item.title, address: item.address, lat: item.lat, lng: item.lng, mapsUrl: item.maps_url })}
                         />
                       )}
-                      <Chip icon="git-branch-outline" label={t('route.howToGet')} onPress={() => openRoute(item, prev, city)} />
+                      <Chip icon="git-branch-outline" label={t('route.howToGet')} onPress={() => openRoute(item, prev, city, tripId)} />
                     </View>
                   </Card>
                 </View>

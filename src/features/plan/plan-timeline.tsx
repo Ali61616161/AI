@@ -82,7 +82,7 @@ function Badge({ icon, label, tone = 'muted' }: { icon?: IconName; label: string
   );
 }
 
-function TimelineItem({ item, last, city, from }: { item: PlanItemRow; last: boolean; city: string | null; from: PlanItemRow | null }) {
+function TimelineItem({ item, last, city, from, tripId }: { item: PlanItemRow; last: boolean; city: string | null; from: PlanItemRow | null; tripId?: string }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const time = item.starts_at ? formatTime(item.starts_at, item.timezone) : '';
@@ -170,7 +170,7 @@ function TimelineItem({ item, last, city, from }: { item: PlanItemRow; last: boo
                 }
               />
             )}
-            {routable && <Chip icon="git-branch-outline" label={t('route.howToGet')} onPress={() => openRoute(item, from, city)} />}
+            {routable && <Chip icon="git-branch-outline" label={t('route.howToGet')} onPress={() => openRoute(item, from, city, tripId)} />}
             {item.booking_url && <Chip icon="ticket-outline" label={t('place.buyTicket')} onPress={() => openBookingLink(item.booking_url!)} />}
           </View>
         )}
@@ -185,11 +185,12 @@ const isRoutable = (i: PlanItemRow) => i.kind !== 'transport' && Boolean(i.lat !
 const placeLabel = (i: PlanItemRow, city: string | null) => [i.place_name ?? i.title, i.lat === null ? city : null].filter(Boolean).join(', ');
 
 /** "Nasıl giderim?": bir önceki duraktan (yoksa kullanıcının konumundan) bu durağa. */
-export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: string | null) {
+export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: string | null, tripId?: string) {
   const coords = (i: PlanItemRow, prefix: 'to' | 'from') => (i.lat !== null && i.lng !== null ? { [`${prefix}Lat`]: String(i.lat), [`${prefix}Lng`]: String(i.lng) } : {});
   router.push({
     pathname: '/route',
     params: {
+      ...(tripId ? { tripId } : {}),
       ...coords(item, 'to'),
       toName: placeLabel(item, city),
       ...(from && from.lat !== null ? { ...coords(from, 'from'), fromName: placeLabel(from, city) } : {}),
@@ -198,7 +199,7 @@ export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: str
   });
 }
 
-export function DayTimeline({ day, weather }: { day: PlanDayRow; weather?: DayForecast | null }) {
+export function DayTimeline({ day, weather, tripId }: { day: PlanDayRow; weather?: DayForecast | null; tripId?: string }) {
   const { t } = useTranslation();
   return (
     <View style={styles.timeline}>
@@ -230,6 +231,7 @@ export function DayTimeline({ day, weather }: { day: PlanDayRow; weather?: DayFo
             city={day.city}
             last={index === day.plan_items.length - 1}
             from={day.plan_items.slice(0, index).findLast(isRoutable) ?? null}
+            tripId={tripId}
           />
         ))
       )}

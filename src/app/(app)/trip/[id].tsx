@@ -224,7 +224,7 @@ export default function TripScreen() {
                 {showMap && <PlacesMap key={day?.id} points={mapPoints} />}
               </View>
             )}
-            {day && <DayTimeline day={day} weather={dayWeather} />}
+            {day && <DayTimeline day={day} weather={dayWeather} tripId={trip.id} />}
             {generateError && (
               <Text variant="caption" color="danger">
                 {generateError}

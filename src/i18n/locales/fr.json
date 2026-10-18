@@ -1378,7 +1378,8 @@
       "upstream_failed": "Impossible de charger les itinéraires. Réessayez.",
       "network": "Pas de connexion. Réessayez."
     },
-    "between": "{{from}} → {{to}} : comment y aller"
+    "between": "{{from}} → {{to}} : comment y aller",
+    "farStart": "Tu es loin de ce lieu. L’itinéraire part de {{from}}."
   },
   "widget": {
     "title": "Programme du jour",

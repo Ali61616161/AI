@@ -1378,7 +1378,8 @@
       "upstream_failed": "Güzergah şu an yüklenemedi. Tekrar dene.",
       "network": "Bağlantı yok. Tekrar dene."
     },
-    "between": "{{from}} → {{to}} nasıl gidilir"
+    "between": "{{from}} → {{to}} nasıl gidilir",
+    "farStart": "Konumun bu noktadan çok uzakta. Rotayı {{from}} noktasından başlattım."
   },
   "widget": {
     "title": "Bugünün planı",
