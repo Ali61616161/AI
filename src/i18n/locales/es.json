@@ -399,7 +399,27 @@
       "not_configured": "El servidor aún no está configurado. La conexión con la IA se hace en el paso 15.",
       "no_dates": "Este viaje no tiene fechas de inicio y fin.",
       "network": "Error de conexión. Revisa tu internet e inténtalo de nuevo."
-    }
+    },
+    "customize": "Personalizar el plan (opcional)",
+    "customizeHide": "Ocultar personalización",
+    "customizeHint": "Si no eliges nada, el plan sigue las preferencias de tu perfil.",
+    "pace": {
+      "title": "Ritmo",
+      "relaxed": "Tranquilo",
+      "balanced": "Equilibrado",
+      "packed": "Intenso"
+    },
+    "diet": {
+      "title": "Comida y movilidad",
+      "vegetarian": "Vegetariano",
+      "vegan": "Vegano",
+      "halal": "Halal",
+      "gluten_free": "Sin gluten"
+    },
+    "stepFree": "Poco caminar, escaleras y cuestas",
+    "interestsTitle": "Tus intereses en este viaje",
+    "notesLabel": "¿Algo más?",
+    "notesPlaceholder": "p. ej. una cena con vistas al mar, lugares aptos para niños"
   },
   "dates": {
     "title": "Cambiar fechas",

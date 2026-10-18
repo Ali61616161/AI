@@ -399,7 +399,27 @@
       "not_configured": "Sunucu henüz yapılandırılmadı. AI bağlantısı 15. adımda kurulacak.",
       "no_dates": "Seyahatin başlangıç ve bitiş tarihi yok.",
       "network": "Bağlantı hatası. İnternetini kontrol edip tekrar dene."
-    }
+    },
+    "customize": "Planı kişiselleştir (isteğe bağlı)",
+    "customizeHide": "Kişiselleştirmeyi gizle",
+    "customizeHint": "Hiçbirini seçmezsen plan profilindeki tercihlere göre hazırlanır.",
+    "pace": {
+      "title": "Tempo",
+      "relaxed": "Rahat",
+      "balanced": "Dengeli",
+      "packed": "Dolu dolu"
+    },
+    "diet": {
+      "title": "Yemek ve hareket",
+      "vegetarian": "Vejetaryen",
+      "vegan": "Vegan",
+      "halal": "Helal",
+      "gluten_free": "Glütensiz"
+    },
+    "stepFree": "Az yürüyüş, merdiven ve yokuş",
+    "interestsTitle": "Bu seyahatteki ilgi alanların",
+    "notesLabel": "Eklemek istediklerin",
+    "notesPlaceholder": "Örn. deniz manzaralı akşam yemeği, çocuklara uygun yerler"
   },
   "dates": {
     "title": "Tarihleri değiştir",

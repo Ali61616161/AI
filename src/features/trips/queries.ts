@@ -1,3 +1,4 @@
+import type { PlanOptions } from '@/features/plan/plan-options-logic';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -253,8 +254,8 @@ export class GenerateError extends Error {
 export function useGenerateItinerary(tripId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async () => {
-      const { data, error } = await getSupabase().functions.invoke('generate-itinerary', { body: { trip_id: tripId } });
+    mutationFn: async (options?: PlanOptions) => {
+      const { data, error } = await getSupabase().functions.invoke('generate-itinerary', { body: { trip_id: tripId, ...(options && Object.keys(options).length ? { options } : {}) } });
       if (error) {
         let code: GenerateErrorCode = 'network';
         if (error instanceof FunctionsHttpError) {

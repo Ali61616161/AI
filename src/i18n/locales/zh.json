@@ -395,7 +395,27 @@
       "not_configured": "服务器尚未配置。AI 连接将在第 15 步完成。",
       "no_dates": "此行程没有开始和结束日期。",
       "network": "连接错误，请检查网络后重试。"
-    }
+    },
+    "customize": "自定义行程（可选）",
+    "customizeHide": "收起自定义",
+    "customizeHint": "什么都不选时，行程会按你个人资料中的偏好生成。",
+    "pace": {
+      "title": "节奏",
+      "relaxed": "轻松",
+      "balanced": "适中",
+      "packed": "紧凑"
+    },
+    "diet": {
+      "title": "饮食与出行",
+      "vegetarian": "素食",
+      "vegan": "纯素",
+      "halal": "清真",
+      "gluten_free": "无麸质"
+    },
+    "stepFree": "少走路、少楼梯和坡道",
+    "interestsTitle": "本次旅行的兴趣",
+    "notesLabel": "还有什么想说的？",
+    "notesPlaceholder": "例如：看海景的晚餐、适合孩子的地方"
   },
   "dates": {
     "title": "修改日期",

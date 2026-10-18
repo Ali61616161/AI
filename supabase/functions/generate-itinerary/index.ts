@@ -12,6 +12,9 @@ import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemi
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import {
   buildItineraryPrompt,
+  planOptionRules,
+  sanitizePlanOptions,
+  type PlanOptions,
   datesBetween,
   fixedItemsByDate,
   ITINERARY_RESPONSE_SCHEMA,
@@ -38,8 +41,11 @@ Deno.serve(async (req) => {
   const { supabase, user } = auth;
 
   let tripId: unknown;
+  let options: PlanOptions = {};
   try {
-    tripId = (await req.json())?.trip_id;
+    const body = await req.json();
+    tripId = body?.trip_id;
+    options = sanitizePlanOptions(body?.options);
   } catch {
     return error('bad_request', 400, 'body must be JSON');
   }
@@ -68,7 +74,14 @@ Deno.serve(async (req) => {
       apiBase: Deno.env.get('GEMINI_API_BASE'),
       apiKey,
       model: Deno.env.get('GEMINI_MODEL') ?? DEFAULT_MODEL,
-      prompt: buildItineraryPrompt(trip.ctx, dates, fixed, timezones, [preferenceRule(await loadPastInsights(supabase, tripId))].filter((r): r is string => r !== null)),
+      prompt: buildItineraryPrompt(
+        // Bu seyahat için seçilen ilgi alanları profildekilerin yerine geçer.
+        options.interests ? { ...trip.ctx, interests: options.interests } : trip.ctx,
+        dates,
+        fixed,
+        timezones,
+        [...planOptionRules(options), preferenceRule(await loadPastInsights(supabase, tripId))].filter((r): r is string => r !== null),
+      ),
       responseSchema: ITINERARY_RESPONSE_SCHEMA,
       timeoutMs: 120_000,
     });

@@ -399,7 +399,27 @@
       "not_configured": "Der Server ist noch nicht eingerichtet. Die KI-Anbindung erfolgt in Schritt 15.",
       "no_dates": "Diese Reise hat kein Start- und Enddatum.",
       "network": "Verbindungsfehler. Prüfe deine Internetverbindung und versuch es erneut."
-    }
+    },
+    "customize": "Plan anpassen (optional)",
+    "customizeHide": "Anpassung ausblenden",
+    "customizeHint": "Wenn du nichts auswählst, richtet sich der Plan nach deinem Profil.",
+    "pace": {
+      "title": "Tempo",
+      "relaxed": "Entspannt",
+      "balanced": "Ausgewogen",
+      "packed": "Voll"
+    },
+    "diet": {
+      "title": "Essen und Bewegung",
+      "vegetarian": "Vegetarisch",
+      "vegan": "Vegan",
+      "halal": "Halal",
+      "gluten_free": "Glutenfrei"
+    },
+    "stepFree": "Wenig Laufen, Treppen und Steigungen",
+    "interestsTitle": "Deine Interessen für diese Reise",
+    "notesLabel": "Noch etwas?",
+    "notesPlaceholder": "z. B. Abendessen mit Meerblick, kinderfreundliche Orte"
   },
   "dates": {
     "title": "Reisedaten ändern",

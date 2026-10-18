@@ -182,7 +182,7 @@ export default function TripScreen() {
         {planLoading ? (
           <ActivityIndicator color={colors.primary} />
         ) : !plan || generate.isPending ? (
-          <GenerateCard pending={generate.isPending} error={generateError} onGenerate={() => generate.mutate()} />
+          <GenerateCard pending={generate.isPending} error={generateError} onGenerate={(options) => generate.mutate(options)} />
         ) : (
           <>
             {plan.summary && (
