@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/card';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
-import { openBookingLink, openInMaps, PlacesError } from '@/features/places/api';
+import { openBookingLink, openInGoogleMaps, openInMaps, PlacesError } from '@/features/places/api';
 import { usePlaceCard } from '@/features/places/place-card-api';
 import { PlaceMeta } from '@/features/places/place-row';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
@@ -100,11 +100,13 @@ export default function PlaceScreen() {
           }
         />
         <View style={styles.rowButtons}>
-          <Button title={t('place.googleMaps')} variant="secondary" icon="map-outline" onPress={() => openInMaps({ name, mapsUrl, placeId: p.id, lat, lng })} style={styles.flex} />
+          <Button title={t('map.showOnMap')} variant="secondary" icon="map-outline" onPress={() => openInMaps({ name, mapsUrl, placeId: p.id, lat, lng, address })} style={styles.flex} />
           {data?.website && <Button title={t('place.website')} variant="secondary" icon="globe-outline" onPress={() => openBookingLink(data.website!)} style={styles.flex} />}
           {data?.phone && <Button title={t('place.call')} variant="secondary" icon="call-outline" onPress={() => Linking.openURL(`tel:${data.phone!.replace(/[^\d+]/g, '')}`)} style={styles.flex} />}
         </View>
       </View>
+
+      <Button title={t('place.googleMaps')} variant="ghost" icon="open-outline" onPress={() => openInGoogleMaps({ name, mapsUrl, placeId: p.id, lat, lng })} />
 
       {data && data.hours.length > 0 && (
         <Card variant="solid" padding={Spacing.md}>

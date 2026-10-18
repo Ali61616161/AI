@@ -19,6 +19,8 @@ export type LiveMapProps = {
   points: LivePoint[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  /** Verilirse rota çizgisi olarak çizilir ve harita bu çizgiye sığdırılır (duraklar arası kesik çizgi yerine). */
+  path?: { lat: number; lng: number }[];
   /** Üstteki (gün seçici) ve alttaki (durak kartları) kaplanan alan; harita içeriği bunların dışına sığdırılır. */
   topInset: number;
   bottomInset: number;

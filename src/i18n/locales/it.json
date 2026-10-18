@@ -491,7 +491,8 @@
     "openInMaps": "Mappa",
     "openRoute": "Apri il percorso in Google Maps",
     "showMap": "Mostra mappa",
-    "hideMap": "Nascondi mappa"
+    "hideMap": "Nascondi mappa",
+    "showOnMap": "Mostra sulla mappa"
   },
   "place": {
     "buyTicket": "Biglietti",

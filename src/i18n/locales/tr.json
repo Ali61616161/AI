@@ -491,7 +491,8 @@
     "openInMaps": "Harita",
     "openRoute": "Rotayı Google Haritalar'da aç",
     "showMap": "Haritayı göster",
-    "hideMap": "Haritayı gizle"
+    "hideMap": "Haritayı gizle",
+    "showOnMap": "Haritada göster"
   },
   "place": {
     "buyTicket": "Bilet al",

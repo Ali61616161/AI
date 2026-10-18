@@ -19,6 +19,7 @@ import { isFar, pickTripOrigin } from '@/features/transport/route-origin';
 import { useTrip } from '@/features/trips/queries';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { useRoute, VEHICLE_ICONS, type RouteChoice, type RouteMode, type RoutePoint, type RouteStepWithTickets } from '@/features/transport/api';
+import { RouteMap } from '@/features/transport/route-map';
 import { TicketLinks } from '@/features/transport/ticket-links';
 import { formatMoney } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
@@ -60,6 +61,7 @@ export default function RouteScreen() {
   const given = point(p.fromLat, p.fromLng, p.fromAddress);
   const [here, setHere] = useState<RoutePoint | null | 'denied'>(null);
   const [mode, setMode] = useState<RouteMode>('transit');
+  const [selected, setSelected] = useState(0);
 
   // Başlangıç verilmediyse kullanıcının konumu kullanılır.
   const needHere = given === null;
@@ -104,7 +106,10 @@ export default function RouteScreen() {
 
       <View style={styles.modes}>
         {MODES.map((m) => (
-          <Chip key={m.key} icon={m.icon} label={t(`route.mode.${m.key}`)} selected={mode === m.key} onPress={() => setMode(m.key)} />
+          <Chip key={m.key} icon={m.icon} label={t(`route.mode.${m.key}`)} selected={mode === m.key} onPress={() => {
+              setMode(m.key);
+              setSelected(0);
+            }} />
         ))}
       </View>
 
@@ -133,7 +138,12 @@ export default function RouteScreen() {
               </Text>
             </Card>
           ) : (
-            data.routes.map((r, i) => <RouteCard key={i} route={r} best={i === 0} />)
+            <>
+              <RouteMap polyline={data.routes[Math.min(selected, data.routes.length - 1)]?.polyline ?? null} />
+              {data.routes.map((r, i) => (
+                <RouteCard key={i} route={r} best={i === Math.min(selected, data.routes.length - 1)} onPress={() => setSelected(i)} />
+              ))}
+            </>
           )}
 
           {data.tickets.length > 0 && (
@@ -155,12 +165,12 @@ export default function RouteScreen() {
   );
 }
 
-function RouteCard({ route, best }: { route: RouteChoice; best: boolean }) {
+function RouteCard({ route, best, onPress }: { route: RouteChoice; best: boolean; onPress: () => void }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const transfers = Math.max(route.steps.filter((s) => s.transit).length - 1, 0);
   return (
-    <Card variant={best ? 'glow' : 'glass'}>
+    <Card variant={best ? 'glow' : 'glass'} onPress={onPress} accessibilityLabel={route.durationText ?? undefined}>
       <View style={styles.summary}>
         <View style={styles.flex}>
           <Text variant="subtitle">{route.durationText ?? t('route.minutes', { count: route.durationMin })}</Text>

@@ -9,6 +9,7 @@ const SAMPLE = {
     distanceMeters: 61234,
     localizedValues: { duration: { text: '1 saat 30 dk' }, distance: { text: '61,2 km' }, transitFare: { text: 'CHF 34.00' } },
     travelAdvisory: { transitFare: { currencyCode: 'CHF', units: '34' } },
+    polyline: { encodedPolyline: '_p~iF~ps|U_ulLnnqC_mqNvxq`@' },
     legs: [{
       steps: [
         { travelMode: 'WALK', staticDuration: '120s', distanceMeters: 150, navigationInstruction: { instructions: 'Interlaken Ost istasyonuna yürü' } },
@@ -51,6 +52,7 @@ const SAMPLE = {
 Deno.test('normalizeRoutes: hatlar, araç türleri, işletmeci sitesi, ücret ve yürüme birleştirme', () => {
   const [r] = normalizeRoutes(SAMPLE, 'transit');
   assertEquals(r.durationMin, 90);
+  assertEquals(r.polyline, '_p~iF~ps|U_ulLnnqC_mqNvxq`@');
   assertEquals(r.distanceKm, 61.2);
   assertEquals(r.fare, { amount: 34, currency: 'CHF' });
   assertEquals(r.fareText, 'CHF 34.00');
@@ -96,4 +98,11 @@ Deno.test('computeRoutes: başlıklar ve hata', async () => {
   assertEquals(headers!.get('x-goog-api-key'), 'k');
   const bad = (() => Promise.resolve(new Response('denied', { status: 403 }))) as typeof fetch;
   await assertRejects(() => computeRoutes({ apiKey: 'k', origin: { address: 'a' }, destination: { address: 'b' }, mode: 'walk', language: 'en', fetchImpl: bad }), RoutesError);
+});
+
+Deno.test('normalizeRoutes: çizgi yoksa veya çok uzunsa null', () => {
+  const base = { duration: '600s', distanceMeters: 1000, legs: [{ steps: [{ travelMode: 'WALK', staticDuration: '600s' }] }] };
+  assertEquals(normalizeRoutes({ routes: [base] }, 'walk')[0].polyline, null);
+  assertEquals(normalizeRoutes({ routes: [{ ...base, polyline: { encodedPolyline: 'a'.repeat(60_001) } }] }, 'walk')[0].polyline, null);
+  assertEquals(normalizeRoutes({ routes: [{ ...base, polyline: { encodedPolyline: 'abc' } }] }, 'walk')[0].polyline, 'abc');
 });

@@ -48,6 +48,7 @@ export default function AppLayout() {
       <Stack.Screen name="decide" options={{ presentation: 'modal' }} />
       <Stack.Screen name="route" options={{ presentation: 'modal' }} />
       <Stack.Screen name="place" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="map" options={{ presentation: 'fullScreenModal' }} />
       <Stack.Screen name="refer" options={{ presentation: 'modal' }} />
       <Stack.Screen name="social" />
       <Stack.Screen name="passport" options={{ presentation: 'modal' }} />

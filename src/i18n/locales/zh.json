@@ -485,7 +485,8 @@
     "openInMaps": "地图",
     "openRoute": "在 Google 地图中打开路线",
     "showMap": "显示地图",
-    "hideMap": "隐藏地图"
+    "hideMap": "隐藏地图",
+    "showOnMap": "在地图上显示"
   },
   "place": {
     "buyTicket": "门票",

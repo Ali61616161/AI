@@ -491,7 +491,8 @@
     "openInMaps": "Karte",
     "openRoute": "Route in Google Maps öffnen",
     "showMap": "Karte anzeigen",
-    "hideMap": "Karte ausblenden"
+    "hideMap": "Karte ausblenden",
+    "showOnMap": "Auf Karte zeigen"
   },
   "place": {
     "buyTicket": "Tickets",

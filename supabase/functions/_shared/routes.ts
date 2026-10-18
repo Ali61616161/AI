@@ -13,6 +13,7 @@ export const ROUTE_FIELD_MASK = [
   'routes.distanceMeters',
   'routes.localizedValues',
   'routes.travelAdvisory.transitFare',
+  'routes.polyline.encodedPolyline',
   'routes.legs.steps.travelMode',
   'routes.legs.steps.staticDuration',
   'routes.legs.steps.distanceMeters',
@@ -63,7 +64,12 @@ export type RouteOption = {
   departAt: string | null;
   arriveAt: string | null;
   steps: RouteStep[];
+  /** Rotanın tamamı: kodlanmış çizgi (Google encoded polyline, 1e-5 hassasiyet); uygulama kendi haritasında çizer. */
+  polyline: string | null;
 };
+
+/** Çok uzun rotalarda (ör. kıtalar arası araba) cevabı şişirmemek için çizgi atılır. */
+const MAX_POLYLINE_CHARS = 60_000;
 
 export class RoutesError extends Error {
   constructor(message: string, readonly status: number) {
@@ -191,6 +197,7 @@ export function normalizeRoutes(data: any, mode: RouteMode): RouteOption[] {
       departAt: transit.find((t) => t.transit?.departAt)?.transit?.departAt ?? null,
       arriveAt: transit.findLast((t) => t.transit?.arriveAt)?.transit?.arriveAt ?? null,
       steps: visible,
+      polyline: typeof r.polyline?.encodedPolyline === 'string' && r.polyline.encodedPolyline.length <= MAX_POLYLINE_CHARS ? r.polyline.encodedPolyline : null,
     };
   });
 }

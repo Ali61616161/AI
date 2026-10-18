@@ -13,10 +13,12 @@ import { useTheme } from '@/theme/use-theme';
 import type { LiveMapHandle, LiveMapProps } from './types';
 
 /** Seyahat canlı görünümünün haritası: numaralı duraklar, sıralı çizgi, seçili durak vurgulu. */
-const NativeLiveMap = forwardRef<LiveMapHandle, LiveMapProps>(function NativeLiveMap({ points, selectedId, onSelect, topInset, bottomInset }, ref) {
+const NativeLiveMap = forwardRef<LiveMapHandle, LiveMapProps>(function NativeLiveMap({ points, selectedId, onSelect, topInset, bottomInset, path }, ref) {
   const { colors, isDark } = useTheme();
   const map = useRef<MapView>(null);
   const coords = points.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+  const pathCoords = path?.map((p) => ({ latitude: p.lat, longitude: p.lng })) ?? [];
+  const fitCoords = pathCoords.length > 1 ? pathCoords : coords;
   // Özel işaretler Android'de bir kez çizilince takip kapatılır (performans).
   const drawKey = `${points.map((p) => p.id).join(',')}|${selectedId}`;
   const [drawn, setDrawn] = useState<string | null>(null);
@@ -26,8 +28,8 @@ const NativeLiveMap = forwardRef<LiveMapHandle, LiveMapProps>(function NativeLiv
   }, [drawKey]);
 
   const fit = () => {
-    if (coords.length > 1) {
-      map.current?.fitToCoordinates(coords, { edgePadding: { top: topInset + 32, right: 48, bottom: bottomInset + 32, left: 48 }, animated: true });
+    if (fitCoords.length > 1) {
+      map.current?.fitToCoordinates(fitCoords, { edgePadding: { top: topInset + 32, right: 48, bottom: bottomInset + 32, left: 48 }, animated: true });
     } else if (coords[0]) {
       map.current?.animateToRegion({ ...coords[0], latitudeDelta: 0.01, longitudeDelta: 0.01 }, 400);
     }
@@ -42,7 +44,7 @@ const NativeLiveMap = forwardRef<LiveMapHandle, LiveMapProps>(function NativeLiv
   }));
 
   // Gün değişip duraklar yenilenince hepsi yeniden ekrana sığdırılır.
-  const pointsKey = points.map((p) => p.id).join(',');
+  const pointsKey = `${points.map((p) => p.id).join(',')}|${path?.length ?? 0}`;
   useEffect(() => {
     const id = setTimeout(fit, 250);
     return () => clearTimeout(id);
@@ -63,7 +65,11 @@ const NativeLiveMap = forwardRef<LiveMapHandle, LiveMapProps>(function NativeLiv
       showsPointsOfInterests={false}
       toolbarEnabled={false}
       onMapReady={fit}>
-      {coords.length > 1 && <Polyline coordinates={coords} strokeColor={colors.primary} strokeWidth={4} lineDashPattern={[8, 8]} />}
+      {pathCoords.length > 1 ? (
+        <Polyline coordinates={pathCoords} strokeColor={colors.primary} strokeWidth={5} lineJoin="round" />
+      ) : (
+        coords.length > 1 && <Polyline coordinates={coords} strokeColor={colors.primary} strokeWidth={4} lineDashPattern={[8, 8]} />
+      )}
       {points.map((p) => {
         const selected = p.id === selectedId;
         const size = selected ? 42 : 32;

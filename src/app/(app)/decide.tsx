@@ -16,7 +16,7 @@ import { Text } from '@/components/ui/text';
 import { categoryFor, pickPlace, type DecideGroup } from '@/features/decide/pick';
 import { useVisits } from '@/features/city/api';
 import { PlaceActions } from '@/features/city/place-actions';
-import { openInMaps, openNowQuery, PlacesError, type Place } from '@/features/places/api';
+import { openDirections, openNowQuery, PlacesError, type Place } from '@/features/places/api';
 import { useSessionStore } from '@/stores/session-store';
 import { PlaceMeta } from '@/features/places/place-row';
 import { useDeviceLocation } from '@/features/places/use-device-location';
@@ -116,7 +116,7 @@ export default function DecideScreen() {
       footer={
         phase === 'result' && picked ? (
           <Animated.View entering={FadeInUp.delay(150)} style={styles.footer}>
-            <Button title={t('decide.go')} icon="navigate" onPress={() => openInMaps({ name: picked.place.name, mapsUrl: picked.place.mapsUrl, placeId: picked.place.id, lat: picked.place.lat, lng: picked.place.lng })} />
+            <Button title={t('decide.go')} icon="navigate" onPress={() => openDirections({ name: picked.place.name, lat: picked.place.lat, lng: picked.place.lng, address: picked.place.address })} />
             <View style={styles.row}>
               <Button title={t('decide.again')} icon="shuffle" variant="secondary" style={styles.flex} onPress={() => spin(true)} />
               <Button title={t('decide.change')} variant="ghost" style={styles.flex} onPress={() => setPhase('idle')} />

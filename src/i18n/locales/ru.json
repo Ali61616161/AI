@@ -503,7 +503,8 @@
     "openInMaps": "Карта",
     "openRoute": "Открыть маршрут в Google Картах",
     "showMap": "Показать карту",
-    "hideMap": "Скрыть карту"
+    "hideMap": "Скрыть карту",
+    "showOnMap": "Показать на карте"
   },
   "place": {
     "buyTicket": "Билеты",

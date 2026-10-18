@@ -515,7 +515,8 @@
     "openInMaps": "الخريطة",
     "openRoute": "افتح المسار في خرائط Google",
     "showMap": "عرض الخريطة",
-    "hideMap": "إخفاء الخريطة"
+    "hideMap": "إخفاء الخريطة",
+    "showOnMap": "عرض على الخريطة"
   },
   "place": {
     "buyTicket": "التذاكر",

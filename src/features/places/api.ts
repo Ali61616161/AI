@@ -2,6 +2,7 @@ import type Ionicons from '@expo/vector-icons/Ionicons';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import type { ComponentProps } from 'react';
+import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'react-native';
 
@@ -110,11 +111,39 @@ export function useTripWeather(tripId: string | undefined) {
 }
 
 /** Mekanı Google Haritalar'da açar (uygulama yüklüyse uygulamada). */
-export function openInMaps(place: { name: string; mapsUrl?: string | null; placeId?: string | null; lat?: number | null; lng?: number | null }) {
+/** Mekâna uygulama içi yol tarifi (Nasıl giderim ekranı: harita, güzergah çizgisi, toplu taşıma adımları). */
+export function openDirections(place: { name: string; lat?: number | null; lng?: number | null; address?: string | null }) {
+  router.push({
+    pathname: '/route',
+    params: { toName: place.name, ...(place.lat != null && place.lng != null ? { toLat: String(place.lat), toLng: String(place.lng) } : { toAddress: place.address ?? place.name }) },
+  });
+}
+
+/** Google Haritalar uygulamasını/sayfasını açar (uygulama dışına çıkar). Sadece açıkça istenince kullanılır. */
+export function openInGoogleMaps(place: { name: string; mapsUrl?: string | null; placeId?: string | null; lat?: number | null; lng?: number | null }) {
   if (place.mapsUrl && isHttps(place.mapsUrl)) return Linking.openURL(place.mapsUrl);
   const params = new URLSearchParams({ api: '1', query: place.lat != null && place.lng != null && !place.placeId ? `${place.lat},${place.lng}` : place.name });
   if (place.placeId) params.set('query_place_id', place.placeId);
   return Linking.openURL(`https://www.google.com/maps/search/?${params}`);
+}
+
+/**
+ * Mekânı uygulamanın kendi haritasında gösterir (koyu tema, yol tarifi ve ayrıntı düğmeleriyle).
+ * Konum bilinmiyorsa (sadece ad/bağlantı varsa) Google Haritalar'a düşer.
+ */
+export function openInMaps(place: { name: string; mapsUrl?: string | null; placeId?: string | null; lat?: number | null; lng?: number | null; address?: string | null }) {
+  if (place.lat == null || place.lng == null) return openInGoogleMaps(place);
+  router.push({
+    pathname: '/map',
+    params: {
+      name: place.name,
+      lat: String(place.lat),
+      lng: String(place.lng),
+      ...(place.placeId ? { id: place.placeId } : {}),
+      ...(place.address ? { address: place.address } : {}),
+      ...(place.mapsUrl ? { mapsUrl: place.mapsUrl } : {}),
+    },
+  });
 }
 
 const isHttps = (url: string) => /^https:\/\//i.test(url);

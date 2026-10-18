@@ -18,7 +18,7 @@ import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { ExploreMap } from '@/features/explore/explore-map';
 import { distanceM, type Coords, type ExploreMapHandle } from '@/features/explore/types';
-import { formatDistance, NEARBY_CATEGORY_LIST, openInMaps, PlacesError, useOpenNow, type NearbyCategory, type Place } from '@/features/places/api';
+import { formatDistance, NEARBY_CATEGORY_LIST, openDirections, PlacesError, useOpenNow, type NearbyCategory, type Place } from '@/features/places/api';
 import { openPlaceCard } from '@/features/places/place-card-api';
 import { PlaceMeta } from '@/features/places/place-row';
 import { useDeviceLocation } from '@/features/places/use-device-location';
@@ -264,7 +264,7 @@ export default function ExploreScreen() {
                       <Tap
                         accessibilityRole="button"
                         accessibilityLabel={t('decide.go')}
-                        onPress={() => openInMaps({ name: item.name, mapsUrl: item.mapsUrl, placeId: item.id, lat: item.lat, lng: item.lng })}
+                        onPress={() => openDirections({ name: item.name, lat: item.lat, lng: item.lng, address: item.address })}
                         feedback="press">
                         <View style={[styles.go, { backgroundColor: colors.primary }]}>
                           <Ionicons name="navigate" size={18} color="#FFFFFF" />
