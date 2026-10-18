@@ -589,7 +589,13 @@
       "network": "Pas de connexion. Réessaie."
     },
     "quotaLeft_one": "Il te reste {{count}} traduction gratuite aujourd’hui",
-    "quotaLeft_other": "Il te reste {{count}} traductions gratuites aujourd’hui"
+    "quotaLeft_other": "Il te reste {{count}} traductions gratuites aujourd’hui",
+    "voice": {
+      "title": "Voix",
+      "enhanced": "Améliorée",
+      "none": "Aucune voix pour cette langue.",
+      "hint": "Pour une voix plus naturelle, télécharge une voix « améliorée » : iPhone Réglages → Accessibilité → Contenu énoncé → Voix ; Android Paramètres → Synthèse vocale."
+    }
   },
   "tools": {
     "title": "Outils de voyage",

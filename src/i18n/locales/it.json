@@ -589,7 +589,13 @@
       "network": "Nessuna connessione. Riprova."
     },
     "quotaLeft_one": "Oggi ti resta {{count}} traduzione gratuita",
-    "quotaLeft_other": "Oggi ti restano {{count}} traduzioni gratuite"
+    "quotaLeft_other": "Oggi ti restano {{count}} traduzioni gratuite",
+    "voice": {
+      "title": "Voce",
+      "enhanced": "Avanzata",
+      "none": "Nessuna voce per questa lingua.",
+      "hint": "Per una voce più naturale scarica una voce «avanzata»: iPhone Impostazioni → Accessibilità → Contenuto letto → Voci; Android Impostazioni → Sintesi vocale."
+    }
   },
   "tools": {
     "title": "Strumenti di viaggio",

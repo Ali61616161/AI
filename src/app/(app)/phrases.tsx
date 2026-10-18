@@ -1,6 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useLocalSearchParams } from 'expo-router';
-import * as Speech from 'expo-speech';
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +10,7 @@ import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { SUPPORTED_LANGUAGES } from '@/i18n/languages';
 import { PHRASE_LANGUAGES, PHRASES, phraseLanguageForCountry, SPEECH_LOCALE, type Phrase, type PhraseLanguage } from '@/features/offline/phrases';
+import { speakNatural } from '@/features/translate/speak';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -26,10 +26,7 @@ export default function PhrasesScreen() {
   const [target, setTarget] = useState<PhraseLanguage>(initial === mine && mine !== 'en' ? 'en' : initial);
   const [shown, setShown] = useState<Phrase | null>(null);
 
-  const speak = (text: string) => {
-    Speech.stop();
-    Speech.speak(text, { language: SPEECH_LOCALE[target], rate: 0.9 });
-  };
+  const speak = (text: string) => speakNatural(text, SPEECH_LOCALE[target], { rate: 0.9 });
 
   return (
     <Screen>

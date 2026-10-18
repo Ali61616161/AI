@@ -589,7 +589,13 @@
       "network": "Keine Verbindung. Bitte erneut versuchen."
     },
     "quotaLeft_one": "Heute noch {{count}} kostenlose Übersetzung",
-    "quotaLeft_other": "Heute noch {{count}} kostenlose Übersetzungen"
+    "quotaLeft_other": "Heute noch {{count}} kostenlose Übersetzungen",
+    "voice": {
+      "title": "Stimme",
+      "enhanced": "Erweitert",
+      "none": "Keine Stimmen für diese Sprache gefunden.",
+      "hint": "Für eine natürlichere Stimme lade eine „erweiterte“ herunter: iPhone Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen; Android Einstellungen → Text-in-Sprache."
+    }
   },
   "tools": {
     "title": "Reisewerkzeuge",

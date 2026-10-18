@@ -17,6 +17,7 @@ import { translateErrorKey } from './error-text';
 import { LanguagePicker } from './language-picker';
 import { RTL_LANGUAGES, translateLanguage } from './languages';
 import { QuotaNote } from './quota-note';
+import { speakNatural } from './speak';
 
 type Side = 'me' | 'them';
 type Turn = { id: number; side: Side; original: string; translated: string | null; error: string | null };
@@ -69,8 +70,7 @@ export function Conversation({ myLanguage, theirLanguage, onLanguages }: { myLan
       {
         onSuccess: (r) => {
           setTurns((prev) => prev.map((x) => (x.id === id ? { ...x, translated: r.text } : x)));
-          Speech.stop();
-          Speech.speak(r.text, { language: translateLanguage(target).speech });
+          speakNatural(r.text, translateLanguage(target).speech);
         },
         onError: (err) => setTurns((prev) => prev.map((x) => (x.id === id ? { ...x, error: t(translateErrorKey(err)) } : x))),
       },
@@ -127,7 +127,7 @@ export function Conversation({ myLanguage, theirLanguage, onLanguages }: { myLan
                 {turn.original}
               </Text>
               {turn.translated ? (
-                <Pressable accessibilityRole="button" accessibilityHint={t('phrases.speak')} onPress={() => Speech.speak(turn.translated!, { language: translateLanguage(target).speech })}>
+                <Pressable accessibilityRole="button" accessibilityHint={t('phrases.speak')} onPress={() => speakNatural(turn.translated!, translateLanguage(target).speech)}>
                   <Text variant="bodyStrong" style={{ color: mine ? colors.onPrimary : colors.text, writingDirection: dir(target) }}>
                     {turn.translated}
                   </Text>

@@ -1,6 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Clipboard from 'expo-clipboard';
-import * as Speech from 'expo-speech';
 import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +14,7 @@ import { translateErrorKey } from './error-text';
 import { LanguagePicker } from './language-picker';
 import { RTL_LANGUAGES, translateLanguage } from './languages';
 import { QuotaNote } from './quota-note';
+import { speakNatural } from './speak';
 
 export function TextTranslator({ myLanguage, theirLanguage, onLanguages }: { myLanguage: string; theirLanguage: string; onLanguages: (mine: string, theirs: string) => void }) {
   const { t } = useTranslation();
@@ -84,8 +84,7 @@ export function TextTranslator({ myLanguage, theirLanguage, onLanguages }: { myL
               accessibilityRole="button"
               accessibilityLabel={t('phrases.speak')}
               onPress={() => {
-                Speech.stop();
-                Speech.speak(result.text, { language: translateLanguage(target).speech });
+                speakNatural(result.text, translateLanguage(target).speech);
               }}
               style={[styles.icon, { backgroundColor: colors.surfaceMuted }]}>
               <Ionicons name="volume-high-outline" size={20} color={colors.primary} />

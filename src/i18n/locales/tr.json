@@ -589,7 +589,13 @@
       "network": "Bağlantı yok. Tekrar dene."
     },
     "quotaLeft_one": "Bugün {{count}} ücretsiz çeviri hakkın kaldı",
-    "quotaLeft_other": "Bugün {{count}} ücretsiz çeviri hakkın kaldı"
+    "quotaLeft_other": "Bugün {{count}} ücretsiz çeviri hakkın kaldı",
+    "voice": {
+      "title": "Ses",
+      "enhanced": "Gelişmiş",
+      "none": "Bu dil için ses bulunamadı.",
+      "hint": "Daha doğal bir ses için telefonuna 'Gelişmiş' bir ses indir: iPhone'da Ayarlar → Erişilebilirlik → Okunan İçerik → Sesler; Android'de Ayarlar → Metin okuma."
+    }
   },
   "tools": {
     "title": "Seyahat araçları",

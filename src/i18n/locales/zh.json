@@ -580,7 +580,13 @@
       "file_too_large": "照片太大。",
       "network": "没有网络连接，请重试。"
     },
-    "quotaLeft_other": "今天还剩 {{count}} 次免费翻译"
+    "quotaLeft_other": "今天还剩 {{count}} 次免费翻译",
+    "voice": {
+      "title": "语音",
+      "enhanced": "增强版",
+      "none": "未找到该语言的语音。",
+      "hint": "想要更自然的声音，请下载“增强版”语音：iPhone 设置 → 辅助功能 → 朗读内容 → 声音；安卓 设置 → 文字转语音。"
+    }
   },
   "tools": {
     "title": "旅行工具",

@@ -11,9 +11,11 @@ import { Text } from '@/components/ui/text';
 import { useIsOnline } from '@/features/offline/use-online';
 import { CameraTranslator } from '@/features/translate/camera-translator';
 import { Conversation } from '@/features/translate/conversation';
-import { fromAppLanguage, languageForCountry } from '@/features/translate/languages';
+import { fromAppLanguage, languageForCountry, translateLanguage } from '@/features/translate/languages';
 import { TextTranslator } from '@/features/translate/text-translator';
 import { useTranslateStore } from '@/features/translate/translate-store';
+import { VoicePicker } from '@/features/translate/voice-picker';
+import { Chip } from '@/components/ui/chip';
 import { useTrips } from '@/features/trips/queries';
 import { todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
@@ -34,6 +36,7 @@ export default function TranslateScreen() {
   const { colors } = useTheme();
   const params = useLocalSearchParams<{ tab?: Tab }>();
   const [tab, setTab] = useState<Tab>(params.tab ?? 'conversation');
+  const [showVoices, setShowVoices] = useState(false);
   const online = useIsOnline();
   const session = useSessionStore((s) => s.session);
   const { data: trips } = useTrips();
@@ -70,6 +73,11 @@ export default function TranslateScreen() {
         })}
       </View>
 
+      <View style={styles.voiceRow}>
+        <Chip icon="volume-high-outline" label={t('translate.voice.title')} selected={showVoices} onPress={() => setShowVoices((v) => !v)} />
+      </View>
+      {showVoices && <VoicePicker languages={[theirs, ...(mine === theirs ? [] : [mine])].map((c) => translateLanguage(c))} />}
+
       {!available && (
         <Text variant="caption" color="warning">
           {!online ? t('offline.aiUnavailable') : t('ticket.accountRequiredBody')}
@@ -84,6 +92,7 @@ export default function TranslateScreen() {
 }
 
 const styles = StyleSheet.create({
+  voiceRow: { flexDirection: 'row' },
   tabs: { flexDirection: 'row', padding: 4, borderRadius: Radius.lg },
   tab: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: Spacing.xs, paddingVertical: Spacing.sm, borderRadius: Radius.md },
 });
