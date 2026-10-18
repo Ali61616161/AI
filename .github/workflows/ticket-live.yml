@@ -1,0 +1,69 @@
+# Canlı bilet okuma testi: sahte bir gidiş-dönüş bilet görselini (tests/fixtures) geçici bir
+# hesapla yükler, gerçek parse-document fonksiyonunu (Gemini) çağırır ve beklenen sonucu denetler:
+# 2 kalem (gidiş ve dönüş), yıl gelecekte, PNR aynen. Anahtar veya kişisel veri yazdırmaz.
+# Elle çalışır (Actions → Canlı bilet okuma → Run). Gerekli sırlar: SUPABASE_ACCESS_TOKEN, SUPABASE_PROJECT_REF.
+name: Canlı bilet okuma
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ticket:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bileti oku
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          set -u
+          ref=$(printf '%s' "$SUPABASE_PROJECT_REF" | tr -d '[:space:]')
+          token=$(printf '%s' "$SUPABASE_ACCESS_TOKEN" | tr -d '[:space:]')
+          echo "::add-mask::$token"
+          keys=$(curl -sSf -H "Authorization: Bearer $token" "https://api.supabase.com/v1/projects/$ref/api-keys?reveal=true")
+          service=$(echo "$keys" | jq -r '(map(select(.name == "service_role")) + map(select(.type == "secret")))[0].api_key')
+          anon=$(echo "$keys" | jq -r '(map(select(.name == "anon")) + map(select(.type == "publishable")))[0].api_key')
+          echo "::add-mask::$service"
+          base="https://$ref.supabase.co"
+          sum() { echo "$1" | tee -a "$GITHUB_STEP_SUMMARY"; }
+
+          email="ticket-$(date +%s)-$RANDOM@yola-test.invalid"
+          pass=$(openssl rand -base64 24)
+          echo "::add-mask::$pass"
+          uid=$(curl -sSf -X POST "$base/auth/v1/admin/users" -H "apikey: $service" -H "Authorization: Bearer $service" -H 'Content-Type: application/json' \
+            -d "$(jq -n --arg e "$email" --arg p "$pass" '{email: $e, password: $p, email_confirm: true, user_metadata: {language: "tr"}}')" | jq -r '.id')
+          trap 'curl -s -X DELETE "$base/auth/v1/admin/users/$uid" -H "apikey: $service" -H "Authorization: Bearer $service" >/dev/null' EXIT
+          jwt=$(curl -sSf -X POST "$base/auth/v1/token?grant_type=password" -H "apikey: $anon" -H 'Content-Type: application/json' \
+            -d "$(jq -n --arg e "$email" --arg p "$pass" '{email: $e, password: $p}')" | jq -r '.access_token')
+          echo "::add-mask::$jwt"
+
+          path="$uid/ticket-test.png"
+          curl -sSf -X POST "$base/storage/v1/object/documents/$path" -H "apikey: $anon" -H "Authorization: Bearer $jwt" \
+            -H 'Content-Type: image/png' --data-binary @tests/fixtures/ticket-roundtrip-no-year.png >/dev/null
+          doc=$(curl -sSf -X POST "$base/rest/v1/documents?select=id" -H "apikey: $anon" -H "Authorization: Bearer $jwt" \
+            -H 'Content-Type: application/json' -H 'Prefer: return=representation' \
+            -d "$(jq -n --arg p "$path" '{storage_path: $p, mime_type: "image/png"}')" | jq -r '.[0].id')
+
+          code=$(curl -sS -o /tmp/out.json -w '%{http_code}' -X POST "$base/functions/v1/parse-document" -H "apikey: $anon" \
+            -H "Authorization: Bearer $jwt" -H 'Content-Type: application/json' -d "$(jq -n --arg d "$doc" '{document_id: $d}')")
+          sum "### Bilet okuma (HTTP $code), bugün: $(date -u +%F)"
+          if [ "$code" != 200 ]; then sum "❌ $(jq -r '"\(.error.code // "") \(.error.message // "")"' /tmp/out.json | head -c 300)"; exit 1; fi
+          sum '| tür | başlık | PNR | başlangıç | bitiş | PNR güveni |'
+          sum '|---|---|---|---|---|---|'
+          jq -r '.document.parsed_data.items[] | "| \(.type) | \(.title) | \(.reference_code) | \(.start.local_datetime) \(.start.code) | \(.end.local_datetime // "-") \(.end.code // "") | \(.confidence.reference_code // "-") |"' /tmp/out.json | tee -a "$GITHUB_STEP_SUMMARY"
+
+          n=$(jq '.document.parsed_data.items | length' /tmp/out.json)
+          year=$(date -u +%Y)
+          fail=0
+          [ "$n" = 2 ] || { sum "❌ 2 kalem beklenirdi (gidiş ve dönüş), $n geldi"; fail=1; }
+          jq -e --argjson y "$year" '[.document.parsed_data.items[] | (.start.local_datetime[0:4] | tonumber) >= $y] | all' /tmp/out.json >/dev/null \
+            || { sum "❌ yıl geçmişte"; fail=1; }
+          jq -e '[.document.parsed_data.items[] | .reference_code == "K7QMTX"] | all' /tmp/out.json >/dev/null \
+            || { sum "❌ PNR aynen K7QMTX olmalı"; fail=1; }
+          jq -e '.document.parsed_data.items[0].start.local_datetime | endswith("-01-11T12:45")' /tmp/out.json >/dev/null \
+            || { sum "❌ ilk uçuş 11 Ocak 12:45 olmalı"; fail=1; }
+          jq -e '.document.parsed_data.items[1].start.local_datetime | endswith("-01-20T18:30")' /tmp/out.json >/dev/null \
+            || { sum "❌ dönüş 20 Ocak 18:30 olmalı"; fail=1; }
+          [ "$fail" = 0 ] && sum "✅ Gidiş ve dönüş, yıl ve PNR doğru okundu"
+          exit "$fail"

@@ -1,6 +1,6 @@
 import { assert, assertEquals } from 'jsr:@std/assert@1';
 
-import { localToUtcIso, minConfidence, normalizeLocalDateTime, normalizeParsedDocument } from './documents.ts';
+import { buildExtractionPrompt, localToUtcIso, minConfidence, normalizeLocalDateTime, normalizeParsedDocument } from './documents.ts';
 
 Deno.test('localToUtcIso: İstanbul yıl boyu UTC+3', () => {
   assertEquals(localToUtcIso('2026-07-15T10:00', 'Europe/Istanbul'), '2026-07-15T07:00:00.000Z');
@@ -92,4 +92,30 @@ Deno.test('minConfidence: en düşük skor, skor yoksa 0.5', () => {
   }).items;
   assertEquals(minConfidence(item), 0.4);
   assert(minConfidence({ ...item, confidence: {} }) === 0.5);
+});
+
+Deno.test('buildExtractionPrompt: bugünün tarihi, yıl çıkarımı ve gidiş-dönüş kuralı istemde', () => {
+  const prompt = buildExtractionPrompt('2026-10-18');
+  assert(prompt.includes('TODAY is 2026-10-18'));
+  assert(prompt.includes('nearest upcoming date'));
+  assert(prompt.includes('round trip is TWO items'));
+  assert(prompt.includes('character by character'));
+});
+
+Deno.test('normalizeParsedDocument: uçuş PNR uzunluğu 5-7 dışındaysa güven düşer, değer aynı kalır', () => {
+  const item = (code: string) => ({
+    type: 'flight',
+    title: 'IST → ZRH',
+    reference_code: code,
+    start: { local_datetime: '2027-01-11T12:45', timezone: 'Europe/Istanbul' },
+    confidence: { reference_code: 0.95 },
+  });
+  const odd = normalizeParsedDocument({ items: [item('V2JXVMWES')] }).items[0];
+  assertEquals(odd.reference_code, 'V2JXVMWES');
+  assertEquals(odd.confidence.reference_code, 0.5);
+  const ok = normalizeParsedDocument({ items: [item('V2JXVM')] }).items[0];
+  assertEquals(ok.confidence.reference_code, 0.95);
+  // PNR eksik güven skoruyla gelse bile düşük olarak işaretlenir.
+  const noScore = normalizeParsedDocument({ items: [{ ...item('AB'), confidence: {} }] }).items[0];
+  assertEquals(noScore.confidence.reference_code, 0.5);
 });

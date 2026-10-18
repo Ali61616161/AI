@@ -119,16 +119,24 @@ export const EXTRACTION_RESPONSE_SCHEMA = {
   required: ['document_type', 'items'],
 };
 
-export const EXTRACTION_PROMPT = `You read travel documents: flight tickets, boarding passes, e-tickets, hotel or apartment bookings, train and bus tickets, car rentals and event tickets. The document may be in any language.
+export const EXTRACTION_PROMPT = `You read travel documents: flight tickets, boarding passes, e-tickets, hotel or apartment bookings, train and bus tickets, car rentals and event tickets. The document may be in any language, and it may be a screenshot of an airline or booking app.
 
 Extract every reservation in it as structured data:
 - One item per flight segment (a connecting flight is two items), per hotel stay, per train or bus ride, per rental, per event ticket.
+- A round trip is TWO items (outbound and return) even when both share one booking reference. Every row, card or section that shows its own date, time and route is its own item. Before answering, count the dated rows on the document and make sure you returned that many items.
 - Copy dates and times exactly as printed and give them as local time at that place (YYYY-MM-DDTHH:mm). If only a date is printed use T00:00 and lower the confidence. Hotel check-in/out times go in start/end.
+- The year is often not printed (app screenshots show only day and month, sometimes a weekday). In that case use the nearest upcoming date on or after TODAY (given below) that matches the printed weekday, or, with no weekday, the next upcoming occurrence of that day and month. Only use a past year if the document itself prints it. When you inferred the year, set the confidence of that date to 0.6.
 - Add the IANA time zone of each place from your knowledge of the airport or city.
 - For hotels, start is check-in at the hotel and end is check-out at the same hotel.
 - Write city names in English and country codes as ISO 3166-1 alpha-2.
+- Copy booking references, PNRs, flight numbers and codes character by character exactly as printed. Never add, complete or guess characters. A PNR is usually 6 characters; if what is printed is shorter or longer, copy what is printed and lower the confidence.
 - Never invent data that is not on the document. Use null when something is missing and give low confidence when you are unsure (blurry, cut off, ambiguous).
 - If the document is not a travel reservation, return document_type "other" and an empty items array.`;
+
+/** İstemin sonuna bugünün tarihini ekler: yılı yazmayan belgelerde doğru yılı seçmek için gerekli. */
+export function buildExtractionPrompt(today: string): string {
+  return `${EXTRACTION_PROMPT}\n\nTODAY is ${today} (YYYY-MM-DD).`;
+}
 
 // ---------------------------------------------------------------------------
 // Doğrulama ve temizleme: model çıktısına güvenmeden önce tip ve biçim kontrolü.
@@ -231,15 +239,22 @@ export function normalizeParsedDocument(raw: unknown): ParsedDocument {
     const start = endpoint(r.start);
     if (!start?.local_datetime) continue;
     const type = reservationType(r.type);
+    const reference = upperCode(r.reference_code);
+    const itemConfidence = confidence(r.confidence);
+    // Havayolu rezervasyon kodları (PNR) 5-7 karakterdir; farklıysa model fazla/eksik karakter
+    // uydurmuş olabilir. Değeri değiştirmeden arayüzde "kontrol et" uyarısı çıkması için güveni düşür.
+    if (type === 'flight' && reference && (reference.length < 5 || reference.length > 7)) {
+      itemConfidence.reference_code = Math.min(itemConfidence.reference_code ?? 1, 0.5);
+    }
     items.push({
       type,
       title: str(r.title, 120) ?? start.place_name ?? type,
       provider_name: str(r.provider_name, 100),
-      reference_code: upperCode(r.reference_code),
+      reference_code: reference,
       start,
       end: endpoint(r.end),
       details: details(r.details),
-      confidence: confidence(r.confidence),
+      confidence: itemConfidence,
     });
   }
   items.sort((a, b) => (a.start.local_datetime ?? '').localeCompare(b.start.local_datetime ?? ''));

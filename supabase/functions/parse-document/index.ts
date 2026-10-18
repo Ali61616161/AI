@@ -9,7 +9,7 @@ import { encodeBase64 } from 'jsr:@std/encoding@1/base64';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
 import {
-  EXTRACTION_PROMPT,
+  buildExtractionPrompt,
   EXTRACTION_RESPONSE_SCHEMA,
   minConfidence,
   normalizeParsedDocument,
@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
       apiBase: Deno.env.get('GEMINI_API_BASE'),
       apiKey,
       model: Deno.env.get('GEMINI_MODEL') ?? DEFAULT_MODEL,
-      prompt: EXTRACTION_PROMPT,
+      prompt: buildExtractionPrompt(new Date().toISOString().slice(0, 10)),
       file: { mimeType: doc.mime_type, base64: encodeBase64(new Uint8Array(await file.arrayBuffer())) },
       responseSchema: EXTRACTION_RESPONSE_SCHEMA,
     });
