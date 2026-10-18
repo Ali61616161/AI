@@ -1117,7 +1117,7 @@
     "perPerson": "~{{amount}} por persona",
     "perPersonShort": "por persona",
     "openRoute": "Abrir la ruta en Mapas",
-    "estimateNote": "Los costes son aproximados; consulta precios y horarios antes de ir.",
+    "estimateNote": "Los lugares y horarios son sugerencias de IA; no se muestran precios. Comprueba precios y horarios actuales antes de ir.",
     "save": "Guardar",
     "saved": "Guardado",
     "visited": "Ya fui",

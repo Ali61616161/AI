@@ -1093,7 +1093,7 @@
     "perPerson": "人均约 {{amount}}",
     "perPersonShort": "每人",
     "openRoute": "在地图中打开路线",
-    "estimateNote": "费用为估算值，出发前请确认价格和营业时间。",
+    "estimateNote": "地点和时间为 AI 建议，不显示价格。出发前请核对最新价格和营业时间。",
     "save": "收藏",
     "saved": "已收藏",
     "visited": "去过了",

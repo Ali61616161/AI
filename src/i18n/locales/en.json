@@ -1117,7 +1117,7 @@
     "perPerson": "~{{amount}} per person",
     "perPersonShort": "per person",
     "openRoute": "Open the route in Maps",
-    "estimateNote": "Costs are estimates; check prices and opening hours before you go.",
+    "estimateNote": "Places and times are AI suggestions; prices are not shown. Check current prices and opening hours before you go.",
     "save": "Save",
     "saved": "Saved",
     "visited": "I went",

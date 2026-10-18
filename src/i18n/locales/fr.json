@@ -1117,7 +1117,7 @@
     "perPerson": "~{{amount}} par personne",
     "perPersonShort": "par personne",
     "openRoute": "Ouvrir l’itinéraire dans Plans",
-    "estimateNote": "Les coûts sont estimés ; vérifie les prix et les horaires avant d’y aller.",
+    "estimateNote": "Les lieux et horaires sont des suggestions de l'IA ; les prix ne sont pas affichés. Vérifie les prix et horaires actuels avant d'y aller.",
     "save": "Enregistrer",
     "saved": "Enregistré",
     "visited": "J’y suis allé",

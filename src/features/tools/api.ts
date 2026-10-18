@@ -1,6 +1,7 @@
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { getRate } from '@/lib/fx';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
@@ -50,28 +51,11 @@ export function useExpenses(tripId: string | undefined) {
   });
 }
 
-/**
- * Döviz kuru (Avrupa Merkez Bankası verisi, frankfurter.dev; anahtar gerekmez).
- * Desteklenmeyen para biriminde null döner; harcama yine kaydedilir.
- */
-export async function fetchRate(from: string, to: string): Promise<number | null> {
-  if (from === to) return 1;
-  try {
-    const res = await fetch(`https://api.frankfurter.dev/v1/latest?base=${encodeURIComponent(from)}&symbols=${encodeURIComponent(to)}`);
-    if (!res.ok) return null;
-    const data = await res.json();
-    const rate = data?.rates?.[to];
-    return typeof rate === 'number' ? rate : null;
-  } catch {
-    return null;
-  }
-}
-
 export function useAddExpense(tripId: string, budgetCurrency: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (input: { amount: number; currency: string; category: ExpenseCategory; description: string; paidBy: string; participants: string[] }) => {
-      const rate = await fetchRate(input.currency, budgetCurrency);
+      const rate = await getRate(input.currency, budgetCurrency);
       const { error } = await getSupabase().rpc('add_expense', {
         p_trip_id: tripId,
         p_amount: input.amount,

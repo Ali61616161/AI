@@ -1117,7 +1117,7 @@
     "perPerson": "Kişi başı ~{{amount}}",
     "perPersonShort": "kişi başı",
     "openRoute": "Rotayı haritada aç",
-    "estimateNote": "Fiyatlar tahminidir; gitmeden önce fiyatları ve açılış saatlerini kontrol et.",
+    "estimateNote": "Yer ve saat bilgileri yapay zekâ önerisidir; fiyatlar gösterilmez. Gitmeden önce güncel fiyatları ve açılış saatlerini kontrol et.",
     "save": "Kaydet",
     "saved": "Kaydedildi",
     "visited": "Gittim",

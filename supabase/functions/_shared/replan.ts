@@ -240,7 +240,7 @@ What to do:
 - If it is only a question, set change_plan false and put 1-4 suggestions in items.
 - Prefer places within about 1 km or a short transit ride from the location. If it is raining or cold, prefer is_indoor places.
 ${nearby ? `- Real places open right now near the traveler (from Google Maps, nearest first):\n${nearby}\n  Suggest ONLY places from this list, copying the name exactly into place_name, and prefer the closest ones that fit the request. Never suggest a place that is not in the list. If nothing fits, say so honestly in the reply and give the best available one.` : '- Only suggest real places you are confident exist; otherwise name an area or street.'}
-- estimated_cost per person in local currency with its ISO 4217 code; titles and descriptions in ${LANGUAGE_NAMES[ctx.language] ?? 'English'}; keep place_name in its local name.`;
+- estimated_cost: 0 only when free, otherwise null (never guess prices); titles and descriptions in ${LANGUAGE_NAMES[ctx.language] ?? 'English'}; keep place_name in its local name.`;
 }
 
 export function normalizeCrisis(raw: unknown, options: { nowTime: string; currency: string }): { reply: string; changePlan: boolean; items: PlanItem[] } {

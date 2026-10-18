@@ -83,14 +83,14 @@ export function buildEveningPrompt(ctx: CityContext, input: EveningInput): strin
   };
   return `You are a local friend in ${ctx.city}${ctx.countryCode ? ` (${ctx.countryCode})` : ''} who knows the city very well.
 Plan ${timing[input.when]} for someone going out ${COMPANION_TEXT[input.companion] ?? 'alone'}${input.groupSize > 1 ? `, group of ${input.groupSize}` : ''}.
-Budget: ${input.budgetAmount ? `about ${input.budgetAmount} ${ctx.currency} per person for the whole outing (the traveler chose this amount; use realistic current local prices)` : (BUDGET_TEXT[input.budget] ?? 'mid-range')}. Mood: ${input.moods.length ? input.moods.join(', ') : 'surprise me'}.${noteLine(input.note)}
+Budget: ${input.budgetAmount ? `about ${input.budgetAmount} ${ctx.currency} per person for the whole outing (the traveler chose this amount; pick places that plausibly fit it, but never state prices)` : (BUDGET_TEXT[input.budget] ?? 'mid-range')}. Mood: ${input.moods.length ? input.moods.join(', ') : 'surprise me'}.${noteLine(input.note)}
 Weather now: ${ctx.weather ?? 'unknown'} — prefer indoor stops if it rains or is very cold/hot.
 
 Rules:
 - ${input.when === 'weekend' ? '4 to 6' : '3 to 4'} stops in a sensible walking or short-ride order, close to each other (same or neighbouring districts).
 - Only real, currently operating venues and spots that a local would recommend; mix one well-known place with lesser-known local favourites. No chains unless iconic.
 - Respect typical opening hours for ${ctx.weekday}; restaurants at normal local dinner time.
-- est_cost per person in ${ctx.currency}, realistic local prices, 0 for free walks or parks.
+- est_cost: 0 for free walks or parks, otherwise null. Never guess prices.
 - Write title, summary, stop titles and why in ${languageName(ctx.language)}: short, warm, concrete. Keep place_name in its local official name.`;
 }
 
@@ -130,7 +130,7 @@ export function normalizeEveningPlan(raw: unknown): EveningPlan {
         placeName,
         neighborhood: str(s?.neighborhood, 80),
         why: str(s?.why, 300) ?? '',
-        estCost: num(s?.est_cost, 0, 100_000),
+        estCost: s?.est_cost === 0 ? 0 : null,
         indoor: typeof s?.indoor === 'boolean' ? s.indoor : null,
       };
     })
@@ -183,7 +183,7 @@ Transport preference: ${input.transport === 'public' ? 'bus, train or ferry only
 
 Rules:
 - Real places at most ${input.days === 1 ? '2.5' : '4.5'} hours one-way from ${ctx.city}; prefer lesser-known towns, nature spots and coastal or mountain villages over the obvious; at most 2 well-known places.${excluded.length ? `\n- Do not suggest: ${excluded.join(', ')}.` : ''}
-- Costs per person in ${ctx.currency}, realistic ${input.month} prices: transport_cost round trip, stay_per_night (0 if day trip), daily_spend.
+- Cost fields are only rough relative estimates in ${ctx.currency} used to rank options (they are never shown as real prices): transport_cost round trip, stay_per_night (0 if day trip), daily_spend.
 - The total (transport + nights × stay + days × daily) should fit the budget; if nothing fits, give the cheapest realistic options.
 - Consider the season: no beach towns in winter unless it is warm, no closed mountain passes.
 - Write why, highlights (3 short items) and best_season in ${languageName(ctx.language)}. Keep city in its local official name.`;
