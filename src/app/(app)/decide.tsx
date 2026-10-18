@@ -22,6 +22,8 @@ import { PlaceMeta } from '@/features/places/place-row';
 import { useDeviceLocation } from '@/features/places/use-device-location';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { haptic } from '@/lib/haptics';
+import { TextField } from '@/components/ui/text-field';
+import { parseAmount } from '@/features/trips/trip-answers';
 import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 import { RewardedButton } from '@/features/ads/rewarded-button';
@@ -46,7 +48,9 @@ export default function DecideScreen() {
   const queryClient = useQueryClient();
   const location = useDeviceLocation();
   const [group, setGroup] = useState<DecideGroup>('food');
-  const [distance, setDistance] = useState<keyof typeof RADIUS>('walk');
+  const [distance, setDistance] = useState<keyof typeof RADIUS | 'custom'>('walk');
+  const [customKm, setCustomKm] = useState('');
+  const [keyword, setKeyword] = useState('');
   const [topRated, setTopRated] = useState(false);
   const [onlyNew, setOnlyNew] = useState(false);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
@@ -61,6 +65,10 @@ export default function DecideScreen() {
 
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
+  // "Diğer" mesafe: kullanıcının yazdığı kilometre (300 m – 20 km arası).
+  const km = parseAmount(customKm);
+  const radiusMeters = distance === 'custom' ? Math.min(Math.max(Math.round((km ?? 1) * 1000), 300), 20_000) : RADIUS[distance];
+
   async function spin(again = false) {
     if (!again) seen.current = new Set();
     setErrorCode(null);
@@ -70,7 +78,7 @@ export default function DecideScreen() {
     haptic.press();
     try {
       const category = categoryFor(group);
-      const places = await queryClient.fetchQuery(openNowQuery(category, coords, { radius: RADIUS[distance], limit: 20 }));
+      const places = await queryClient.fetchQuery(openNowQuery(category, coords, { radius: radiusMeters, limit: 20, keyword: keyword.trim() || undefined }));
       const minRating = topRated ? 4.2 : null;
       // "Sadece yeni yerler": şehir pasaportunda gidildi olarak işaretlenenler hariç.
       const exclude = onlyNew && visits?.length ? new Set([...seen.current, ...visits.map((v) => v.google_place_id)]) : seen.current;
@@ -213,8 +221,14 @@ export default function DecideScreen() {
             <View style={styles.row}>
               <Chip icon="walk-outline" label={t('decide.walk')} selected={distance === 'walk'} onPress={() => setDistance('walk')} />
               <Chip icon="bicycle-outline" label={t('decide.ride')} selected={distance === 'ride'} onPress={() => setDistance('ride')} />
+              <Chip icon="create-outline" label={t('flex.other')} selected={distance === 'custom'} onPress={() => setDistance('custom')} />
             </View>
+            {distance === 'custom' && (
+              <TextField label={t('flex.kmLabel')} value={customKm} onChangeText={setCustomKm} keyboardType="decimal-pad" placeholder="5" hint={t('flex.kmHint')} error={customKm.trim() && km === null ? t('flex.amountInvalid') : null} />
+            )}
           </View>
+
+          <TextField label={t('flex.keywordLabel')} value={keyword} onChangeText={(v) => setKeyword(v.slice(0, 60))} placeholder={t('flex.keywordPlaceholder')} hint={t('flex.keywordHint')} maxLength={60} />
 
           <Card padding={Spacing.md}>
             <View style={styles.row}>

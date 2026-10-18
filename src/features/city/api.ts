@@ -65,7 +65,7 @@ async function invokeCity<T>(body: Record<string, unknown>): Promise<T> {
 
 export function useEveningPlan() {
   return useMutation({
-    mutationFn: (input: { when: When; companion: string; budget: string; moods: Mood[]; lat?: number; lng?: number }) =>
+    mutationFn: (input: { when: When; companion: string; budget: string; moods: Mood[]; budget_amount?: number; note?: string; lat?: number; lng?: number }) =>
       invokeCity<EveningPlan>({ action: 'evening', ...input, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
     onSuccess: () => notePositiveMoment(),
   });
@@ -73,7 +73,7 @@ export function useEveningPlan() {
 
 export function useGetaways() {
   return useMutation({
-    mutationFn: (input: { days: number; budget_per_person: number; transport: Transport; companion: string; exclude?: string[] }) =>
+    mutationFn: (input: { days: number; budget_per_person: number; transport: Transport; companion: string; note?: string; exclude?: string[] }) =>
       invokeCity<GetawaysResponse>({ action: 'getaways', ...input }),
   });
 }

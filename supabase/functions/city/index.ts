@@ -1,15 +1,17 @@
 // Şehrim: yaşanan şehirde akşam/hafta sonu planı ve yakın, bütçeye uygun kaçamaklar.
 //
 //   POST { "action": "evening", "when": "tonight"|"tomorrow"|"weekend", "companion", "budget",
+//          "budget_amount"?: kişi başı tutar (budget yerine geçer), "note"?: serbest istek (≤500),
 //          "moods"?: [], "group_size"?: 1-10, "lat"?, "lng"?, "timezone"? }
 //     → { city, title, summary, weather, stops[] (Google ile doğrulanmış mekan bilgisiyle) }   (kota: city_plan)
 //   POST { "action": "getaways", "days": 1-3, "budget_per_person", "transport": "any"|"public"|"car",
-//          "companion", "exclude"?: string[] }
+//          "companion", "note"?: serbest istek (≤500), "exclude"?: string[] }
 //     → { city, currency, getaways[] (mesafe gerçek koordinatla, yol tarifi ve bilet bağlantıları) }        (kota: getaway)
 //
 // Şehir, profildeki yaşanan şehirdir (home_city); koordinatı yoksa bir kez bulunup ~1 km
 // hassasiyetle profile yazılır. Gerekli sırlar: GEMINI_API_KEY, GOOGLE_MAPS_API_KEY.
 import { consumeQuota, userClient } from '../_shared/auth.ts';
+import { cleanNote } from '../_shared/itinerary.ts';
 import {
   buildEveningPrompt,
   buildGetawayPrompt,
@@ -114,6 +116,8 @@ Deno.serve(async (req) => {
     const companion = COMPANIONS.includes(body.companion) ? body.companion : (profile!.default_companion ?? 'solo');
     const budget = BUDGETS.includes(body.budget) ? body.budget : (profile!.default_budget ?? 'mid');
     const moods: Mood[] = (Array.isArray(body.moods) ? body.moods : []).filter((m: unknown): m is Mood => (MOODS as readonly unknown[]).includes(m)).slice(0, 4);
+    const budgetAmount = typeof body.budget_amount === 'number' && body.budget_amount > 0 && body.budget_amount <= 10_000_000 ? Math.round(body.budget_amount) : null;
+    const note = cleanNote(body.note, 500);
     const groupSize = Number.isInteger(body.group_size) && body.group_size >= 1 && body.group_size <= 10 ? body.group_size : companion === 'couple' ? 2 : 1;
     const timezone = typeof body.timezone === 'string' && isValidTimeZone(body.timezone) ? body.timezone : 'UTC';
 
@@ -127,7 +131,7 @@ Deno.serve(async (req) => {
     const localNow = utcToLocal(now.toISOString(), timezone).replace('T', ' ');
     const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: timezone }).format(now);
     const plan = normalizeEveningPlan(
-      await ai(buildEveningPrompt({ city, countryCode: country, language, currency, localNow, weekday, weather: weatherForPrompt(weather) }, { when: body.when, companion, budget, moods, groupSize }), EVENING_RESPONSE_SCHEMA),
+      await ai(buildEveningPrompt({ city, countryCode: country, language, currency, localNow, weekday, weather: weatherForPrompt(weather) }, { when: body.when, companion, budget, moods, groupSize, budgetAmount, note }), EVENING_RESPONSE_SCHEMA),
     );
     if (!plan.stops.length) return error('ai_failed', 502, 'empty plan');
 
@@ -174,6 +178,7 @@ Deno.serve(async (req) => {
     if (!days || !budgetPerPerson) return error('bad_request', 400, 'days (1-3) and budget_per_person are required');
     const transport = (TRANSPORT as readonly string[]).includes(body.transport) ? body.transport : 'any';
     const companion = COMPANIONS.includes(body.companion) ? body.companion : (profile!.default_companion ?? 'solo');
+    const note = cleanNote(body.note, 500);
     const exclude = (Array.isArray(body.exclude) ? body.exclude : []).filter((x: unknown): x is string => typeof x === 'string' && x.length <= 80).slice(0, 12);
 
     const origin = await homeCoords();
@@ -182,7 +187,7 @@ Deno.serve(async (req) => {
     if (!quota.allowed) return error('quota_exceeded', 402);
 
     const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());
-    const list = normalizeGetaways(await ai(buildGetawayPrompt({ city, countryCode: country, language, currency }, { days, budgetPerPerson, transport, companion, month }, exclude), GETAWAY_RESPONSE_SCHEMA), days);
+    const list = normalizeGetaways(await ai(buildGetawayPrompt({ city, countryCode: country, language, currency }, { days, budgetPerPerson, transport, companion, month, note }, exclude), GETAWAY_RESPONSE_SCHEMA), days);
 
     // Her yerin gerçek koordinatı; bulunamayan veya çok uzak çıkan elenir.
     const coords: Record<string, { lat: number; lng: number } | null> = {};

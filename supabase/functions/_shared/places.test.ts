@@ -1,8 +1,9 @@
 import { assertEquals, assertRejects } from 'jsr:@std/assert@1';
 
-import { GOOGLE_SCHEMA, validatePath } from './google/validate.ts';
+import { GOOGLE_SCHEMA, validateObject, validatePath } from './google/validate.ts';
 import {
   distanceMeters,
+  openNowRequest,
   fetchPhotoUri,
   fetchPlaceDetails,
   fieldMask,
@@ -208,4 +209,13 @@ Deno.test('fetchPhotoUri: skipHttpRedirect ile adres alır, anahtar sadece başl
   assertEquals(await fetchPhotoUri({ apiKey: 'k', photoName: 'places/../..', fetchImpl }), null);
   const http = (() => Promise.resolve(new Response(JSON.stringify({ photoUri: 'http://insecure/x' }), { status: 200 }))) as unknown as typeof fetch;
   assertEquals(await fetchPhotoUri({ apiKey: 'k', photoName: `places/${PLACE_ID}/photos/AUy1`, fetchImpl: http }), null);
+});
+
+Deno.test('openNowRequest: anahtar kelime aramaya eklenir ve istek Google şemasında geçerli kalır', () => {
+  const plain = openNowRequest({ lat: 41, lng: 29, category: 'restaurant', language: 'tr' });
+  assertEquals(plain.textQuery, 'restaurant');
+  const withKeyword = openNowRequest({ lat: 41, lng: 29, category: 'restaurant', language: 'tr', radius: 12_000, keyword: 'vegan' });
+  assertEquals(withKeyword.textQuery, 'vegan restaurant');
+  assertEquals(withKeyword.locationBias?.circle.radius, 12_000);
+  assertEquals(validateObject(GOOGLE_SCHEMA.places.schemas, 'GoogleMapsPlacesV1SearchTextRequest', withKeyword), []);
 });

@@ -1480,5 +1480,20 @@
     "notesPlaceholder": "p. ej. Es nuestra luna de miel, nos encantan las vistas al mar, no queremos caminar mucho y queremos ver las cataratas del Rin…",
     "notesCount": "{{count}} / {{max}} caracteres",
     "fixAnswers": "Revisa el presupuesto o los datos del hotel."
+  },
+  "flex": {
+    "other": "Otro",
+    "amountPerPerson": "Importe por persona",
+    "amountHint": "Total por persona para esta salida, en la moneda de tu ciudad. El plan se ajusta.",
+    "amountInvalid": "Escribe un número válido (p. ej. 800).",
+    "noteLabel": "¿Algo más?",
+    "notePlaceholder": "p. ej. un cumpleaños, vegetariano, un sitio tranquilo, donde pueda ir con mi perro…",
+    "noteGetawayPlaceholder": "p. ej. iremos con nuestro perro, junto al mar, no nos gusta la multitud…",
+    "noteHint": "Opcional. Escribe lo que las opciones no cubran; la IA se adapta.",
+    "kmLabel": "¿Cuántos kilómetros?",
+    "kmHint": "Entre 0,3 y 20 km.",
+    "keywordLabel": "Petición especial (opcional)",
+    "keywordPlaceholder": "p. ej. vegano, vistas al mar, con jardín",
+    "keywordHint": "Se añade a la búsqueda."
   }
 }

@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -16,20 +17,50 @@ import { useTheme } from '@/theme/use-theme';
 
 const BOTTOM_AREA = 230;
 
+type StopParam = { name: string; lat: number; lng: number };
+
+/** points parametresini güvenle ayrıştırır (en fazla 12 durak; geçersiz girdi boş liste). */
+function parseStops(raw: string | undefined): StopParam[] {
+  if (!raw) return [];
+  try {
+    const list = JSON.parse(raw);
+    if (!Array.isArray(list)) return [];
+    return list
+      .filter((x): x is StopParam => typeof x?.name === 'string' && Number.isFinite(x?.lat) && Number.isFinite(x?.lng))
+      .slice(0, 12);
+  } catch {
+    return [];
+  }
+}
+
 /** Tek mekânın uygulama içi haritası: Google Haritalar'a çıkmadan yer, yol tarifi ve ayrıntılar. */
 export default function PlaceMapScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
-  const p = useLocalSearchParams<{ name?: string; lat?: string; lng?: string; id?: string; address?: string; mapsUrl?: string }>();
+  const p = useLocalSearchParams<{ name?: string; lat?: string; lng?: string; id?: string; address?: string; mapsUrl?: string; points?: string }>();
   const lat = Number(p.lat);
   const lng = Number(p.lng);
   const name = p.name ?? '';
   const valid = Number.isFinite(lat) && Number.isFinite(lng) && Boolean(p.lat) && Boolean(p.lng);
+  // Çoklu durak (ör. Bu akşam planı): JSON [{ name, lat, lng }] sırayla numaralanır.
+  const stops = parseStops(p.points);
+  const [selected, setSelected] = useState(0);
+  const current = stops.length > 0 ? stops[Math.min(selected, stops.length - 1)] : null;
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
-      {valid && <LiveMap points={[{ id: 'place', lat, lng, title: name, label: '•' }]} selectedId="place" onSelect={() => {}} topInset={insets.top + 64} bottomInset={BOTTOM_AREA + insets.bottom} />}
+      {stops.length > 0 ? (
+        <LiveMap
+          points={stops.map((x, i) => ({ id: `s${i}`, lat: x.lat, lng: x.lng, title: x.name, label: String(i + 1) }))}
+          selectedId={`s${Math.min(selected, stops.length - 1)}`}
+          onSelect={(id) => setSelected(Number(id.slice(1)))}
+          topInset={insets.top + 64}
+          bottomInset={BOTTOM_AREA + insets.bottom}
+        />
+      ) : (
+        valid && <LiveMap points={[{ id: 'place', lat, lng, title: name, label: '•' }]} selectedId="place" onSelect={() => {}} topInset={insets.top + 64} bottomInset={BOTTOM_AREA + insets.bottom} />
+      )}
 
       <View style={[styles.top, { paddingTop: insets.top + 8 }]} pointerEvents="box-none">
         <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={() => router.back()} hitSlop={12} feedback="press">
@@ -43,7 +74,7 @@ export default function PlaceMapScreen() {
         <Card variant="glow" padding={Spacing.lg}>
           <View style={styles.gap}>
             <Text variant="subtitle" numberOfLines={2}>
-              {name}
+              {current ? `${Math.min(selected, stops.length - 1) + 1}. ${current.name}` : name}
             </Text>
             {p.address && (
               <Text variant="caption" color="textSecondary" numberOfLines={2}>
@@ -53,7 +84,9 @@ export default function PlaceMapScreen() {
             <Button
               title={t('place.directions')}
               icon="git-branch-outline"
-              onPress={() => router.push({ pathname: '/route', params: { toLat: String(lat), toLng: String(lng), toName: name } })}
+              onPress={() =>
+                router.push({ pathname: '/route', params: current ? { toLat: String(current.lat), toLng: String(current.lng), toName: current.name } : { toLat: String(lat), toLng: String(lng), toName: name } })
+              }
             />
             <View style={styles.row}>
               {p.id && <Button title={t('place.details')} variant="secondary" icon="images-outline" onPress={() => openPlaceCard({ id: p.id!, name, address: p.address, lat, lng, mapsUrl: p.mapsUrl })} style={styles.flex} />}

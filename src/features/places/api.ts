@@ -57,18 +57,18 @@ function useCanCall() {
 }
 
 type Coords = { lat: number; lng: number };
-export type OpenNowOptions = { radius?: number; limit?: 10 | 20 };
+export type OpenNowOptions = { radius?: number; limit?: 10 | 20; /** Kullanıcının istediği özel kelime (ör. vegan); aramaya eklenir. */ keyword?: string };
 
 /** Önbellek anahtarı: konum ~100 m'ye yuvarlanır ki küçük oynamalar yeni istek (ve kota) harcamasın. */
 export function openNowQuery(category: NearbyCategory, coords: Coords, options: OpenNowOptions = {}) {
   const lat = Math.round(coords.lat * 1000) / 1000;
   const lng = Math.round(coords.lng * 1000) / 1000;
   return {
-    queryKey: ['open_now', category, lat, lng, options.radius ?? null, options.limit ?? 10] as const,
+    queryKey: ['open_now', category, lat, lng, options.radius ?? null, options.limit ?? 10, options.keyword ?? null] as const,
     staleTime: 5 * 60_000,
     retry: false,
     queryFn: () =>
-      invokePlaces<{ places: Place[] }>({ action: 'open_now', category, lat: coords.lat, lng: coords.lng, radius: options.radius, limit: options.limit }).then((r) => r.places),
+      invokePlaces<{ places: Place[] }>({ action: 'open_now', category, lat: coords.lat, lng: coords.lng, radius: options.radius, limit: options.limit, keyword: options.keyword }).then((r) => r.places),
   };
 }
 

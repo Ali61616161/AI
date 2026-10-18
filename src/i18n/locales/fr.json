@@ -1480,5 +1480,20 @@
     "notesPlaceholder": "ex. C’est notre lune de miel, on adore les vues sur la mer, on ne veut pas trop marcher et on veut absolument voir les chutes du Rhin…",
     "notesCount": "{{count}} / {{max}} caractères",
     "fixAnswers": "Vérifie le budget ou les infos de l’hôtel."
+  },
+  "flex": {
+    "other": "Autre",
+    "amountPerPerson": "Montant par personne",
+    "amountHint": "Total par personne pour cette sortie, dans la devise de ta ville. Le plan s’y adapte.",
+    "amountInvalid": "Saisis un nombre valide (ex. 800).",
+    "noteLabel": "Autre chose ?",
+    "notePlaceholder": "ex. un anniversaire, végétarien, un endroit calme, où je peux venir avec mon chien…",
+    "noteGetawayPlaceholder": "ex. on vient avec notre chien, au bord de la mer, on n’aime pas la foule…",
+    "noteHint": "Facultatif. Écris ce que les options ne couvrent pas ; l’IA s’adapte.",
+    "kmLabel": "Combien de kilomètres ?",
+    "kmHint": "Entre 0,3 et 20 km.",
+    "keywordLabel": "Demande particulière (facultatif)",
+    "keywordPlaceholder": "ex. végan, vue sur la mer, avec jardin",
+    "keywordHint": "Ajouté à la recherche."
   }
 }

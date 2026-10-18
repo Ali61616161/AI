@@ -1480,5 +1480,20 @@
     "notesPlaceholder": "Örn. Balayındayız, deniz manzaralı yerleri seviyoruz, çok yürümek istemiyoruz, Ren Şelalesi'ni mutlaka görmek istiyoruz…",
     "notesCount": "{{count}} / {{max}} karakter",
     "fixAnswers": "Bütçe veya otel bilgilerini kontrol et."
+  },
+  "flex": {
+    "other": "Diğer",
+    "amountPerPerson": "Kişi başı tutar",
+    "amountHint": "Bu çıkış için kişi başı toplam, şehrindeki para biriminde. Plan buna göre ayarlanır.",
+    "amountInvalid": "Geçerli bir sayı yaz (ör. 800).",
+    "noteLabel": "Başka bir isteğin var mı?",
+    "notePlaceholder": "Örn. doğum günü kutlaması, vejetaryen, sessiz bir yer, köpeğimle gidebileceğim yerler…",
+    "noteGetawayPlaceholder": "Örn. köpeğimizle gideceğiz, deniz kenarı olsun, kalabalık sevmiyoruz…",
+    "noteHint": "İsteğe bağlı. Seçeneklerde olmayan her şeyi yazabilirsin; yapay zekâ buna göre ayarlar.",
+    "kmLabel": "Kaç kilometre?",
+    "kmHint": "0,3 ile 20 km arası.",
+    "keywordLabel": "Özel istek (isteğe bağlı)",
+    "keywordPlaceholder": "Örn. vegan, deniz manzaralı, bahçeli",
+    "keywordHint": "Aramaya eklenir."
   }
 }

@@ -90,10 +90,11 @@ export function isNearbyCategory(value: unknown): value is NearbyCategory {
 const circle = (lat: number, lng: number, radius: number) => ({ circle: { center: { latitude: lat, longitude: lng }, radius } });
 
 /** Konuma yakın, şu an açık yerler. searchNearby'de openNow olmadığı için Text Search kullanılır. */
-export function openNowRequest(input: { lat: number; lng: number; category: NearbyCategory; language: string; radius?: number; pageSize?: number }): SearchTextRequest {
+export function openNowRequest(input: { lat: number; lng: number; category: NearbyCategory; language: string; radius?: number; pageSize?: number; keyword?: string | null }): SearchTextRequest {
   const c = NEARBY_CATEGORIES[input.category];
   return {
-    textQuery: c.query,
+    // Kullanıcının istediği özel kelime (ör. "vegan", "deniz manzaralı") aramaya eklenir; tür filtresi korunur.
+    textQuery: input.keyword ? `${input.keyword} ${c.query}` : c.query,
     includedType: c.type,
     strictTypeFiltering: true,
     openNow: true,

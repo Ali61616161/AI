@@ -1480,5 +1480,20 @@
     "notesPlaceholder": "e.g. It's our honeymoon, we love sea views, we don't want to walk much, and we really want to see the Rhine Falls…",
     "notesCount": "{{count}} / {{max}} characters",
     "fixAnswers": "Check the budget or hotel details."
+  },
+  "flex": {
+    "other": "Other",
+    "amountPerPerson": "Amount per person",
+    "amountHint": "Total per person for this outing, in your city's currency. The plan is adjusted to it.",
+    "amountInvalid": "Enter a valid number (e.g. 800).",
+    "noteLabel": "Anything else?",
+    "notePlaceholder": "e.g. a birthday, vegetarian, a quiet place, somewhere I can bring my dog…",
+    "noteGetawayPlaceholder": "e.g. we're bringing our dog, by the sea, we dislike crowds…",
+    "noteHint": "Optional. Write anything the options don't cover; the AI adjusts to it.",
+    "kmLabel": "How many kilometres?",
+    "kmHint": "Between 0.3 and 20 km.",
+    "keywordLabel": "Special request (optional)",
+    "keywordPlaceholder": "e.g. vegan, sea view, with a garden",
+    "keywordHint": "Added to the search."
   }
 }

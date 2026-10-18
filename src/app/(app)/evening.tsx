@@ -1,7 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { useState, type ComponentProps } from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
@@ -24,6 +25,8 @@ import { useCityStore } from '@/stores/city-store';
 import { useSessionStore } from '@/stores/session-store';
 import { Gradients, Motion, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { TextField } from '@/components/ui/text-field';
+import { parseAmount } from '@/features/trips/trip-answers';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 const WHEN: When[] = ['tonight', 'tomorrow', 'weekend'];
@@ -46,15 +49,6 @@ const KIND_ICON: Record<StopKind, IconName> = {
   culture: 'library',
   nightlife: 'musical-notes',
 };
-
-/** Durakları sırayla gezen yürüyüş rotası (Google Haritalar, anahtar gerekmez). */
-function routeUrl(stops: EveningStop[]) {
-  const points = stops.map((s) => (s.lat != null && s.lng != null ? `${s.lat},${s.lng}` : s.place_name));
-  if (points.length < 2) return null;
-  const params = new URLSearchParams({ api: '1', origin: points[0], destination: points[points.length - 1], travelmode: 'walking' });
-  if (points.length > 2) params.set('waypoints', points.slice(1, -1).join('|'));
-  return `https://www.google.com/maps/dir/?${params}`;
-}
 
 function StopCard({ stop, index, last, currency }: { stop: EveningStop; index: number; last: boolean; currency: string }) {
   const { t } = useTranslation();
@@ -114,6 +108,8 @@ export default function EveningScreen() {
   const [companion, setCompanion] = useState<string>(preferences.companion ?? 'couple');
   const [budget, setBudget] = useState<string>(preferences.budget ?? 'mid');
   const [moods, setMoods] = useState<Mood[]>([]);
+  const [amount, setAmount] = useState('');
+  const [note, setNote] = useState('');
   const [editing, setEditing] = useState(!saved);
   const plan = useEveningPlan();
 
@@ -121,9 +117,13 @@ export default function EveningScreen() {
     setMoods((cur) => (cur.includes(m) ? cur.filter((x) => x !== m) : cur.length >= 3 ? cur : [...cur, m]));
   }
 
+  const customBudget = budget === 'custom';
+  const parsedAmount = customBudget ? parseAmount(amount) : null;
+
   function generate() {
+    if (customBudget && parsedAmount === null) return;
     plan.mutate(
-      { when, companion, budget, moods },
+      { when, companion, budget: customBudget ? 'mid' : budget, moods, ...(parsedAmount ? { budget_amount: parsedAmount } : {}), ...(note.trim() ? { note: note.trim() } : {}) },
       {
         onSuccess: (data) => {
           setSaved({ ...data, when, createdAt: new Date().toISOString() });
@@ -135,13 +135,13 @@ export default function EveningScreen() {
 
   const result = !editing ? saved : null;
   const total = result?.stops.reduce((n, s) => n + (s.est_cost ?? 0), 0) ?? 0;
-  const route = result ? routeUrl(result.stops) : null;
+  const mappable = result ? result.stops.filter((x) => x.lat != null && x.lng != null) : [];
 
   return (
     <Screen
       footer={
         editing ? (
-          <Button title={plan.isPending ? t('city.planning') : t('city.makePlan')} icon="sparkles" loading={plan.isPending} onPress={generate} />
+          <Button title={plan.isPending ? t('city.planning') : t('city.makePlan')} icon="sparkles" loading={plan.isPending} disabled={customBudget && parsedAmount === null} onPress={generate} />
         ) : (
           <Button title={t('city.newPlan')} variant="secondary" icon="refresh" onPress={() => setEditing(true)} />
         )
@@ -178,7 +178,19 @@ export default function EveningScreen() {
               {BUDGETS.map((b) => (
                 <Chip key={b.value} icon={b.icon} label={t(`budget.${b.value}`)} selected={budget === b.value} onPress={() => setBudget(b.value)} />
               ))}
+              <Chip icon="create-outline" label={t('flex.other')} selected={customBudget} onPress={() => setBudget('custom')} />
             </View>
+            {customBudget && (
+              <TextField
+                label={t('flex.amountPerPerson')}
+                value={amount}
+                onChangeText={setAmount}
+                keyboardType="decimal-pad"
+                placeholder="800"
+                hint={t('flex.amountHint')}
+                error={amount.trim() && parsedAmount === null ? t('flex.amountInvalid') : null}
+              />
+            )}
           </View>
           <View style={styles.group}>
             <Text variant="overline" color="textMuted">
@@ -190,6 +202,7 @@ export default function EveningScreen() {
               ))}
             </View>
           </View>
+          <TextField label={t('flex.noteLabel')} value={note} onChangeText={(v) => setNote(v.slice(0, 500))} placeholder={t('flex.notePlaceholder')} hint={t('flex.noteHint')} multiline maxLength={500} style={styles.noteInput} />
           {plan.isPending && (
             <View style={styles.group}>
               <Skeleton height={120} />
@@ -236,7 +249,14 @@ export default function EveningScreen() {
             {result.stops.map((s, i) => (
               <StopCard key={`${s.place_name}-${i}`} stop={s} index={i} last={i === result.stops.length - 1} currency={result.currency} />
             ))}
-            {route && <Button title={t('city.openRoute')} variant="secondary" icon="map" onPress={() => Linking.openURL(route)} />}
+            {mappable.length > 0 && (
+              <Button
+                title={t('map.showOnMap')}
+                variant="secondary"
+                icon="map"
+                onPress={() => router.push({ pathname: '/map', params: { name: result.title, points: JSON.stringify(mappable.map((x) => ({ name: x.place_name, lat: x.lat, lng: x.lng }))) } })}
+              />
+            )}
             <Text variant="caption" color="textMuted" style={{ color: colors.textMuted }}>
               {t('city.estimateNote')}
             </Text>
@@ -250,6 +270,7 @@ export default function EveningScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   group: { gap: Spacing.sm },
+  noteInput: { minHeight: 90, textAlignVertical: 'top' },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   hero: { borderRadius: Radius.xl, padding: Spacing.lg, gap: Spacing.sm },
   heroPills: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm, marginTop: Spacing.xs },

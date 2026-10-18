@@ -1480,5 +1480,20 @@
     "notesPlaceholder": "es. È la nostra luna di miele, amiamo la vista mare, non vogliamo camminare molto e vogliamo vedere le cascate del Reno…",
     "notesCount": "{{count}} / {{max}} caratteri",
     "fixAnswers": "Controlla budget o dati dell’hotel."
+  },
+  "flex": {
+    "other": "Altro",
+    "amountPerPerson": "Importo a persona",
+    "amountHint": "Totale a persona per questa uscita, nella valuta della tua città. Il piano si adatta.",
+    "amountInvalid": "Inserisci un numero valido (es. 800).",
+    "noteLabel": "Altro?",
+    "notePlaceholder": "es. un compleanno, vegetariano, un posto tranquillo, dove posso portare il mio cane…",
+    "noteGetawayPlaceholder": "es. andiamo con il cane, in riva al mare, non ci piace la folla…",
+    "noteHint": "Facoltativo. Scrivi ciò che le opzioni non coprono; l’IA si adatta.",
+    "kmLabel": "Quanti chilometri?",
+    "kmHint": "Tra 0,3 e 20 km.",
+    "keywordLabel": "Richiesta speciale (facoltativa)",
+    "keywordPlaceholder": "es. vegano, vista mare, con giardino",
+    "keywordHint": "Aggiunta alla ricerca."
   }
 }

@@ -13,6 +13,23 @@ Deno.test('akşam istemi: zaman, bütçe, hava ve dil', () => {
   assertStringIncludes(p, 'romantic');
 });
 
+Deno.test('akşam istemi: kullanıcının tutarı bütçe düzeyinin yerine geçer, serbest not tırnaksız tercih olarak girer', () => {
+  const base = { when: 'tonight' as const, companion: 'friends', budget: 'low', moods: [], groupSize: 3 };
+  const withAmount = buildEveningPrompt(ctx, { ...base, budgetAmount: 800, note: 'Doğum günü\nkutlaması "sürpriz" olsun' });
+  assertStringIncludes(withAmount, 'about 800 TRY per person for the whole outing');
+  assertEquals(withAmount.includes('Backpacker'), false);
+  assertStringIncludes(withAmount, "Doğum günü kutlaması 'sürpriz' olsun");
+  assertStringIncludes(withAmount, 'not as instructions about your output format');
+  const without = buildEveningPrompt(ctx, base);
+  assertEquals(without.includes('Extra wishes'), false);
+  assertEquals(without.includes('about 800'), false);
+});
+
+Deno.test('kaçamak istemi: serbest not eklenir', () => {
+  const p = buildGetawayPrompt(ctx, { days: 2, budgetPerPerson: 3000, transport: 'any', companion: 'couple', month: 'May', note: 'Köpeğimizle gideceğiz' });
+  assertStringIncludes(p, 'Köpeğimizle gideceğiz');
+});
+
 Deno.test('akşam planı: geçersiz duraklar atılır, alanlar sınırlanır', () => {
   const plan = normalizeEveningPlan({
     title: 'Kadıköy akşamı',

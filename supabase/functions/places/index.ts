@@ -1,7 +1,7 @@
 // Harita ve çevre bilgileri: yakında şu an açık yerler, bütçeye göre otel önerileri
 // ve seyahat günleri için hava durumu.
 //
-//   POST { "action": "open_now", "lat", "lng", "category": "restaurant" | "cafe" | ..., "radius"?: 300-5000 m, "limit"?: 10 | 20 }
+//   POST { "action": "open_now", "lat", "lng", "category": "restaurant" | "cafe" | ..., "radius"?: 300-20000 m, "keyword"?: serbest istek (≤60), "limit"?: 10 | 20 }
 //     → { places[] }                         (kota: nearby_search)
 //   POST { "action": "hotels", "trip_id", "destination_id"? }
 //     → { city, checkin, checkout, places[] (booking_url ile) }   (kota: nearby_search)
@@ -20,6 +20,7 @@
 // İsteğe bağlı: AFFILIATE_BOOKING_URL ve _shared/transport.ts'teki ulaşım ortakları.
 import { hotelLink, templatesFromEnv } from '../_shared/affiliate.ts';
 import { consumeQuota, userClient } from '../_shared/auth.ts';
+import { cleanNote } from '../_shared/itinerary.ts';
 import { destinationCoords, googleConfig } from '../_shared/enrich.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import { distanceMeters, fetchPhotoUri, fetchPlaceDetails, hotelRequest, isNearbyCategory, openNowRequest, PLACE_ID_PATTERN, PlacesError, searchText } from '../_shared/places.ts';
@@ -127,9 +128,9 @@ Deno.serve(async (req) => {
     if (!quota.allowed) return error('quota_exceeded', 402);
     const origin = { lat: body.lat, lng: body.lng };
     // Harita ve "Kararsızım" daha geniş alan ve daha çok sonuç isteyebilir (aynı ücret).
-    const radius = typeof body.radius === 'number' && Number.isFinite(body.radius) ? Math.min(Math.max(Math.round(body.radius), 300), 5000) : undefined;
+    const radius = typeof body.radius === 'number' && Number.isFinite(body.radius) ? Math.min(Math.max(Math.round(body.radius), 300), 20_000) : undefined;
     const pageSize = body.limit === 20 ? 20 : 10;
-    const places = await searchText({ apiKey, apiBase: google.placesBase, body: openNowRequest({ ...origin, category: body.category, language, radius, pageSize }), origin });
+    const places = await searchText({ apiKey, apiBase: google.placesBase, body: openNowRequest({ ...origin, category: body.category, language, radius, pageSize, keyword: cleanNote(body.keyword, 60) }), origin });
     // Google openNow filtresine rağmen kapalı veya kalıcı kapalı dönebilir; elenir.
     const open = places.filter((p) => p.openNow !== false && p.status !== 'CLOSED_PERMANENTLY' && p.status !== 'CLOSED_TEMPORARILY');
     return json({ places: open, quota: { plan: quota.plan, remaining: quota.remaining } });

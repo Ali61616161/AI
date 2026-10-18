@@ -1442,5 +1442,20 @@
     "notesPlaceholder": "例如：我们是蜜月旅行，喜欢海景，不想走太多路，一定要看莱茵瀑布……",
     "notesCount": "{{count}} / {{max}} 个字符",
     "fixAnswers": "请检查预算或酒店信息。"
+  },
+  "flex": {
+    "other": "其他",
+    "amountPerPerson": "人均金额",
+    "amountHint": "这次出行的人均总额，使用你所在城市的货币，行程会据此调整。",
+    "amountInvalid": "请输入有效数字（例如 800）。",
+    "noteLabel": "还有什么想说的？",
+    "notePlaceholder": "例如：生日、素食、安静的地方、可以带狗的地方……",
+    "noteGetawayPlaceholder": "例如：要带狗、靠海、不喜欢人多……",
+    "noteHint": "可选。选项没有涵盖的都可以写，AI 会据此调整。",
+    "kmLabel": "多少公里？",
+    "kmHint": "0.3 到 20 公里之间。",
+    "keywordLabel": "特别要求（可选）",
+    "keywordPlaceholder": "例如：纯素、海景、带花园",
+    "keywordHint": "会加入搜索。"
   }
 }

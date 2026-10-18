@@ -135,13 +135,14 @@ export default function GetawayScreen() {
   const [budget, setBudget] = useState(String(saved?.budget_per_person ?? ''));
   const [transport, setTransport] = useState<Transport>('any');
   const [companion, setCompanion] = useState<string>(preferences.companion ?? 'friends');
+  const [note, setNote] = useState('');
   const [editing, setEditing] = useState(!saved);
   const search = useGetaways();
   const amount = Number(budget.replace(/[^\d]/g, ''));
 
   function run(exclude: string[] = []) {
     search.mutate(
-      { days, budget_per_person: amount, transport, companion, exclude },
+      { days, budget_per_person: amount, transport, companion, exclude, ...(note.trim() ? { note: note.trim() } : {}) },
       {
         onSuccess: (data) => {
           setSaved({ ...data, createdAt: new Date().toISOString() });
@@ -207,6 +208,7 @@ export default function GetawayScreen() {
               ))}
             </View>
           </View>
+          <TextField label={t('flex.noteLabel')} value={note} onChangeText={(v) => setNote(v.slice(0, 500))} placeholder={t('flex.noteGetawayPlaceholder')} hint={t('flex.noteHint')} multiline maxLength={500} style={styles.noteInput} />
           {search.isPending && <Skeleton height={220} radius={Radius.xl} />}
           {search.isError && <CityErrorNote error={search.error} />}
           {saved && !search.isPending && <Button title={t('city.backToResults')} variant="ghost" onPress={() => setEditing(false)} />}
@@ -238,6 +240,7 @@ export default function GetawayScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   group: { gap: Spacing.sm },
+  noteInput: { minHeight: 90, textAlignVertical: 'top' },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   art: { height: 150, borderTopLeftRadius: Radius.xl, borderTopRightRadius: Radius.xl, overflow: 'hidden', justifyContent: 'flex-end', padding: Spacing.lg },
   artText: { gap: 4, paddingRight: 110 },

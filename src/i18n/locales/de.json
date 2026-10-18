@@ -1480,5 +1480,20 @@
     "notesPlaceholder": "z. B. Flitterwochen, wir lieben Meerblick, wollen nicht viel laufen und unbedingt die Rheinfälle sehen…",
     "notesCount": "{{count}} / {{max}} Zeichen",
     "fixAnswers": "Prüfe Budget oder Hoteldaten."
+  },
+  "flex": {
+    "other": "Andere",
+    "amountPerPerson": "Betrag pro Person",
+    "amountHint": "Gesamtbetrag pro Person für diesen Ausflug in der Währung deiner Stadt. Der Plan richtet sich danach.",
+    "amountInvalid": "Gib eine gültige Zahl ein (z. B. 800).",
+    "noteLabel": "Noch etwas?",
+    "notePlaceholder": "z. B. Geburtstag, vegetarisch, ein ruhiger Ort, wo ich meinen Hund mitnehmen kann…",
+    "noteGetawayPlaceholder": "z. B. wir nehmen unseren Hund mit, am Meer, keine Menschenmassen…",
+    "noteHint": "Optional. Schreib alles, was die Optionen nicht abdecken; die KI passt sich an.",
+    "kmLabel": "Wie viele Kilometer?",
+    "kmHint": "Zwischen 0,3 und 20 km.",
+    "keywordLabel": "Besonderer Wunsch (optional)",
+    "keywordPlaceholder": "z. B. vegan, Meerblick, mit Garten",
+    "keywordHint": "Wird der Suche hinzugefügt."
   }
 }
