@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { Brand } from '@/config/brand';
-import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -24,7 +23,6 @@ const PILLS: { icon: ComponentProps<typeof Ionicons>['name']; key: 'pillRoute' |
 export default function WelcomeScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const continueAsGuest = useSessionStore((s) => s.continueAsGuest);
   const introSeen = useSessionStore((s) => s.introSeen);
 
   // İlk açılışta önce tanıtım slaytları gösterilir.
@@ -34,8 +32,7 @@ export default function WelcomeScreen() {
     <Screen
       footer={
         <>
-          <Button title={t('welcome.getStarted')} icon="arrow-forward" onPress={() => (isSupabaseConfigured() ? router.push('/sign-in') : continueAsGuest())} />
-          {isSupabaseConfigured() && <Button title={t('auth.guest')} variant="ghost" onPress={continueAsGuest} />}
+          <Button title={t('welcome.getStarted')} icon="arrow-forward" onPress={() => router.push('/sign-in')} />
           <Text variant="caption" color="textMuted" style={styles.legal}>
             {t('consent.guestNote')}{' '}
             <Text variant="caption" color="textSecondary" style={styles.link} onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })}>

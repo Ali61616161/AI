@@ -1,8 +1,8 @@
 import { assertEquals } from 'jsr:@std/assert@1';
 
-import { emptyHotel, hotelReservationRow, normalizeAnswers, parseAmount, type TripAnswers } from './trip-answers.ts';
+import { emptyHotel, hotelReservationRow, normalizeAnswers, parseAmount, parseClock, type TripAnswers } from './trip-answers.ts';
 
-const base: TripAnswers = { companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'TRY', interests: ['art'], transport: 'mixed', notes: '', hotels: [] };
+const base: TripAnswers = { companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'TRY', interests: ['art'], transport: 'mixed', notes: '', hotels: [], arrivalTime: '', arrivalAirport: '', departureTime: '', departureAirport: '' };
 
 Deno.test('parseAmount: farklı yazım biçimleri', () => {
   assertEquals(parseAmount('120'), 120);
@@ -51,4 +51,16 @@ Deno.test('hotelReservationRow: tarih boşsa seyahat tarihleri, giriş 15:00 ç�
   assertEquals(hotelReservationRow({ name: 'A', address: '', checkIn: '', checkOut: '' }, 't1', { start: null, end: null }), null);
   const own = hotelReservationRow({ name: 'A', address: '', checkIn: '2027-02-01', checkOut: '2027-02-03' }, 't1', { start: '2027-01-11', end: '2027-01-14' });
   assertEquals(own?.starts_at, '2027-02-01T15:00:00.000Z');
+});
+
+Deno.test('saat: yaygın yazımlar HH:MM olur, geçersizler hata verir', () => {
+  assertEquals(parseClock('930'), '09:30');
+  assertEquals(parseClock('9.30'), '09:30');
+  assertEquals(parseClock('21:05'), '21:05');
+  assertEquals(parseClock('2500'), null);
+  assertEquals(parseClock('abc'), null);
+  assertEquals(normalizeAnswers({ ...base, arrivalTime: '14:10', departureTime: '' }).arrivalTime, '14:10');
+  assertEquals(normalizeAnswers({ ...base, arrivalTime: '99' }).timeError, true);
+  assertEquals(normalizeAnswers({ ...base }).timeError, false);
+  assertEquals(normalizeAnswers({ ...base, arrivalAirport: '  Zürich Airport ' }).arrivalAirport, 'Zürich Airport');
 });

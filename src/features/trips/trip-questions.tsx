@@ -12,7 +12,7 @@ import { useSessionStore } from '@/stores/session-store';
 import { Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-import { emptyHotel, MAX_HOTELS, NOTES_MAX, type LocalTransport, type NormalizedAnswers, type TripAnswers } from './trip-answers';
+import { emptyHotel, isBlankOrClock, MAX_HOTELS, NOTES_MAX, type LocalTransport, type NormalizedAnswers, type TripAnswers } from './trip-answers';
 
 const TRANSPORTS: { value: LocalTransport; icon: 'train-outline' | 'car-outline' | 'swap-horizontal-outline' }[] = [
   { value: 'transit', icon: 'train-outline' },
@@ -21,6 +21,28 @@ const TRANSPORTS: { value: LocalTransport; icon: 'train-outline' | 'car-outline'
 ];
 
 /** Varsayılan cevaplar: profildeki tercihler; para birimi cihazın yerel para birimi. */
+type TimeFieldsValue = Pick<TripAnswers, 'arrivalTime' | 'arrivalAirport' | 'departureTime' | 'departureAirport'>;
+
+/** Gidilen ülkeye iniş / dönüş uçuşu saati ve havalimanı alanları (hepsi isteğe bağlı). */
+export function TripTimeFields({ value, onChange, timeError }: { value: TimeFieldsValue; onChange: (patch: Partial<TimeFieldsValue>) => void; timeError: boolean }) {
+  const { t } = useTranslation();
+  const bad = (v: string) => (timeError && !isBlankOrClock(v) ? t('tripQuestions.timeInvalid') : null);
+  return (
+    <View style={styles.section}>
+      <View style={styles.timeRow}>
+        <View style={styles.timeCol}>
+          <TextField label={t('tripQuestions.arrivalTime')} value={value.arrivalTime} onChangeText={(arrivalTime) => onChange({ arrivalTime })} placeholder="14:30" keyboardType="numbers-and-punctuation" maxLength={5} error={bad(value.arrivalTime)} />
+        </View>
+        <View style={styles.timeCol}>
+          <TextField label={t('tripQuestions.departureTime')} value={value.departureTime} onChangeText={(departureTime) => onChange({ departureTime })} placeholder="18:45" keyboardType="numbers-and-punctuation" maxLength={5} error={bad(value.departureTime)} />
+        </View>
+      </View>
+      <TextField label={t('tripQuestions.arrivalAirport')} value={value.arrivalAirport} onChangeText={(arrivalAirport) => onChange({ arrivalAirport })} placeholder={t('tripQuestions.airportPlaceholder')} maxLength={120} />
+      <TextField label={t('tripQuestions.departureAirport')} value={value.departureAirport} onChangeText={(departureAirport) => onChange({ departureAirport })} placeholder={t('tripQuestions.airportPlaceholder')} maxLength={120} />
+    </View>
+  );
+}
+
 export function useDefaultTripAnswers(): TripAnswers {
   const preferences = useSessionStore((s) => s.preferences);
   return {
@@ -32,6 +54,10 @@ export function useDefaultTripAnswers(): TripAnswers {
     transport: 'mixed',
     notes: '',
     hotels: [],
+    arrivalTime: '',
+    arrivalAirport: '',
+    departureTime: '',
+    departureAirport: '',
   };
 }
 
@@ -42,7 +68,7 @@ type Props = {
   tripStart?: string | null;
   tripEnd?: string | null;
   /** normalizeAnswers çıktısındaki hatalar (gönder'e basılınca gösterilir). */
-  errors?: Pick<NormalizedAnswers, 'hotelError' | 'budgetError'> | null;
+  errors?: Pick<NormalizedAnswers, 'hotelError' | 'budgetError' | 'timeError'> | null;
 };
 
 /**
@@ -150,6 +176,14 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
         {value.hotels.length < MAX_HOTELS && <Button title={t('tripQuestions.addHotel')} variant="secondary" icon="add" onPress={() => set({ hotels: [...value.hotels, emptyHotel()] })} />}
       </View>
 
+      <View style={styles.section}>
+        <Text variant="subtitle">{t('tripQuestions.flightTimesTitle')}</Text>
+        <Text variant="caption" color="textSecondary">
+          {t('tripQuestions.flightTimesHint')}
+        </Text>
+        <TripTimeFields value={value} onChange={set} timeError={errors?.timeError ?? false} />
+      </View>
+
       <TextField
         label={t('tripQuestions.notes')}
         value={value.notes}
@@ -184,4 +218,6 @@ const styles = StyleSheet.create({
   currency: { width: 96 },
   hotel: { gap: Spacing.md, padding: Spacing.md, borderRadius: 16, borderWidth: 1 },
   notes: { minHeight: 140, textAlignVertical: 'top' },
+  timeRow: { flexDirection: 'row', gap: Spacing.md },
+  timeCol: { flex: 1 },
 });

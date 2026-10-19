@@ -5,7 +5,6 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
-import { useSessionStore } from '@/stores/session-store';
 import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -22,11 +21,7 @@ type Props = {
 export function StepHeader({ step, total, title, subtitle }: Props) {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const isGuest = useSessionStore((s) => s.isGuest);
-  const signOut = useSessionStore((s) => s.signOut);
-  // Önceki adım varsa ona döner; ilk adımda hesapsız devam edilmişse karşılama ekranına çıkılır.
-  const canGoBack = router.canGoBack();
-  const onBack = canGoBack ? () => router.back() : isGuest ? signOut : null;
+  const onBack = router.canGoBack() ? () => router.back() : null;
   return (
     <View style={styles.wrap}>
       {onBack && (

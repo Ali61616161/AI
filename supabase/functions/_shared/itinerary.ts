@@ -42,6 +42,11 @@ export type TripContext = {
   notes?: string | null;
   /** Kişi başı günlük bütçe (currency cinsinden); doluysa bütçe düzeyi yerine bu kullanılır. */
   daily_budget?: number | null;
+  /** Gidilen ülkeye iniş ve dönüş uçuşu kalkış saati (HH:mm, yerel) ile havalimanları; rezervasyon yoksa kullanılır. */
+  arrival_time?: string | null;
+  departure_time?: string | null;
+  arrival_airport?: string | null;
+  departure_airport?: string | null;
   destinations: { city: string; country_code: string | null; arrive_on: string | null; depart_on: string | null }[];
   reservations: TripReservation[];
 };
@@ -279,6 +284,42 @@ export function tripAnswerRules(ctx: Pick<TripContext, 'local_transport' | 'note
   return rules;
 }
 
+/** "HH:mm" → dakika; geçersizse null. */
+export function clockMinutes(value: string | null | undefined): number | null {
+  const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value ?? '');
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+}
+
+const airportText = (name: string | null | undefined) => (name?.trim() ? ` (${cleanNote(name) ?? ''})` : '');
+
+/**
+ * Varış ve dönüş saatine göre ilk ve son günün kuralları. Saat, kullanıcı rezervasyon yüklemeden elle
+ * verdiğinde kullanılır; uçuş rezervasyonu varsa o zaten "Fixed bookings" olarak gelir.
+ *  - İlk gün: inişten sonra 2 saat (pasaport, bagaj, şehre geçiş) hiçbir şey planlanmaz.
+ *  - Son gün: kalkıştan 4 saat önce (havalimanında 3 saat + yol 1 saat) her şey biter.
+ */
+export function tripTimingRules(ctx: Pick<TripContext, 'start_date' | 'end_date' | 'arrival_time' | 'departure_time' | 'arrival_airport' | 'departure_airport'>, dates: string[]): string[] {
+  const rules: string[] = [];
+  const arrival = clockMinutes(ctx.arrival_time);
+  if (arrival !== null && dates.includes(ctx.start_date)) {
+    rules.push(
+      `On ${ctx.start_date} the traveler lands${airportText(ctx.arrival_airport)} at ${formatMinutes(arrival)} local time. Plan nothing before ${formatMinutes(Math.min(arrival + 120, 23 * 60))} ` +
+        '(passport control, baggage, transfer into the city), start that day with getting to the hotel and a meal, and keep it light; hotel check-in is usually from 14:00.',
+    );
+  }
+  const departure = clockMinutes(ctx.departure_time);
+  if (departure !== null && dates.includes(ctx.end_date)) {
+    const latest = departure - 240;
+    rules.push(
+      latest < 6 * 60
+        ? `On ${ctx.end_date} the return flight${airportText(ctx.departure_airport)} leaves at ${formatMinutes(departure)} local time. There is no time for sightseeing that day: plan only breakfast near the hotel if it fits, and the trip to the airport.`
+        : `On ${ctx.end_date} the return flight${airportText(ctx.departure_airport)} leaves at ${formatMinutes(departure)} local time. All activities must end by ${formatMinutes(latest)} ` +
+          '(3 hours at the airport plus travel from the city); do not plan anything after that except heading to the airport.',
+    );
+  }
+  return rules;
+}
+
 export const PACES = ['relaxed', 'balanced', 'packed'] as const;
 export const DIETS = ['vegetarian', 'vegan', 'halal', 'gluten_free'] as const;
 export type PlanOptions = {
@@ -337,7 +378,7 @@ export function buildItineraryPrompt(
   /** Yeniden planlamada eklenen kurallar (ör. korunacak yerler, mevcut plan). */
   extraRules: string[] = [],
 ): string {
-  extraRules = [...tripAnswerRules(ctx), ...extraRules];
+  extraRules = [...tripAnswerRules(ctx), ...tripTimingRules(ctx, dates), ...extraRules];
   const stops = ctx.destinations
     .map((d) => `- ${d.city}${d.country_code ? ` (${d.country_code})` : ''}: ${d.arrive_on ?? '?'} → ${d.depart_on ?? '?'}`)
     .join('\n');
@@ -373,7 +414,7 @@ Style:
 - ${COMPANION_RULES[ctx.companion]}
 - Pick places that match the interests; do not give everyone the same famous list.
 
-Fixed bookings (local times). Do NOT include these in your output and do not schedule anything that overlaps them. Leave time to reach the airport (2h before flights) and the station (30 min before trains):
+Fixed bookings (local times). Do NOT include these in your output and do not schedule anything that overlaps them. Leave time to reach the airport (3h before international flights, 2h before domestic ones) and the station (30 min before trains). After a flight lands allow at least 90 minutes (passport control, baggage, transfer) before the first activity:
 ${fixedText}
 
 Rules:

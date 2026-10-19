@@ -20,7 +20,7 @@ export type LoadedTrip = {
 };
 
 const TRIP_SELECT =
-  'id, title, start_date, end_date, companion_type, budget_tier, interests, adults, children, budget_currency, budget_amount, local_transport, notes, ' +
+  'id, title, start_date, end_date, companion_type, budget_tier, interests, adults, children, budget_currency, budget_amount, local_transport, notes, arrival_time, departure_time, arrival_airport, departure_airport, ' +
   'trip_destinations(id, city, country_code, arrive_on, depart_on, position, lat, lng), ' +
   'reservations(id, type, title, starts_at, ends_at, start_timezone, end_timezone, origin_name, destination_name, address, is_cancelled)';
 
@@ -81,6 +81,10 @@ export async function loadTrip(supabase: SupabaseClient, tripId: string, profile
       currency: t.budget_currency ?? profile.currency,
       local_transport: t.local_transport ?? 'mixed',
       notes: typeof t.notes === 'string' ? t.notes : null,
+      arrival_time: typeof t.arrival_time === 'string' ? t.arrival_time.slice(0, 5) : null,
+      departure_time: typeof t.departure_time === 'string' ? t.departure_time.slice(0, 5) : null,
+      arrival_airport: typeof t.arrival_airport === 'string' ? t.arrival_airport : null,
+      departure_airport: typeof t.departure_airport === 'string' ? t.departure_airport : null,
       daily_budget: t.budget_amount === null || t.budget_amount === undefined ? null : Number(t.budget_amount),
       destinations: [...(t.trip_destinations ?? [])].sort((a, b) => a.position - b.position),
       reservations,

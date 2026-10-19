@@ -1296,6 +1296,10 @@ export type Database = {
           end_date: string | null;
           id: string;
           interests: string[];
+          arrival_airport: string | null;
+          arrival_time: string | null;
+          departure_airport: string | null;
+          departure_time: string | null;
           local_transport: string;
           notes: string | null;
           owner_id: string;
@@ -1318,6 +1322,10 @@ export type Database = {
           end_date?: string | null;
           id?: string;
           interests?: string[];
+          arrival_airport?: string | null;
+          arrival_time?: string | null;
+          departure_airport?: string | null;
+          departure_time?: string | null;
           local_transport?: string;
           notes?: string | null;
           owner_id?: string;
@@ -1339,6 +1347,10 @@ export type Database = {
           end_date?: string | null;
           id?: string;
           interests?: string[];
+          arrival_airport?: string | null;
+          arrival_time?: string | null;
+          departure_airport?: string | null;
+          departure_time?: string | null;
           local_transport?: string;
           notes?: string | null;
           owner_id?: string;

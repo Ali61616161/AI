@@ -15,7 +15,7 @@ const TRIP_LIST_SELECT =
   'id, title, status, start_date, end_date, trip_destinations(city, country_code, position), reservations(count)';
 
 const TRIP_DETAIL_SELECT =
-  'id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, budget_amount, local_transport, notes, adults, children, interests, ' +
+  'id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, budget_amount, local_transport, notes, arrival_time, departure_time, arrival_airport, departure_airport, adults, children, interests, ' +
   'trip_destinations(id, city, country_code, arrive_on, depart_on, position), ' +
   'reservations(id, type, title, provider_name, reference_code, starts_at, ends_at, start_timezone, end_timezone, ' +
   'origin_name, origin_code, destination_name, destination_code, address, details)';
@@ -99,6 +99,10 @@ export type TripDetail = {
   budget_amount: number | null;
   local_transport: 'transit' | 'car' | 'mixed';
   notes: string | null;
+  arrival_time: string | null;
+  departure_time: string | null;
+  arrival_airport: string | null;
+  departure_airport: string | null;
   adults: number;
   children: number;
   interests: string[];
@@ -126,6 +130,10 @@ export async function applyTripAnswers(tripId: string, answers: TripAnswers, tri
       .update({
         local_transport: answers.transport,
         notes: n.notes,
+        arrival_time: n.arrivalTime,
+        departure_time: n.departureTime,
+        arrival_airport: n.arrivalAirport,
+        departure_airport: n.departureAirport,
         ...(n.budgetAmount ? { budget_amount: n.budgetAmount.amount, budget_currency: n.budgetAmount.currency } : {}),
       })
       .eq('id', tripId);

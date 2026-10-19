@@ -1,16 +1,12 @@
 import { Platform } from 'react-native';
 
 import { useCurrentPlan } from '@/features/subscription/purchases';
-import { useSessionStore } from '@/stores/session-store';
 
 import { useAdsStore } from './ads-store';
 
-/** Ücretsiz plandaki (veya hesapsız) kullanıcı mı? Pro ve Trip Pass reklam görmez. */
+/** Ücretsiz plandaki kullanıcı mı? Pro ve Trip Pass reklam görmez. */
 export function useIsFreePlan(): boolean {
-  const signedIn = useSessionStore((s) => Boolean(s.session));
-  const guest = useSessionStore((s) => s.isGuest);
   const { data: plan, isSuccess } = useCurrentPlan();
-  if (guest && !signedIn) return true;
   return isSuccess && plan === 'free';
 }
 

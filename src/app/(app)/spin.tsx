@@ -26,7 +26,6 @@ import { flag } from '@/features/tools/emergency-numbers';
 import { localCountryName } from '@/features/tools/countries';
 import { haptic } from '@/lib/haptics';
 import { getSupabase } from '@/lib/supabase';
-import { useCityStore } from '@/stores/city-store';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -112,8 +111,6 @@ export default function SpinScreen() {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const identity = useSessionStore((s) => s.identity);
-  const signedIn = useSessionStore((s) => Boolean(s.session));
-  const takeGuestSpin = useCityStore((s) => s.takeGuestSpin);
   const passports = useMemo(() => [identity.passport, ...identity.otherPassports].filter((p): p is string => !!p), [identity.passport, identity.otherPassports]);
 
   const [maxCost, setMaxCost] = useState<CostLevel>(2);
@@ -137,7 +134,6 @@ export default function SpinScreen() {
   const size = Math.min(width - Spacing.xl * 2, 340);
 
   async function allowed(): Promise<boolean> {
-    if (!signedIn) return takeGuestSpin();
     const { data, error } = await getSupabase().rpc('consume_quota', { p_feature: 'spin' }).single<{ allowed: boolean }>();
     return !error && !!data?.allowed;
   }
@@ -220,16 +216,12 @@ export default function SpinScreen() {
         <Card>
           <View style={styles.gap}>
             <Text variant="bodyStrong" color="warning">
-              {signedIn ? t('spin.limit') : t('spin.guestLimit')}
+              {t('spin.limit')}
             </Text>
-            {signedIn ? (
-              <View style={styles.row}>
-                <UpgradeButton />
-                <RewardedButton feature="spin" onRewarded={() => setPhase('idle')} />
-              </View>
-            ) : (
-              <Button title={t('profile.createAccount')} variant="secondary" onPress={() => router.push('/sign-in')} />
-            )}
+            <View style={styles.row}>
+              <UpgradeButton />
+              <RewardedButton feature="spin" onRewarded={() => setPhase('idle')} />
+            </View>
           </View>
         </Card>
       )}

@@ -55,8 +55,6 @@
     "verify": "验证",
     "resend": "重新发送验证码",
     "invalidCode": "验证码错误或已过期，请重试。",
-    "guest": "不注册继续",
-    "guestHint": "你的数据只保存在这部手机上，随时可以创建账户。",
     "notConfigured": "服务器连接尚未设置，目前可以不注册继续使用。",
     "invalidPassword": "邮箱或密码错误。",
     "signInWithPassword": "登录",
@@ -1174,7 +1172,9 @@
       "no_home_city": "请先添加你的常住城市。",
       "ai_failed": "暂时无法生成计划，请重试。",
       "network": "没有网络连接，请重试。"
-    }
+    },
+    "showMore": "更多",
+    "showLess": "收起"
   },
   "spin": {
     "title": "转转盘",
@@ -1228,7 +1228,6 @@
       "adventure": "探险"
     },
     "limit": "今天的免费次数已用完。看个广告再转一次，或升级 Pro 无限次转。",
-    "guestLimit": "游客每天只能转一次。注册免费账号可以转更多次。",
     "empty": "没有符合这些筛选的国家。放宽预算、季节或签证条件试试。",
     "addPassport": "添加你的护照，只看能轻松入境的国家 →",
     "note": "费用和季节仅供参考。预订前请查看入境规定和旅行提示。"
@@ -1471,7 +1470,15 @@
     "notes": "聊聊你的旅行",
     "notesPlaceholder": "例如：我们是蜜月旅行，喜欢海景，不想走太多路，一定要看莱茵瀑布……",
     "notesCount": "{{count}} / {{max}} 个字符",
-    "fixAnswers": "请检查预算或酒店信息。"
+    "fixAnswers": "请检查预算或酒店信息。",
+    "flightTimesTitle": "航班时间",
+    "flightTimesHint": "可选。填写抵达目的地国家的时间和返程航班起飞时间；计划会在落地后开始第一天，并让最后一天来得及赶到机场。时间为该国当地时间。",
+    "arrivalTime": "抵达时间",
+    "departureTime": "起飞时间",
+    "arrivalAirport": "抵达机场",
+    "departureAirport": "出发机场",
+    "airportPlaceholder": "例如 苏黎世机场",
+    "timeInvalid": "请按 14:30 的格式填写时间。"
   },
   "flex": {
     "other": "其他",

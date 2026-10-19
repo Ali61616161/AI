@@ -216,7 +216,7 @@ export default function TicketReviewScreen() {
     setFormError(null);
     if (!selected.length) return setFormError(t('review.nothingSelected'));
     if (hasDateErrors || !draft) return setFormError(t('review.fixDates'));
-    if (!tripId && (normalized.budgetError || normalized.hotelError)) {
+    if (!tripId && (normalized.budgetError || normalized.hotelError || normalized.timeError)) {
       setShowErrors(true);
       return setFormError(t('tripQuestions.fixAnswers'));
     }

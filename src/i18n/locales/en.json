@@ -55,8 +55,6 @@
     "verify": "Verify",
     "resend": "Resend code",
     "invalidCode": "The code is wrong or has expired. Try again.",
-    "guest": "Continue without an account",
-    "guestHint": "Your data stays on this phone. You can create an account any time.",
     "notConfigured": "The server connection isn't set up yet. You can continue without an account for now.",
     "invalidPassword": "Wrong email or password.",
     "signInWithPassword": "Sign in",
@@ -1201,7 +1199,9 @@
       "no_home_city": "Add your home city first.",
       "ai_failed": "We couldn’t make a plan right now. Try again.",
       "network": "No connection. Try again."
-    }
+    },
+    "showMore": "More",
+    "showLess": "Less"
   },
   "spin": {
     "title": "Spin the wheel",
@@ -1256,7 +1256,6 @@
       "adventure": "Adventure"
     },
     "limit": "You’ve used today’s free spin. Watch an ad for one more or go Pro for unlimited spins.",
-    "guestLimit": "Guests get one spin a day. Create a free account for more.",
     "empty": "No country fits these filters. Loosen the budget, season or visa filter.",
     "addPassport": "Add your passport to see only countries you can enter easily →",
     "note": "Costs and seasons are approximate. Check entry rules and travel advisories before you book."
@@ -1509,7 +1508,15 @@
     "notes": "Tell us about your trip",
     "notesPlaceholder": "e.g. It's our honeymoon, we love sea views, we don't want to walk much, and we really want to see the Rhine Falls…",
     "notesCount": "{{count}} / {{max}} characters",
-    "fixAnswers": "Check the budget or hotel details."
+    "fixAnswers": "Check the budget or hotel details.",
+    "flightTimesTitle": "Flight times",
+    "flightTimesHint": "Optional. Enter when you land in the destination country and when your return flight leaves; the plan starts day one after landing and ends the last day in time for the airport. Times are local to that country.",
+    "arrivalTime": "Arrival time",
+    "departureTime": "Departure time",
+    "arrivalAirport": "Arrival airport",
+    "departureAirport": "Departure airport",
+    "airportPlaceholder": "e.g. Zurich Airport",
+    "timeInvalid": "Enter the time like 14:30."
   },
   "flex": {
     "other": "Other",

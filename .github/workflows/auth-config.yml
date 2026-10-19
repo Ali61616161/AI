@@ -8,6 +8,9 @@ on:
       apply:
         description: Apple girişi, yola:// dönüş adresi ve 6 haneli e-posta kodu (true/false)
         default: 'false'
+      google_client_ids:
+        description: "Cihazdan Google girişi için istemci kimlikleri (herkese açık), virgülle: web,ios[,android]. Boşsa dokunulmaz."
+        default: ''
 
 jobs:
   auth:
@@ -18,6 +21,7 @@ jobs:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
           APPLY: ${{ inputs.apply }}
+          GOOGLE_IDS: ${{ inputs.google_client_ids }}
         run: |
           ref=$(printf '%s' "$SUPABASE_PROJECT_REF" | tr -d '[:space:]')
           token=$(printf '%s' "$SUPABASE_ACCESS_TOKEN" | tr -d '[:space:]')
@@ -40,5 +44,13 @@ jobs:
             curl -sSf -X PATCH -H "Authorization: Bearer $token" -H 'Content-Type: application/json' "$api" \
               -d "$(jq -n --arg list "$list" '{external_apple_enabled: true, external_apple_client_id: "com.akturangroup.yola", uri_allow_list: $list, mailer_otp_length: 6}')" > /dev/null
             echo "### Uygulandı" | tee -a "$GITHUB_STEP_SUMMARY"
+            show
+          fi
+          if [ -n "$GOOGLE_IDS" ]; then
+            ids=$(printf '%s' "$GOOGLE_IDS" | tr -d '[:space:]')
+            # Cihazdan gelen belirteçte tek kullanımlık değer (nonce) yok; bu yüzden denetim kapatılır.
+            curl -sSf -X PATCH -H "Authorization: Bearer $token" -H 'Content-Type: application/json' "$api" \
+              -d "$(jq -n --arg ids "$ids" '{external_google_enabled: true, external_google_skip_nonce_check: true, external_google_additional_client_ids: $ids}')" > /dev/null
+            echo "### Google istemci kimlikleri uygulandı" | tee -a "$GITHUB_STEP_SUMMARY"
             show
           fi

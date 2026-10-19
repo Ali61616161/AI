@@ -55,8 +55,6 @@
     "verify": "Verificar",
     "resend": "Reenviar código",
     "invalidCode": "El código es incorrecto o ha caducado. Inténtalo de nuevo.",
-    "guest": "Continuar sin cuenta",
-    "guestHint": "Tus datos se guardan solo en este teléfono. Puedes crear una cuenta cuando quieras.",
     "notConfigured": "La conexión con el servidor aún no está configurada. Por ahora puedes continuar sin cuenta.",
     "invalidPassword": "Correo o contraseña incorrectos.",
     "signInWithPassword": "Iniciar sesión",
@@ -1201,7 +1199,9 @@
       "no_home_city": "Primero añade tu ciudad.",
       "ai_failed": "No hemos podido crear un plan ahora. Inténtalo de nuevo.",
       "network": "Sin conexión. Inténtalo de nuevo."
-    }
+    },
+    "showMore": "Más",
+    "showLess": "Menos"
   },
   "spin": {
     "title": "Gira la ruleta",
@@ -1256,7 +1256,6 @@
       "adventure": "Aventura"
     },
     "limit": "Ya usaste el giro gratis de hoy. Mira un anuncio para tener otro o hazte Pro para girar sin límites.",
-    "guestLimit": "Los invitados tienen un giro al día. Crea una cuenta gratis para tener más.",
     "empty": "Ningún país encaja con estos filtros. Amplía el presupuesto, la temporada o el filtro de visado.",
     "addPassport": "Añade tu pasaporte para ver solo los países a los que entras fácilmente →",
     "note": "Los costes y las temporadas son aproximados. Consulta los requisitos de entrada y las recomendaciones de viaje antes de reservar."
@@ -1509,7 +1508,15 @@
     "notes": "Cuéntanos tu viaje",
     "notesPlaceholder": "p. ej. Es nuestra luna de miel, nos encantan las vistas al mar, no queremos caminar mucho y queremos ver las cataratas del Rin…",
     "notesCount": "{{count}} / {{max}} caracteres",
-    "fixAnswers": "Revisa el presupuesto o los datos del hotel."
+    "fixAnswers": "Revisa el presupuesto o los datos del hotel.",
+    "flightTimesTitle": "Horarios de vuelo",
+    "flightTimesHint": "Opcional. Indica a qué hora aterrizas en el país de destino y a qué hora sale tu vuelo de vuelta; el plan empieza el primer día tras el aterrizaje y termina el último día a tiempo para el aeropuerto. Las horas son locales de ese país.",
+    "arrivalTime": "Hora de llegada",
+    "departureTime": "Hora de salida",
+    "arrivalAirport": "Aeropuerto de llegada",
+    "departureAirport": "Aeropuerto de salida",
+    "airportPlaceholder": "p. ej. Aeropuerto de Zúrich",
+    "timeInvalid": "Escribe la hora como 14:30."
   },
   "flex": {
     "other": "Otro",

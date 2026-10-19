@@ -22,6 +22,11 @@ export type TripAnswers = {
   transport: LocalTransport;
   notes: string;
   hotels: HotelInput[];
+  /** Gidilen ülkeye iniş / dönüş uçuşu kalkış saati (yerel, HH:MM) ve havalimanları; hepsi isteğe bağlı. */
+  arrivalTime: string;
+  arrivalAirport: string;
+  departureTime: string;
+  departureAirport: string;
 };
 
 export const emptyHotel = (): HotelInput => ({ name: '', address: '', checkIn: '', checkOut: '' });
@@ -52,6 +57,21 @@ export function isCurrencyCode(value: string): boolean {
   return /^[A-Za-z]{3}$/.test(value.trim());
 }
 
+const TIME = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+/** "930", "9.30", "9:30" → "09:30"; geçersizse null. Boş metin de null (alan boş bırakıldı). */
+export function parseClock(text: string): string | null {
+  const digits = text.trim().replace(/[.\s]/g, ':');
+  const m = /^(\d{1,2}):?(\d{2})$/.exec(digits);
+  if (!m) return null;
+  const value = `${m[1].padStart(2, '0')}:${m[2]}`;
+  return TIME.test(value) ? value : null;
+}
+
+export function isBlankOrClock(text: string): boolean {
+  return !text.trim() || parseClock(text) !== null;
+}
+
 export type HotelIssue = 'name' | 'dates' | null;
 
 /** Boş ad = satır yok sayılır (null). Geçersiz tarih veya ters sıra hata verir; boş tarih seyahat tarihlerine düşer. */
@@ -74,6 +94,12 @@ export type NormalizedAnswers = {
   /** İlk hatalı otel satırının sırası ve nedeni; yoksa null. */
   hotelError: { index: number; issue: Exclude<HotelIssue, null> } | null;
   budgetError: boolean;
+  arrivalTime: string | null;
+  departureTime: string | null;
+  arrivalAirport: string | null;
+  departureAirport: string | null;
+  /** Dolu ama geçersiz saat alanı. */
+  timeError: boolean;
 };
 
 export function normalizeAnswers(a: TripAnswers): NormalizedAnswers {
@@ -94,6 +120,11 @@ export function normalizeAnswers(a: TripAnswers): NormalizedAnswers {
     hotels,
     hotelError,
     budgetError: custom && (amount === null || !isCurrencyCode(a.currency)),
+    arrivalTime: parseClock(a.arrivalTime),
+    departureTime: parseClock(a.departureTime),
+    arrivalAirport: a.arrivalAirport.trim().slice(0, 120) || null,
+    departureAirport: a.departureAirport.trim().slice(0, 120) || null,
+    timeError: !isBlankOrClock(a.arrivalTime) || !isBlankOrClock(a.departureTime),
   };
 }
 

@@ -55,8 +55,6 @@
     "verify": "Vérifier",
     "resend": "Renvoyer le code",
     "invalidCode": "Le code est incorrect ou a expiré. Réessaie.",
-    "guest": "Continuer sans compte",
-    "guestHint": "Tes données restent sur ce téléphone. Tu peux créer un compte à tout moment.",
     "notConfigured": "La connexion au serveur n’est pas encore configurée. Tu peux continuer sans compte pour l’instant.",
     "invalidPassword": "E-mail ou mot de passe incorrect.",
     "signInWithPassword": "Se connecter",
@@ -1201,7 +1199,9 @@
       "no_home_city": "Ajoute d’abord ta ville de résidence.",
       "ai_failed": "Impossible de créer un plan pour le moment. Réessaie.",
       "network": "Pas de connexion. Réessaie."
-    }
+    },
+    "showMore": "Plus",
+    "showLess": "Moins"
   },
   "spin": {
     "title": "Fais tourner la roue",
@@ -1256,7 +1256,6 @@
       "adventure": "Aventure"
     },
     "limit": "Tu as utilisé ton tour gratuit du jour. Regarde une pub pour en avoir un autre ou passe à Pro pour des tours illimités.",
-    "guestLimit": "Les invités ont droit à un tour par jour. Crée un compte gratuit pour en avoir plus.",
     "empty": "Aucun pays ne correspond à ces filtres. Élargis le budget, la saison ou le filtre visa.",
     "addPassport": "Ajoute ton passeport pour ne voir que les pays où tu entres facilement →",
     "note": "Les coûts et les saisons sont approximatifs. Vérifie les conditions d’entrée et les conseils aux voyageurs avant de réserver."
@@ -1509,7 +1508,15 @@
     "notes": "Parle-nous de ton voyage",
     "notesPlaceholder": "ex. C’est notre lune de miel, on adore les vues sur la mer, on ne veut pas trop marcher et on veut absolument voir les chutes du Rhin…",
     "notesCount": "{{count}} / {{max}} caractères",
-    "fixAnswers": "Vérifie le budget ou les infos de l’hôtel."
+    "fixAnswers": "Vérifie le budget ou les infos de l’hôtel.",
+    "flightTimesTitle": "Horaires de vol",
+    "flightTimesHint": "Facultatif. Indique à quelle heure tu atterris dans le pays et à quelle heure part ton vol retour ; le plan commence le premier jour après l'atterrissage et se termine le dernier jour à temps pour l'aéroport. Les heures sont locales à ce pays.",
+    "arrivalTime": "Heure d'arrivée",
+    "departureTime": "Heure de départ",
+    "arrivalAirport": "Aéroport d'arrivée",
+    "departureAirport": "Aéroport de départ",
+    "airportPlaceholder": "p. ex. Aéroport de Zurich",
+    "timeInvalid": "Écris l'heure comme 14:30."
   },
   "flex": {
     "other": "Autre",

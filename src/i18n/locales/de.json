@@ -55,8 +55,6 @@
     "verify": "Bestätigen",
     "resend": "Code erneut senden",
     "invalidCode": "Der Code ist falsch oder abgelaufen. Versuch es noch einmal.",
-    "guest": "Ohne Konto fortfahren",
-    "guestHint": "Deine Daten bleiben nur auf diesem Handy. Du kannst jederzeit ein Konto erstellen.",
     "notConfigured": "Die Serververbindung ist noch nicht eingerichtet. Du kannst vorerst ohne Konto fortfahren.",
     "invalidPassword": "E-Mail oder Passwort falsch.",
     "signInWithPassword": "Anmelden",
@@ -1201,7 +1199,9 @@
       "no_home_city": "Füg zuerst deinen Wohnort hinzu.",
       "ai_failed": "Wir konnten gerade keinen Plan erstellen. Versuch es noch mal.",
       "network": "Keine Verbindung. Versuch es noch mal."
-    }
+    },
+    "showMore": "Mehr",
+    "showLess": "Weniger"
   },
   "spin": {
     "title": "Dreh am Rad",
@@ -1256,7 +1256,6 @@
       "adventure": "Abenteuer"
     },
     "limit": "Du hast deinen kostenlosen Dreh für heute genutzt. Schau eine Werbung für einen weiteren oder hol dir Pro für unbegrenzte Drehs.",
-    "guestLimit": "Gäste können einmal am Tag drehen. Erstell ein kostenloses Konto für mehr.",
     "empty": "Kein Land passt zu diesen Filtern. Lockere Budget, Reisezeit oder Visumfilter.",
     "addPassport": "Füg deinen Pass hinzu, um nur Länder zu sehen, in die du leicht einreisen kannst →",
     "note": "Kosten und Reisezeiten sind ungefähre Angaben. Prüf vor der Buchung Einreisebestimmungen und Reisehinweise."
@@ -1509,7 +1508,15 @@
     "notes": "Erzähl von deiner Reise",
     "notesPlaceholder": "z. B. Flitterwochen, wir lieben Meerblick, wollen nicht viel laufen und unbedingt die Rheinfälle sehen…",
     "notesCount": "{{count}} / {{max}} Zeichen",
-    "fixAnswers": "Prüfe Budget oder Hoteldaten."
+    "fixAnswers": "Prüfe Budget oder Hoteldaten.",
+    "flightTimesTitle": "Flugzeiten",
+    "flightTimesHint": "Optional. Gib an, wann du im Zielland landest und wann dein Rückflug startet; der Plan beginnt den ersten Tag nach der Landung und endet am letzten Tag rechtzeitig für den Flughafen. Die Zeiten gelten in der Ortszeit des Landes.",
+    "arrivalTime": "Ankunftszeit",
+    "departureTime": "Abflugzeit",
+    "arrivalAirport": "Ankunftsflughafen",
+    "departureAirport": "Abflughafen",
+    "airportPlaceholder": "z. B. Flughafen Zürich",
+    "timeInvalid": "Gib die Zeit wie 14:30 ein."
   },
   "flex": {
     "other": "Andere",

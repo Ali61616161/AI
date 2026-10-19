@@ -33,7 +33,7 @@ export default function NewTripScreen() {
   const [answers, setAnswers] = useState(defaults);
   const [showErrors, setShowErrors] = useState(false);
   const normalized = useMemo(() => normalizeAnswers(answers), [answers]);
-  const answerErrors = normalized.budgetError || normalized.hotelError !== null;
+  const answerErrors = normalized.budgetError || normalized.hotelError !== null || normalized.timeError;
   const options = useMemo(
     () => COUNTRIES.map((c) => ({ value: c.code, label: `${flag(c.code)}  ${localCountryName(c.code, i18n.language)}` })).sort((a, b) => a.label.slice(4).localeCompare(b.label.slice(4), i18n.language)),
     [i18n.language],

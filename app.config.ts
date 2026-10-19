@@ -55,6 +55,10 @@ const config: ExpoConfig = {
   plugins: [
     'expo-router',
     'expo-apple-authentication',
+    // Google ile giriş (cihaz penceresi). iOS istemci kimliği verilmediyse eklenmez; giriş web sayfasına düşer.
+    ...(process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID
+      ? ([['@react-native-google-signin/google-signin', { iosUrlScheme: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID.split('.').reverse().join('.') }]] as NonNullable<ExpoConfig['plugins']>)
+      : []),
     'expo-secure-store',
     [
       'expo-image-picker',

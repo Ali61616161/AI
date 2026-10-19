@@ -236,3 +236,19 @@ Deno.test('buildItineraryPrompt: seyahat cevapları "Also:" kurallarında yer al
   assertStringIncludes(prompt, 'about 80');
   assertStringIncludes(prompt, 'Çocuk arabası var');
 });
+
+Deno.test('tripTimingRules: iniş ve kalkış saatine göre ilk ve son gün', async () => {
+  const { tripTimingRules, clockMinutes } = await import('./itinerary.ts');
+  assertEquals(clockMinutes('09:30'), 570);
+  assertEquals(clockMinutes('24:00'), null);
+  assertEquals(clockMinutes(null), null);
+  const ctx = { start_date: '2027-01-11', end_date: '2027-01-20', arrival_time: '14:10', departure_time: '17:45', arrival_airport: 'Zürich Airport', departure_airport: null };
+  const both = tripTimingRules(ctx, ['2027-01-11', '2027-01-20']);
+  assertEquals(both.length, 2);
+  assertEquals(both[0].includes('16:10'), true);
+  assertEquals(both[0].includes('Zürich Airport'), true);
+  assertEquals(both[1].includes('13:45'), true);
+  assertEquals(tripTimingRules(ctx, ['2027-01-12']), []);
+  assertEquals(tripTimingRules({ ...ctx, departure_time: '08:00' }, ['2027-01-20'])[0].includes('no time for sightseeing'), true);
+  assertEquals(tripTimingRules({ ...ctx, arrival_time: null, departure_time: null }, ['2027-01-11', '2027-01-20']), []);
+});

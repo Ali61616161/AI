@@ -23,8 +23,6 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function SignInScreen() {
   const { t } = useTranslation();
-  const continueAsGuest = useSessionStore((s) => s.continueAsGuest);
-  const isGuest = useSessionStore((s) => s.isGuest);
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -125,16 +123,6 @@ export default function SignInScreen() {
             loading={loading}
             disabled={!configured || !consent.accepted}
           />
-          {!isGuest && (
-            <Button
-              title={t('auth.guest')}
-              variant="ghost"
-              onPress={() => {
-                continueAsGuest();
-                if (router.canGoBack()) router.back();
-              }}
-            />
-          )}
         </>
       }>
       <StepHeader step={1} total={mode === 'signin' ? 1 : 3} title={title} subtitle={subtitle} />
@@ -204,9 +192,6 @@ export default function SignInScreen() {
           {t('auth.notConfigured')}
         </Text>
       )}
-      <Text variant="caption" color="textMuted">
-        {t('auth.guestHint')}
-      </Text>
     </Screen>
   );
 }

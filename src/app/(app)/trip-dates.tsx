@@ -9,7 +9,10 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { TextField } from '@/components/ui/text-field';
-import { ReplanError, useChangeDates, useRestoreVersion, type DatesResult } from '@/features/plan/replan';
+import { ReplanError, useChangeDates, useCrisisReplan, useRestoreVersion, type DatesResult } from '@/features/plan/replan';
+import { isBlankOrClock, normalizeAnswers, type TripAnswers } from '@/features/trips/trip-answers';
+import { TripTimeFields } from '@/features/trips/trip-questions';
+import { getSupabase } from '@/lib/supabase';
 import { useActivePlan, useTrip } from '@/features/trips/queries';
 import { formatDayShort } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
@@ -45,6 +48,9 @@ export default function TripDatesScreen() {
   const { data: plan } = useActivePlan(tripId);
   const change = useChangeDates(tripId);
   const restore = useRestoreVersion(tripId);
+  const adjust = useCrisisReplan();
+  const [times, setTimes] = useState<Partial<Pick<TripAnswers, 'arrivalTime' | 'arrivalAirport' | 'departureTime' | 'departureAirport'>>>({});
+  const [saving, setSaving] = useState(false);
   const [start, setStart] = useState<string | null>(null);
   const [end, setEnd] = useState<string | null>(null);
   const [result, setResult] = useState<DatesResult | null>(null);
@@ -55,6 +61,36 @@ export default function TripDatesScreen() {
   const valid =
     isValidDate(startValue) && isValidDate(endValue) && endValue >= startValue && datesBetween(startValue, endValue, MAX_DAYS + 1).length <= MAX_DAYS;
   const unchanged = startValue === trip?.start_date && endValue === trip?.end_date;
+  const timeValues = {
+    arrivalTime: times.arrivalTime ?? trip?.arrival_time?.slice(0, 5) ?? '',
+    arrivalAirport: times.arrivalAirport ?? trip?.arrival_airport ?? '',
+    departureTime: times.departureTime ?? trip?.departure_time?.slice(0, 5) ?? '',
+    departureAirport: times.departureAirport ?? trip?.departure_airport ?? '',
+  };
+  const timesValid = isBlankOrClock(timeValues.arrivalTime) && isBlankOrClock(timeValues.departureTime);
+  const timesChanged = Object.keys(times).length > 0 && JSON.stringify(timeValues) !== JSON.stringify({ arrivalTime: trip?.arrival_time?.slice(0, 5) ?? '', arrivalAirport: trip?.arrival_airport ?? '', departureTime: trip?.departure_time?.slice(0, 5) ?? '', departureAirport: trip?.departure_airport ?? '' });
+
+  // Saatleri kaydeder; tarih değişmediyse sadece ilk ve son gün yeni saatlere göre düzenlenir.
+  async function apply() {
+    setSaving(true);
+    try {
+      if (timesChanged) {
+        const n = normalizeAnswers({ companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'USD', interests: [], transport: 'mixed', notes: '', hotels: [], ...timeValues });
+        const { error } = await getSupabase().from('trips').update({ arrival_time: n.arrivalTime, departure_time: n.departureTime, arrival_airport: n.arrivalAirport, departure_airport: n.departureAirport }).eq('id', tripId);
+        if (error) throw error;
+      }
+      if (!unchanged) {
+        setResult(await change.mutateAsync({ start: startValue, end: endValue }));
+      } else if (timesChanged) {
+        await adjust.mutateAsync({ message: `My flight times are: lands ${timeValues.arrivalTime || 'not set'}${timeValues.arrivalAirport ? ` at ${timeValues.arrivalAirport}` : ''}, return flight leaves ${timeValues.departureTime || 'not set'}${timeValues.departureAirport ? ` from ${timeValues.departureAirport}` : ''}. Adjust only the first and last day of the trip accordingly.`, tripId });
+        router.back();
+      }
+    } catch {
+      // hata mesajı change.error / adjust.error üzerinden gösterilir
+    } finally {
+      setSaving(false);
+    }
+  }
 
   const analysis = useMemo(() => {
     if (!trip?.start_date || !trip.end_date || !valid || unchanged) return null;
@@ -127,9 +163,9 @@ export default function TripDatesScreen() {
           )}
           <Button
             title={t('dates.apply')}
-            disabled={!valid || unchanged}
-            loading={change.isPending}
-            onPress={async () => setResult(await change.mutateAsync({ start: startValue, end: endValue }))}
+            disabled={!valid || !timesValid || (unchanged && !timesChanged)}
+            loading={saving || change.isPending || adjust.isPending}
+            onPress={apply}
           />
         </>
       }>
@@ -148,7 +184,12 @@ export default function TripDatesScreen() {
         </Text>
       )}
 
-      {unchanged ? (
+      <View style={styles.timesBlock}>
+        <Text variant="subtitle">{t('tripQuestions.flightTimesTitle')}</Text>
+        <TripTimeFields value={timeValues} onChange={(patch) => setTimes((prev) => ({ ...prev, ...patch }))} timeError={!timesValid} />
+      </View>
+
+      {unchanged && !timesChanged ? (
         <Text variant="body" color="textMuted">
           {t('dates.noChange')}
         </Text>
@@ -179,6 +220,7 @@ export default function TripDatesScreen() {
 }
 
 const styles = StyleSheet.create({
+  timesBlock: { gap: Spacing.sm },
   row: { flexDirection: 'row', gap: Spacing.md },
   flex: { flex: 1 },
   center: { textAlign: 'center' },

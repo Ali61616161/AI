@@ -43,11 +43,44 @@ export async function signInWithApple(): Promise<SocialResult> {
   }
 }
 
+const googleWebClientId = process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
+const googleIosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+
+/** Cihazın kendi Google penceresi: iOS'ta iOS + web, Android'de web istemci kimliği gerekir. */
+export const nativeGoogleAvailable = Platform.OS === 'ios' ? Boolean(googleWebClientId && googleIosClientId) : Platform.OS === 'android' ? Boolean(googleWebClientId) : false;
+
 /**
- * Google ile giriş: Supabase'in Google sayfası uygulama içi tarayıcıda açılır, dönüşte
+ * Google ile giriş (cihaz penceresi): Google kimlik belirteci doğrudan Supabase'e verilir. Ekranda
+ * "supabase.co ile giriş" uyarısı çıkmaz; Google kendi hesap seçicisini gösterir.
+ */
+async function signInWithGoogleNative(): Promise<SocialResult> {
+  try {
+    // Yerel modül sadece gerektiğinde yüklenir (web önizlemesinde ve anahtarsız derlemede yok).
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { GoogleSignin, isSuccessResponse, isErrorWithCode, statusCodes } = require('@react-native-google-signin/google-signin') as typeof import('@react-native-google-signin/google-signin');
+    GoogleSignin.configure({ webClientId: googleWebClientId, iosClientId: googleIosClientId });
+    if (Platform.OS === 'android') await GoogleSignin.hasPlayServices();
+    try {
+      const response = await GoogleSignin.signIn();
+      if (!isSuccessResponse(response) || !response.data.idToken) return { cancelled: true };
+      const { data, error } = await getSupabase().auth.signInWithIdToken({ provider: 'google', token: response.data.idToken });
+      if (error || !data.session) return { error: error?.message ?? 'no_session' };
+      return { session: data.session };
+    } catch (e) {
+      if (isErrorWithCode(e) && e.code === statusCodes.SIGN_IN_CANCELLED) return { cancelled: true };
+      throw e;
+    }
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+/**
+ * Google ile giriş: cihaz penceresi varsa o, yoksa Supabase'in Google sayfası uygulama içi tarayıcıda açılır, dönüşte
  * gelen tek kullanımlık kod oturuma çevrilir (PKCE).
  */
 export async function signInWithGoogle(): Promise<SocialResult> {
+  if (nativeGoogleAvailable) return signInWithGoogleNative();
   const { data, error } = await getSupabase().auth.signInWithOAuth({
     provider: 'google',
     options: { redirectTo: AUTH_REDIRECT, skipBrowserRedirect: true, queryParams: { prompt: 'select_account' } },

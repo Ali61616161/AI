@@ -14,12 +14,9 @@ import { IconBadge } from '@/components/ui/icon-badge';
 import { Screen } from '@/components/ui/screen';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
-import { useIsOnline } from '@/features/offline/use-online';
-import { OpenNowSection } from '@/features/places/open-now-section';
 import { useTrips } from '@/features/trips/queries';
 import { TripCard } from '@/features/trips/trip-card';
 import { isoDateDaysAgo, todayIsoDate } from '@/lib/format';
-import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Gradients, Motion, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -41,7 +38,6 @@ export default function TodayScreen() {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const session = useSessionStore((s) => s.session);
-  const online = useIsOnline();
   const { data: trips } = useTrips();
   const today = todayIsoDate();
   const nextTrip = trips?.find((trip) => !trip.end_date || trip.end_date >= today);
@@ -52,7 +48,6 @@ export default function TodayScreen() {
   const initial = (session?.user.email ?? '?').slice(0, 1).toUpperCase();
 
   const quick: { icon: IconName; label: string; href: Href }[] = [
-    { icon: 'people', label: t('today.quick.travelers'), href: '/social' },
     { icon: 'language', label: t('today.quick.translate'), href: '/translate' },
     { icon: 'cash', label: t('today.quick.currency'), href: '/currency' },
     { icon: 'medkit', label: t('today.quick.sos'), href: nextTrip ? { pathname: '/sos', params: { tripId: nextTrip.id } } : '/sos' },
@@ -118,12 +113,6 @@ export default function TodayScreen() {
               <DirIcon name="chevron-forward" size={18} color={colors.textMuted} />
             </View>
           </Card>
-        </Animated.View>
-      )}
-
-      {session && isSupabaseConfigured() && online && (
-        <Animated.View entering={enter(4)}>
-          <OpenNowSection />
         </Animated.View>
       )}
 

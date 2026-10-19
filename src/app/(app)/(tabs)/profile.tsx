@@ -204,6 +204,7 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <SectionHeader title={t('profile.account')} />
         <Card padding={Spacing.xs}>
+          <ListRow icon="people-outline" label={t('today.quick.travelers')} onPress={() => router.push('/social')} />
           <ListRow icon="gift-outline" label={t('referral.title')} onPress={() => router.push('/refer')} />
           <ListRow icon="earth-outline" label={t('visited.title')} onPress={() => router.push('/visited')} />
           <ListRow icon="document-text-outline" label={t('docs.title')} onPress={() => router.push('/my-docs')} />

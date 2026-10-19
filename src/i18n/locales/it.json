@@ -55,8 +55,6 @@
     "verify": "Verifica",
     "resend": "Invia di nuovo il codice",
     "invalidCode": "Il codice è errato o scaduto. Riprova.",
-    "guest": "Continua senza account",
-    "guestHint": "I tuoi dati restano solo su questo telefono. Puoi creare un account quando vuoi.",
     "notConfigured": "La connessione al server non è ancora configurata. Per ora puoi continuare senza account.",
     "invalidPassword": "Email o password errate.",
     "signInWithPassword": "Accedi",
@@ -1201,7 +1199,9 @@
       "no_home_city": "Prima aggiungi la tua città.",
       "ai_failed": "Non riusciamo a creare un piano ora. Riprova.",
       "network": "Nessuna connessione. Riprova."
-    }
+    },
+    "showMore": "Altro",
+    "showLess": "Meno"
   },
   "spin": {
     "title": "Gira la ruota",
@@ -1256,7 +1256,6 @@
       "adventure": "Avventura"
     },
     "limit": "Hai usato il giro gratuito di oggi. Guarda una pubblicità per averne un altro o passa a Pro per giri illimitati.",
-    "guestLimit": "Gli ospiti hanno un giro al giorno. Crea un account gratuito per averne di più.",
     "empty": "Nessun paese corrisponde a questi filtri. Allarga budget, stagione o filtro visto.",
     "addPassport": "Aggiungi il tuo passaporto per vedere solo i paesi in cui entri facilmente →",
     "note": "Costi e stagioni sono indicativi. Controlla le regole d’ingresso e gli avvisi di viaggio prima di prenotare."
@@ -1509,7 +1508,15 @@
     "notes": "Raccontaci il tuo viaggio",
     "notesPlaceholder": "es. È la nostra luna di miele, amiamo la vista mare, non vogliamo camminare molto e vogliamo vedere le cascate del Reno…",
     "notesCount": "{{count}} / {{max}} caratteri",
-    "fixAnswers": "Controlla budget o dati dell’hotel."
+    "fixAnswers": "Controlla budget o dati dell’hotel.",
+    "flightTimesTitle": "Orari dei voli",
+    "flightTimesHint": "Facoltativo. Indica a che ora atterri nel paese e a che ora parte il volo di ritorno; il piano inizia il primo giorno dopo l'atterraggio e finisce l'ultimo giorno in tempo per l'aeroporto. Gli orari sono locali di quel paese.",
+    "arrivalTime": "Ora di arrivo",
+    "departureTime": "Ora di partenza",
+    "arrivalAirport": "Aeroporto di arrivo",
+    "departureAirport": "Aeroporto di partenza",
+    "airportPlaceholder": "es. Aeroporto di Zurigo",
+    "timeInvalid": "Scrivi l'ora come 14:30."
   },
   "flex": {
     "other": "Altro",

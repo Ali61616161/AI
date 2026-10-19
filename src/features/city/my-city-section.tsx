@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, type Href } from 'expo-router';
-import type { ComponentProps } from 'react';
+import { useState, type ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -27,6 +27,9 @@ const ROWS: Row[] = [
   { key: 'saved', icon: 'bookmark-outline', href: '/saved' },
 ];
 
+/** Ana ekranda ilk görünen satır sayısı; kalanlar "Daha fazla" ile açılır. */
+const PRIMARY_ROWS = 2;
+
 /** Ana ekrandaki Şehrim bölümü: tatil dışında da her hafta açılacak kısayollar. */
 export function MyCitySection() {
   const { t } = useTranslation();
@@ -34,6 +37,7 @@ export function MyCitySection() {
   const homeCity = useSessionStore((s) => s.identity.homeCity);
   const signedIn = useSessionStore((s) => Boolean(s.session));
   const { data: stats } = useCityStats();
+  const [more, setMore] = useState(false);
   useHomeCityLabel();
 
   return (
@@ -51,7 +55,9 @@ export function MyCitySection() {
         </Card>
       )}
       <Card padding={0}>
-        {ROWS.filter((row) => signedIn || row.key === 'spin' || row.key === 'decide').map((row, i) => (
+        {ROWS.filter((row) => signedIn || row.key === 'spin' || row.key === 'decide')
+          .filter((row, i) => more || i < PRIMARY_ROWS)
+          .map((row, i) => (
           <Tap
             key={row.key}
             accessibilityRole="button"
@@ -72,8 +78,16 @@ export function MyCitySection() {
             </View>
           </Tap>
         ))}
+        <Tap accessibilityRole="button" accessibilityLabel={more ? t('city.showLess') : t('city.showMore')} onPress={() => setMore((v) => !v)} feedback="select">
+          <View style={[styles.listRow, styles.moreRow, { borderTopColor: colors.border }]}>
+            <Text variant="caption" color="primary">
+              {more ? t('city.showLess') : t('city.showMore')}
+            </Text>
+            <Ionicons name={more ? 'chevron-up' : 'chevron-down'} size={16} color={colors.primary} />
+          </View>
+        </Tap>
       </Card>
-      {signedIn && stats && stats.places > 0 && (
+      {more && signedIn && stats && stats.places > 0 && (
         <Tap accessibilityRole="button" onPress={() => router.push('/city-passport')} feedback="select">
           <View style={[styles.streak, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <Ionicons name="flame" size={18} color={colors.warning} />
@@ -93,5 +107,6 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   listRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.md },
   flex: { flex: 1 },
+  moreRow: { justifyContent: 'center', borderTopWidth: StyleSheet.hairlineWidth * 2, paddingVertical: Spacing.sm },
   streak: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, padding: Spacing.md, borderRadius: Radius.lg, borderWidth: 1 },
 });

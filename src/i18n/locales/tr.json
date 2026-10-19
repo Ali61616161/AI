@@ -55,8 +55,6 @@
     "verify": "Doğrula",
     "resend": "Kodu tekrar gönder",
     "invalidCode": "Kod hatalı veya süresi dolmuş. Tekrar dene.",
-    "guest": "Hesapsız devam et",
-    "guestHint": "Verilerin sadece bu telefonda saklanır. İstediğin zaman hesap açabilirsin.",
     "notConfigured": "Sunucu bağlantısı henüz ayarlanmadı. Şimdilik hesapsız devam edebilirsin.",
     "invalidPassword": "E-posta veya şifre hatalı.",
     "signInWithPassword": "Giriş yap",
@@ -1201,7 +1199,9 @@
       "no_home_city": "Önce yaşadığın şehri ekle.",
       "ai_failed": "Şu an plan çıkaramadık. Tekrar dene.",
       "network": "Bağlantı yok. Tekrar dene."
-    }
+    },
+    "showMore": "Daha fazla",
+    "showLess": "Daha az"
   },
   "spin": {
     "title": "Çarkı çevir",
@@ -1256,7 +1256,6 @@
       "adventure": "Macera"
     },
     "limit": "Bugünkü ücretsiz çarkını kullandın. Reklam izleyerek bir hak daha al veya Pro ile sınırsız çevir.",
-    "guestLimit": "Misafirler günde bir kez çevirebilir. Daha fazlası için ücretsiz hesap aç.",
     "empty": "Bu filtrelere uyan ülke yok. Bütçe, mevsim veya vize filtresini gevşet.",
     "addPassport": "Sadece kolay girebileceğin ülkeleri görmek için pasaportunu ekle →",
     "note": "Maliyet ve mevsim bilgileri yaklaşıktır. Rezervasyondan önce giriş kurallarını ve seyahat uyarılarını kontrol et."
@@ -1509,7 +1508,15 @@
     "notes": "Seyahatini anlat",
     "notesPlaceholder": "Örn. Balayındayız, deniz manzaralı yerleri seviyoruz, çok yürümek istemiyoruz, Ren Şelalesi'ni mutlaka görmek istiyoruz…",
     "notesCount": "{{count}} / {{max}} karakter",
-    "fixAnswers": "Bütçe veya otel bilgilerini kontrol et."
+    "fixAnswers": "Bütçe veya otel bilgilerini kontrol et.",
+    "flightTimesTitle": "Uçuş saatleri",
+    "flightTimesHint": "İsteğe bağlı. Gideceğin ülkede kaçta indiğini ve dönüş uçuşunun kaçta kalktığını yaz; plan ilk günü inişten sonra, son günü de havalimanına yetişecek şekilde kurar. Saatler o ülkenin yerel saatidir.",
+    "arrivalTime": "Varış saati",
+    "departureTime": "Dönüş saati",
+    "arrivalAirport": "Varış havalimanı",
+    "departureAirport": "Dönüş havalimanı",
+    "airportPlaceholder": "Örn. Zürih Havalimanı",
+    "timeInvalid": "Saati 14:30 gibi yaz."
   },
   "flex": {
     "other": "Diğer",
