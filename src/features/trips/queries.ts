@@ -50,6 +50,18 @@ export function useTrips() {
 
 export type TripListItem = NonNullable<ReturnType<typeof useTrips>['data']>[number];
 
+/** Seyahati ve bağlı her şeyi (rezervasyon, plan, harcama...) siler; sadece sahibi yapabilir (RLS). */
+export function useDeleteTrip() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (tripId: string) => {
+      const { error } = await getSupabase().from('trips').delete().eq('id', tripId);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['trips'] }),
+  });
+}
+
 export function useTrip(tripId: string | undefined) {
   const userId = useUserId();
   return useQuery({

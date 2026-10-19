@@ -371,7 +371,10 @@
     "notFound": "Trip not found.",
     "reference": "Code: {{code}}",
     "changeDates": "Change dates",
-    "versions": "Plan history"
+    "versions": "Plan history",
+    "delete": "Delete trip",
+    "deleteTitle": "Delete “{{title}}”?",
+    "deleteBody": "The trip is permanently deleted with its bookings, plan and expenses."
   },
   "plan": {
     "title": "Route",
@@ -556,7 +559,8 @@
     "language": "Language",
     "needOnline": "This language downloads once with internet; after that it works offline.",
     "downloadFailed": "Couldn't download the translation. Try again shortly.",
-    "downloading": "Translating the phrases into this language…"
+    "downloading": "Translating the phrases into this language…",
+    "shortTitle": "Phrases"
   },
   "translate": {
     "title": "Translate",
@@ -1603,7 +1607,8 @@
       "hotel": "Add a hotel",
       "plan": "Create the plan",
       "times": "Enter flight times"
-    }
+    },
+    "beforeYouGo": "Before you go"
   },
   "tripToday": {
     "title": "Today",

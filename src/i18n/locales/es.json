@@ -371,7 +371,10 @@
     "notFound": "Viaje no encontrado.",
     "reference": "Código: {{code}}",
     "changeDates": "Cambiar fechas",
-    "versions": "Historial del plan"
+    "versions": "Historial del plan",
+    "delete": "Eliminar viaje",
+    "deleteTitle": "¿Eliminar «{{title}}»?",
+    "deleteBody": "El viaje se elimina de forma permanente con sus reservas, plan y gastos."
   },
   "plan": {
     "title": "Ruta",
@@ -556,7 +559,8 @@
     "language": "Idioma",
     "needOnline": "Este idioma se descarga una vez con internet; después funciona sin conexión.",
     "downloadFailed": "No se pudo descargar la traducción. Inténtalo de nuevo en un momento.",
-    "downloading": "Traduciendo las frases a este idioma…"
+    "downloading": "Traduciendo las frases a este idioma…",
+    "shortTitle": "Frases"
   },
   "translate": {
     "title": "Traducir",
@@ -1603,7 +1607,8 @@
       "hotel": "Añadir hotel",
       "plan": "Crear el plan",
       "times": "Indicar horarios de vuelo"
-    }
+    },
+    "beforeYouGo": "Antes de ir"
   },
   "tripToday": {
     "title": "Hoy",

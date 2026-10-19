@@ -368,7 +368,10 @@
     "notFound": "未找到行程。",
     "reference": "预订码：{{code}}",
     "changeDates": "修改日期",
-    "versions": "计划历史"
+    "versions": "计划历史",
+    "delete": "删除行程",
+    "deleteTitle": "删除“{{title}}”？",
+    "deleteBody": "行程将连同预订、计划和开销一并永久删除。"
   },
   "plan": {
     "title": "路线",
@@ -548,7 +551,8 @@
     "language": "语言",
     "needOnline": "该语言需联网下载一次，之后可离线使用。",
     "downloadFailed": "无法下载翻译，请稍后重试。",
-    "downloading": "正在把短语翻译成该语言…"
+    "downloading": "正在把短语翻译成该语言…",
+    "shortTitle": "常用语"
   },
   "translate": {
     "title": "翻译",
@@ -1565,7 +1569,8 @@
       "hotel": "添加酒店",
       "plan": "生成行程",
       "times": "填写航班时间"
-    }
+    },
+    "beforeYouGo": "出发前"
   },
   "tripToday": {
     "title": "今天",

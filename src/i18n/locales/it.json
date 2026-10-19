@@ -371,7 +371,10 @@
     "notFound": "Viaggio non trovato.",
     "reference": "Codice: {{code}}",
     "changeDates": "Cambia date",
-    "versions": "Cronologia del piano"
+    "versions": "Cronologia del piano",
+    "delete": "Elimina viaggio",
+    "deleteTitle": "Eliminare «{{title}}»?",
+    "deleteBody": "Il viaggio viene eliminato definitivamente con prenotazioni, piano e spese."
   },
   "plan": {
     "title": "Itinerario",
@@ -556,7 +559,8 @@
     "language": "Lingua",
     "needOnline": "Questa lingua si scarica una volta con internet, poi funziona offline.",
     "downloadFailed": "Impossibile scaricare la traduzione. Riprova tra poco.",
-    "downloading": "Traduzione delle frasi in questa lingua…"
+    "downloading": "Traduzione delle frasi in questa lingua…",
+    "shortTitle": "Frasi"
   },
   "translate": {
     "title": "Traduci",
@@ -1603,7 +1607,8 @@
       "hotel": "Aggiungi hotel",
       "plan": "Crea il piano",
       "times": "Inserisci gli orari dei voli"
-    }
+    },
+    "beforeYouGo": "Prima di partire"
   },
   "tripToday": {
     "title": "Oggi",

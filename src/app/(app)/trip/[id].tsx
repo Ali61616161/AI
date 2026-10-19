@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,7 @@ import {
   GenerateError,
   useActivePlan,
   useGenerateItinerary,
+  useDeleteTrip,
   useTrip,
   type TripReservation,
 } from '@/features/trips/queries';
@@ -82,6 +83,7 @@ export default function TripScreen() {
   const { data: trip, isLoading, isError } = useTrip(id);
   const { data: plan, isLoading: planLoading } = useActivePlan(id);
   const generate = useGenerateItinerary(id);
+  const deleteTrip = useDeleteTrip();
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [showReservations, setShowReservations] = useState(false);
   const [showMap, setShowMap] = useState(true);
@@ -279,6 +281,17 @@ export default function TripScreen() {
           {showReservations && trip.reservations.map((r) => <ReservationRow key={r.id} reservation={r} />)}
         </View>
       )}
+      <Button
+        title={t('trip.delete')}
+        variant="ghost"
+        loading={deleteTrip.isPending}
+        onPress={() =>
+          Alert.alert(t('trip.deleteTitle', { title: trip.title }), t('trip.deleteBody'), [
+            { text: t('common.cancel'), style: 'cancel' },
+            { text: t('trip.delete'), style: 'destructive', onPress: () => deleteTrip.mutate(trip.id, { onSuccess: () => router.replace('/trips') }) },
+          ])
+        }
+      />
     </Screen>
   );
 }

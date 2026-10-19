@@ -14,6 +14,7 @@ import { Screen } from '@/components/ui/screen';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { useTrips } from '@/features/trips/queries';
+import { PreTripTools } from '@/features/trips/pre-trip-tools';
 import { TripBrief } from '@/features/trips/trip-brief';
 import { tripPhase } from '@/features/trips/trip-phase';
 import { TripToday } from '@/features/trips/trip-today';
@@ -103,6 +104,12 @@ export default function TodayScreen() {
       {nextTrip && (phase === 'soon' || phase === 'far') && (
         <Animated.View entering={enter(2)}>
           <TripBrief trip={nextTrip} />
+        </Animated.View>
+      )}
+
+      {nextTrip && (phase === 'soon' || phase === 'far') && (
+        <Animated.View entering={enter(2)}>
+          <PreTripTools trip={nextTrip} />
         </Animated.View>
       )}
 

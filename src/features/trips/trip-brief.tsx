@@ -64,7 +64,7 @@ export function TripBrief({ trip }: { trip: TripListItem }) {
   const money = (n: number, c: string) => new Intl.NumberFormat(i18n.language, { style: 'currency', currency: c, maximumFractionDigits: 2 }).format(n);
 
   return (
-    <Card variant="solid" padding={Spacing.lg}>
+    <Card variant="solid" padding={Spacing.lg} onPress={() => router.push(`/trip/${trip.id}`)} accessibilityLabel={t('brief.title', { city })}>
       <Text variant="subtitle">{t('brief.title', { city })}</Text>
       <View style={styles.facts}>
         {day && day.max !== null && (

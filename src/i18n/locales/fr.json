@@ -371,7 +371,10 @@
     "notFound": "Voyage introuvable.",
     "reference": "Code : {{code}}",
     "changeDates": "Modifier les dates",
-    "versions": "Historique du plan"
+    "versions": "Historique du plan",
+    "delete": "Supprimer le voyage",
+    "deleteTitle": "Supprimer « {{title}} » ?",
+    "deleteBody": "Le voyage est supprimé définitivement avec ses réservations, son programme et ses dépenses."
   },
   "plan": {
     "title": "Itinéraire",
@@ -556,7 +559,8 @@
     "language": "Langue",
     "needOnline": "Cette langue se télécharge une fois avec internet, puis fonctionne hors ligne.",
     "downloadFailed": "Impossible de télécharger la traduction. Réessaie dans un instant.",
-    "downloading": "Traduction des phrases dans cette langue…"
+    "downloading": "Traduction des phrases dans cette langue…",
+    "shortTitle": "Phrases"
   },
   "translate": {
     "title": "Traduire",
@@ -1603,7 +1607,8 @@
       "hotel": "Ajouter un hôtel",
       "plan": "Créer le programme",
       "times": "Saisir les horaires de vol"
-    }
+    },
+    "beforeYouGo": "Avant de partir"
   },
   "tripToday": {
     "title": "Aujourd'hui",

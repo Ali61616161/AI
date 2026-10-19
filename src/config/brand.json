@@ -13,8 +13,8 @@
     "aqua": "#2EC4B6"
   },
   "legal": {
-    "_note": "Veri sorumlusu gerçek kişi (şahıs); Akturan Group kayıtlı ticari ad değil, marka olarak anılır. İlçe yazılmaz.",
-    "company": "Dursun Ali Akturan (Akturan Group markası)",
+    "_note": "Veri sorumlusu gerçek kişi (şahıs). Şirket kurulunca burası şirket unvanı ile güncellenir. İlçe yazılmaz.",
+    "company": "Dursun Ali Akturan",
     "address": "İstanbul, Türkiye",
     "email": "info@akturangroup.com",
     "supportEmail": "info@akturangroup.com",

@@ -371,7 +371,10 @@
     "notFound": "Seyahat bulunamadı.",
     "reference": "Kod: {{code}}",
     "changeDates": "Tarihleri değiştir",
-    "versions": "Plan geçmişi"
+    "versions": "Plan geçmişi",
+    "delete": "Seyahati sil",
+    "deleteTitle": "“{{title}}” silinsin mi?",
+    "deleteBody": "Seyahat, rezervasyonları, planı ve harcamaları ile birlikte kalıcı olarak silinir."
   },
   "plan": {
     "title": "Rota",
@@ -556,7 +559,8 @@
     "language": "Dil",
     "needOnline": "Bu dil ilk seferde internetle indirilir; sonra internetsiz çalışır.",
     "downloadFailed": "Çeviri indirilemedi. Biraz sonra tekrar dene.",
-    "downloading": "Cümleler bu dile çevriliyor…"
+    "downloading": "Cümleler bu dile çevriliyor…",
+    "shortTitle": "Acil cümleler"
   },
   "translate": {
     "title": "Çeviri",
@@ -1603,7 +1607,8 @@
       "hotel": "Otel ekle",
       "plan": "Rota oluştur",
       "times": "Uçuş saatlerini gir"
-    }
+    },
+    "beforeYouGo": "Gitmeden önce"
   },
   "tripToday": {
     "title": "Bugün",

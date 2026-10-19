@@ -371,7 +371,10 @@
     "notFound": "Reise nicht gefunden.",
     "reference": "Code: {{code}}",
     "changeDates": "Reisedaten ändern",
-    "versions": "Planverlauf"
+    "versions": "Planverlauf",
+    "delete": "Reise löschen",
+    "deleteTitle": "„{{title}}“ löschen?",
+    "deleteBody": "Die Reise wird mit Buchungen, Plan und Ausgaben dauerhaft gelöscht."
   },
   "plan": {
     "title": "Route",
@@ -556,7 +559,8 @@
     "language": "Sprache",
     "needOnline": "Diese Sprache wird einmal mit Internet geladen und funktioniert danach offline.",
     "downloadFailed": "Übersetzung konnte nicht geladen werden. Versuche es gleich noch einmal.",
-    "downloading": "Sätze werden in diese Sprache übersetzt…"
+    "downloading": "Sätze werden in diese Sprache übersetzt…",
+    "shortTitle": "Notfallsätze"
   },
   "translate": {
     "title": "Übersetzen",
@@ -1603,7 +1607,8 @@
       "hotel": "Hotel hinzufügen",
       "plan": "Plan erstellen",
       "times": "Flugzeiten eintragen"
-    }
+    },
+    "beforeYouGo": "Vor der Abreise"
   },
   "tripToday": {
     "title": "Heute",

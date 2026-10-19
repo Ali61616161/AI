@@ -83,3 +83,31 @@ export function turnIcon(maneuver: string | null | undefined): TurnIcon {
   if (m.includes('RIGHT')) return 'right';
   return 'straight';
 }
+
+/** Bu mesafeden (m) fazla rotadan uzaklaşılırsa yeniden hesaplanır. */
+export const REROUTE_M = 80;
+
+/** Konumun rota çizgisine en kısa mesafesi (metre): her doğru parçasına dik uzaklık. Çizgi boşsa null. */
+export function distanceToPathM(here: LatLng | null, path: LatLng[]): number | null {
+  if (!here || path.length === 0) return null;
+  if (path.length === 1) return Math.round(distanceKm(here, path[0]) * 1000);
+  // Yerel düzlem yaklaşımı (kısa mesafelerde yeterli): enlem/boylam metreye çevrilir.
+  const mPerLat = 111_320;
+  const mPerLng = 111_320 * Math.cos((here.lat * Math.PI) / 180);
+  const px = here.lng * mPerLng;
+  const py = here.lat * mPerLat;
+  let best = Infinity;
+  for (let i = 0; i < path.length - 1; i++) {
+    const ax = path[i].lng * mPerLng;
+    const ay = path[i].lat * mPerLat;
+    const bx = path[i + 1].lng * mPerLng;
+    const by = path[i + 1].lat * mPerLat;
+    const dx = bx - ax;
+    const dy = by - ay;
+    const len2 = dx * dx + dy * dy;
+    const t = len2 === 0 ? 0 : Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / len2));
+    const d = Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+    if (d < best) best = d;
+  }
+  return Math.round(best);
+}

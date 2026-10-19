@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Location from 'expo-location';
 import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import * as Speech from 'expo-speech';
 import { Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -103,6 +104,22 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     : current
       ? (current.instruction ?? t('route.walk', { count: current.durationMin }))
       : destinationName;
+  // Sesli yönlendirme: canlı takipte adım değişince talimat okunur.
+  const spokenStep = useRef(-1);
+  useEffect(() => {
+    if (!visible || !live || !auto || !current?.instruction) return;
+    if (spokenStep.current === idx) return;
+    spokenStep.current = idx;
+    Speech.stop();
+    Speech.speak(current.instruction, { rate: 0.95 });
+  }, [visible, live, auto, idx, current]);
+  useEffect(() => {
+    if (!visible) {
+      spokenStep.current = -1;
+      Speech.stop();
+    }
+  }, [visible]);
+
   const detail = tr?.from && tr?.to ? `${tr.from} → ${tr.to}` : null;
 
   return (
