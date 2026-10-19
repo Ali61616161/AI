@@ -3,7 +3,7 @@ import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, type ComponentProps } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { LanguagePicker } from '@/components/settings/language-picker';
@@ -65,6 +65,13 @@ export default function ProfileScreen() {
     await getSupabase().auth.signOut().catch(() => undefined);
     clearOfflineData();
     signOut();
+  }
+
+  function confirmSignOut() {
+    Alert.alert(t('profile.signOutTitle'), t('profile.signOutBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('profile.signOut'), style: 'destructive', onPress: handleSignOut },
+    ]);
   }
 
   async function handleSignOut() {
@@ -204,7 +211,7 @@ export default function ProfileScreen() {
           <ListRow icon="document-text-outline" label={t('legal.terms')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })} />
           <ListRow icon="reader-outline" label={t('legal.kvkk')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'kvkk' } })} />
           {adPrivacyOptionsAvailable && !isPro && <ListRow icon="megaphone-outline" label={t('ads.privacyOptions')} onPress={openAdPrivacyOptions} />}
-          <ListRow icon="log-out-outline" label={t('profile.signOut')} onPress={handleSignOut} />
+          <ListRow icon="log-out-outline" label={t('profile.signOut')} onPress={confirmSignOut} />
           {session && isSupabaseConfigured() && (
             <ListRow icon="trash-outline" label={t('profile.deleteAccount')} danger onPress={() => setConfirmDelete(true)} />
           )}

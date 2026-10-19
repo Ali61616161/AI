@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
@@ -23,6 +23,10 @@ type Props = {
 export function Screen({ children, footer, scroll = true, edges = ['top', 'bottom'], tabBarSpace = false, aurora = 'default', tabName }: Props) {
   const scrollRef = useRef<ScrollView>(null);
   useResetScrollOnTabEnter(tabName, scrollRef);
+  // Sayfa ekranın tepesinden başlamıyorsa (iOS "sheet" olarak açılan ekranlar) klavye payı o kadar artar;
+  // aksi halde yazı alanı klavyenin altında kalır.
+  const frame = useRef<View>(null);
+  const [windowTop, setWindowTop] = useState(0);
   const bottomSpace = tabBarSpace ? { paddingBottom: 120 } : null;
   const body = scroll ? (
     <ScrollView ref={scrollRef} contentContainerStyle={[styles.content, bottomSpace]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
@@ -36,10 +40,12 @@ export function Screen({ children, footer, scroll = true, edges = ['top', 'botto
     <View style={styles.fill}>
       <Aurora variant={aurora} />
       <SafeAreaView edges={edges} style={styles.fill}>
-        <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'web' ? undefined : 'padding'}>
+        <View ref={frame} style={styles.fill} onLayout={() => frame.current?.measureInWindow((_x, y) => setWindowTop((prev) => (Math.abs(prev - y) > 1 ? y : prev)))}>
+          <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'web' ? undefined : 'padding'} keyboardVerticalOffset={windowTop}>
           {body}
           {footer && <View style={styles.footer}>{footer}</View>}
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </View>
       </SafeAreaView>
     </View>
   );

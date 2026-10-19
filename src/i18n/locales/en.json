@@ -274,7 +274,9 @@
       "dark": "Dark",
       "light": "Light",
       "system": "System"
-    }
+    },
+    "signOutTitle": "Sign out?",
+    "signOutBody": "You'll be signed out of your account. You can sign back in any time."
   },
   "assistant": {
     "title": "Change the plan",
@@ -549,7 +551,11 @@
     "subtitle": "Works without internet. Tap a phrase to show it in large text.",
     "speak": "Read aloud",
     "showHint": "Shows the phrase in large text",
-    "tapToClose": "Tap anywhere to close"
+    "tapToClose": "Tap anywhere to close",
+    "language": "Language",
+    "needOnline": "This language downloads once with internet; after that it works offline.",
+    "downloadFailed": "Couldn't download the translation. Try again shortly.",
+    "downloading": "Translating the phrases into this language…"
   },
   "translate": {
     "title": "Translate",
@@ -1404,7 +1410,12 @@
       "stepOf": "Step {{current}}/{{total}}",
       "done": "Finish",
       "stop": "End directions",
-      "openGoogle": "Open in Google Maps"
+      "openGoogle": "Open in Google Maps",
+      "farFromStart": "You're {{distance}} from the start of the route. Showing a preview.",
+      "then": "Then: {{next}}",
+      "lastStep": "Last step",
+      "recenter": "Back to my location",
+      "arrivedShort": "Arrived"
     }
   },
   "widget": {

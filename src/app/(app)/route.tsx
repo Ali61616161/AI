@@ -134,11 +134,17 @@ export default function RouteScreen() {
         </Card>
       )}
 
-      {navigating && data && data.routes.length > 0 ? (
-        <NavigationView route={data.routes[Math.min(selected, data.routes.length - 1)]} openExternalUrl={data.navigation_url} onStop={() => setNavigating(false)} />
-      ) : null}
+      {data && data.routes.length > 0 && (
+        <NavigationView
+          visible={navigating}
+          route={data.routes[Math.min(selected, data.routes.length - 1)]}
+          googleUrl={data.navigation_url}
+          destinationName={p.toName ?? p.toAddress ?? ''}
+          onClose={() => setNavigating(false)}
+        />
+      )}
 
-      {!navigating && query.isLoading && (
+      {query.isLoading && (
         <>
           <SkeletonCard lines={3} />
           <SkeletonCard lines={3} />
@@ -147,7 +153,7 @@ export default function RouteScreen() {
 
       {query.error && <RouteErrorNote error={query.error} />}
 
-      {!navigating && data && (
+      {data && (
         <>
           {data.routes.length === 0 ? (
             <Card>

@@ -274,7 +274,9 @@
       "dark": "Sombre",
       "light": "Clair",
       "system": "Système"
-    }
+    },
+    "signOutTitle": "Se déconnecter ?",
+    "signOutBody": "Tu seras déconnecté de ton compte. Tu pourras te reconnecter à tout moment."
   },
   "assistant": {
     "title": "Changer le plan",
@@ -549,7 +551,11 @@
     "subtitle": "Fonctionne sans internet. Touche une phrase pour l’afficher en grand.",
     "speak": "Lire à voix haute",
     "showHint": "Affiche la phrase en grand",
-    "tapToClose": "Touche n’importe où pour fermer"
+    "tapToClose": "Touche n’importe où pour fermer",
+    "language": "Langue",
+    "needOnline": "Cette langue se télécharge une fois avec internet, puis fonctionne hors ligne.",
+    "downloadFailed": "Impossible de télécharger la traduction. Réessaie dans un instant.",
+    "downloading": "Traduction des phrases dans cette langue…"
   },
   "translate": {
     "title": "Traduire",
@@ -1404,7 +1410,12 @@
       "stepOf": "Étape {{current}}/{{total}}",
       "done": "Terminer",
       "stop": "Arrêter l'itinéraire",
-      "openGoogle": "Ouvrir dans Google Maps"
+      "openGoogle": "Ouvrir dans Google Maps",
+      "farFromStart": "Tu es à {{distance}} du début de l'itinéraire. Aperçu affiché.",
+      "then": "Ensuite : {{next}}",
+      "lastStep": "Dernière étape",
+      "recenter": "Revenir à ma position",
+      "arrivedShort": "Arrivé"
     }
   },
   "widget": {

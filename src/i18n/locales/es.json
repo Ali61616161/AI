@@ -274,7 +274,9 @@
       "dark": "Oscuro",
       "light": "Claro",
       "system": "Sistema"
-    }
+    },
+    "signOutTitle": "¿Cerrar sesión?",
+    "signOutBody": "Se cerrará la sesión de tu cuenta. Puedes volver a entrar cuando quieras."
   },
   "assistant": {
     "title": "Cambiar el plan",
@@ -549,7 +551,11 @@
     "subtitle": "Funciona sin internet. Toca una frase para verla en grande.",
     "speak": "Leer en voz alta",
     "showHint": "Muestra la frase en grande",
-    "tapToClose": "Toca en cualquier lugar para cerrar"
+    "tapToClose": "Toca en cualquier lugar para cerrar",
+    "language": "Idioma",
+    "needOnline": "Este idioma se descarga una vez con internet; después funciona sin conexión.",
+    "downloadFailed": "No se pudo descargar la traducción. Inténtalo de nuevo en un momento.",
+    "downloading": "Traduciendo las frases a este idioma…"
   },
   "translate": {
     "title": "Traducir",
@@ -1404,7 +1410,12 @@
       "stepOf": "Paso {{current}}/{{total}}",
       "done": "Terminar",
       "stop": "Terminar indicaciones",
-      "openGoogle": "Abrir en Google Maps"
+      "openGoogle": "Abrir en Google Maps",
+      "farFromStart": "Estás a {{distance}} del inicio de la ruta. Mostrando vista previa.",
+      "then": "Luego: {{next}}",
+      "lastStep": "Último paso",
+      "recenter": "Volver a mi ubicación",
+      "arrivedShort": "Has llegado"
     }
   },
   "widget": {

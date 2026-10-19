@@ -31,3 +31,12 @@ export const isArrived = (remaining: number | null) => remaining !== null && rem
 export function formatDistance(m: number): string {
   return m < 1000 ? `${Math.round(m / 10) * 10} m` : `${(m / 1000).toFixed(m < 10_000 ? 1 : 0)} km`;
 }
+
+/** Rotanın başına bu kadar uzaksan canlı takip yerine önizleme gösterilir. */
+export const OFF_ROUTE_M = 2000;
+
+/** Konum rotanın başından çok uzakta mı (ör. başka şehirdeyken uzak bir rotayı açtın)? */
+export function isOffRoute(here: LatLng | null, path: LatLng[]): boolean {
+  if (!here || path.length === 0) return false;
+  return distanceKm(here, path[0]) * 1000 > OFF_ROUTE_M;
+}

@@ -274,7 +274,9 @@
       "dark": "Koyu",
       "light": "Açık",
       "system": "Sistem"
-    }
+    },
+    "signOutTitle": "Çıkış yapılsın mı?",
+    "signOutBody": "Hesabından çıkış yapılacak. İstediğin zaman tekrar giriş yapabilirsin."
   },
   "assistant": {
     "title": "Planı Değiştir",
@@ -549,7 +551,11 @@
     "subtitle": "İnternetsiz çalışır. Büyük yazıyla göstermek için cümleye dokun.",
     "speak": "Sesli oku",
     "showHint": "Cümleyi büyük yazıyla gösterir",
-    "tapToClose": "Kapatmak için herhangi bir yere dokun"
+    "tapToClose": "Kapatmak için herhangi bir yere dokun",
+    "language": "Dil",
+    "needOnline": "Bu dil ilk seferde internetle indirilir; sonra internetsiz çalışır.",
+    "downloadFailed": "Çeviri indirilemedi. Biraz sonra tekrar dene.",
+    "downloading": "Cümleler bu dile çevriliyor…"
   },
   "translate": {
     "title": "Çeviri",
@@ -1404,7 +1410,12 @@
       "stepOf": "Adım {{current}}/{{total}}",
       "done": "Bitir",
       "stop": "Yol tarifini bitir",
-      "openGoogle": "Google Haritalar'da aç"
+      "openGoogle": "Google Haritalar'da aç",
+      "farFromStart": "Rotanın başlangıcından {{distance}} uzaktasın. Rota önizleniyor.",
+      "then": "Sonra: {{next}}",
+      "lastStep": "Son adım",
+      "recenter": "Konumuma dön",
+      "arrivedShort": "Vardın"
     }
   },
   "widget": {

@@ -272,7 +272,9 @@
       "dark": "深色",
       "light": "浅色",
       "system": "跟随系统"
-    }
+    },
+    "signOutTitle": "退出登录？",
+    "signOutBody": "你将退出账号，之后可随时重新登录。"
   },
   "assistant": {
     "title": "调整计划",
@@ -541,7 +543,11 @@
     "subtitle": "无需网络。点击句子可放大显示。",
     "speak": "朗读",
     "showHint": "放大显示该句子",
-    "tapToClose": "点击任意处关闭"
+    "tapToClose": "点击任意处关闭",
+    "language": "语言",
+    "needOnline": "该语言需联网下载一次，之后可离线使用。",
+    "downloadFailed": "无法下载翻译，请稍后重试。",
+    "downloading": "正在把短语翻译成该语言…"
   },
   "translate": {
     "title": "翻译",
@@ -1367,7 +1373,12 @@
       "stepOf": "第 {{current}}/{{total}} 步",
       "done": "完成",
       "stop": "结束导航",
-      "openGoogle": "在谷歌地图中打开"
+      "openGoogle": "在谷歌地图中打开",
+      "farFromStart": "你距离路线起点 {{distance}}。正在显示预览。",
+      "then": "然后：{{next}}",
+      "lastStep": "最后一步",
+      "recenter": "回到我的位置",
+      "arrivedShort": "已到达"
     }
   },
   "widget": {

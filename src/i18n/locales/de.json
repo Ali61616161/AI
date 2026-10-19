@@ -274,7 +274,9 @@
       "dark": "Dunkel",
       "light": "Hell",
       "system": "System"
-    }
+    },
+    "signOutTitle": "Abmelden?",
+    "signOutBody": "Du wirst von deinem Konto abgemeldet. Du kannst dich jederzeit wieder anmelden."
   },
   "assistant": {
     "title": "Plan ändern",
@@ -549,7 +551,11 @@
     "subtitle": "Funktioniert ohne Internet. Tippe auf einen Satz, um ihn groß anzuzeigen.",
     "speak": "Vorlesen",
     "showHint": "Zeigt den Satz groß an",
-    "tapToClose": "Zum Schließen irgendwo tippen"
+    "tapToClose": "Zum Schließen irgendwo tippen",
+    "language": "Sprache",
+    "needOnline": "Diese Sprache wird einmal mit Internet geladen und funktioniert danach offline.",
+    "downloadFailed": "Übersetzung konnte nicht geladen werden. Versuche es gleich noch einmal.",
+    "downloading": "Sätze werden in diese Sprache übersetzt…"
   },
   "translate": {
     "title": "Übersetzen",
@@ -1404,7 +1410,12 @@
       "stepOf": "Schritt {{current}}/{{total}}",
       "done": "Fertig",
       "stop": "Navigation beenden",
-      "openGoogle": "In Google Maps öffnen"
+      "openGoogle": "In Google Maps öffnen",
+      "farFromStart": "Du bist {{distance}} vom Start der Route entfernt. Vorschau wird angezeigt.",
+      "then": "Danach: {{next}}",
+      "lastStep": "Letzter Schritt",
+      "recenter": "Zurück zu meinem Standort",
+      "arrivedShort": "Angekommen"
     }
   },
   "widget": {

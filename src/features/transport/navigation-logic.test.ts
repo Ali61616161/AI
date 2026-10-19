@@ -21,3 +21,12 @@ Deno.test('kalan mesafe ve varış', () => {
   assertEquals(formatDistance(2400), '2.4 km');
   assertEquals(formatDistance(15_000), '15 km');
 });
+
+Deno.test('rotadan uzak: başlangıca 2 km üstü', async () => {
+  const { isOffRoute } = await import('./navigation-logic.ts');
+  const start = { lat: 41.0, lng: 28.6 };
+  assertEquals(isOffRoute({ lat: 41.001, lng: 28.601 }, [start]), false);
+  assertEquals(isOffRoute({ lat: 41.1, lng: 28.6 }, [start]), true);
+  assertEquals(isOffRoute(null, [start]), false);
+  assertEquals(isOffRoute(start, []), false);
+});

@@ -13,7 +13,7 @@ export type AffiliatePartner = 'booking' | 'getyourguide' | 'tiqets';
 
 export const DEFAULT_TEMPLATES: Record<AffiliatePartner, string> = {
   booking:
-    'https://www.booking.com/searchresults.html?ss={query}&checkin={checkin}&checkout={checkout}&group_adults={adults}&group_children={children}&no_rooms=1&lang={lang}',
+    'https://www.booking.com/searchresults.html?ss={query}&checkin={checkin}&checkout={checkout}&group_adults={adults}&group_children={children}&no_rooms=1&lang={lang}&ssne={query}&ssne_untouched={query}&efdco=1',
   getyourguide: 'https://www.getyourguide.com/s/?q={query}',
   tiqets: 'https://www.tiqets.com/en/search/?q={query}',
 };

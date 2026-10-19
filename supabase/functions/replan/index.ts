@@ -13,6 +13,7 @@
 //
 // Gerekli sunucu sırları: GEMINI_API_KEY, isteğe bağlı GEMINI_MODEL.
 // İsteğe bağlı: GOOGLE_MAPS_API_KEY (anlık hava ve mekan doğrulama), AFFILIATE_*.
+import { chunkDates } from '../_shared/chunk.ts';
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.ts';
 import { openNowRequest, type Place, searchText } from '../_shared/places.ts';
@@ -47,6 +48,7 @@ import { loadProfile, loadTrip, type LoadedTrip } from '../_shared/trip-context.
 const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 const FREE_MAX_DAYS = 3;
 const MAX_DAYS = 30;
+const DATES_CHUNK_DAYS = 3;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const toStored = (days: PayloadDay[]): StoredDay[] => days.map((d) => ({ ...d, plan_items: d.items }));
@@ -262,21 +264,29 @@ Deno.serve(async (req) => {
         ? shortenRules(oldDays, toPlan, analysis.removedHighlights)
         : ['The trip got longer. Plan only these new days; the other days are already planned. Avoid repeating places from the existing plan: ' +
             oldDays.flatMap((d) => d.plan_items.map((i) => i.title)).join(', ')];
-      let raw: unknown;
+      // Uzun planlar 3'er günlük parçalara bölünüp paralel üretilir (tek çağrı dakikalar sürüyordu).
+      const parts = chunkDates(toPlan, DATES_CHUNK_DAYS);
+      let normalizedParts: ReturnType<typeof normalizeItinerary>[];
       try {
-        raw = await generateJson({
-          apiBase: Deno.env.get('GEMINI_API_BASE'),
-          apiKey: apiKey!,
-          model,
-          prompt: buildItineraryPrompt({ ...trip.ctx, start_date: newStart, end_date: newEnd }, toPlan, fixed, timezones, extra),
-          responseSchema: ITINERARY_RESPONSE_SCHEMA,
-          timeoutMs: 120_000,
-        });
+        normalizedParts = await Promise.all(
+          parts.map(async (part) => {
+            const note = parts.length > 1 ? [...extra, `You are planning only these days: ${part.join(', ')}. The other days of the trip are planned separately, so do not repeat the same famous sights across days.`] : extra;
+            const raw = await generateJson({
+              apiBase: Deno.env.get('GEMINI_API_BASE'),
+              apiKey: apiKey!,
+              model,
+              prompt: buildItineraryPrompt({ ...trip.ctx, start_date: newStart, end_date: newEnd }, part, fixed, timezones, note),
+              responseSchema: ITINERARY_RESPONSE_SCHEMA,
+              timeoutMs: 120_000,
+            });
+            return normalizeItinerary(raw, { dates: part, fixed, timezones, currency: trip.ctx.currency });
+          }),
+        );
       } catch (e) {
         console.error('replan dates: AI failed', e instanceof GeminiError ? e.message : String(e));
         return error('ai_failed', 502);
       }
-      const normalized = normalizeItinerary(raw, { dates: toPlan, fixed, timezones, currency: trip.ctx.currency });
+      const normalized = { summary: normalizedParts.find((n) => n.summary)?.summary ?? null, days: normalizedParts.flatMap((n) => n.days) } as ReturnType<typeof normalizeItinerary>;
       summary = normalized.summary;
       const nearByCity = await destinationCoords(supabase, trip.destinations, trip.ctx.language);
       planned = (await enrichDays(toPlanPayload(normalized.days), { language: trip.ctx.language, nearByCity })) as PayloadDay[];
