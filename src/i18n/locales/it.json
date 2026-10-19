@@ -1576,5 +1576,17 @@
     "wrongPassword": "Password errata.",
     "codeSendFailed": "Impossibile inviare il codice. Riprova.",
     "wrongCode": "Il codice è errato o scaduto."
+  },
+  "wallet": {
+    "title": "Portafoglio",
+    "subtitle": "I tuoi biglietti e prenotazioni",
+    "emptyTitle": "Ancora nessun biglietto",
+    "emptyBody": "I biglietti e le prenotazioni che carichi si raccolgono qui.",
+    "documents": "Documenti",
+    "showHint": "Si apre in grande per mostrare il codice al banco",
+    "copy": "Copia codice",
+    "copied": "Copiato",
+    "offlineHint": "Salva il viaggio offline per aprirli senza internet.",
+    "brightnessHint": "Aumenta la luminosità dello schermo per scansionare il QR code."
   }
 }

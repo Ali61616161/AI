@@ -1576,5 +1576,17 @@
     "wrongPassword": "Contraseña incorrecta.",
     "codeSendFailed": "No se pudo enviar el código. Inténtalo de nuevo.",
     "wrongCode": "El código es incorrecto o ha caducado."
+  },
+  "wallet": {
+    "title": "Cartera",
+    "subtitle": "Tus billetes y reservas",
+    "emptyTitle": "Aún no hay billetes",
+    "emptyBody": "Los billetes y reservas que subas se reúnen aquí.",
+    "documents": "Documentos",
+    "showHint": "Se abre en grande para mostrar el código en el mostrador",
+    "copy": "Copiar código",
+    "copied": "Copiado",
+    "offlineHint": "Guarda el viaje sin conexión para abrirlos sin internet.",
+    "brightnessHint": "Sube el brillo de la pantalla para escanear el código QR."
   }
 }

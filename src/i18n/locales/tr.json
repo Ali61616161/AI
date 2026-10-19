@@ -1576,5 +1576,17 @@
     "wrongPassword": "Şifre yanlış.",
     "codeSendFailed": "Kod gönderilemedi. Tekrar dene.",
     "wrongCode": "Kod yanlış ya da süresi dolmuş."
+  },
+  "wallet": {
+    "title": "Cüzdan",
+    "subtitle": "Biletlerin ve rezervasyonların",
+    "emptyTitle": "Henüz bilet yok",
+    "emptyBody": "Bilet ya da rezervasyon yüklediğinde burada toplanır.",
+    "documents": "Belgeler",
+    "showHint": "Kodu gişede göstermek için büyük açar",
+    "copy": "Kodu kopyala",
+    "copied": "Kopyalandı",
+    "offlineHint": "İnternetsiz açılması için seyahati çevrimdışı kaydet.",
+    "brightnessHint": "QR kodu okutmak için ekran parlaklığını artır."
   }
 }

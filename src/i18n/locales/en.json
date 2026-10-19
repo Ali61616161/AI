@@ -1576,5 +1576,17 @@
     "wrongPassword": "Wrong password.",
     "codeSendFailed": "Couldn't send the code. Try again.",
     "wrongCode": "The code is wrong or has expired."
+  },
+  "wallet": {
+    "title": "Wallet",
+    "subtitle": "Your tickets and bookings",
+    "emptyTitle": "No tickets yet",
+    "emptyBody": "Tickets and bookings you upload will be collected here.",
+    "documents": "Documents",
+    "showHint": "Opens large so you can show the code at the counter",
+    "copy": "Copy code",
+    "copied": "Copied",
+    "offlineHint": "Save the trip offline so these open without internet.",
+    "brightnessHint": "Turn up the screen brightness to scan the QR code."
   }
 }

@@ -1576,5 +1576,17 @@
     "wrongPassword": "Mot de passe incorrect.",
     "codeSendFailed": "Impossible d'envoyer le code. Réessaie.",
     "wrongCode": "Le code est incorrect ou a expiré."
+  },
+  "wallet": {
+    "title": "Portefeuille",
+    "subtitle": "Tes billets et réservations",
+    "emptyTitle": "Aucun billet pour l'instant",
+    "emptyBody": "Les billets et réservations que tu ajoutes sont regroupés ici.",
+    "documents": "Documents",
+    "showHint": "S'ouvre en grand pour montrer le code au guichet",
+    "copy": "Copier le code",
+    "copied": "Copié",
+    "offlineHint": "Enregistre le voyage hors ligne pour les ouvrir sans internet.",
+    "brightnessHint": "Augmente la luminosité de l'écran pour scanner le QR code."
   }
 }

@@ -136,6 +136,22 @@ export default function TripScreen() {
         ]}
       />
 
+      {/* Seyahat merkezi: canlı görünüm, cüzdan ve acil durum tek dokunuşla. */}
+      <View style={styles.hub}>
+        {[
+          ...(plan && (day?.plan_items ?? []).some((i) => i.lat !== null) ? [{ key: 'live', icon: 'navigate-circle' as const, label: t('live.open'), onPress: () => router.push({ pathname: '/trip-live', params: { tripId: trip.id, day: String(dayIndex) } }) }] : []),
+          { key: 'wallet', icon: 'wallet' as const, label: t('wallet.title'), onPress: () => router.push({ pathname: '/wallet', params: { tripId: trip.id } }) },
+          { key: 'sos', icon: 'medkit' as const, label: t('today.quick.sos'), onPress: () => router.push({ pathname: '/sos', params: { tripId: trip.id } }) },
+        ].map((x) => (
+          <Pressable key={x.key} accessibilityRole="button" accessibilityLabel={x.label} onPress={x.onPress} style={[styles.hubTile, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Ionicons name={x.icon} size={26} color={x.key === 'sos' ? colors.danger : colors.primary} />
+            <Text variant="caption" numberOfLines={1} style={styles.hubText}>
+              {x.label}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+
       {trip.trip_destinations.length > 1 && (
         <View style={styles.chips}>
           {trip.trip_destinations.map((d) => (
@@ -206,14 +222,6 @@ export default function TripScreen() {
               </Text>
             )}
             {mapPoints.length > 0 && (
-              <Chip
-                icon="navigate-circle-outline"
-                label={t('live.open')}
-                selected
-                onPress={() => router.push({ pathname: '/trip-live', params: { tripId: trip.id, day: String(dayIndex) } })}
-              />
-            )}
-            {mapPoints.length > 0 && (
               <View style={styles.mapBlock}>
                 <Pressable accessibilityRole="button" accessibilityState={{ expanded: showMap }} onPress={() => setShowMap((v) => !v)} style={styles.mapToggle}>
                   <Ionicons name="map-outline" size={16} color={colors.primary} />
@@ -276,6 +284,9 @@ export default function TripScreen() {
 }
 
 const styles = StyleSheet.create({
+  hub: { flexDirection: 'row', gap: Spacing.sm },
+  hubTile: { flex: 1, alignItems: 'center', gap: Spacing.xs, paddingVertical: Spacing.md, paddingHorizontal: Spacing.xs, borderRadius: Radius.lg, borderWidth: 1 },
+  hubText: { textAlign: 'center' },
   reportRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   section: { gap: Spacing.md },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: Spacing.md },

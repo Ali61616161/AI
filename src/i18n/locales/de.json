@@ -1576,5 +1576,17 @@
     "wrongPassword": "Falsches Passwort.",
     "codeSendFailed": "Code konnte nicht gesendet werden. Versuche es erneut.",
     "wrongCode": "Der Code ist falsch oder abgelaufen."
+  },
+  "wallet": {
+    "title": "Wallet",
+    "subtitle": "Deine Tickets und Buchungen",
+    "emptyTitle": "Noch keine Tickets",
+    "emptyBody": "Hochgeladene Tickets und Buchungen erscheinen hier.",
+    "documents": "Dokumente",
+    "showHint": "Öffnet groß, damit du den Code am Schalter zeigen kannst",
+    "copy": "Code kopieren",
+    "copied": "Kopiert",
+    "offlineHint": "Speichere die Reise offline, damit sie ohne Internet öffnen.",
+    "brightnessHint": "Erhöhe die Bildschirmhelligkeit, um den QR-Code zu scannen."
   }
 }
