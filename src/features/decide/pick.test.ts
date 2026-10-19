@@ -11,6 +11,7 @@ const place = (id: string, extra: Record<string, unknown> = {}) => ({
   rating: 4.5,
   ratingCount: 100,
   priceLevel: null,
+  priceRange: null,
   mapsUrl: null,
   type: null,
   status: 'OPERATIONAL',

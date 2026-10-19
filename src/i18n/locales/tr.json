@@ -1589,5 +1589,18 @@
     "copied": "Kopyalandı",
     "offlineHint": "İnternetsiz açılması için seyahati çevrimdışı kaydet.",
     "brightnessHint": "QR kodu okutmak için ekran parlaklığını artır."
+  },
+  "brief": {
+    "title": "{{city}} özeti",
+    "weather": "Hava: {{max}}° / {{min}}° {{description}}",
+    "weatherLater": "Hava tahmini seyahate yaklaşınca görünür",
+    "readiness": "Seyahate hazırlık",
+    "allReady": "Her şey hazır ✓",
+    "todo": {
+      "ticket": "Bilet ekle",
+      "hotel": "Otel ekle",
+      "plan": "Rota oluştur",
+      "times": "Uçuş saatlerini gir"
+    }
   }
 }

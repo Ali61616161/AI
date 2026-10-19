@@ -1,21 +1,30 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Location from 'expo-location';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
 import { DARK_MAP_STYLE } from '@/features/explore/map-style';
 import { mapProvider, nativeMapsAvailable, usesGoogleMap } from '@/features/map/availability';
-import { Radius, Spacing } from '@/theme/tokens';
+import { Colors, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { VEHICLE_ICONS, type RouteChoice } from './api';
 import { currentStepIndex, formatDistance, isArrived, isOffRoute, nearestIndex, remainingMeters, turnIcon, type TurnIcon } from './navigation-logic';
 import { decodePolyline, thin } from './polyline';
+
+const LINE = '#FF5A36';
+
+/** Harita temasına göre panel renkleri (açık haritada koyu yazı, koyu haritada açık yazı). */
+const UiColors = createContext<(typeof Colors)[keyof typeof Colors]>(Colors.dark);
+
+function Txt({ color, style, ...rest }: React.ComponentProps<typeof Text>) {
+  const ui = useContext(UiColors);
+  return <Text {...rest} style={[style, { color: color === 'textSecondary' ? ui.textSecondary : color === 'textMuted' ? ui.textMuted : ui.text }]} />;
+}
 
 type MapTheme = 'auto' | 'light' | 'dark';
 const TURN_ICON: Record<TurnIcon, 'arrow-up' | 'arrow-back' | 'arrow-forward' | 'refresh'> = { straight: 'arrow-up', left: 'arrow-back', right: 'arrow-forward', uturn: 'refresh' };
@@ -28,7 +37,7 @@ type Props = { visible: boolean; route: RouteChoice; googleUrl: string; destinat
  */
 export function NavigationView({ visible, route, googleUrl, destinationName, onClose }: Props) {
   const { t } = useTranslation();
-  const { colors, isDark } = useTheme();
+  const { isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const map = useRef<MapView>(null);
   const path = useMemo(() => (route.polyline ? thin(decodePolyline(route.polyline)) : []), [route.polyline]);
@@ -39,6 +48,8 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const [theme, setTheme] = useState<MapTheme>('auto');
   const [satellite, setSatellite] = useState(false);
   const mapDark = theme === 'auto' ? isDark : theme === 'dark';
+  // Üstteki ve alttaki paneller harita temasına uyar (açık haritada koyu yazı, koyu haritada açık yazı).
+  const ui = Colors[mapDark ? 'dark' : 'light'];
   // Adım çizgileri: yürüyüş noktalı, toplu taşıma hat renginde, araba düz çizilir.
   const stepPaths = useMemo(() => route.steps.map((st) => st.polylines.map((pl) => thin(decodePolyline(pl)))), [route.steps]);
   const stepCoords = useMemo(() => stepPaths.map((parts) => parts.map((part) => part.map((p) => ({ latitude: p.lat, longitude: p.lng })))), [stepPaths]);
@@ -96,7 +107,8 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="fullScreen" onRequestClose={onClose}>
-      <View style={[styles.fill, { backgroundColor: colors.background }]}>
+      <UiColors.Provider value={ui}>
+      <View style={[styles.fill, { backgroundColor: ui.background }]}>
         {nativeMapsAvailable ? (
           <MapView
             provider={mapProvider}
@@ -117,61 +129,65 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
               ? stepCoords.flatMap((parts, i) =>
                   parts.map((part, j) =>
                     route.steps[i].transit ? (
-                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={route.steps[i].transit?.color ?? colors.primary} strokeWidth={7} lineJoin="round" />
+                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={route.steps[i].transit?.color ?? LINE} strokeWidth={7} lineJoin="round" />
                     ) : route.steps[i].mode === 'walk' ? (
-                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={colors.primary} strokeWidth={6} lineCap="round" lineDashPattern={[0.1, 12]} />
+                      <Fragment key={`s${i}-${j}`}>
+                        {/* İnce düz çizgi rotayı belli eder; üstündeki büyük noktalar yürüyüşü gösterir. */}
+                        <Polyline coordinates={part} strokeColor={LINE} strokeWidth={2} />
+                        <Polyline coordinates={part} strokeColor={LINE} strokeWidth={9} lineCap="round" lineDashPattern={[1, 14]} />
+                      </Fragment>
                     ) : (
-                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={colors.primary} strokeWidth={7} lineJoin="round" />
+                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={LINE} strokeWidth={7} lineJoin="round" />
                     ),
                   ),
                 )
-              : coords.length > 1 && <Polyline coordinates={coords} strokeColor={colors.primary} strokeWidth={7} lineJoin="round" />}
+              : coords.length > 1 && <Polyline coordinates={coords} strokeColor={LINE} strokeWidth={7} lineJoin="round" />}
             {passedCoords.length > 1 && <Polyline coordinates={passedCoords} strokeColor="rgba(150,160,185,0.85)" strokeWidth={8} lineJoin="round" zIndex={5} />}
             {end && <Marker coordinate={end} title={destinationName} />}
           </MapView>
         ) : (
           <View style={styles.center}>
-            <Text variant="body" color="textSecondary">
+            <Txt variant="body" color="textSecondary">
               {t('route.nav.noMap')}
-            </Text>
+            </Txt>
           </View>
         )}
 
-        <View style={[styles.top, { top: insets.top + Spacing.sm, backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.top, { top: insets.top + Spacing.sm, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
           {arrived ? (
-            <Text variant="title">{t('route.nav.arrived')}</Text>
+            <Txt variant="title">{t('route.nav.arrived')}</Txt>
           ) : off ? (
             <View style={styles.row}>
-              <Ionicons name="information-circle" size={26} color={colors.warning} />
-              <Text variant="bodyStrong" style={styles.flex}>
+              <Ionicons name="information-circle" size={26} color={ui.warning} />
+              <Txt variant="bodyStrong" style={styles.flex}>
                 {here && remaining !== null ? t('route.nav.farFromStart', { distance: formatDistance(distanceToStart(here, path)) }) : t('route.nav.locating')}
-              </Text>
+              </Txt>
             </View>
           ) : (
             <>
               <View style={styles.row}>
-                <Ionicons name={tr ? VEHICLE_ICONS[tr.vehicle] : current && current.mode !== 'transit' && current.maneuver ? TURN_ICON[turnIcon(current.maneuver)] : 'walk'} size={30} color={colors.primary} />
+                <Ionicons name={tr ? VEHICLE_ICONS[tr.vehicle] : current && current.mode !== 'transit' && current.maneuver ? TURN_ICON[turnIcon(current.maneuver)] : 'walk'} size={30} color={ui.primary} />
                 <View style={styles.flex}>
-                  <Text variant="title" numberOfLines={2}>
+                  <Txt variant="title" numberOfLines={2}>
                     {instruction}
-                  </Text>
+                  </Txt>
                   {detail && (
-                    <Text variant="caption" color="textSecondary" numberOfLines={1}>
+                    <Txt variant="caption" color="textSecondary" numberOfLines={1}>
                       {detail}
-                    </Text>
+                    </Txt>
                   )}
                 </View>
               </View>
               {steps.length > 1 && !auto && (
                 <View style={styles.stepNav}>
                   <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.prev')} disabled={idx === 0} onPress={() => setStep(Math.max(idx - 1, 0))} hitSlop={10} style={{ opacity: idx === 0 ? 0.3 : 1 }}>
-                    <Ionicons name="chevron-back-circle" size={32} color={colors.textSecondary} />
+                    <Ionicons name="chevron-back-circle" size={32} color={ui.textSecondary} />
                   </Pressable>
-                  <Text variant="caption" color="textMuted" style={styles.flex}>
+                  <Txt variant="caption" color="textMuted" style={styles.flex}>
                     {next ? t('route.nav.then', { next: next.transit ? (next.transit.lineShort ?? next.transit.line ?? next.transit.vehicleName ?? '') : t('route.walk', { count: next.durationMin }) }) : t('route.nav.lastStep')}
-                  </Text>
+                  </Txt>
                   <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.next')} disabled={idx >= steps.length - 1} onPress={() => setStep(Math.min(idx + 1, steps.length - 1))} hitSlop={10} style={{ opacity: idx >= steps.length - 1 ? 0.3 : 1 }}>
-                    <Ionicons name="chevron-forward-circle" size={32} color={colors.primary} />
+                    <Ionicons name="chevron-forward-circle" size={32} color={ui.primary} />
                   </Pressable>
                 </View>
               )}
@@ -180,30 +196,37 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
         </View>
 
         <View style={[styles.controls, { top: insets.top + 130 }]}>
-          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.theme')} onPress={() => setTheme((v) => (v === 'auto' ? 'light' : v === 'light' ? 'dark' : 'auto'))} style={[styles.control, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Ionicons name={theme === 'auto' ? 'contrast' : theme === 'light' ? 'sunny' : 'moon'} size={22} color={colors.primary} />
+          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.theme')} onPress={() => setTheme((v) => (v === 'auto' ? 'light' : v === 'light' ? 'dark' : 'auto'))} style={[styles.control, { backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
+            <Ionicons name={theme === 'auto' ? 'contrast' : theme === 'light' ? 'sunny' : 'moon'} size={22} color={ui.primary} />
           </Pressable>
-          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.satellite')} onPress={() => setSatellite((v) => !v)} style={[styles.control, { backgroundColor: satellite ? colors.primary : colors.surface, borderColor: colors.border }]}>
-            <Ionicons name="earth" size={22} color={satellite ? colors.onPrimary : colors.primary} />
+          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.satellite')} onPress={() => setSatellite((v) => !v)} style={[styles.control, { backgroundColor: satellite ? ui.primary : ui.backgroundElevated, borderColor: ui.border }]}>
+            <Ionicons name="earth" size={22} color={satellite ? ui.onPrimary : ui.primary} />
           </Pressable>
         </View>
 
         {!following && !off && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.recenter')} onPress={() => setFollowing(true)} style={[styles.recenter, { bottom: insets.bottom + 150, backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Ionicons name="locate" size={24} color={colors.primary} />
+          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.recenter')} onPress={() => setFollowing(true)} style={[styles.recenter, { bottom: insets.bottom + 150, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
+            <Ionicons name="locate" size={24} color={ui.primary} />
           </Pressable>
         )}
 
-        <View style={[styles.bottom, { paddingBottom: insets.bottom + Spacing.md, backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.bottom, { paddingBottom: insets.bottom + Spacing.md, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
           {!off && remaining !== null && (
-            <Text variant="title">{arrived ? t('route.nav.arrivedShort') : t('route.nav.remaining', { distance: formatDistance(remaining) })}</Text>
+            <Txt variant="title">{arrived ? t('route.nav.arrivedShort') : t('route.nav.remaining', { distance: formatDistance(remaining) })}</Txt>
           )}
           <View style={styles.row}>
-            <Button title={arrived ? t('route.nav.done') : t('route.nav.stop')} variant={arrived ? 'primary' : 'secondary'} onPress={onClose} style={styles.flex} />
-            <Button title="" accessibilityLabel={t('route.nav.openGoogle')} icon="open-outline" variant="ghost" onPress={() => Linking.openURL(googleUrl)} />
+            <Pressable accessibilityRole="button" onPress={onClose} style={[styles.stop, styles.flex, { backgroundColor: arrived ? ui.primary : ui.surfaceMuted }]}>
+              <Txt variant="bodyStrong" style={{ color: arrived ? ui.onPrimary : ui.text }}>
+                {arrived ? t('route.nav.done') : t('route.nav.stop')}
+              </Txt>
+            </Pressable>
+            <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.openGoogle')} onPress={() => Linking.openURL(googleUrl)} hitSlop={8} style={[styles.control, { backgroundColor: ui.surfaceMuted, borderColor: ui.border }]}>
+              <Ionicons name="open-outline" size={22} color={ui.textSecondary} />
+            </Pressable>
           </View>
         </View>
       </View>
+      </UiColors.Provider>
     </Modal>
   );
 }
@@ -221,6 +244,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   controls: { position: 'absolute', right: Spacing.md, gap: Spacing.sm },
   control: { width: 48, height: 48, borderRadius: 24, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  stop: { height: 48, borderRadius: Radius.pill, alignItems: 'center', justifyContent: 'center' },
   recenter: { position: 'absolute', right: Spacing.md, width: 52, height: 52, borderRadius: 26, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   bottom: { position: 'absolute', left: 0, right: 0, bottom: 0, gap: Spacing.md, padding: Spacing.lg, borderTopLeftRadius: Radius.xl, borderTopRightRadius: Radius.xl, borderWidth: 1 },
 });

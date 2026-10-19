@@ -1551,5 +1551,18 @@
     "copied": "已复制",
     "offlineHint": "将行程离线保存，即可无网络打开。",
     "brightnessHint": "调高屏幕亮度以扫描二维码。"
+  },
+  "brief": {
+    "title": "{{city}}概览",
+    "weather": "天气：{{max}}° / {{min}}° {{description}}",
+    "weatherLater": "临近行程时会显示天气预报",
+    "readiness": "行程准备",
+    "allReady": "一切就绪 ✓",
+    "todo": {
+      "ticket": "添加车票",
+      "hotel": "添加酒店",
+      "plan": "生成行程",
+      "times": "填写航班时间"
+    }
   }
 }

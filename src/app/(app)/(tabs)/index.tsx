@@ -15,6 +15,7 @@ import { Screen } from '@/components/ui/screen';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { useTrips } from '@/features/trips/queries';
+import { TripBrief } from '@/features/trips/trip-brief';
 import { TripCard } from '@/features/trips/trip-card';
 import { isoDateDaysAgo, todayIsoDate } from '@/lib/format';
 import { useSessionStore } from '@/stores/session-store';
@@ -81,6 +82,12 @@ export default function TodayScreen() {
           </EmptyState>
         )}
       </Animated.View>
+
+      {nextTrip && (
+        <Animated.View entering={enter(2)}>
+          <TripBrief trip={nextTrip} />
+        </Animated.View>
+      )}
 
       <Animated.View entering={enter(2)} style={styles.pills}>
         {quick.map((q) => (

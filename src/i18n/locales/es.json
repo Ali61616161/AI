@@ -1589,5 +1589,18 @@
     "copied": "Copiado",
     "offlineHint": "Guarda el viaje sin conexión para abrirlos sin internet.",
     "brightnessHint": "Sube el brillo de la pantalla para escanear el código QR."
+  },
+  "brief": {
+    "title": "{{city}} de un vistazo",
+    "weather": "Tiempo: {{max}}° / {{min}}° {{description}}",
+    "weatherLater": "La previsión aparece más cerca del viaje",
+    "readiness": "Preparación del viaje",
+    "allReady": "Todo listo ✓",
+    "todo": {
+      "ticket": "Añadir billete",
+      "hotel": "Añadir hotel",
+      "plan": "Crear el plan",
+      "times": "Indicar horarios de vuelo"
+    }
   }
 }
