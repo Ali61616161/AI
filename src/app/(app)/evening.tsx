@@ -71,7 +71,7 @@ function StopCard({ stop, index, last, currency }: { stop: EveningStop; index: n
           ) : null}
           {stop.est_cost !== null && (
             <Text variant="caption" color="textSecondary">
-              {stop.est_cost === 0 ? t('city.free') : `~${formatMoney(stop.est_cost, currency)}`}
+              {stop.est_cost === 0 ? t('city.free') : t('plan.estimatedPrice', { amount: formatMoney(stop.est_cost, currency) })}
             </Text>
           )}
         </View>

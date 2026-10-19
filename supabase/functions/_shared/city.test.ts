@@ -40,7 +40,7 @@ Deno.test('akşam planı: geçersiz duraklar atılır, alanlar sınırlanır', (
     ],
   });
   assertEquals(plan.stops.length, 2);
-  assertEquals(plan.stops[0].estCost, null);
+  assertEquals(plan.stops[0].estCost, 450);
   assertEquals(plan.stops[1].time, '');
   assertEquals(plan.stops[1].kind, 'activity');
   assertEquals(plan.stops[1].estCost, null);

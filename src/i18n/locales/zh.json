@@ -148,7 +148,8 @@
       "translate": "翻译",
       "sos": "紧急求助",
       "decideTitle": "拿不定主意？",
-      "decideBody": "让我帮你挑一个附近正在营业的地方。"
+      "decideBody": "让我帮你挑一个附近正在营业的地方。",
+      "currency": "汇率"
     }
   },
   "trips": {
@@ -415,7 +416,8 @@
     "stepFree": "少走路、少楼梯和坡道",
     "interestsTitle": "本次旅行的兴趣",
     "notesLabel": "还有什么想说的？",
-    "notesPlaceholder": "例如：看海景的晚餐、适合孩子的地方"
+    "notesPlaceholder": "例如：看海景的晚餐、适合孩子的地方",
+    "estimatedPrice": "约 {{amount}}（估价）"
   },
   "dates": {
     "title": "修改日期",
@@ -504,7 +506,8 @@
     "photoBy": "照片：{{name}}",
     "loadError": "无法加载详情，但仍可获取路线。",
     "quotaReached": "今天的地点卡片次数已用完。升级 Pro 查看更多。",
-    "poweredBy": "数据来自 Google 地图"
+    "poweredBy": "数据来自 Google 地图",
+    "priceRange": "谷歌价格区间：{{range}}"
   },
   "weather": {
     "rain": "降雨 {{percent}}%",
@@ -596,7 +599,8 @@
     "visa": "签证",
     "jetlag": "倒时差",
     "translate": "翻译",
-    "sos": "紧急求助"
+    "sos": "紧急求助",
+    "currency": "汇率"
   },
   "sos": {
     "title": "紧急求助",
@@ -1093,7 +1097,7 @@
     "perPerson": "人均约 {{amount}}",
     "perPersonShort": "每人",
     "openRoute": "在地图中打开路线",
-    "estimateNote": "地点和时间为 AI 建议，不显示价格。出发前请核对最新价格和营业时间。",
+    "estimateNote": "费用为估算值，出发前请确认价格和营业时间。",
     "save": "收藏",
     "saved": "已收藏",
     "visited": "去过了",
@@ -1457,5 +1461,15 @@
     "keywordLabel": "特别要求（可选）",
     "keywordPlaceholder": "例如：纯素、海景、带花园",
     "keywordHint": "会加入搜索。"
+  },
+  "currency": {
+    "title": "货币换算",
+    "subtitle": "实时汇率",
+    "amount": "金额",
+    "from": "从",
+    "to": "换成",
+    "swap": "互换",
+    "unavailable": "暂时无法获取汇率，请检查网络。",
+    "source": "汇率来自欧洲央行，每个工作日更新一次。银行和兑换处会使用自己的汇率并收取手续费。"
   }
 }

@@ -219,3 +219,11 @@ Deno.test('openNowRequest: anahtar kelime aramaya eklenir ve istek Google şemas
   assertEquals(withKeyword.locationBias?.circle.radius, 12_000);
   assertEquals(validateObject(GOOGLE_SCHEMA.places.schemas, 'GoogleMapsPlacesV1SearchTextRequest', withKeyword), []);
 });
+
+Deno.test('normalizePriceRange: Google fiyat aralığı', async () => {
+  const { normalizePriceRange } = await import('./places.ts');
+  assertEquals(normalizePriceRange({ startPrice: { currencyCode: 'EUR', units: '15' }, endPrice: { currencyCode: 'EUR', units: '25' } }), { min: 15, max: 25, currency: 'EUR' });
+  assertEquals(normalizePriceRange({ startPrice: { currencyCode: 'TRY', units: '300', nanos: 500000000 } }), { min: 300.5, max: null, currency: 'TRY' });
+  assertEquals(normalizePriceRange({}), null);
+  assertEquals(normalizePriceRange(undefined), null);
+});

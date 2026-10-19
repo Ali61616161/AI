@@ -18,6 +18,7 @@ export type PlaceCard = {
   rating: number | null;
   ratingCount: number | null;
   priceLevel: number | null;
+  priceRange: { min: number | null; max: number | null; currency: string } | null;
   mapsUrl: string | null;
   type: string | null;
   status: string | null;

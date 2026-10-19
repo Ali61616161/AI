@@ -148,7 +148,8 @@
       "translate": "Traduci",
       "sos": "Emergenza",
       "decideTitle": "Indeciso?",
-      "decideBody": "Scelgo io per te un posto vicino aperto adesso."
+      "decideBody": "Scelgo io per te un posto vicino aperto adesso.",
+      "currency": "Cambio"
     }
   },
   "trips": {
@@ -419,7 +420,8 @@
     "stepFree": "Poco cammino, scale e salite",
     "interestsTitle": "I tuoi interessi per questo viaggio",
     "notesLabel": "Altro?",
-    "notesPlaceholder": "es. una cena con vista mare, posti adatti ai bambini"
+    "notesPlaceholder": "es. una cena con vista mare, posti adatti ai bambini",
+    "estimatedPrice": "~{{amount}} (stima)"
   },
   "dates": {
     "title": "Cambia date",
@@ -511,7 +513,8 @@
     "photoBy": "Foto: {{name}}",
     "loadError": "Impossibile caricare i dettagli. Puoi comunque ottenere le indicazioni.",
     "quotaReached": "Hai usato le schede dei luoghi di oggi. Altre con Pro.",
-    "poweredBy": "Dati da Google Maps"
+    "poweredBy": "Dati da Google Maps",
+    "priceRange": "Fascia di prezzo secondo Google: {{range}}"
   },
   "weather": {
     "rain": "{{percent}}% pioggia",
@@ -605,7 +608,8 @@
     "visa": "Visto",
     "jetlag": "Jet lag",
     "translate": "Traduci",
-    "sos": "Emergenza"
+    "sos": "Emergenza",
+    "currency": "Cambio"
   },
   "sos": {
     "title": "Emergenza",
@@ -1117,7 +1121,7 @@
     "perPerson": "~{{amount}} a persona",
     "perPersonShort": "a persona",
     "openRoute": "Apri il percorso in Mappe",
-    "estimateNote": "Luoghi e orari sono suggerimenti dell'IA; i prezzi non sono mostrati. Controlla prezzi e orari aggiornati prima di andare.",
+    "estimateNote": "I costi sono stime; controlla prezzi e orari prima di andare.",
     "save": "Salva",
     "saved": "Salvato",
     "visited": "Ci sono stato",
@@ -1495,5 +1499,15 @@
     "keywordLabel": "Richiesta speciale (facoltativa)",
     "keywordPlaceholder": "es. vegano, vista mare, con giardino",
     "keywordHint": "Aggiunta alla ricerca."
+  },
+  "currency": {
+    "title": "Convertitore di valute",
+    "subtitle": "Tasso di cambio attuale",
+    "amount": "Importo",
+    "from": "Da",
+    "to": "A",
+    "swap": "Inverti",
+    "unavailable": "Cambio non disponibile. Controlla la connessione.",
+    "source": "Tassi: Banca centrale europea, aggiornati una volta per giorno lavorativo. Banche e uffici cambio applicano tassi e commissioni propri."
   }
 }

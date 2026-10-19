@@ -361,6 +361,7 @@ export async function verifyPlanDays<T extends VerifiableItem, D extends { city:
 /** Mekân kartı için istenen alanlar (GET alan maskesi, "places." öneki yok). */
 export const PLACE_DETAIL_FIELDS = [
   'id',
+  'priceRange',
   'displayName',
   'primaryTypeDisplayName',
   'formattedAddress',
@@ -387,7 +388,25 @@ const PHOTO_NAME_PATTERN = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/;
 
 export type PlacePhotoRef = { name: string; author: string | null; authorUrl: string | null };
 
+/** Google'ın işletme için bildirdiği gerçek fiyat aralığı (kişi başı olmayabilir). */
+export type PriceRange = { min: number | null; max: number | null; currency: string };
+
+export function normalizePriceRange(raw: unknown): PriceRange | null {
+  // deno-lint-ignore no-explicit-any
+  const r = raw as any;
+  const money = (m: { units?: unknown; nanos?: unknown } | undefined) => {
+    const v = Number(m?.units ?? 0) + Number(m?.nanos ?? 0) / 1e9;
+    return m && Number.isFinite(v) ? Math.round(v * 100) / 100 : null;
+  };
+  const currency = str(r?.startPrice?.currencyCode) ?? str(r?.endPrice?.currencyCode);
+  const min = money(r?.startPrice);
+  const max = money(r?.endPrice);
+  if (!currency || !/^[A-Z]{3}$/.test(currency) || (min === null && max === null)) return null;
+  return { min, max, currency };
+}
+
 export type PlaceDetails = Omit<Place, 'distanceM' | 'openNow'> & {
+  priceRange: PriceRange | null;
   typeLabel: string | null;
   website: string | null;
   phone: string | null;
@@ -416,6 +435,7 @@ export function normalizePlaceDetails(raw: unknown): PlaceDetails | null {
   const { distanceM: _distance, ...rest } = base;
   return {
     ...rest,
+    priceRange: normalizePriceRange(p.priceRange),
     typeLabel: str(p.primaryTypeDisplayName?.text),
     website: httpsUrl(p.websiteUri),
     phone: str(p.nationalPhoneNumber),

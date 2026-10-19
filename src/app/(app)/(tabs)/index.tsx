@@ -54,6 +54,7 @@ export default function TodayScreen() {
   const quick: { icon: IconName; label: string; href: Href }[] = [
     { icon: 'people', label: t('today.quick.travelers'), href: '/social' },
     { icon: 'language', label: t('today.quick.translate'), href: '/translate' },
+    { icon: 'cash', label: t('today.quick.currency'), href: '/currency' },
     { icon: 'medkit', label: t('today.quick.sos'), href: nextTrip ? { pathname: '/sos', params: { tripId: nextTrip.id } } : '/sos' },
   ];
 

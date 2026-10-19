@@ -148,7 +148,8 @@
       "translate": "Übersetzen",
       "sos": "Notfall",
       "decideTitle": "Unentschlossen?",
-      "decideBody": "Ich wähle für dich einen Ort in der Nähe, der gerade geöffnet hat."
+      "decideBody": "Ich wähle für dich einen Ort in der Nähe, der gerade geöffnet hat.",
+      "currency": "Kurse"
     }
   },
   "trips": {
@@ -419,7 +420,8 @@
     "stepFree": "Wenig Laufen, Treppen und Steigungen",
     "interestsTitle": "Deine Interessen für diese Reise",
     "notesLabel": "Noch etwas?",
-    "notesPlaceholder": "z. B. Abendessen mit Meerblick, kinderfreundliche Orte"
+    "notesPlaceholder": "z. B. Abendessen mit Meerblick, kinderfreundliche Orte",
+    "estimatedPrice": "~{{amount}} (geschätzt)"
   },
   "dates": {
     "title": "Reisedaten ändern",
@@ -511,7 +513,8 @@
     "photoBy": "Foto: {{name}}",
     "loadError": "Details konnten nicht geladen werden. Eine Route bekommst du trotzdem.",
     "quotaReached": "Du hast die heutigen Ortskarten aufgebraucht. Mehr gibt es mit Pro.",
-    "poweredBy": "Daten von Google Maps"
+    "poweredBy": "Daten von Google Maps",
+    "priceRange": "Preisspanne laut Google: {{range}}"
   },
   "weather": {
     "rain": "{{percent}} % Regen",
@@ -605,7 +608,8 @@
     "visa": "Visum",
     "jetlag": "Jetlag",
     "translate": "Übersetzen",
-    "sos": "Notfall"
+    "sos": "Notfall",
+    "currency": "Kurse"
   },
   "sos": {
     "title": "Notfall",
@@ -1117,7 +1121,7 @@
     "perPerson": "~{{amount}} pro Person",
     "perPersonShort": "pro Person",
     "openRoute": "Route in Karten öffnen",
-    "estimateNote": "Orte und Zeiten sind KI-Vorschläge; Preise werden nicht angezeigt. Prüfe aktuelle Preise und Öffnungszeiten vor dem Besuch.",
+    "estimateNote": "Kosten sind Schätzungen; prüf Preise und Öffnungszeiten, bevor du losgehst.",
     "save": "Speichern",
     "saved": "Gespeichert",
     "visited": "War ich",
@@ -1495,5 +1499,15 @@
     "keywordLabel": "Besonderer Wunsch (optional)",
     "keywordPlaceholder": "z. B. vegan, Meerblick, mit Garten",
     "keywordHint": "Wird der Suche hinzugefügt."
+  },
+  "currency": {
+    "title": "Währungsrechner",
+    "subtitle": "Aktueller Wechselkurs",
+    "amount": "Betrag",
+    "from": "Von",
+    "to": "In",
+    "swap": "Tauschen",
+    "unavailable": "Kurs derzeit nicht verfügbar. Prüfe deine Verbindung.",
+    "source": "Kurse: Europäische Zentralbank, einmal pro Werktag aktualisiert. Banken und Wechselstuben berechnen eigene Kurse und Gebühren."
   }
 }

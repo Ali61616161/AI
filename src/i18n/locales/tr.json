@@ -148,7 +148,8 @@
       "translate": "Çeviri",
       "sos": "Acil durum",
       "decideTitle": "Kararsız mısın?",
-      "decideBody": "Yakında şu an açık bir yeri senin için seçeyim."
+      "decideBody": "Yakında şu an açık bir yeri senin için seçeyim.",
+      "currency": "Kur"
     }
   },
   "trips": {
@@ -419,7 +420,8 @@
     "stepFree": "Az yürüyüş, merdiven ve yokuş",
     "interestsTitle": "Bu seyahatteki ilgi alanların",
     "notesLabel": "Eklemek istediklerin",
-    "notesPlaceholder": "Örn. deniz manzaralı akşam yemeği, çocuklara uygun yerler"
+    "notesPlaceholder": "Örn. deniz manzaralı akşam yemeği, çocuklara uygun yerler",
+    "estimatedPrice": "~{{amount}} (tahmini)"
   },
   "dates": {
     "title": "Tarihleri değiştir",
@@ -511,7 +513,8 @@
     "photoBy": "Fotoğraf: {{name}}",
     "loadError": "Ayrıntılar yüklenemedi. Yine de yol tarifi alabilirsin.",
     "quotaReached": "Bugünkü mekân kartı hakkın doldu. Pro ile daha fazlasına bak.",
-    "poweredBy": "Veriler Google Haritalar'dan"
+    "poweredBy": "Veriler Google Haritalar'dan",
+    "priceRange": "Google'a göre fiyat aralığı: {{range}}"
   },
   "weather": {
     "rain": "%{{percent}} yağmur",
@@ -605,7 +608,8 @@
     "visa": "Vize",
     "jetlag": "Jet lag",
     "translate": "Çeviri",
-    "sos": "Acil durum"
+    "sos": "Acil durum",
+    "currency": "Kur"
   },
   "sos": {
     "title": "Acil durum",
@@ -1117,7 +1121,7 @@
     "perPerson": "Kişi başı ~{{amount}}",
     "perPersonShort": "kişi başı",
     "openRoute": "Rotayı haritada aç",
-    "estimateNote": "Yer ve saat bilgileri yapay zekâ önerisidir; fiyatlar gösterilmez. Gitmeden önce güncel fiyatları ve açılış saatlerini kontrol et.",
+    "estimateNote": "Fiyatlar tahminidir; gitmeden önce fiyatları ve açılış saatlerini kontrol et.",
     "save": "Kaydet",
     "saved": "Kaydedildi",
     "visited": "Gittim",
@@ -1495,5 +1499,15 @@
     "keywordLabel": "Özel istek (isteğe bağlı)",
     "keywordPlaceholder": "Örn. vegan, deniz manzaralı, bahçeli",
     "keywordHint": "Aramaya eklenir."
+  },
+  "currency": {
+    "title": "Kur çevirici",
+    "subtitle": "Güncel döviz kuru",
+    "amount": "Tutar",
+    "from": "Çevrilecek",
+    "to": "Sonuç",
+    "swap": "Yer değiştir",
+    "unavailable": "Şu an kur alınamadı. İnternetini kontrol et.",
+    "source": "Kur: Avrupa Merkez Bankası, iş günü başına bir kez güncellenir. Banka ve döviz büroları farklı kur ve komisyon uygular."
   }
 }

@@ -148,7 +148,8 @@
       "translate": "Translate",
       "sos": "Emergency",
       "decideTitle": "Can't decide?",
-      "decideBody": "Let me pick a place nearby that's open right now."
+      "decideBody": "Let me pick a place nearby that's open right now.",
+      "currency": "Rates"
     }
   },
   "trips": {
@@ -419,7 +420,8 @@
     "stepFree": "Little walking, stairs and hills",
     "interestsTitle": "Your interests for this trip",
     "notesLabel": "Anything else?",
-    "notesPlaceholder": "e.g. a dinner with a sea view, places that suit kids"
+    "notesPlaceholder": "e.g. a dinner with a sea view, places that suit kids",
+    "estimatedPrice": "~{{amount}} (estimate)"
   },
   "dates": {
     "title": "Change dates",
@@ -511,7 +513,8 @@
     "photoBy": "Photo: {{name}}",
     "loadError": "Couldn't load the details. You can still get directions.",
     "quotaReached": "You've used today's place cards. See more with Pro.",
-    "poweredBy": "Data from Google Maps"
+    "poweredBy": "Data from Google Maps",
+    "priceRange": "Price range per Google: {{range}}"
   },
   "weather": {
     "rain": "{{percent}}% rain",
@@ -605,7 +608,8 @@
     "visa": "Visa",
     "jetlag": "Jet lag",
     "translate": "Translate",
-    "sos": "Emergency"
+    "sos": "Emergency",
+    "currency": "Rates"
   },
   "sos": {
     "title": "Emergency",
@@ -1117,7 +1121,7 @@
     "perPerson": "~{{amount}} per person",
     "perPersonShort": "per person",
     "openRoute": "Open the route in Maps",
-    "estimateNote": "Places and times are AI suggestions; prices are not shown. Check current prices and opening hours before you go.",
+    "estimateNote": "Costs are estimates; check prices and opening hours before you go.",
     "save": "Save",
     "saved": "Saved",
     "visited": "I went",
@@ -1495,5 +1499,15 @@
     "keywordLabel": "Special request (optional)",
     "keywordPlaceholder": "e.g. vegan, sea view, with a garden",
     "keywordHint": "Added to the search."
+  },
+  "currency": {
+    "title": "Currency converter",
+    "subtitle": "Live exchange rate",
+    "amount": "Amount",
+    "from": "From",
+    "to": "To",
+    "swap": "Swap",
+    "unavailable": "Couldn't get a rate right now. Check your connection.",
+    "source": "Rates: European Central Bank, updated once per business day. Banks and exchange offices apply their own rates and fees."
   }
 }

@@ -17,7 +17,7 @@ async function load(): Promise<Record<string, CachedRate>> {
 
 /**
  * Güncel döviz kuru (Avrupa Merkez Bankası verisi, frankfurter.dev; anahtar gerekmez).
- * 6 saat önbelleklenir; ağ yoksa eski kur kullanılır. Hiç kur yoksa null.
+ * 1 saat önbelleklenir; ağ yoksa eski kur kullanılır. Hiç kur yoksa null.
  */
 export async function getRate(from: string, to: string): Promise<number | null> {
   if (from.toUpperCase() === to.toUpperCase()) return 1;

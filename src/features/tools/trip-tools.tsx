@@ -8,7 +8,7 @@ import { Text } from '@/components/ui/text';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-type Tool = { key: 'expenses' | 'packing' | 'visa' | 'jetlag' | 'translate' | 'sos'; icon: ComponentProps<typeof Ionicons>['name']; href: Href };
+type Tool = { key: 'expenses' | 'currency' | 'packing' | 'visa' | 'jetlag' | 'translate' | 'sos'; icon: ComponentProps<typeof Ionicons>['name']; href: Href };
 
 /** Seyahat detayında araçlar: harcama, bavul, vize, jet lag, çeviri, acil durum. */
 export function TripTools({ tripId }: { tripId: string }) {
@@ -16,6 +16,7 @@ export function TripTools({ tripId }: { tripId: string }) {
   const { colors } = useTheme();
   const tools: Tool[] = [
     { key: 'expenses', icon: 'wallet-outline', href: { pathname: '/expenses', params: { tripId } } },
+    { key: 'currency', icon: 'cash-outline', href: '/currency' },
     { key: 'packing', icon: 'briefcase-outline', href: { pathname: '/packing', params: { tripId } } },
     { key: 'visa', icon: 'document-text-outline', href: { pathname: '/visa', params: { tripId } } },
     { key: 'jetlag', icon: 'time-outline', href: { pathname: '/jetlag', params: { tripId } } },

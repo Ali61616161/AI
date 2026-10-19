@@ -14,6 +14,7 @@ import { usePlaceCard } from '@/features/places/place-card-api';
 import { PlaceMeta } from '@/features/places/place-row';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { Radius, Spacing } from '@/theme/tokens';
+import { formatMoney } from '@/lib/format';
 import { useTheme } from '@/theme/use-theme';
 
 /** Mekân kartı: Google fotoğrafları, puan, çalışma saatleri, adres ve yol tarifi. */
@@ -60,6 +61,14 @@ export default function PlaceScreen() {
 
       <View style={styles.block}>
         {data && <PlaceMeta rating={data.rating} ratingCount={data.ratingCount} priceLevel={data.priceLevel} distanceM={null} />}
+        {data?.priceRange && (
+          <View style={styles.row}>
+            <Ionicons name="wallet-outline" size={16} color={colors.textMuted} />
+            <Text variant="caption" color="textSecondary" style={styles.flex}>
+              {t('place.priceRange', { range: [data.priceRange.min, data.priceRange.max].filter((v, i, a) => v !== null && a.indexOf(v) === i).map((v) => formatMoney(v as number, data.priceRange!.currency)).join(' – ') })}
+            </Text>
+          </View>
+        )}
         {data?.openNow != null && (
           <View style={styles.row}>
             <View style={[styles.dot, { backgroundColor: data.openNow ? colors.success : colors.danger }]} />

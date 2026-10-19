@@ -65,7 +65,7 @@ function SuggestionCard({ item }: { item: CrisisResult['suggestions'][number] })
           )}
           {item.estimated_cost !== null && item.currency && (
             <Text variant="caption" color={item.estimated_cost === 0 ? 'accent' : 'textMuted'}>
-              {item.estimated_cost === 0 ? t('plan.free') : `~${formatMoney(item.estimated_cost, item.currency)}`}
+              {item.estimated_cost === 0 ? t('plan.free') : t('plan.estimatedPrice', { amount: formatMoney(item.estimated_cost, item.currency) })}
             </Text>
           )}
         </View>

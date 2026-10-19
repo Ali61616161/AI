@@ -271,7 +271,7 @@ export function tripAnswerRules(ctx: Pick<TripContext, 'local_transport' | 'note
   if (ctx.daily_budget != null && Number.isFinite(ctx.daily_budget) && ctx.daily_budget > 0) {
     rules.push(
       `Daily budget: about ${ctx.daily_budget} ${ctx.currency} per person per day for food, entries and local transport (the traveler chose this amount; it replaces the budget level above). ` +
-        'Keep each day close to it: choose free or cheap options if it is tight, and add paid highlights if there is room. Never state prices or amounts anywhere in the text.',
+        'Use realistic current local prices and keep each day close to it: choose free or cheap options if it is tight, and add paid highlights if there is room.',
     );
   }
   const note = cleanNote(ctx.notes);
@@ -383,7 +383,7 @@ Rules:
 - Include breakfast/lunch/dinner suggestions as kind "meal" when appropriate.
 - priority: 5 = must-see highlight, 1 = optional filler. Mark is_indoor for each item.
 - booking: "getyourguide" or "tiqets" only for attractions or tours usually booked online, otherwise "none".
-- estimated_cost: 0 only when the place is free, otherwise null. Never guess prices; real prices are not known to you.
+- estimated_cost: per person in the local currency of that city, 0 when free; put its ISO 4217 code in currency.
 - Write title, description, day title, notes and summary in ${LANGUAGE_NAMES[ctx.language] ?? 'English'}. Keep place_name in its local official name.${extraRules.length ? '\n\nAlso:\n' + extraRules.map((r) => `- ${r}`).join('\n') : ''}`;
 }
 
@@ -450,8 +450,7 @@ export function aiItem(raw: unknown, currency: string): PlanItem | null {
   let end = normalizeTime(r.end_time);
   if (end && toMinutes(end) <= toMinutes(start)) end = null;
   const kind = AI_KINDS.includes(r.kind as ItemKind) ? (r.kind as ItemKind) : 'activity';
-  // Fiyatı AI tahmin etmez; yalnızca "ücretsiz" (0) bilgisi korunur.
-  const cost = r.estimated_cost === 0 ? 0 : null;
+  const cost = typeof r.estimated_cost === 'number' && Number.isFinite(r.estimated_cost) && r.estimated_cost >= 0 ? Math.round(r.estimated_cost * 100) / 100 : null;
   const priority = typeof r.priority === 'number' ? Math.min(5, Math.max(1, Math.round(r.priority))) : 3;
   const booking = r.booking === 'getyourguide' || r.booking === 'tiqets' ? r.booking : null;
   return {

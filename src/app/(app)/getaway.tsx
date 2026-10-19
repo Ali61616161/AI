@@ -24,6 +24,7 @@ import { formatMoney } from '@/lib/format';
 import { useCityStore } from '@/stores/city-store';
 import { useSessionStore } from '@/stores/session-store';
 import { Motion, Radius, Spacing } from '@/theme/tokens';
+import { useTheme } from '@/theme/use-theme';
 
 import { currencyFor } from '../../../supabase/functions/_shared/city.ts';
 
@@ -35,8 +36,11 @@ const TRANSPORTS: { key: Transport; icon: IconName }[] = [
   { key: 'car', icon: 'car-outline' },
 ];
 
-function GetawayCard({ g, index, days }: { g: GetawayResult; index: number; days: number }) {
+function GetawayCard({ g, index, days, currency, budget }: { g: GetawayResult; index: number; days: number; currency: string; budget: number }) {
   const { t } = useTranslation();
+  const { colors } = useTheme();
+  const nights = Math.max(days - 1, 0);
+  const fits = g.total <= budget * 1.1;
   const { start, end } = nextWeekendDates(days);
   return (
     <Animated.View entering={FadeInDown.delay(index * Motion.stagger).springify().damping(Motion.enter.damping)}>
@@ -55,6 +59,14 @@ function GetawayCard({ g, index, days }: { g: GetawayResult; index: number; days
               </Text>
             </View>
           </View>
+          <View style={[styles.price, { backgroundColor: fits ? 'rgba(34,195,142,0.9)' : 'rgba(0,0,0,0.45)' }]}>
+            <Text variant="bodyStrong" style={styles.white}>
+              ~{formatMoney(g.total, currency)}
+            </Text>
+            <Text variant="caption" style={styles.whiteSoft}>
+              {t('city.perPersonShort')}
+            </Text>
+          </View>
         </View>
         <View style={styles.body}>
           <Text variant="body">{g.why}</Text>
@@ -65,6 +77,19 @@ function GetawayCard({ g, index, days }: { g: GetawayResult; index: number; days
               ))}
             </View>
           )}
+          <View style={[styles.breakdown, { borderColor: colors.border }]}>
+            <Text variant="caption" color="textSecondary">
+              {t('city.costTransport', { amount: formatMoney(g.transportCost, currency) })}
+            </Text>
+            {nights > 0 && (
+              <Text variant="caption" color="textSecondary">
+                {t('city.costStay', { amount: formatMoney(g.stayPerNight, currency), count: nights })}
+              </Text>
+            )}
+            <Text variant="caption" color="textSecondary">
+              {t('city.costDaily', { amount: formatMoney(g.dailySpend, currency), count: days })}
+            </Text>
+          </View>
           {g.bestSeason && (
             <Text variant="caption" color="textMuted">
               {t('city.bestSeason', { season: g.bestSeason })}
@@ -200,7 +225,7 @@ export default function GetawayScreen() {
                 <Text variant="body">{t('city.noGetaways')}</Text>
               </Card>
             ) : (
-              result.getaways.map((g, i) => <GetawayCard key={g.city} g={g} index={i} days={result.days} />)
+              result.getaways.map((g, i) => <GetawayCard key={g.city} g={g} index={i} days={result.days} currency={result.currency} budget={result.budget_per_person} />)
             )}
             <Text variant="caption" color="textMuted">
               {t('city.estimateNote')}
@@ -220,8 +245,10 @@ const styles = StyleSheet.create({
   art: { height: 150, borderTopLeftRadius: Radius.xl, borderTopRightRadius: Radius.xl, overflow: 'hidden', justifyContent: 'flex-end', padding: Spacing.lg },
   artText: { gap: 4, paddingRight: 110 },
   metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  price: { position: 'absolute', top: Spacing.md, right: Spacing.md, alignItems: 'flex-end', paddingHorizontal: Spacing.md, paddingVertical: 6, borderRadius: Radius.md },
   white: { color: '#FFFFFF' },
   whiteSoft: { color: 'rgba(255,255,255,0.85)' },
   body: { padding: Spacing.lg, gap: Spacing.sm },
+  breakdown: { borderTopWidth: 1, paddingTop: Spacing.sm, gap: 2 },
   actions: { flexDirection: 'row', gap: Spacing.sm, marginTop: Spacing.xs },
 });

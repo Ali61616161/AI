@@ -152,8 +152,8 @@ Deno.test('normalizeItinerary: çakışanları atar, sabitleri korur, bozuk veri
   const reversed = days[2].items.find((i) => i.title === 'Ters saat')!;
   assertEquals([reversed.kind, reversed.end_time, reversed.priority, reversed.estimated_cost], ['activity', null, 5, null]);
   const vatican = days[1].items[0];
-  assertEquals([vatican.booking_partner, vatican.estimated_cost, vatican.currency], ['tiqets', null, null]);
-  assertEquals(days[1].items.map((i) => i.currency), [null, null, null], 'AI fiyat tahmini atılır, para birimi de boş kalır');
+  assertEquals([vatican.booking_partner, vatican.estimated_cost, vatican.currency], ['tiqets', 20, 'EUR']);
+  assertEquals(days[1].items.map((i) => i.currency), ['EUR', 'EUR', 'EUR'], 'geçersiz kod yedek para birimine düşer');
   assertEquals(days[0].items.length, 2, 'AI ilk günü boş bıraktıysa sadece sabitler kalır');
 });
 

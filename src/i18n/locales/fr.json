@@ -148,7 +148,8 @@
       "translate": "Traduire",
       "sos": "Urgence",
       "decideTitle": "Tu hésites ?",
-      "decideBody": "Je choisis pour toi un lieu ouvert tout près."
+      "decideBody": "Je choisis pour toi un lieu ouvert tout près.",
+      "currency": "Devises"
     }
   },
   "trips": {
@@ -419,7 +420,8 @@
     "stepFree": "Peu de marche, d’escaliers et de côtes",
     "interestsTitle": "Tes centres d’intérêt pour ce voyage",
     "notesLabel": "Autre chose ?",
-    "notesPlaceholder": "p. ex. un dîner avec vue sur la mer, des lieux adaptés aux enfants"
+    "notesPlaceholder": "p. ex. un dîner avec vue sur la mer, des lieux adaptés aux enfants",
+    "estimatedPrice": "~{{amount}} (estimé)"
   },
   "dates": {
     "title": "Modifier les dates",
@@ -511,7 +513,8 @@
     "photoBy": "Photo : {{name}}",
     "loadError": "Impossible de charger les détails. Tu peux quand même obtenir l’itinéraire.",
     "quotaReached": "Tu as utilisé les fiches de lieux du jour. Plus avec Pro.",
-    "poweredBy": "Données de Google Maps"
+    "poweredBy": "Données de Google Maps",
+    "priceRange": "Fourchette de prix selon Google : {{range}}"
   },
   "weather": {
     "rain": "{{percent}} % de pluie",
@@ -605,7 +608,8 @@
     "visa": "Visa",
     "jetlag": "Décalage horaire",
     "translate": "Traduire",
-    "sos": "Urgence"
+    "sos": "Urgence",
+    "currency": "Devises"
   },
   "sos": {
     "title": "Urgence",
@@ -1117,7 +1121,7 @@
     "perPerson": "~{{amount}} par personne",
     "perPersonShort": "par personne",
     "openRoute": "Ouvrir l’itinéraire dans Plans",
-    "estimateNote": "Les lieux et horaires sont des suggestions de l'IA ; les prix ne sont pas affichés. Vérifie les prix et horaires actuels avant d'y aller.",
+    "estimateNote": "Les coûts sont estimés ; vérifie les prix et les horaires avant d’y aller.",
     "save": "Enregistrer",
     "saved": "Enregistré",
     "visited": "J’y suis allé",
@@ -1495,5 +1499,15 @@
     "keywordLabel": "Demande particulière (facultatif)",
     "keywordPlaceholder": "ex. végan, vue sur la mer, avec jardin",
     "keywordHint": "Ajouté à la recherche."
+  },
+  "currency": {
+    "title": "Convertisseur de devises",
+    "subtitle": "Taux de change actuel",
+    "amount": "Montant",
+    "from": "De",
+    "to": "Vers",
+    "swap": "Inverser",
+    "unavailable": "Taux indisponible. Vérifie ta connexion.",
+    "source": "Taux : Banque centrale européenne, mis à jour chaque jour ouvré. Banques et bureaux de change appliquent leurs propres taux et frais."
   }
 }
