@@ -89,6 +89,15 @@ export default function RouteScreen() {
   const far = !usePrev && hereCoords !== null && dest !== null && isFar(hereCoords, dest);
   const tripOrigin = far && trip ? pickTripOrigin(trip.reservations) : null;
   const origin: RoutePoint | null = usePrev ? given : tripOrigin ? { address: tripOrigin.address } : hereCoords;
+  // Başlangıç kullanıcının kendi konumuysa Google'a başlangıç verilmez: Google "Konumunuz"u kendisi kullanır
+  // (koordinat verilirse başlangıç "işaretli yer" olarak görünür).
+  const originIsHere = origin !== null && hereCoords !== null && origin === hereCoords;
+  const googleLink = (url: string) => {
+    if (!originIsHere) return url;
+    const u = new URL(url);
+    u.searchParams.delete('origin');
+    return u.toString();
+  };
   const query = useRoute({
     origin,
     destination,
@@ -138,7 +147,7 @@ export default function RouteScreen() {
         <NavigationView
           visible={navigating}
           route={data.routes[Math.min(selected, data.routes.length - 1)]}
-          googleUrl={data.navigation_url}
+          googleUrl={googleLink(data.navigation_url)}
           destinationName={p.toName ?? p.toAddress ?? ''}
           onClose={() => setNavigating(false)}
         />
@@ -186,7 +195,7 @@ export default function RouteScreen() {
           {data.routes.length > 0 && (
             <Button title={t('route.startNavigation')} icon="navigate" onPress={() => setNavigating(true)} />
           )}
-          <Button title={t('route.nav.openGoogle')} variant="ghost" icon="open-outline" onPress={() => Linking.openURL(data.navigation_url)} />
+          <Button title={t('route.nav.openGoogle')} variant="ghost" icon="open-outline" onPress={() => Linking.openURL(googleLink(data.navigation_url))} />
         </>
       )}
     </Screen>
