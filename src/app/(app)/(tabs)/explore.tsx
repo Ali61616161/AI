@@ -1,4 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+
+import { Features } from '@/config/features';
 import * as Location from 'expo-location';
 import { router } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -153,11 +155,13 @@ export default function ExploreScreen() {
               {query.data ? ` · ${t('explore.openCount', { count: places.length })}` : ''}
             </Text>
           </View>
-          <Tap accessibilityRole="button" accessibilityLabel={t('today.quick.travelers')} onPress={() => router.push('/social')} feedback="select">
-            <View style={[styles.glass, styles.roundBtn, { backgroundColor: isDark ? 'rgba(7,11,22,0.78)' : 'rgba(255,255,255,0.9)', borderColor: colors.border }]}>
-              <Ionicons name="people" size={20} color={colors.text} />
-            </View>
-          </Tap>
+          {Features.social && (
+            <Tap accessibilityRole="button" accessibilityLabel={t('today.quick.travelers')} onPress={() => router.push('/social')} feedback="select">
+              <View style={[styles.glass, styles.roundBtn, { backgroundColor: isDark ? 'rgba(7,11,22,0.78)' : 'rgba(255,255,255,0.9)', borderColor: colors.border }]}>
+                <Ionicons name="people" size={20} color={colors.text} />
+              </View>
+            </Tap>
+          )}
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
           {NEARBY_CATEGORY_LIST.map((c) => (

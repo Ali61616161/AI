@@ -9,13 +9,14 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { DirIcon } from '@/components/ui/dir-icon';
 import { Card } from '@/components/ui/card';
-import { EmptyState } from '@/components/ui/empty-state';
 import { IconBadge } from '@/components/ui/icon-badge';
 import { Screen } from '@/components/ui/screen';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { useTrips } from '@/features/trips/queries';
 import { TripBrief } from '@/features/trips/trip-brief';
+import { tripPhase } from '@/features/trips/trip-phase';
+import { TripToday } from '@/features/trips/trip-today';
 import { TripCard } from '@/features/trips/trip-card';
 import { isoDateDaysAgo, todayIsoDate } from '@/lib/format';
 import { useSessionStore } from '@/stores/session-store';
@@ -45,9 +46,11 @@ export default function TodayScreen() {
   // Son 30 günde biten ve henüz raporu oluşturulmamış seyahat.
   const monthAgo = isoDateDaysAgo(30);
   const endedTrip = trips?.find((trip) => trip.end_date && trip.end_date < today && trip.end_date >= monthAgo && trip.status !== 'completed');
+  const phase = nextTrip ? tripPhase(nextTrip.start_date, nextTrip.end_date, today) : null;
   const dateLine = new Intl.DateTimeFormat(i18n.language, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
   const initial = (session?.user.email ?? '?').slice(0, 1).toUpperCase();
 
+  // Hızlı erişim: seyahate yaklaşırken çeviri, kur ve acil durum (sürerken bunlar "Bugün" kartında).
   const quick: { icon: IconName; label: string; href: Href }[] = [
     { icon: 'language', label: t('today.quick.translate'), href: '/translate' },
     { icon: 'cash', label: t('today.quick.currency'), href: '/currency' },
@@ -72,39 +75,58 @@ export default function TodayScreen() {
         </Tap>
       </Animated.View>
 
-      <Animated.View entering={enter(1)}>
-        {nextTrip ? (
+      {/* Seyahat yoksa ya da çok uzaktaysa: iki ana özellik. 15 günden az kalınca özet, sürerken "Bugün". */}
+      {nextTrip ? (
+        <Animated.View entering={enter(1)}>
           <TripCard trip={nextTrip} highlight />
-        ) : (
-          <EmptyState icon="airplane" title={t('today.noTripTitle')} description={t('today.noTripDescription')}>
+        </Animated.View>
+      ) : (
+        <Animated.View entering={enter(1)}>
+          <Card variant="glow" padding={Spacing.xl}>
+            <IconBadge icon="airplane" tone="gradient" />
+            <Text variant="title">{t('today.heroPlanTitle')}</Text>
+            <Text variant="body" color="textSecondary">
+              {t('today.heroPlanBody')}
+            </Text>
             <Button title={t('today.uploadTicket')} icon="cloud-upload-outline" onPress={() => router.push('/ticket')} />
             <Button title={t('today.createManually')} variant="secondary" onPress={() => router.push('/trip-new')} />
-          </EmptyState>
-        )}
-      </Animated.View>
+          </Card>
+        </Animated.View>
+      )}
 
-      {nextTrip && (
+      {nextTrip && phase === 'active' && (
+        <Animated.View entering={enter(2)}>
+          <TripToday trip={nextTrip} />
+        </Animated.View>
+      )}
+
+      {nextTrip && (phase === 'soon' || phase === 'far') && (
         <Animated.View entering={enter(2)}>
           <TripBrief trip={nextTrip} />
         </Animated.View>
       )}
 
-      <Animated.View entering={enter(2)} style={styles.pills}>
-        {quick.map((q) => (
-          <Tap key={q.label} accessibilityRole="button" accessibilityLabel={q.label} onPress={() => router.push(q.href)} scaleTo={0.96} style={styles.flex}>
-            <View style={[styles.pill, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Ionicons name={q.icon} size={18} color={colors.primary} />
-              <Text variant="caption" numberOfLines={1} style={styles.pillText}>
-                {q.label}
-              </Text>
-            </View>
-          </Tap>
-        ))}
-      </Animated.View>
+      {nextTrip && phase === 'soon' && (
+        <Animated.View entering={enter(2)} style={styles.pills}>
+          {quick.map((q) => (
+            <Tap key={q.label} accessibilityRole="button" accessibilityLabel={q.label} onPress={() => router.push(q.href)} scaleTo={0.96} style={styles.flex}>
+              <View style={[styles.pill, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <Ionicons name={q.icon} size={18} color={colors.primary} />
+                <Text variant="caption" numberOfLines={1} style={styles.pillText}>
+                  {q.label}
+                </Text>
+              </View>
+            </Tap>
+          ))}
+        </Animated.View>
+      )}
 
-      <Animated.View entering={enter(3)}>
-        <MyCitySection />
-      </Animated.View>
+      {/* İkinci ana özellik: bulunduğun şehirde bu akşam ne yapılır. Seyahat yokken öne çıkar. */}
+      {!nextTrip && (
+        <Animated.View entering={enter(3)}>
+          <MyCitySection />
+        </Animated.View>
+      )}
 
       {endedTrip && (
         <Animated.View entering={enter(3)}>

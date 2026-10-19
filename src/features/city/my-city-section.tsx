@@ -4,6 +4,7 @@ import { useState, type ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { Features } from '@/config/features';
 import { Card } from '@/components/ui/card';
 import { DirIcon } from '@/components/ui/dir-icon';
 import { IconBadge } from '@/components/ui/icon-badge';
@@ -19,13 +20,14 @@ import { useHomeCityLabel } from './use-home-city-label';
 
 type Row = { key: 'evening' | 'getaway' | 'spin' | 'decide' | 'saved'; icon: ComponentProps<typeof Ionicons>['name']; href: Href };
 
-const ROWS: Row[] = [
-  { key: 'evening', icon: 'moon-outline', href: '/evening' },
-  { key: 'getaway', icon: 'compass-outline', href: '/getaway' },
-  { key: 'spin', icon: 'aperture-outline', href: '/spin' },
-  { key: 'decide', icon: 'dice-outline', href: '/decide' },
-  { key: 'saved', icon: 'bookmark-outline', href: '/saved' },
+const ALL_ROWS: (Row & { enabled: boolean })[] = [
+  { key: 'evening', icon: 'moon-outline', href: '/evening', enabled: true },
+  { key: 'getaway', icon: 'compass-outline', href: '/getaway', enabled: Features.getaway },
+  { key: 'spin', icon: 'aperture-outline', href: '/spin', enabled: Features.spin },
+  { key: 'decide', icon: 'dice-outline', href: '/decide', enabled: Features.decide },
+  { key: 'saved', icon: 'bookmark-outline', href: '/saved', enabled: Features.savedPlaces },
 ];
+const ROWS: Row[] = ALL_ROWS.filter((r) => r.enabled);
 
 /** Ana ekranda ilk görünen satır sayısı; kalanlar "Daha fazla" ile açılır. */
 const PRIMARY_ROWS = 2;
@@ -42,7 +44,7 @@ export function MyCitySection() {
 
   return (
     <View style={styles.section}>
-      <SectionHeader overline={t('city.overline')} title={homeCity ?? t('city.addCityTitle')} action={homeCity ? t('city.passportShort') : undefined} onAction={() => router.push('/city-passport')} />
+      <SectionHeader overline={t('city.overline')} title={homeCity ?? t('city.addCityTitle')} action={homeCity && Features.savedPlaces ? t('city.passportShort') : undefined} onAction={() => router.push('/city-passport')} />
       {!homeCity && (
         <Card variant="glow" onPress={() => router.push('/passport')} accessibilityLabel={t('city.addCityTitle')}>
           <View style={styles.row}>
@@ -78,6 +80,7 @@ export function MyCitySection() {
             </View>
           </Tap>
         ))}
+        {ROWS.length > PRIMARY_ROWS && (
         <Tap accessibilityRole="button" accessibilityLabel={more ? t('city.showLess') : t('city.showMore')} onPress={() => setMore((v) => !v)} feedback="select">
           <View style={[styles.listRow, styles.moreRow, { borderTopColor: colors.border }]}>
             <Text variant="caption" color="primary">
@@ -86,6 +89,7 @@ export function MyCitySection() {
             <Ionicons name={more ? 'chevron-up' : 'chevron-down'} size={16} color={colors.primary} />
           </View>
         </Tap>
+        )}
       </Card>
       {more && signedIn && stats && stats.places > 0 && (
         <Tap accessibilityRole="button" onPress={() => router.push('/city-passport')} feedback="select">

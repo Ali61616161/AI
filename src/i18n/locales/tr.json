@@ -148,7 +148,9 @@
       "decideTitle": "Kararsız mısın?",
       "decideBody": "Yakında şu an açık bir yeri senin için seçeyim.",
       "currency": "Kur"
-    }
+    },
+    "heroPlanTitle": "Seyahatini birlikte kuralım",
+    "heroPlanBody": "Uçak ya da otel biletini yükle; Yola günlerini saatlerine göre planlasın, seyahat boyunca yanında olsun."
   },
   "trips": {
     "title": "Seyahatlerim",
@@ -1602,5 +1604,10 @@
       "plan": "Rota oluştur",
       "times": "Uçuş saatlerini gir"
     }
+  },
+  "tripToday": {
+    "title": "Bugün",
+    "noStops": "Bugün için planlanmış durak kalmadı.",
+    "noPlan": "Bu seyahat için henüz rota yok."
   }
 }

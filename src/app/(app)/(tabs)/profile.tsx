@@ -6,6 +6,7 @@ import { useState, type ComponentProps } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { Features } from '@/config/features';
 import { LanguagePicker } from '@/components/settings/language-picker';
 import { Button } from '@/components/ui/button';
 import { DirIcon } from '@/components/ui/dir-icon';
@@ -204,8 +205,8 @@ export default function ProfileScreen() {
       <View style={styles.section}>
         <SectionHeader title={t('profile.account')} />
         <Card padding={Spacing.xs}>
-          <ListRow icon="people-outline" label={t('today.quick.travelers')} onPress={() => router.push('/social')} />
-          <ListRow icon="gift-outline" label={t('referral.title')} onPress={() => router.push('/refer')} />
+          {Features.social && <ListRow icon="people-outline" label={t('today.quick.travelers')} onPress={() => router.push('/social')} />}
+          {Features.referral && <ListRow icon="gift-outline" label={t('referral.title')} onPress={() => router.push('/refer')} />}
           <ListRow icon="earth-outline" label={t('visited.title')} onPress={() => router.push('/visited')} />
           <ListRow icon="document-text-outline" label={t('docs.title')} onPress={() => router.push('/my-docs')} />
           <ListRow icon="shield-checkmark-outline" label={t('legal.privacy')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />

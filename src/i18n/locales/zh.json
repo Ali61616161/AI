@@ -148,7 +148,9 @@
       "decideTitle": "拿不定主意？",
       "decideBody": "让我帮你挑一个附近正在营业的地方。",
       "currency": "汇率"
-    }
+    },
+    "heroPlanTitle": "一起规划你的旅行",
+    "heroPlanBody": "上传机票或酒店预订，Yola 会按小时规划每一天，并在整个旅途中陪伴你。"
   },
   "trips": {
     "title": "我的旅行",
@@ -1564,5 +1566,10 @@
       "plan": "生成行程",
       "times": "填写航班时间"
     }
+  },
+  "tripToday": {
+    "title": "今天",
+    "noStops": "今天没有剩余的行程。",
+    "noPlan": "这次旅行还没有行程。"
   }
 }

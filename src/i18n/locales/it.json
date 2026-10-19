@@ -148,7 +148,9 @@
       "decideTitle": "Indeciso?",
       "decideBody": "Scelgo io per te un posto vicino aperto adesso.",
       "currency": "Cambio"
-    }
+    },
+    "heroPlanTitle": "Pianifichiamo il tuo viaggio",
+    "heroPlanBody": "Carica un biglietto aereo o una prenotazione d'hotel; Yola pianifica le tue giornate ora per ora e ti accompagna per tutto il viaggio."
   },
   "trips": {
     "title": "I miei viaggi",
@@ -1602,5 +1604,10 @@
       "plan": "Crea il piano",
       "times": "Inserisci gli orari dei voli"
     }
+  },
+  "tripToday": {
+    "title": "Oggi",
+    "noStops": "Nessuna tappa rimasta per oggi.",
+    "noPlan": "Questo viaggio non ha ancora un piano."
   }
 }

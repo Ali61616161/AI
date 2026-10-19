@@ -148,7 +148,9 @@
       "decideTitle": "Unentschlossen?",
       "decideBody": "Ich wähle für dich einen Ort in der Nähe, der gerade geöffnet hat.",
       "currency": "Kurse"
-    }
+    },
+    "heroPlanTitle": "Planen wir deine Reise",
+    "heroPlanBody": "Lade ein Flug- oder Hotelticket hoch; Yola plant deine Tage stundengenau und begleitet dich auf der ganzen Reise."
   },
   "trips": {
     "title": "Meine Reisen",
@@ -1602,5 +1604,10 @@
       "plan": "Plan erstellen",
       "times": "Flugzeiten eintragen"
     }
+  },
+  "tripToday": {
+    "title": "Heute",
+    "noStops": "Für heute sind keine Stopps mehr geplant.",
+    "noPlan": "Für diese Reise gibt es noch keinen Plan."
   }
 }

@@ -148,7 +148,9 @@
       "decideTitle": "Can't decide?",
       "decideBody": "Let me pick a place nearby that's open right now.",
       "currency": "Rates"
-    }
+    },
+    "heroPlanTitle": "Let's plan your trip",
+    "heroPlanBody": "Upload a flight or hotel booking; Yola plans your days hour by hour and stays with you throughout the trip."
   },
   "trips": {
     "title": "My trips",
@@ -1602,5 +1604,10 @@
       "plan": "Create the plan",
       "times": "Enter flight times"
     }
+  },
+  "tripToday": {
+    "title": "Today",
+    "noStops": "No stops left for today.",
+    "noPlan": "There's no plan for this trip yet."
   }
 }

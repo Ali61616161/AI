@@ -148,7 +148,9 @@
       "decideTitle": "Tu hésites ?",
       "decideBody": "Je choisis pour toi un lieu ouvert tout près.",
       "currency": "Devises"
-    }
+    },
+    "heroPlanTitle": "Préparons ton voyage",
+    "heroPlanBody": "Ajoute un billet d'avion ou une réservation d'hôtel ; Yola planifie tes journées heure par heure et t'accompagne pendant tout le voyage."
   },
   "trips": {
     "title": "Mes voyages",
@@ -1602,5 +1604,10 @@
       "plan": "Créer le programme",
       "times": "Saisir les horaires de vol"
     }
+  },
+  "tripToday": {
+    "title": "Aujourd'hui",
+    "noStops": "Plus d'étape prévue aujourd'hui.",
+    "noPlan": "Ce voyage n'a pas encore de programme."
   }
 }
