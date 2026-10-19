@@ -20,6 +20,10 @@ on:
         type: choice
         options: [production, production-widget, preview]
         default: production
+      local:
+        description: "Expo'nun ücretsiz build hakkı bittiyse: GitHub'ın macOS makinesinde derle (ücretsiz)"
+        type: boolean
+        default: false
       team_type:
         description: Apple geliştirici hesabı türü
         type: choice
@@ -32,7 +36,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.local && 'macos-latest' || 'ubuntu-latest' }}
     timeout-minutes: 90
     steps:
       - name: Sırlar tanımlı mı
@@ -80,8 +84,13 @@ jobs:
         run: |
           pip install --quiet pexpect
           python3 scripts/ci/eas-build-interactive.py ios "${{ inputs.profile }}"
+      - name: Derle (macOS makinesinde, EAS kotası harcanmaz)
+        if: ${{ !inputs.setup_credentials && inputs.local }}
+        env:
+          EXPO_NO_CAPABILITY_SYNC: '1'
+        run: npx eas-cli@latest build --local --platform ios --profile "${{ inputs.profile }}" --non-interactive --output "$RUNNER_TEMP/yola.ipa"
       - name: Derle (EAS)
-        if: ${{ !inputs.setup_credentials }}
+        if: ${{ !inputs.setup_credentials && !inputs.local }}
         env:
           # Apple API, widget'ın App Groups yetkisini otomatik açarken hata veriyor; yetkiler
           # Apple Developer'da elle açılır (group.com.akturangroup.yola), EAS sadece profil üretir.
@@ -101,4 +110,8 @@ jobs:
              --arg kid "$EXPO_ASC_KEY_ID" --arg iss "$EXPO_ASC_ISSUER_ID" \
              '.submit.production.ios = {ascAppId: $app, ascApiKeyPath: $path, ascApiKeyId: $kid, ascApiKeyIssuerId: $iss}' \
              eas.json > "$RUNNER_TEMP/eas.json" && cp "$RUNNER_TEMP/eas.json" eas.json
-          npx eas-cli@latest submit --platform ios --profile production --latest --non-interactive --wait
+          if [ "${{ inputs.local }}" = "true" ]; then
+            npx eas-cli@latest submit --platform ios --profile production --path "$RUNNER_TEMP/yola.ipa" --non-interactive --wait
+          else
+            npx eas-cli@latest submit --platform ios --profile production --latest --non-interactive --wait
+          fi
