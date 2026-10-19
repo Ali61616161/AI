@@ -55,9 +55,11 @@ function userObject(id, email) {
 
 function session(id, email) {
   const expiresIn = 7 * 24 * 3600;
-  const exp = Math.floor(Date.now() / 1000) + expiresIn;
+  const iat = Math.floor(Date.now() / 1000);
+  const exp = iat + expiresIn;
   return {
-    access_token: signJwt({ sub: id, email, role: 'authenticated', aud: 'authenticated', exp }),
+    // Gerçek Supabase anahtarında olduğu gibi "iat" (verilme zamanı) vardır; hesap silme taze giriş ister.
+    access_token: signJwt({ sub: id, email, role: 'authenticated', aud: 'authenticated', iat, exp }),
     token_type: 'bearer',
     expires_in: expiresIn,
     expires_at: exp,
