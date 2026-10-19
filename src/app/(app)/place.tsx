@@ -40,7 +40,7 @@ export default function PlaceScreen() {
 
       {data && data.photos.length > 0 ? (
         <View>
-          <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={styles.photos}>
+          <ScrollView horizontal pagingEnabled snapToInterval={photoWidth} snapToAlignment="start" decelerationRate="fast" disableIntervalMomentum showsHorizontalScrollIndicator={false} style={[styles.photos, { width: photoWidth }]}>
             {data.photos.map((photo) => (
               <View key={photo.uri} style={{ width: photoWidth }}>
                 <Image source={{ uri: photo.uri }} contentFit="cover" transition={200} accessibilityIgnoresInvertColors style={[styles.photo, { width: photoWidth, backgroundColor: colors.surfaceMuted }]} />

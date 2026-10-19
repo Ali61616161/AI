@@ -1390,7 +1390,22 @@
       "network": "Bağlantı yok. Tekrar dene."
     },
     "between": "{{from}} → {{to}} nasıl gidilir",
-    "farStart": "Konumun bu noktadan çok uzakta. Rotayı {{from}} noktasından başlattım."
+    "farStart": "Konumun bu noktadan çok uzakta. Rotayı {{from}} noktasından başlattım.",
+    "prevStop": "Önceki durak",
+    "fromPrev": "Önceki durak: {{name}}",
+    "nav": {
+      "destination": "Varış",
+      "noMap": "Bu cihazda harita kullanılamıyor.",
+      "arrived": "Vardın! 🎉",
+      "remaining": "Hedefe {{distance}} kaldı",
+      "locating": "Konumun aranıyor…",
+      "prev": "Önceki",
+      "next": "Sonraki",
+      "stepOf": "Adım {{current}}/{{total}}",
+      "done": "Bitir",
+      "stop": "Yol tarifini bitir",
+      "openGoogle": "Google Haritalar'da aç"
+    }
   },
   "widget": {
     "title": "Bugünün planı",
@@ -1509,5 +1524,17 @@
     "swap": "Yer değiştir",
     "unavailable": "Şu an kur alınamadı. İnternetini kontrol et.",
     "source": "Kurlar günde yaklaşık bir kez güncellenir. Banka ve döviz büroları kendi kurunu ve komisyonunu uygular."
+  },
+  "deleteAccount": {
+    "continue": "Devam et",
+    "verifyTitle": "Kimliğini doğrula",
+    "passwordBody": "Hesabı silmek için şifreni gir.",
+    "useCode": "Şifre yerine e-postama kod gönder",
+    "codeBody": "{{email}} adresine bir kod gönderdik. Hesabı silmek için kodu gir.",
+    "code": "Kod",
+    "resend": "Kodu tekrar gönder",
+    "wrongPassword": "Şifre yanlış.",
+    "codeSendFailed": "Kod gönderilemedi. Tekrar dene.",
+    "wrongCode": "Kod yanlış ya da süresi dolmuş."
   }
 }

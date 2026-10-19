@@ -25,3 +25,11 @@ Deno.test('CURRENCIES: benzersiz ve üç harfli', async () => {
   assertEquals(new Set(CURRENCIES).size, CURRENCIES.length);
   assertEquals(CURRENCIES.every((c) => /^[A-Z]{3}$/.test(c)), true);
 });
+
+Deno.test('currencyFlag: her para biriminin bayrağı var', async () => {
+  const { CURRENCIES, currencyFlag } = await import('./fx-logic.ts');
+  assertEquals(currencyFlag('TRY'), '🇹🇷');
+  assertEquals(currencyFlag('eur'), '🇪🇺');
+  assertEquals(currencyFlag('XXX'), '');
+  assertEquals(CURRENCIES.filter((c) => !currencyFlag(c)), []);
+});

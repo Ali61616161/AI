@@ -1353,7 +1353,22 @@
       "network": "没有网络连接，请重试。"
     },
     "between": "{{from}} → {{to}}：怎么去",
-    "farStart": "你离这里很远，已从 {{from}} 开始规划路线。"
+    "farStart": "你离这里很远，已从 {{from}} 开始规划路线。",
+    "prevStop": "上一站",
+    "fromPrev": "上一站：{{name}}",
+    "nav": {
+      "destination": "目的地",
+      "noMap": "此设备无法使用地图。",
+      "arrived": "你到了！🎉",
+      "remaining": "还有 {{distance}}",
+      "locating": "正在定位…",
+      "prev": "上一步",
+      "next": "下一步",
+      "stepOf": "第 {{current}}/{{total}} 步",
+      "done": "完成",
+      "stop": "结束导航",
+      "openGoogle": "在谷歌地图中打开"
+    }
   },
   "widget": {
     "title": "今日计划",
@@ -1471,5 +1486,17 @@
     "swap": "互换",
     "unavailable": "暂时无法获取汇率，请检查网络。",
     "source": "汇率大约每天更新一次。银行和兑换处会使用自己的汇率并收取手续费。"
+  },
+  "deleteAccount": {
+    "continue": "继续",
+    "verifyTitle": "验证身份",
+    "passwordBody": "输入密码以删除账号。",
+    "useCode": "改为发送邮箱验证码",
+    "codeBody": "我们已向 {{email}} 发送验证码。输入验证码以删除账号。",
+    "code": "验证码",
+    "resend": "重新发送验证码",
+    "wrongPassword": "密码错误。",
+    "codeSendFailed": "验证码发送失败，请重试。",
+    "wrongCode": "验证码错误或已过期。"
   }
 }

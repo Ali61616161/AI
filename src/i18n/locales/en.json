@@ -1390,7 +1390,22 @@
       "network": "No connection. Try again."
     },
     "between": "{{from}} → {{to}}: how to get there",
-    "farStart": "You're far from this place. I started the route from {{from}}."
+    "farStart": "You're far from this place. I started the route from {{from}}.",
+    "prevStop": "Previous stop",
+    "fromPrev": "Previous stop: {{name}}",
+    "nav": {
+      "destination": "Destination",
+      "noMap": "Maps aren't available on this device.",
+      "arrived": "You've arrived! 🎉",
+      "remaining": "{{distance}} to go",
+      "locating": "Finding your location…",
+      "prev": "Back",
+      "next": "Next",
+      "stepOf": "Step {{current}}/{{total}}",
+      "done": "Finish",
+      "stop": "End directions",
+      "openGoogle": "Open in Google Maps"
+    }
   },
   "widget": {
     "title": "Today's plan",
@@ -1509,5 +1524,17 @@
     "swap": "Swap",
     "unavailable": "Couldn't get a rate right now. Check your connection.",
     "source": "Rates update about once a day. Banks and exchange offices apply their own rates and fees."
+  },
+  "deleteAccount": {
+    "continue": "Continue",
+    "verifyTitle": "Verify it's you",
+    "passwordBody": "Enter your password to delete the account.",
+    "useCode": "Email me a code instead",
+    "codeBody": "We sent a code to {{email}}. Enter it to delete the account.",
+    "code": "Code",
+    "resend": "Resend code",
+    "wrongPassword": "Wrong password.",
+    "codeSendFailed": "Couldn't send the code. Try again.",
+    "wrongCode": "The code is wrong or has expired."
   }
 }

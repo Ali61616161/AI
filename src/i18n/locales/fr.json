@@ -1390,7 +1390,22 @@
       "network": "Pas de connexion. Réessayez."
     },
     "between": "{{from}} → {{to}} : comment y aller",
-    "farStart": "Tu es loin de ce lieu. L’itinéraire part de {{from}}."
+    "farStart": "Tu es loin de ce lieu. L’itinéraire part de {{from}}.",
+    "prevStop": "Étape précédente",
+    "fromPrev": "Étape précédente : {{name}}",
+    "nav": {
+      "destination": "Destination",
+      "noMap": "Les cartes ne sont pas disponibles sur cet appareil.",
+      "arrived": "Vous êtes arrivé ! 🎉",
+      "remaining": "Encore {{distance}}",
+      "locating": "Recherche de ta position…",
+      "prev": "Retour",
+      "next": "Suivant",
+      "stepOf": "Étape {{current}}/{{total}}",
+      "done": "Terminer",
+      "stop": "Arrêter l'itinéraire",
+      "openGoogle": "Ouvrir dans Google Maps"
+    }
   },
   "widget": {
     "title": "Programme du jour",
@@ -1509,5 +1524,17 @@
     "swap": "Inverser",
     "unavailable": "Taux indisponible. Vérifie ta connexion.",
     "source": "Les taux sont mis à jour environ une fois par jour. Banques et bureaux de change appliquent leurs propres taux et frais."
+  },
+  "deleteAccount": {
+    "continue": "Continuer",
+    "verifyTitle": "Confirme ton identité",
+    "passwordBody": "Saisis ton mot de passe pour supprimer le compte.",
+    "useCode": "M'envoyer un code par e-mail",
+    "codeBody": "Nous avons envoyé un code à {{email}}. Saisis-le pour supprimer le compte.",
+    "code": "Code",
+    "resend": "Renvoyer le code",
+    "wrongPassword": "Mot de passe incorrect.",
+    "codeSendFailed": "Impossible d'envoyer le code. Réessaie.",
+    "wrongCode": "Le code est incorrect ou a expiré."
   }
 }

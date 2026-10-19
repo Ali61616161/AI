@@ -15,6 +15,7 @@ import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { useCityStats } from './api';
+import { useHomeCityLabel } from './use-home-city-label';
 
 type Row = { key: 'evening' | 'getaway' | 'spin' | 'decide' | 'saved'; icon: ComponentProps<typeof Ionicons>['name']; href: Href };
 
@@ -33,6 +34,7 @@ export function MyCitySection() {
   const homeCity = useSessionStore((s) => s.identity.homeCity);
   const signedIn = useSessionStore((s) => Boolean(s.session));
   const { data: stats } = useCityStats();
+  useHomeCityLabel();
 
   return (
     <View style={styles.section}>

@@ -15,6 +15,7 @@ import { Screen } from '@/components/ui/screen';
 import { SectionHeader } from '@/components/ui/section-header';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
+import { DeleteAccountModal } from '@/features/account/delete-account-modal';
 import { adPrivacyOptionsAvailable, openAdPrivacyOptions } from '@/features/ads/privacy-options';
 import { PassportCard } from '@/features/identity/passport-card';
 import { usePassportPower } from '@/features/identity/use-passport-power';
@@ -57,19 +58,10 @@ export default function ProfileScreen() {
   const isPro = plan === 'pro_monthly' || plan === 'pro_yearly';
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [deleteFailed, setDeleteFailed] = useState(false);
 
-  // Hesap ve tüm veriler sunucuda kalıcı olarak silinir, ardından çıkış yapılır.
-  async function handleDelete() {
-    setDeleting(true);
-    setDeleteFailed(false);
-    const { error } = await getSupabase().functions.invoke('delete-account', { body: { confirm: 'DELETE' } });
-    setDeleting(false);
-    if (error) {
-      setDeleteFailed(true);
-      return;
-    }
+  // Hesap ve tüm veriler sunucuda silindi (DeleteAccountModal doğrulamadan sonra çağırır).
+  async function handleDeleted() {
+    setConfirmDelete(false);
     await getSupabase().auth.signOut().catch(() => undefined);
     clearOfflineData();
     signOut();
@@ -213,26 +205,18 @@ export default function ProfileScreen() {
           <ListRow icon="reader-outline" label={t('legal.kvkk')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'kvkk' } })} />
           {adPrivacyOptionsAvailable && !isPro && <ListRow icon="megaphone-outline" label={t('ads.privacyOptions')} onPress={openAdPrivacyOptions} />}
           <ListRow icon="log-out-outline" label={t('profile.signOut')} onPress={handleSignOut} />
-          {session && isSupabaseConfigured() && !confirmDelete && (
+          {session && isSupabaseConfigured() && (
             <ListRow icon="trash-outline" label={t('profile.deleteAccount')} danger onPress={() => setConfirmDelete(true)} />
           )}
         </Card>
-        {session && isSupabaseConfigured() && confirmDelete && (
-          <Card style={{ borderColor: colors.danger }}>
-            <Text variant="bodyStrong" color="danger">
-              {t('profile.deleteTitle')}
-            </Text>
-            <Text variant="caption" color="textSecondary">
-              {t('profile.deleteBody')}
-            </Text>
-            {deleteFailed && (
-              <Text variant="caption" color="danger">
-                {t('profile.deleteFailed')}
-              </Text>
-            )}
-            <Button title={t('profile.deleteConfirm')} variant="danger" loading={deleting} onPress={handleDelete} />
-            <Button title={t('common.cancel')} variant="ghost" onPress={() => setConfirmDelete(false)} />
-          </Card>
+        {session && isSupabaseConfigured() && email && (
+          <DeleteAccountModal
+            visible={confirmDelete}
+            email={email}
+            hasPassword={Boolean(session.user.app_metadata?.providers?.includes('email'))}
+            onClose={() => setConfirmDelete(false)}
+            onDeleted={handleDeleted}
+          />
         )}
         <Text variant="caption" color="textMuted" style={styles.center}>
           {t('profile.version', { version: Constants.expoConfig?.version ?? '1.0.0' })}

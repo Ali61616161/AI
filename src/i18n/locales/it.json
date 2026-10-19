@@ -1390,7 +1390,22 @@
       "network": "Nessuna connessione. Riprova."
     },
     "between": "{{from}} → {{to}}: come arrivare",
-    "farStart": "Sei lontano da questo posto. Ho avviato il percorso da {{from}}."
+    "farStart": "Sei lontano da questo posto. Ho avviato il percorso da {{from}}.",
+    "prevStop": "Tappa precedente",
+    "fromPrev": "Tappa precedente: {{name}}",
+    "nav": {
+      "destination": "Destinazione",
+      "noMap": "Le mappe non sono disponibili su questo dispositivo.",
+      "arrived": "Sei arrivato! 🎉",
+      "remaining": "Mancano {{distance}}",
+      "locating": "Ricerca della tua posizione…",
+      "prev": "Indietro",
+      "next": "Avanti",
+      "stepOf": "Passo {{current}}/{{total}}",
+      "done": "Fine",
+      "stop": "Termina indicazioni",
+      "openGoogle": "Apri in Google Maps"
+    }
   },
   "widget": {
     "title": "Il piano di oggi",
@@ -1509,5 +1524,17 @@
     "swap": "Inverti",
     "unavailable": "Cambio non disponibile. Controlla la connessione.",
     "source": "I tassi si aggiornano circa una volta al giorno. Banche e uffici cambio applicano tassi e commissioni propri."
+  },
+  "deleteAccount": {
+    "continue": "Continua",
+    "verifyTitle": "Verifica la tua identità",
+    "passwordBody": "Inserisci la password per eliminare l'account.",
+    "useCode": "Inviami un codice via e-mail",
+    "codeBody": "Abbiamo inviato un codice a {{email}}. Inseriscilo per eliminare l'account.",
+    "code": "Codice",
+    "resend": "Invia di nuovo il codice",
+    "wrongPassword": "Password errata.",
+    "codeSendFailed": "Impossibile inviare il codice. Riprova.",
+    "wrongCode": "Il codice è errato o scaduto."
   }
 }

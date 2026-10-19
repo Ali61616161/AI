@@ -1390,7 +1390,22 @@
       "network": "Sin conexión. Inténtalo de nuevo."
     },
     "between": "{{from}} → {{to}}: cómo llegar",
-    "farStart": "Estás lejos de este lugar. He iniciado la ruta desde {{from}}."
+    "farStart": "Estás lejos de este lugar. He iniciado la ruta desde {{from}}.",
+    "prevStop": "Parada anterior",
+    "fromPrev": "Parada anterior: {{name}}",
+    "nav": {
+      "destination": "Destino",
+      "noMap": "Los mapas no están disponibles en este dispositivo.",
+      "arrived": "¡Has llegado! 🎉",
+      "remaining": "Faltan {{distance}}",
+      "locating": "Buscando tu ubicación…",
+      "prev": "Atrás",
+      "next": "Siguiente",
+      "stepOf": "Paso {{current}}/{{total}}",
+      "done": "Terminar",
+      "stop": "Terminar indicaciones",
+      "openGoogle": "Abrir en Google Maps"
+    }
   },
   "widget": {
     "title": "Plan de hoy",
@@ -1509,5 +1524,17 @@
     "swap": "Invertir",
     "unavailable": "No se pudo obtener el cambio. Revisa tu conexión.",
     "source": "Los tipos se actualizan aproximadamente una vez al día. Bancos y casas de cambio aplican sus propios tipos y comisiones."
+  },
+  "deleteAccount": {
+    "continue": "Continuar",
+    "verifyTitle": "Verifica tu identidad",
+    "passwordBody": "Introduce tu contraseña para eliminar la cuenta.",
+    "useCode": "Enviarme un código por correo",
+    "codeBody": "Enviamos un código a {{email}}. Introdúcelo para eliminar la cuenta.",
+    "code": "Código",
+    "resend": "Reenviar código",
+    "wrongPassword": "Contraseña incorrecta.",
+    "codeSendFailed": "No se pudo enviar el código. Inténtalo de nuevo.",
+    "wrongCode": "El código es incorrecto o ha caducado."
   }
 }

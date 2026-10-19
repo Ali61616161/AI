@@ -7,6 +7,7 @@
 // Gerekli sunucu sırrı: SUPABASE_SERVICE_ROLE_KEY (Supabase verir).
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
+import { isFreshLogin } from '../_shared/fresh-login.ts';
 import { corsHeaders, error } from '../_shared/http.ts';
 
 const BUCKETS = ['documents', 'avatars'];
@@ -29,6 +30,8 @@ Deno.serve(async (req) => {
     // boş gövde
   }
   if (body?.confirm !== 'DELETE') return error('bad_request', 400, 'confirmation required');
+  // Uygulama şifre ya da e-posta kodunu yeni doğrulatır; eski bir anahtarla silme yapılmaz.
+  if (!isFreshLogin(req.headers.get('Authorization'))) return error('unauthorized', 401, 'reauth_required');
 
   for (const bucket of BUCKETS) {
     try {

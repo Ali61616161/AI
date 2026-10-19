@@ -1390,7 +1390,22 @@
       "network": "Keine Verbindung. Versuch es erneut."
     },
     "between": "{{from}} → {{to}}: Anreise",
-    "farStart": "Du bist weit von diesem Ort entfernt. Die Route beginnt bei {{from}}."
+    "farStart": "Du bist weit von diesem Ort entfernt. Die Route beginnt bei {{from}}.",
+    "prevStop": "Vorheriger Halt",
+    "fromPrev": "Vorheriger Halt: {{name}}",
+    "nav": {
+      "destination": "Ziel",
+      "noMap": "Karten sind auf diesem Gerät nicht verfügbar.",
+      "arrived": "Du bist da! 🎉",
+      "remaining": "Noch {{distance}}",
+      "locating": "Standort wird gesucht…",
+      "prev": "Zurück",
+      "next": "Weiter",
+      "stepOf": "Schritt {{current}}/{{total}}",
+      "done": "Fertig",
+      "stop": "Navigation beenden",
+      "openGoogle": "In Google Maps öffnen"
+    }
   },
   "widget": {
     "title": "Heutiger Plan",
@@ -1509,5 +1524,17 @@
     "swap": "Tauschen",
     "unavailable": "Kurs derzeit nicht verfügbar. Prüfe deine Verbindung.",
     "source": "Kurse werden etwa einmal täglich aktualisiert. Banken und Wechselstuben berechnen eigene Kurse und Gebühren."
+  },
+  "deleteAccount": {
+    "continue": "Weiter",
+    "verifyTitle": "Bestätige deine Identität",
+    "passwordBody": "Gib dein Passwort ein, um das Konto zu löschen.",
+    "useCode": "Stattdessen Code per E-Mail senden",
+    "codeBody": "Wir haben einen Code an {{email}} gesendet. Gib ihn ein, um das Konto zu löschen.",
+    "code": "Code",
+    "resend": "Code erneut senden",
+    "wrongPassword": "Falsches Passwort.",
+    "codeSendFailed": "Code konnte nicht gesendet werden. Versuche es erneut.",
+    "wrongCode": "Der Code ist falsch oder abgelaufen."
   }
 }

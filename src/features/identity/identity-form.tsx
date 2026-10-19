@@ -10,6 +10,7 @@ import { SelectSheet } from '@/components/ui/select-sheet';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { TextField } from '@/components/ui/text-field';
+import { cityLabel } from '@/features/city/city-label';
 import { getCurrentLocation } from '@/features/plan/replan';
 import type { TravelIdentity } from '@/stores/session-store';
 import { Spacing } from '@/theme/tokens';
@@ -21,14 +22,6 @@ import { PassportCard } from './passport-card';
 import { usePassportPower } from './use-passport-power';
 
 const MAX_OTHER_PASSPORTS = 3;
-
-/** "İlçe, İl" biçimi; ikisi aynıysa tek ad. */
-function cityWithRegion(place?: Location.LocationGeocodedAddress): string | null {
-  const names = [place?.city ?? place?.subregion, place?.region]
-    .map((n) => n?.trim())
-    .filter((n, i, all): n is string => !!n && all.findIndex((x) => x?.toLowerCase() === n.toLowerCase()) === i);
-  return names.length ? names.join(', ') : null;
-}
 
 /** Vatandaşlık, ek pasaportlar, ek vizeler ve yaşanan şehir. Kayıt adımında ve profilde kullanılır. */
 export function IdentityForm({ value, onChange }: { value: TravelIdentity; onChange: (patch: Partial<TravelIdentity>) => void }) {
@@ -51,7 +44,7 @@ export function IdentityForm({ value, onChange }: { value: TravelIdentity; onCha
       const c = await getCurrentLocation();
       if (!c) throw new Error('no location');
       const [place] = await Location.reverseGeocodeAsync({ latitude: c.lat, longitude: c.lng });
-      const city = cityWithRegion(place);
+      const city = cityLabel(place);
       if (!city) throw new Error('no city');
       onChange({ homeCity: city, homeCountry: place?.isoCountryCode ?? value.homeCountry, homeLat: c.lat, homeLng: c.lng });
     } catch {

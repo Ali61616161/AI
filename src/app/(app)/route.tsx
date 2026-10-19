@@ -15,6 +15,8 @@ import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { openBookingLink, PlacesError } from '@/features/places/api';
 import { getCurrentLocation } from '@/features/plan/replan';
+import { NavigationView } from '@/features/transport/navigation-view';
+import { defaultFromChoice, type FromChoice } from '@/features/transport/navigation-logic';
 import { isFar, pickTripOrigin } from '@/features/transport/route-origin';
 import { useTrip } from '@/features/trips/queries';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
@@ -62,17 +64,18 @@ export default function RouteScreen() {
   const [here, setHere] = useState<RoutePoint | null | 'denied'>(null);
   const [modeChoice, setModeChoice] = useState<RouteMode | null>(null);
   const [selected, setSelected] = useState(0);
+  const [fromChoice, setFromChoice] = useState<FromChoice | null>(null);
+  const [navigating, setNavigating] = useState(false);
 
-  // Başlangıç verilmediyse kullanıcının konumu kullanılır.
-  const needHere = given === null;
+  // Kullanıcının konumu her zaman alınır: başlangıç verilmediyse başlangıçtır, verildiyse
+  // (plan durağı) "Konumum / Önceki durak" seçiminin varsayılanını belirler.
   useEffect(() => {
-    if (!needHere) return;
     let alive = true;
     getCurrentLocation().then((c) => alive && setHere(c ?? 'denied'));
     return () => {
       alive = false;
     };
-  }, [needHere]);
+  }, []);
 
   // Hedef bulunduğun yerden çok uzaksa (uçuş gerekir) "Konumum"dan rota anlamsız olur; seyahatte
   // otel ya da varış havalimanı biliniyorsa rota oradan başlar.
@@ -80,14 +83,17 @@ export default function RouteScreen() {
   // Seyahatte araba seçildiyse rota araba, aksi halde toplu taşıma ile açılır; kullanıcı değiştirebilir.
   const mode: RouteMode = modeChoice ?? (trip?.local_transport === 'car' ? 'drive' : 'transit');
   const dest = destination && 'lat' in destination ? destination : null;
-  const far = !given && here !== null && here !== 'denied' && 'lat' in here && dest !== null && isFar(here, dest);
+  const hereCoords = here && here !== 'denied' && 'lat' in here ? here : null;
+  const choice: FromChoice = given ? (fromChoice ?? defaultFromChoice(hereCoords, dest, true)) : 'here';
+  const usePrev = given !== null && choice === 'prev';
+  const far = !usePrev && hereCoords !== null && dest !== null && isFar(hereCoords, dest);
   const tripOrigin = far && trip ? pickTripOrigin(trip.reservations) : null;
-  const origin: RoutePoint | null = given ?? (tripOrigin ? { address: tripOrigin.address } : here && here !== 'denied' ? here : null);
+  const origin: RoutePoint | null = usePrev ? given : tripOrigin ? { address: tripOrigin.address } : hereCoords;
   const query = useRoute({
     origin,
     destination,
     mode,
-    originName: p.fromName ?? tripOrigin?.name ?? null,
+    originName: usePrev ? (p.fromName ?? null) : (tripOrigin?.name ?? null),
     destinationName: p.toName ?? p.toAddress ?? null,
     countryCode: p.country ?? null,
     departAt: p.departAt ?? null,
@@ -96,7 +102,14 @@ export default function RouteScreen() {
 
   return (
     <Screen>
-      <ModalHeader title={t('route.title')} subtitle={`${p.fromName ?? tripOrigin?.name ?? t('route.myLocation')} → ${p.toName ?? p.toAddress ?? ''}`} />
+      <ModalHeader title={t('route.title')} subtitle={`${usePrev ? (p.fromName ?? t('route.prevStop')) : (tripOrigin?.name ?? t('route.myLocation'))} → ${p.toName ?? p.toAddress ?? ''}`} />
+
+      {given && (
+        <View style={styles.modes}>
+          <Chip icon="locate" label={t('route.myLocation')} selected={choice === 'here'} onPress={() => setFromChoice('here')} />
+          <Chip icon="flag" label={p.fromName ? t('route.fromPrev', { name: p.fromName }) : t('route.prevStop')} selected={choice === 'prev'} onPress={() => setFromChoice('prev')} />
+        </View>
+      )}
 
       {tripOrigin && (
         <Card variant="solid" padding={Spacing.md}>
@@ -115,13 +128,17 @@ export default function RouteScreen() {
         ))}
       </View>
 
-      {!given && here === 'denied' && (
+      {!usePrev && here === 'denied' && (
         <Card>
           <Text variant="body">{t('route.needLocation')}</Text>
         </Card>
       )}
 
-      {query.isLoading && (
+      {navigating && data && data.routes.length > 0 ? (
+        <NavigationView route={data.routes[Math.min(selected, data.routes.length - 1)]} openExternalUrl={data.navigation_url} onStop={() => setNavigating(false)} />
+      ) : null}
+
+      {!navigating && query.isLoading && (
         <>
           <SkeletonCard lines={3} />
           <SkeletonCard lines={3} />
@@ -130,7 +147,7 @@ export default function RouteScreen() {
 
       {query.error && <RouteErrorNote error={query.error} />}
 
-      {data && (
+      {!navigating && data && (
         <>
           {data.routes.length === 0 ? (
             <Card>
@@ -160,7 +177,10 @@ export default function RouteScreen() {
             </View>
           )}
 
-          <Button title={t('route.startNavigation')} icon="navigate" onPress={() => Linking.openURL(data.navigation_url)} />
+          {data.routes.length > 0 && (
+            <Button title={t('route.startNavigation')} icon="navigate" onPress={() => setNavigating(true)} />
+          )}
+          <Button title={t('route.nav.openGoogle')} variant="ghost" icon="open-outline" onPress={() => Linking.openURL(data.navigation_url)} />
         </>
       )}
     </Screen>
