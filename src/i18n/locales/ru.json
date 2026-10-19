@@ -429,7 +429,8 @@
     "interestsTitle": "Ваши интересы в этой поездке",
     "notesLabel": "Что-нибудь ещё?",
     "notesPlaceholder": "например, ужин с видом на море, места для детей",
-    "estimatedPrice": "~{{amount}} (оценка)"
+    "estimatedPrice": "~{{amount}} (оценка)",
+    "googlePrice": "Google: {{range}}"
   },
   "dates": {
     "title": "Изменить даты",

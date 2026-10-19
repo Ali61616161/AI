@@ -225,6 +225,9 @@ export type PlanItemRow = {
   category: string | null;
   estimated_cost: number | null;
   cost_currency: string | null;
+  /** Google'ın bildirdiği gerçek fiyat aralığı; doluysa fiyat Google'dandır, boşsa AI tahminidir. */
+  cost_min: number | null;
+  cost_max: number | null;
   priority: number;
   is_indoor: boolean | null;
   is_locked: boolean;
@@ -262,7 +265,7 @@ export type ActivePlan = {
 const PLAN_SELECT =
   'id, version, reason, summary, created_at, day_plans(id, date, city, title, notes, plan_items(' +
   'id, position, kind, title, description, starts_at, ends_at, timezone, place_name, address, category, ' +
-  'estimated_cost, cost_currency, priority, is_indoor, is_locked, reservation_id, affiliate_partner, status, ' +
+  'estimated_cost, cost_currency, cost_min, cost_max, priority, is_indoor, is_locked, reservation_id, affiliate_partner, status, ' +
   'booking_url, google_place_id, lat, lng, rating, rating_count, maps_url, place_status))';
 
 /** Seyahatin aktif plan sürümü; günler tarihe, kalemler sıraya göre dizili. Plan yoksa null. */

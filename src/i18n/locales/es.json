@@ -421,7 +421,8 @@
     "interestsTitle": "Tus intereses en este viaje",
     "notesLabel": "¿Algo más?",
     "notesPlaceholder": "p. ej. una cena con vistas al mar, lugares aptos para niños",
-    "estimatedPrice": "~{{amount}} (estimado)"
+    "estimatedPrice": "~{{amount}} (estimado)",
+    "googlePrice": "Google: {{range}}"
   },
   "dates": {
     "title": "Cambiar fechas",

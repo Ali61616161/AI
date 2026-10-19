@@ -421,7 +421,8 @@
     "interestsTitle": "Deine Interessen für diese Reise",
     "notesLabel": "Noch etwas?",
     "notesPlaceholder": "z. B. Abendessen mit Meerblick, kinderfreundliche Orte",
-    "estimatedPrice": "~{{amount}} (geschätzt)"
+    "estimatedPrice": "~{{amount}} (geschätzt)",
+    "googlePrice": "Google: {{range}}"
   },
   "dates": {
     "title": "Reisedaten ändern",

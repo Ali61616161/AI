@@ -138,8 +138,15 @@ function TimelineItem({ item, last, city, from, tripId }: { item: PlanItemRow; l
           {item.estimated_cost !== null && item.cost_currency && (
             <Badge
               icon="wallet-outline"
-              label={item.estimated_cost === 0 ? t('plan.free') : t('plan.estimatedPrice', { amount: formatMoney(item.estimated_cost, item.cost_currency) })}
-              tone={item.estimated_cost === 0 ? 'accent' : 'muted'}
+              label={
+                item.cost_min !== null && item.cost_max !== null
+                  ? // Google'ın bildirdiği gerçek aralık: "tahmini" yazılmaz.
+                    t('plan.googlePrice', { range: item.cost_min === item.cost_max ? formatMoney(item.cost_min, item.cost_currency) : `${formatMoney(item.cost_min, item.cost_currency)}–${formatMoney(item.cost_max, item.cost_currency)}` })
+                  : item.estimated_cost === 0
+                    ? t('plan.free')
+                    : t('plan.estimatedPrice', { amount: formatMoney(item.estimated_cost, item.cost_currency) })
+              }
+              tone={item.estimated_cost === 0 || item.cost_min !== null ? 'accent' : 'muted'}
             />
           )}
           {item.is_indoor !== null && !item.is_locked && (

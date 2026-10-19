@@ -52,6 +52,7 @@ Deno.test('normalizePlace: alanları sadeleştirir, mesafe ve fiyat seviyesini h
     rating: 4.7,
     ratingCount: 1234,
     priceLevel: 2,
+    priceRange: null,
     mapsUrl: 'https://maps.google.com/?cid=abc',
     type: 'museum',
     status: 'OPERATIONAL',
@@ -226,4 +227,13 @@ Deno.test('normalizePriceRange: Google fiyat aralığı', async () => {
   assertEquals(normalizePriceRange({ startPrice: { currencyCode: 'TRY', units: '300', nanos: 500000000 } }), { min: 300.5, max: null, currency: 'TRY' });
   assertEquals(normalizePriceRange({}), null);
   assertEquals(normalizePriceRange(undefined), null);
+});
+
+Deno.test('priceFields: Google aralığı kalemin fiyatı olur, aralık yoksa AI tahmini kalır', async () => {
+  const { priceFields, normalizePlace } = await import('./places.ts');
+  const withRange = normalizePlace({ id: 'p1', displayName: { text: 'X' }, priceRange: { startPrice: { currencyCode: 'TRY', units: '400' }, endPrice: { currencyCode: 'TRY', units: '1000' } } })!;
+  assertEquals(priceFields(withRange), { estimated_cost: 700, cost_currency: 'TRY', cost_min: 400, cost_max: 1000 });
+  const onlyMin = normalizePlace({ id: 'p2', displayName: { text: 'Y' }, priceRange: { startPrice: { currencyCode: 'EUR', units: '20' } } })!;
+  assertEquals(priceFields(onlyMin), { estimated_cost: 20, cost_currency: 'EUR', cost_min: 20, cost_max: 20 });
+  assertEquals(priceFields(normalizePlace({ id: 'p3', displayName: { text: 'Z' } })!), null);
 });

@@ -417,7 +417,8 @@
     "interestsTitle": "本次旅行的兴趣",
     "notesLabel": "还有什么想说的？",
     "notesPlaceholder": "例如：看海景的晚餐、适合孩子的地方",
-    "estimatedPrice": "约 {{amount}}（估价）"
+    "estimatedPrice": "约 {{amount}}（估价）",
+    "googlePrice": "谷歌：{{range}}"
   },
   "dates": {
     "title": "修改日期",

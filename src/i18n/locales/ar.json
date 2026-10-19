@@ -437,7 +437,8 @@
     "interestsTitle": "اهتماماتك في هذه الرحلة",
     "notesLabel": "هل من شيء آخر؟",
     "notesPlaceholder": "مثلًا عشاء بإطلالة على البحر، أماكن مناسبة للأطفال",
-    "estimatedPrice": "~{{amount}} (تقدير)"
+    "estimatedPrice": "~{{amount}} (تقدير)",
+    "googlePrice": "Google: {{range}}"
   },
   "dates": {
     "title": "تغيير التواريخ",

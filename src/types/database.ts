@@ -526,6 +526,8 @@ export type Database = {
           booking_url: string | null;
           category: string | null;
           cost_currency: string | null;
+          cost_max: number | null;
+          cost_min: number | null;
           created_at: string;
           day_plan_id: string;
           description: string | null;
@@ -562,6 +564,8 @@ export type Database = {
           booking_url?: string | null;
           category?: string | null;
           cost_currency?: string | null;
+          cost_max?: number | null;
+          cost_min?: number | null;
           created_at?: string;
           day_plan_id: string;
           description?: string | null;
@@ -597,6 +601,8 @@ export type Database = {
           booking_url?: string | null;
           category?: string | null;
           cost_currency?: string | null;
+          cost_max?: number | null;
+          cost_min?: number | null;
           created_at?: string;
           day_plan_id?: string;
           description?: string | null;

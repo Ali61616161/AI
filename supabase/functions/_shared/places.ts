@@ -18,6 +18,7 @@ export const PLACE_FIELDS = [
   'rating',
   'userRatingCount',
   'priceLevel',
+  'priceRange',
   'googleMapsUri',
   'primaryType',
   'businessStatus',
@@ -55,6 +56,8 @@ export type Place = {
   rating: number | null;
   ratingCount: number | null;
   priceLevel: number | null;
+  /** Google'ın bildirdiği gerçek fiyat aralığı; yoksa null. */
+  priceRange: PriceRange | null;
   mapsUrl: string | null;
   type: string | null;
   status: string | null;
@@ -167,6 +170,23 @@ export function distanceMeters(a: { lat: number; lng: number }, b: { lat: number
 const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
 const str = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null);
 
+/** Google'ın işletme için bildirdiği gerçek fiyat aralığı (kişi başı olmayabilir). */
+export type PriceRange = { min: number | null; max: number | null; currency: string };
+
+export function normalizePriceRange(raw: unknown): PriceRange | null {
+  // deno-lint-ignore no-explicit-any
+  const r = raw as any;
+  const money = (m: { units?: unknown; nanos?: unknown } | undefined) => {
+    const v = Number(m?.units ?? 0) + Number(m?.nanos ?? 0) / 1e9;
+    return m && Number.isFinite(v) ? Math.round(v * 100) / 100 : null;
+  };
+  const currency = str(r?.startPrice?.currencyCode) ?? str(r?.endPrice?.currencyCode);
+  const min = money(r?.startPrice);
+  const max = money(r?.endPrice);
+  if (!currency || !/^[A-Z]{3}$/.test(currency) || (min === null && max === null)) return null;
+  return { min, max, currency };
+}
+
 export function normalizePlace(raw: unknown, origin?: { lat: number; lng: number } | null): Place | null {
   if (!raw || typeof raw !== 'object') return null;
   // deno-lint-ignore no-explicit-any
@@ -186,6 +206,7 @@ export function normalizePlace(raw: unknown, origin?: { lat: number; lng: number
     rating: rating === null ? null : Math.round(Math.min(Math.max(rating, 0), 5) * 10) / 10,
     ratingCount: num(p.userRatingCount),
     priceLevel: typeof p.priceLevel === 'string' && p.priceLevel in PRICE_LEVELS ? PRICE_LEVELS[p.priceLevel] : null,
+    priceRange: normalizePriceRange(p.priceRange),
     mapsUrl: typeof p.googleMapsUri === 'string' && p.googleMapsUri.startsWith('https://') ? p.googleMapsUri : null,
     type: str(p.primaryType),
     status: str(p.businessStatus),
@@ -264,6 +285,19 @@ export function needsVerification(item: VerifiableItem): boolean {
 
 /** Bulunan mekan, kalemin önerildiği bölgeden çok uzaksa (başka şehirdeki aynı isim) kabul edilmez. */
 const MAX_DISTANCE_M = 60_000;
+
+/**
+ * Google fiyat aralığı varsa plan kaleminin fiyatını ondan alır: estimated_cost aralığın ortası,
+ * cost_min/cost_max aralık (doluysa fiyat Google'dandır, AI tahmini değildir).
+ */
+export function priceFields(place: Place): { estimated_cost: number; cost_currency: string; cost_min: number; cost_max: number } | null {
+  const r = place.priceRange;
+  if (!r) return null;
+  const min = r.min ?? r.max;
+  const max = r.max ?? r.min;
+  if (min === null || max === null) return null;
+  return { estimated_cost: Math.round(((min + max) / 2) * 100) / 100, cost_currency: r.currency, cost_min: Math.min(min, max), cost_max: Math.max(min, max) };
+}
 
 export function placeToFields(place: Place, checkedAt: string): PlaceFields {
   return {
@@ -348,7 +382,7 @@ export async function verifyPlanDays<T extends VerifiableItem, D extends { city:
       const place = results.get(keyOf(item, day.city));
       if (!place) return item;
       verified++;
-      return { ...item, ...placeToFields(place, checkedAt), address: place.address ?? item.address ?? null };
+      return { ...item, ...placeToFields(place, checkedAt), address: place.address ?? item.address ?? null, ...(priceFields(place) ?? {}) };
     }),
   }));
   return { days: out, lookups: entries.length, verified, failed };
@@ -388,25 +422,7 @@ const PHOTO_NAME_PATTERN = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/;
 
 export type PlacePhotoRef = { name: string; author: string | null; authorUrl: string | null };
 
-/** Google'ın işletme için bildirdiği gerçek fiyat aralığı (kişi başı olmayabilir). */
-export type PriceRange = { min: number | null; max: number | null; currency: string };
-
-export function normalizePriceRange(raw: unknown): PriceRange | null {
-  // deno-lint-ignore no-explicit-any
-  const r = raw as any;
-  const money = (m: { units?: unknown; nanos?: unknown } | undefined) => {
-    const v = Number(m?.units ?? 0) + Number(m?.nanos ?? 0) / 1e9;
-    return m && Number.isFinite(v) ? Math.round(v * 100) / 100 : null;
-  };
-  const currency = str(r?.startPrice?.currencyCode) ?? str(r?.endPrice?.currencyCode);
-  const min = money(r?.startPrice);
-  const max = money(r?.endPrice);
-  if (!currency || !/^[A-Z]{3}$/.test(currency) || (min === null && max === null)) return null;
-  return { min, max, currency };
-}
-
 export type PlaceDetails = Omit<Place, 'distanceM' | 'openNow'> & {
-  priceRange: PriceRange | null;
   typeLabel: string | null;
   website: string | null;
   phone: string | null;
@@ -435,7 +451,6 @@ export function normalizePlaceDetails(raw: unknown): PlaceDetails | null {
   const { distanceM: _distance, ...rest } = base;
   return {
     ...rest,
-    priceRange: normalizePriceRange(p.priceRange),
     typeLabel: str(p.primaryTypeDisplayName?.text),
     website: httpsUrl(p.websiteUri),
     phone: str(p.nationalPhoneNumber),

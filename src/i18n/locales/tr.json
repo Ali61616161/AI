@@ -421,7 +421,8 @@
     "interestsTitle": "Bu seyahatteki ilgi alanların",
     "notesLabel": "Eklemek istediklerin",
     "notesPlaceholder": "Örn. deniz manzaralı akşam yemeği, çocuklara uygun yerler",
-    "estimatedPrice": "~{{amount}} (tahmini)"
+    "estimatedPrice": "~{{amount}} (tahmini)",
+    "googlePrice": "Google: {{range}}"
   },
   "dates": {
     "title": "Tarihleri değiştir",
