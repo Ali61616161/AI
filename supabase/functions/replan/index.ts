@@ -13,6 +13,7 @@
 //
 // Gerekli sunucu sırları: GEMINI_API_KEY, isteğe bağlı GEMINI_MODEL.
 // İsteğe bağlı: GOOGLE_MAPS_API_KEY (anlık hava ve mekan doğrulama), AFFILIATE_*.
+import { airportTransferMinutes } from '../_shared/airport.ts';
 import { chunkDates } from '../_shared/chunk.ts';
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.ts';
@@ -264,6 +265,8 @@ Deno.serve(async (req) => {
         ? shortenRules(oldDays, toPlan, analysis.removedHighlights)
         : ['The trip got longer. Plan only these new days; the other days are already planned. Avoid repeating places from the existing plan: ' +
             oldDays.flatMap((d) => d.plan_items.map((i) => i.title)).join(', ')];
+      const transfer = trip.ctx.departure_time ? await airportTransferMinutes({ apiKey: googleConfig().apiKey, reservations: trip.reservations, manualAirport: trip.ctx.departure_airport, language: trip.ctx.language }) : null;
+      const planCtx = { ...trip.ctx, start_date: newStart, end_date: newEnd, airport_transfer_min: transfer };
       // Uzun planlar 3'er günlük parçalara bölünüp paralel üretilir (tek çağrı dakikalar sürüyordu).
       const parts = chunkDates(toPlan, DATES_CHUNK_DAYS);
       let normalizedParts: ReturnType<typeof normalizeItinerary>[];
@@ -275,7 +278,7 @@ Deno.serve(async (req) => {
               apiBase: Deno.env.get('GEMINI_API_BASE'),
               apiKey: apiKey!,
               model,
-              prompt: buildItineraryPrompt({ ...trip.ctx, start_date: newStart, end_date: newEnd }, part, fixed, timezones, note),
+              prompt: buildItineraryPrompt(planCtx, part, fixed, timezones, note),
               responseSchema: ITINERARY_RESPONSE_SCHEMA,
               timeoutMs: 120_000,
             });

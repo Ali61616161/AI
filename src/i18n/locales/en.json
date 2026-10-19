@@ -1477,7 +1477,27 @@
     "now": "Now",
     "next": "Up next",
     "hopWalk": "~{{min}} min walk from the previous stop · {{km}} km",
-    "hopFar": "~{{km}} km from the previous stop · see directions"
+    "hopFar": "~{{km}} km from the previous stop · see directions",
+    "freeDay": "Free day today",
+    "nudge": {
+      "title": "{{title}} time has passed",
+      "body": "Are you on your way? Tap to rearrange the rest of your day."
+    },
+    "guidance": {
+      "leaveBy": "Leave for the airport by {{time}}",
+      "leaveNow": "Time to leave now!",
+      "airportBody": "{{airport}} is about {{min}} min away. Be there 3 hours before your flight.",
+      "overdueTitle": "{{time}} · {{title}} time has passed. How is it going?",
+      "went": "I went",
+      "skip": "Skip",
+      "rearrange": "Rearrange the rest of my day",
+      "lateTitle": "You'll be about {{min}} min late to {{title}}.",
+      "eta": "Next: {{title}} · about {{min}} min away",
+      "rearranged": "The rest of your day was updated.",
+      "rearrangeFailed": "Couldn't rearrange the plan. Try again.",
+      "leaveNowTitle": "Time to leave for the airport",
+      "leaveNowBody": "Leave now for {{airport}}."
+    }
   },
   "tripQuestions": {
     "title": "For this trip",

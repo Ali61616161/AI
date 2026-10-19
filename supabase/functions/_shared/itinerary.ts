@@ -47,6 +47,8 @@ export type TripContext = {
   departure_time?: string | null;
   arrival_airport?: string | null;
   departure_airport?: string | null;
+  /** Otelden dönüş havalimanına gerçek yol süresi (dk); hesaplanamazsa 60 varsayılır. */
+  airport_transfer_min?: number | null;
   destinations: { city: string; country_code: string | null; arrive_on: string | null; depart_on: string | null }[];
   reservations: TripReservation[];
 };
@@ -293,12 +295,12 @@ export function clockMinutes(value: string | null | undefined): number | null {
 const airportText = (name: string | null | undefined) => (name?.trim() ? ` (${cleanNote(name) ?? ''})` : '');
 
 /**
- * Varış ve dönüş saatine göre ilk ve son günün kuralları. Saat, kullanıcı rezervasyon yüklemeden elle
+ * Varış ve dönüş saatine göre ilk ve son günün kuralları (son gün: kalkış − 3 saat − otelden havalimanına yol süresi). Saat, kullanıcı rezervasyon yüklemeden elle
  * verdiğinde kullanılır; uçuş rezervasyonu varsa o zaten "Fixed bookings" olarak gelir.
  *  - İlk gün: inişten sonra 2 saat (pasaport, bagaj, şehre geçiş) hiçbir şey planlanmaz.
  *  - Son gün: kalkıştan 4 saat önce (havalimanında 3 saat + yol 1 saat) her şey biter.
  */
-export function tripTimingRules(ctx: Pick<TripContext, 'start_date' | 'end_date' | 'arrival_time' | 'departure_time' | 'arrival_airport' | 'departure_airport'>, dates: string[]): string[] {
+export function tripTimingRules(ctx: Pick<TripContext, 'start_date' | 'end_date' | 'arrival_time' | 'departure_time' | 'arrival_airport' | 'departure_airport' | 'airport_transfer_min'>, dates: string[]): string[] {
   const rules: string[] = [];
   const arrival = clockMinutes(ctx.arrival_time);
   if (arrival !== null && dates.includes(ctx.start_date)) {
@@ -309,12 +311,14 @@ export function tripTimingRules(ctx: Pick<TripContext, 'start_date' | 'end_date'
   }
   const departure = clockMinutes(ctx.departure_time);
   if (departure !== null && dates.includes(ctx.end_date)) {
-    const latest = departure - 240;
+    // Kalkıştan 3 saat önce havalimanında olunur; üstüne otelden havalimanına gerçek yol süresi (yoksa 60 dk) eklenir.
+    const transfer = ctx.airport_transfer_min && ctx.airport_transfer_min > 0 ? ctx.airport_transfer_min : 60;
+    const latest = departure - 180 - transfer;
     rules.push(
       latest < 6 * 60
         ? `On ${ctx.end_date} the return flight${airportText(ctx.departure_airport)} leaves at ${formatMinutes(departure)} local time. There is no time for sightseeing that day: plan only breakfast near the hotel if it fits, and the trip to the airport.`
         : `On ${ctx.end_date} the return flight${airportText(ctx.departure_airport)} leaves at ${formatMinutes(departure)} local time. All activities must end by ${formatMinutes(latest)} ` +
-          '(3 hours at the airport plus travel from the city); do not plan anything after that except heading to the airport.',
+          `(3 hours at the airport plus about ${transfer} minutes of travel from the hotel); do not plan anything after that except heading to the airport.`,
     );
   }
   return rules;

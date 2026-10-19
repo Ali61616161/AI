@@ -7,7 +7,8 @@
 // Gerekli sunucu sırları: GEMINI_API_KEY, isteğe bağlı GEMINI_MODEL.
 // İsteğe bağlı: GOOGLE_MAPS_API_KEY (mekan doğrulama), AFFILIATE_* (bilet bağlantıları).
 import { consumeQuota, userClient } from '../_shared/auth.ts';
-import { destinationCoords, enrichDays } from '../_shared/enrich.ts';
+import { airportTransferMinutes } from '../_shared/airport.ts';
+import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import {
@@ -68,6 +69,10 @@ Deno.serve(async (req) => {
   const timezones = timezonesByDate(dates, trip.reservations);
   const fixed = fixedItemsByDate(dates, trip.reservations);
 
+  // Dönüş günü için otelden havalimanına gerçek yol süresi (varsa); yoksa plan 60 dk varsayar.
+  const google = googleConfig();
+  const ctx = { ...trip.ctx, airport_transfer_min: trip.ctx.departure_time ? await airportTransferMinutes({ apiKey: google.apiKey, reservations: trip.reservations, manualAirport: trip.ctx.departure_airport, language: trip.ctx.language }) : null };
+
   let raw: unknown;
   try {
     raw = await generateJson({
@@ -76,7 +81,7 @@ Deno.serve(async (req) => {
       model: Deno.env.get('GEMINI_MODEL') ?? DEFAULT_MODEL,
       prompt: buildItineraryPrompt(
         // Bu seyahat için seçilen ilgi alanları profildekilerin yerine geçer.
-        options.interests ? { ...trip.ctx, interests: options.interests } : trip.ctx,
+        options.interests ? { ...ctx, interests: options.interests } : ctx,
         dates,
         fixed,
         timezones,

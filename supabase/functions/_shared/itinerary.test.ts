@@ -252,3 +252,12 @@ Deno.test('tripTimingRules: iniş ve kalkış saatine göre ilk ve son gün', as
   assertEquals(tripTimingRules({ ...ctx, departure_time: '08:00' }, ['2027-01-20'])[0].includes('no time for sightseeing'), true);
   assertEquals(tripTimingRules({ ...ctx, arrival_time: null, departure_time: null }, ['2027-01-11', '2027-01-20']), []);
 });
+
+Deno.test('tripTimingRules: otelden havalimanına gerçek yol süresi kullanılır', async () => {
+  const { tripTimingRules } = await import('./itinerary.ts');
+  const ctx = { start_date: '2027-01-11', end_date: '2027-01-20', arrival_time: null, departure_time: '17:45', arrival_airport: null, departure_airport: null };
+  // Yol 15 dk: 17:45 − 180 − 15 = 14:30; yol 90 dk: 17:45 − 180 − 90 = 13:15; yok: 60 dk → 13:45
+  assertEquals(tripTimingRules({ ...ctx, airport_transfer_min: 15 }, ['2027-01-20'])[0].includes('by 14:30'), true);
+  assertEquals(tripTimingRules({ ...ctx, airport_transfer_min: 90 }, ['2027-01-20'])[0].includes('by 13:15'), true);
+  assertEquals(tripTimingRules(ctx, ['2027-01-20'])[0].includes('by 13:45'), true);
+});

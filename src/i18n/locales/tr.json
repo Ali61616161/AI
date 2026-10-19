@@ -1477,7 +1477,27 @@
     "now": "Şimdi",
     "next": "Sıradaki",
     "hopWalk": "Öncekinden ~{{min}} dk yürüyüş · {{km}} km",
-    "hopFar": "Öncekinden ~{{km}} km · yol tarifine bak"
+    "hopFar": "Öncekinden ~{{km}} km · yol tarifine bak",
+    "freeDay": "Bugün serbest",
+    "nudge": {
+      "title": "{{title}} saati geçti",
+      "body": "Yolda mısın? Dokun, günün kalanını düzenleyelim."
+    },
+    "guidance": {
+      "leaveBy": "Havalimanına en geç {{time}}'te çık",
+      "leaveNow": "Şimdi çıkma zamanı!",
+      "airportBody": "{{airport}} yaklaşık {{min}} dk uzakta. Uçuştan 3 saat önce orada olmalısın.",
+      "overdueTitle": "{{time}} · {{title}} saati geçti. Nasılsın?",
+      "went": "Gittim",
+      "skip": "Atla",
+      "rearrange": "Günün kalanını düzenle",
+      "lateTitle": "{{title}} için yaklaşık {{min}} dk geç kalacaksın.",
+      "eta": "Sıradaki: {{title}} · yaklaşık {{min}} dk uzaktasın",
+      "rearranged": "Günün kalanı güncellendi.",
+      "rearrangeFailed": "Plan düzenlenemedi. Tekrar dene.",
+      "leaveNowTitle": "Havalimanına çıkma zamanı",
+      "leaveNowBody": "{{airport}} için şimdi yola çık."
+    }
   },
   "tripQuestions": {
     "title": "Bu seyahat için",

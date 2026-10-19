@@ -10,7 +10,12 @@ import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
+import { freeDayKey } from '@/features/live/drift-logic';
+import { GuidancePanel } from '@/features/live/guidance-panel';
 import { currentStop, hopBetween } from '@/features/live/live-logic';
+import { useLiveStore } from '@/features/live/live-store';
+import { scheduleStopNudges } from '@/features/live/nudges';
+import { useLiveGuidance } from '@/features/live/use-live-guidance';
 import { LiveMap } from '@/features/live/live-map';
 import type { LiveMapHandle } from '@/features/live/types';
 import { openPlaceCard } from '@/features/places/place-card-api';
@@ -64,6 +69,20 @@ export default function TripLiveScreen() {
     0,
   );
 
+  // Canlı rehberlik: gecikmiş durak sorusu, yetişme uyarısı, havalimanına çıkış; serbest gün işareti.
+  const setFreeDay = useLiveStore((s) => s.setFreeDay);
+  const isToday = activeDay?.date === today;
+  const guidance = useLiveGuidance({ trip, tripId, date: activeDay?.date ?? null, stops, isToday, nowMs });
+  const freeKey = activeDay ? freeDayKey(tripId, activeDay.date) : null;
+  const leaveAt = guidance.leaveAt;
+  const flightTitle = guidance.airportName;
+  useEffect(() => {
+    if (!isToday) return;
+    const extra = leaveAt !== null ? { id: 'leave', at: new Date(leaveAt), title: t('live.guidance.leaveNowTitle'), body: t('live.guidance.leaveNowBody', { airport: flightTitle ?? '' }) } : undefined;
+    scheduleStopNudges(tripId, stops, guidance.marks, guidance.freeDay, extra).catch(() => undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tripId, isToday, stops, guidance.marks, guidance.freeDay, leaveAt]);
+
   const map = useRef<LiveMapHandle>(null);
   const list = useRef<FlatList<Stop>>(null);
   const cardWidth = Math.min(width - Spacing.lg * 2 - 24, 420);
@@ -110,6 +129,11 @@ export default function TripLiveScreen() {
           </View>
         </View>
         {days.length > 0 && <DaySelector days={days} selected={dayIndex} onSelect={setPickedDay} />}
+        {freeKey && (
+          <View style={styles.freeRow}>
+            <Chip icon={guidance.freeDay ? 'checkmark-circle' : 'sunny-outline'} label={t('live.freeDay')} selected={guidance.freeDay} onPress={() => setFreeDay(freeKey, !guidance.freeDay)} />
+          </View>
+        )}
       </View>
 
       {isPending ? (
@@ -122,6 +146,11 @@ export default function TripLiveScreen() {
         </View>
       ) : (
         <View style={[styles.bottom, { paddingBottom: insets.bottom + Spacing.md }]} pointerEvents="box-none">
+          {isToday && (
+            <View style={styles.guidance}>
+              <GuidancePanel tripId={tripId} guidance={guidance} timezone={stops[0]?.timezone ?? null} nowMs={nowMs} />
+            </View>
+          )}
           <FlatList
             // Gün değişince liste yeniden kurulur ve seçili durağa kayar.
             key={activeDay?.id}
@@ -208,7 +237,9 @@ const styles = StyleSheet.create({
   close: { width: 40, height: 40, borderRadius: Radius.pill, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   center: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   pad: { padding: Spacing.xl },
-  bottom: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+  bottom: { position: 'absolute', left: 0, right: 0, bottom: 0, gap: Spacing.sm },
+  guidance: { paddingHorizontal: Spacing.lg },
+  freeRow: { flexDirection: 'row', paddingHorizontal: Spacing.lg },
   cardHead: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginBottom: Spacing.xs },
   number: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   badge: { paddingHorizontal: Spacing.sm, paddingVertical: 2, borderRadius: Radius.pill },

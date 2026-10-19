@@ -1439,7 +1439,27 @@
     "now": "现在",
     "next": "下一站",
     "hopWalk": "距上一站步行约 {{min}} 分钟 · {{km}} 公里",
-    "hopFar": "距上一站约 {{km}} 公里 · 查看路线"
+    "hopFar": "距上一站约 {{km}} 公里 · 查看路线",
+    "freeDay": "今天自由活动",
+    "nudge": {
+      "title": "{{title}} 的时间已过",
+      "body": "你在路上吗？点按重新安排今天剩下的行程。"
+    },
+    "guidance": {
+      "leaveBy": "最迟 {{time}} 出发去机场",
+      "leaveNow": "该出发了！",
+      "airportBody": "{{airport}} 约 {{min}} 分钟路程。请在起飞前 3 小时到达。",
+      "overdueTitle": "{{time}} · {{title}} 的时间已过。怎么样了？",
+      "went": "我去了",
+      "skip": "跳过",
+      "rearrange": "重新安排今天剩余行程",
+      "lateTitle": "你去 {{title}} 大约会晚 {{min}} 分钟。",
+      "eta": "下一站：{{title}} · 约 {{min}} 分钟路程",
+      "rearranged": "今天剩余的行程已更新。",
+      "rearrangeFailed": "无法调整计划，请重试。",
+      "leaveNowTitle": "该去机场了",
+      "leaveNowBody": "现在出发前往 {{airport}}。"
+    }
   },
   "tripQuestions": {
     "title": "关于这次旅行",

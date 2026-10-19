@@ -1477,7 +1477,27 @@
     "now": "Ahora",
     "next": "A continuación",
     "hopWalk": "~{{min}} min a pie desde la parada anterior · {{km}} km",
-    "hopFar": "~{{km}} km desde la parada anterior · mira cómo llegar"
+    "hopFar": "~{{km}} km desde la parada anterior · mira cómo llegar",
+    "freeDay": "Hoy día libre",
+    "nudge": {
+      "title": "Ya pasó la hora de {{title}}",
+      "body": "¿Vas de camino? Toca para reorganizar el resto del día."
+    },
+    "guidance": {
+      "leaveBy": "Sal hacia el aeropuerto a más tardar a las {{time}}",
+      "leaveNow": "¡Es hora de salir!",
+      "airportBody": "{{airport}} está a unos {{min}} min. Llega 3 horas antes del vuelo.",
+      "overdueTitle": "{{time}} · pasó la hora de {{title}}. ¿Cómo vas?",
+      "went": "Fui",
+      "skip": "Omitir",
+      "rearrange": "Reorganizar el resto del día",
+      "lateTitle": "Llegarás unos {{min}} min tarde a {{title}}.",
+      "eta": "Siguiente: {{title}} · a unos {{min}} min",
+      "rearranged": "Se actualizó el resto del día.",
+      "rearrangeFailed": "No se pudo reorganizar el plan. Inténtalo de nuevo.",
+      "leaveNowTitle": "Hora de salir hacia el aeropuerto",
+      "leaveNowBody": "Sal ahora hacia {{airport}}."
+    }
   },
   "tripQuestions": {
     "title": "Para este viaje",
