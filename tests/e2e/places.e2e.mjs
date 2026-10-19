@@ -77,10 +77,10 @@ await step('Kararsızım ve harita: yeni kategoriler, geniş alan ve 20 sonuç',
   assert.equal(last.includedType, 'dessert_shop');
   assert.equal(last.pageSize, 20);
   assert.equal(last.locationBias.circle.radius, 3000);
-  // Sınırlar: yarıçap 300-5000 m, sonuç 10 veya 20.
+  // Sınırlar: yarıçap 300-20000 m, sonuç 10 veya 20.
   await places({ action: 'open_now', ...ROME, category: 'park', radius: 99999, limit: 500 });
   const clamped = (await (await fetch(`${FAKE_GOOGLE}/calls`)).json()).filter((c) => c.api === 'places').at(-1).body;
-  assert.equal(clamped.locationBias.circle.radius, 5000);
+  assert.equal(clamped.locationBias.circle.radius, 20000);
   assert.equal(clamped.pageSize, 10);
 });
 
