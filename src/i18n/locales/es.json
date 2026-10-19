@@ -1508,6 +1508,6 @@
     "to": "A",
     "swap": "Invertir",
     "unavailable": "No se pudo obtener el cambio. Revisa tu conexión.",
-    "source": "Tipos: Banco Central Europeo, una vez por día hábil. Bancos y casas de cambio aplican sus propios tipos y comisiones."
+    "source": "Los tipos se actualizan aproximadamente una vez al día. Bancos y casas de cambio aplican sus propios tipos y comisiones."
   }
 }

@@ -19,3 +19,9 @@ Deno.test('anahtar ve dönüşüm', () => {
   assertEquals(rateKey('eur', 'try'), 'EUR>TRY');
   assertEquals(convert(10, 38.456), 384.56);
 });
+
+Deno.test('CURRENCIES: benzersiz ve üç harfli', async () => {
+  const { CURRENCIES } = await import('./fx-logic.ts');
+  assertEquals(new Set(CURRENCIES).size, CURRENCIES.length);
+  assertEquals(CURRENCIES.every((c) => /^[A-Z]{3}$/.test(c)), true);
+});

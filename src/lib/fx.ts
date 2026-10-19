@@ -16,7 +16,7 @@ async function load(): Promise<Record<string, CachedRate>> {
 }
 
 /**
- * Güncel döviz kuru (Avrupa Merkez Bankası verisi, frankfurter.dev; anahtar gerekmez).
+ * Güncel döviz kuru (open.er-api.com, yedek: AMB/frankfurter; anahtar gerekmez).
  * 1 saat önbelleklenir; ağ yoksa eski kur kullanılır. Hiç kur yoksa null.
  */
 export async function getRate(from: string, to: string): Promise<number | null> {
@@ -24,16 +24,23 @@ export async function getRate(from: string, to: string): Promise<number | null> 
   const cache = await load();
   const key = rateKey(from, to);
   if (isFresh(cache[key], Date.now())) return cache[key].rate;
-  try {
-    const res = await fetch(`https://api.frankfurter.dev/v1/latest?base=${encodeURIComponent(from)}&symbols=${encodeURIComponent(to)}`);
-    const rate = res.ok ? parseRate(await res.json(), to) : null;
-    if (rate !== null) {
-      cache[key] = { rate, at: Date.now() };
-      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cache)).catch(() => {});
-      return rate;
+  // Önce geniş kapsamlı kaynak (~160 para birimi), olmazsa AMB (frankfurter).
+  const sources = [
+    `https://open.er-api.com/v6/latest/${encodeURIComponent(from)}`,
+    `https://api.frankfurter.dev/v1/latest?base=${encodeURIComponent(from)}&symbols=${encodeURIComponent(to)}`,
+  ];
+  for (const url of sources) {
+    try {
+      const res = await fetch(url);
+      const rate = res.ok ? parseRate(await res.json(), to) : null;
+      if (rate !== null) {
+        cache[key] = { rate, at: Date.now() };
+        AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cache)).catch(() => {});
+        return rate;
+      }
+    } catch {
+      // bu kaynak yanıt vermedi: sıradakine geç
     }
-  } catch {
-    // ağ yok: eski kura düş
   }
   return cache[key]?.rate ?? null;
 }

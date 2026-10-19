@@ -1508,6 +1508,6 @@
     "to": "Sonuç",
     "swap": "Yer değiştir",
     "unavailable": "Şu an kur alınamadı. İnternetini kontrol et.",
-    "source": "Kur: Avrupa Merkez Bankası, iş günü başına bir kez güncellenir. Banka ve döviz büroları farklı kur ve komisyon uygular."
+    "source": "Kurlar günde yaklaşık bir kez güncellenir. Banka ve döviz büroları kendi kurunu ve komisyonunu uygular."
   }
 }

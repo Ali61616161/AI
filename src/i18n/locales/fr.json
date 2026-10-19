@@ -1508,6 +1508,6 @@
     "to": "Vers",
     "swap": "Inverser",
     "unavailable": "Taux indisponible. Vérifie ta connexion.",
-    "source": "Taux : Banque centrale européenne, mis à jour chaque jour ouvré. Banques et bureaux de change appliquent leurs propres taux et frais."
+    "source": "Les taux sont mis à jour environ une fois par jour. Banques et bureaux de change appliquent leurs propres taux et frais."
   }
 }

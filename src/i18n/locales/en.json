@@ -1508,6 +1508,6 @@
     "to": "To",
     "swap": "Swap",
     "unavailable": "Couldn't get a rate right now. Check your connection.",
-    "source": "Rates: European Central Bank, updated once per business day. Banks and exchange offices apply their own rates and fees."
+    "source": "Rates update about once a day. Banks and exchange offices apply their own rates and fees."
   }
 }
