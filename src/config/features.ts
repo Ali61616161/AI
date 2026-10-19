@@ -12,8 +12,8 @@ export const Features = {
   getaway: false,
   /** Kaydedilen yerler (Listelerim) ve Şehir pasaportu. */
   savedPlaces: false,
-  /** Gezginler (sosyal mod). */
-  social: false,
+  /** Gezginler (sosyal mod): tek başına gezenler için açık. */
+  social: true,
   /** Arkadaşını davet et. */
   referral: false,
 } as const;

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { Features } from '@/config/features';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tap } from '@/components/ui/tap';
@@ -44,6 +45,7 @@ export function TripToday({ trip }: { trip: TripListItem }) {
     { key: 'wallet', icon: 'wallet' as const, label: t('wallet.title'), go: () => router.push({ pathname: '/wallet', params: { tripId: trip.id } }) },
     { key: 'translate', icon: 'language' as const, label: t('today.quick.translate'), go: () => router.push('/translate') },
     { key: 'sos', icon: 'medkit' as const, label: t('today.quick.sos'), go: () => router.push({ pathname: '/sos', params: { tripId: trip.id } }) },
+    ...(Features.social ? [{ key: 'social', icon: 'people' as const, label: t('today.quick.travelers'), go: () => router.push('/social') }] : []),
   ];
 
   return (
