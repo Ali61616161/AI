@@ -26,7 +26,7 @@ const TRIP_SELECT =
 
 const PLAN_SELECT =
   'id, day_plans(date, city, title, notes, plan_items(position, kind, title, description, starts_at, ends_at, timezone, ' +
-  'place_name, address, category, estimated_cost, cost_currency, priority, is_indoor, is_locked, reservation_id, affiliate_partner, ' +
+  'place_name, address, category, estimated_cost, cost_min, cost_max, cost_currency, priority, is_indoor, is_locked, reservation_id, affiliate_partner, ' +
   'booking_url, google_place_id, lat, lng, rating, rating_count, maps_url, place_status, place_checked_at, status))';
 
 export async function loadProfile(supabase: SupabaseClient, userId: string) {

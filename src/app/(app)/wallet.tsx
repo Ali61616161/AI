@@ -18,6 +18,8 @@ import { formatLocalDateTime } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+const NO_FILES: never[] = [];
+
 const routeOf = (r: TripReservation) => (TRANSPORT_TYPES.includes(r.type) ? [r.origin_code ?? r.origin_name, r.destination_code ?? r.destination_name].filter(Boolean).join(' → ') : r.address);
 
 /**
@@ -29,7 +31,7 @@ export default function WalletScreen() {
   const { colors } = useTheme();
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const { data: trip } = useTrip(tripId);
-  const files = useOfflineStore((s) => s.trips[tripId]?.files ?? []);
+  const files = useOfflineStore((s) => s.trips[tripId]?.files ?? NO_FILES);
   const [shown, setShown] = useState<TripReservation | null>(null);
   const [image, setImage] = useState<OfflineFile | null>(null);
   const [copied, setCopied] = useState(false);

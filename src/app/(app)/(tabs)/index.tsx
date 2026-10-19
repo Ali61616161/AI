@@ -43,7 +43,7 @@ export default function TodayScreen() {
   const session = useSessionStore((s) => s.session);
   const { data: trips } = useTrips();
   const today = todayIsoDate();
-  const nextTrip = trips?.find((trip) => !trip.end_date || trip.end_date >= today);
+  const nextTrip = trips?.find((trip) => (trip.end_date ?? trip.start_date ?? today) >= today);
   // Son 30 günde biten ve henüz raporu oluşturulmamış seyahat.
   const monthAgo = isoDateDaysAgo(30);
   const endedTrip = trips?.find((trip) => trip.end_date && trip.end_date < today && trip.end_date >= monthAgo && trip.status !== 'completed');

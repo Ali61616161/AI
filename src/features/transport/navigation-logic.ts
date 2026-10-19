@@ -35,10 +35,10 @@ export function formatDistance(m: number): string {
 /** Rotanın başına bu kadar uzaksan canlı takip yerine önizleme gösterilir. */
 export const OFF_ROUTE_M = 2000;
 
-/** Konum rotanın başından çok uzakta mı (ör. başka şehirdeyken uzak bir rotayı açtın)? */
+/** Konum rotanın hiçbir yerine yakın değil mi (ör. başka şehirdeyken uzak bir rotayı açtın)? */
 export function isOffRoute(here: LatLng | null, path: LatLng[]): boolean {
-  if (!here || path.length === 0) return false;
-  return distanceKm(here, path[0]) * 1000 > OFF_ROUTE_M;
+  const d = distanceToPathM(here, path);
+  return d !== null && d > OFF_ROUTE_M;
 }
 
 /** Konuma en yakın çizgi noktasının sırası (yoksa 0). */

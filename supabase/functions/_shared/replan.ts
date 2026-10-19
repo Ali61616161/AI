@@ -29,6 +29,8 @@ export type StoredItem = {
   address: string | null;
   category: string | null;
   estimated_cost: number | null;
+  cost_min?: number | null;
+  cost_max?: number | null;
   cost_currency: string | null;
   priority: number;
   is_indoor: boolean | null;

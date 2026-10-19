@@ -14,12 +14,14 @@ import { useOfflineStore, type OfflineFile } from '@/features/offline/offline-st
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+const NO_FILES: never[] = [];
+
 /** Çevrimdışı indirilmiş biletler ve rezervasyon belgeleri. */
 export default function TripDocumentsScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
-  const files = useOfflineStore((s) => s.trips[tripId]?.files ?? []);
+  const files = useOfflineStore((s) => s.trips[tripId]?.files ?? NO_FILES);
   const [open, setOpen] = useState<OfflineFile | null>(null);
 
   function show(file: OfflineFile) {

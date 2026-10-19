@@ -73,6 +73,7 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     };
   }, [visible]);
 
+  const fitted = useRef(false);
   const off = isOffRoute(here, path);
   const live = !off && following;
 
@@ -80,8 +81,10 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   useEffect(() => {
     if (!visible) return;
     if (live && here) {
+      fitted.current = false;
       map.current?.animateCamera({ center: { latitude: here.lat, longitude: here.lng }, zoom: 18, pitch: 50, ...(here.heading !== null ? { heading: here.heading } : {}) }, { duration: 700 });
-    } else if (coords.length > 1) {
+    } else if (coords.length > 1 && !fitted.current) {
+      fitted.current = true;
       map.current?.fitToCoordinates(coords, { edgePadding: { top: insets.top + 180, right: 48, bottom: 260, left: 48 }, animated: true });
     }
   }, [visible, live, here, coords, insets.top]);

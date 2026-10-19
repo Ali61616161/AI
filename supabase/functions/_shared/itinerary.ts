@@ -495,7 +495,7 @@ export function aiItem(raw: unknown, currency: string): PlanItem | null {
   let end = normalizeTime(r.end_time);
   if (end && toMinutes(end) <= toMinutes(start)) end = null;
   const kind = AI_KINDS.includes(r.kind as ItemKind) ? (r.kind as ItemKind) : 'activity';
-  const cost = typeof r.estimated_cost === 'number' && Number.isFinite(r.estimated_cost) && r.estimated_cost >= 0 ? Math.round(r.estimated_cost * 100) / 100 : null;
+  const cost = typeof r.estimated_cost === 'number' && Number.isFinite(r.estimated_cost) && r.estimated_cost >= 0 && r.estimated_cost < 1e7 ? Math.round(r.estimated_cost * 100) / 100 : null;
   const priority = typeof r.priority === 'number' ? Math.min(5, Math.max(1, Math.round(r.priority))) : 3;
   const booking = r.booking === 'getyourguide' || r.booking === 'tiqets' ? r.booking : null;
   return {
