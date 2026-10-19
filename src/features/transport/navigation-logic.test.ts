@@ -30,3 +30,17 @@ Deno.test('rotadan uzak: başlangıca 2 km üstü', async () => {
   assertEquals(isOffRoute(null, [start]), false);
   assertEquals(isOffRoute(start, []), false);
 });
+
+Deno.test('gezinme: en yakın nokta, güncel adım, manevra simgesi', async () => {
+  const { nearestIndex, currentStepIndex, turnIcon } = await import('./navigation-logic.ts');
+  const path = [{ lat: 41.0, lng: 28.6 }, { lat: 41.001, lng: 28.6 }, { lat: 41.002, lng: 28.6 }];
+  assertEquals(nearestIndex({ lat: 41.0011, lng: 28.6 }, path), 1);
+  assertEquals(nearestIndex(null, path), 0);
+  assertEquals(nearestIndex({ lat: 1, lng: 1 }, []), 0);
+  const steps = [[path[0], path[1]], [path[1], path[2]]];
+  assertEquals(currentStepIndex({ lat: 41.0019, lng: 28.6 }, steps, 0), 1);
+  assertEquals(currentStepIndex({ lat: 41.0, lng: 28.6 }, steps, 5), 0);
+  assertEquals(currentStepIndex(null, steps, 3), 3);
+  assertEquals(currentStepIndex({ lat: 41, lng: 28.6 }, [], 2), 2);
+  assertEquals([turnIcon('TURN_LEFT'), turnIcon('TURN_SHARP_RIGHT'), turnIcon('UTURN_LEFT'), turnIcon('STRAIGHT'), turnIcon(null)], ['left', 'right', 'uturn', 'straight', 'straight']);
+});

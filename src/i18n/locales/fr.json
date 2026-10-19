@@ -1414,7 +1414,9 @@
       "then": "Ensuite : {{next}}",
       "lastStep": "Dernière étape",
       "recenter": "Revenir à ma position",
-      "arrivedShort": "Arrivé"
+      "arrivedShort": "Arrivé",
+      "theme": "Style de carte : auto, clair, sombre",
+      "satellite": "Vue satellite"
     }
   },
   "widget": {

@@ -1414,7 +1414,9 @@
       "then": "Then: {{next}}",
       "lastStep": "Last step",
       "recenter": "Back to my location",
-      "arrivedShort": "Arrived"
+      "arrivedShort": "Arrived",
+      "theme": "Map look: auto, light, dark",
+      "satellite": "Satellite view"
     }
   },
   "widget": {

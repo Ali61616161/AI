@@ -40,3 +40,46 @@ export function isOffRoute(here: LatLng | null, path: LatLng[]): boolean {
   if (!here || path.length === 0) return false;
   return distanceKm(here, path[0]) * 1000 > OFF_ROUTE_M;
 }
+
+/** Konuma en yakın çizgi noktasının sırası (yoksa 0). */
+export function nearestIndex(here: LatLng | null, path: LatLng[]): number {
+  if (!here || path.length === 0) return 0;
+  let best = 0;
+  let bestKm = Infinity;
+  for (let i = 0; i < path.length; i++) {
+    const km = distanceKm(here, path[i]);
+    if (km < bestKm) {
+      bestKm = km;
+      best = i;
+    }
+  }
+  return best;
+}
+
+/** Konum hangi adımın çizgisine en yakınsa o adımın sırası; hiçbirinin çizgisi yoksa `fallback`. */
+export function currentStepIndex(here: LatLng | null, stepPaths: LatLng[][], fallback: number): number {
+  if (!here) return fallback;
+  let best = -1;
+  let bestKm = Infinity;
+  stepPaths.forEach((path, i) => {
+    for (const p of path) {
+      const km = distanceKm(here, p);
+      if (km < bestKm) {
+        bestKm = km;
+        best = i;
+      }
+    }
+  });
+  return best === -1 ? fallback : best;
+}
+
+export type TurnIcon = 'left' | 'right' | 'straight' | 'uturn';
+
+/** Google manevra kodunu dört simgeden birine çevirir. */
+export function turnIcon(maneuver: string | null | undefined): TurnIcon {
+  const m = maneuver ?? '';
+  if (m.startsWith('UTURN')) return 'uturn';
+  if (m.includes('LEFT')) return 'left';
+  if (m.includes('RIGHT')) return 'right';
+  return 'straight';
+}

@@ -1414,7 +1414,9 @@
       "then": "Danach: {{next}}",
       "lastStep": "Letzter Schritt",
       "recenter": "Zurück zu meinem Standort",
-      "arrivedShort": "Angekommen"
+      "arrivedShort": "Angekommen",
+      "theme": "Kartenstil: automatisch, hell, dunkel",
+      "satellite": "Satellitenansicht"
     }
   },
   "widget": {

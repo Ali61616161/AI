@@ -14,8 +14,11 @@ import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { VEHICLE_ICONS, type RouteChoice } from './api';
-import { formatDistance, isArrived, isOffRoute, remainingMeters } from './navigation-logic';
+import { currentStepIndex, formatDistance, isArrived, isOffRoute, nearestIndex, remainingMeters, turnIcon, type TurnIcon } from './navigation-logic';
 import { decodePolyline, thin } from './polyline';
+
+type MapTheme = 'auto' | 'light' | 'dark';
+const TURN_ICON: Record<TurnIcon, 'arrow-up' | 'arrow-back' | 'arrow-forward' | 'refresh'> = { straight: 'arrow-up', left: 'arrow-back', right: 'arrow-forward', uturn: 'refresh' };
 
 type Props = { visible: boolean; route: RouteChoice; googleUrl: string; destinationName: string; onClose: () => void };
 
@@ -33,6 +36,12 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const [here, setHere] = useState<{ lat: number; lng: number; heading: number | null } | null>(null);
   const [step, setStep] = useState(0);
   const [following, setFollowing] = useState(true);
+  const [theme, setTheme] = useState<MapTheme>('auto');
+  const [satellite, setSatellite] = useState(false);
+  const mapDark = theme === 'auto' ? isDark : theme === 'dark';
+  // Adım çizgileri: yürüyüş noktalı, toplu taşıma hat renginde, araba düz çizilir.
+  const stepPaths = useMemo(() => route.steps.map((st) => st.polylines.map((pl) => thin(decodePolyline(pl)))), [route.steps]);
+  const stepCoords = useMemo(() => stepPaths.map((parts) => parts.map((part) => part.map((p) => ({ latitude: p.lat, longitude: p.lng })))), [stepPaths]);
 
   useEffect(() => {
     if (!visible) return;
@@ -65,18 +74,23 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     }
   }, [visible, live, here, coords, insets.top]);
 
+  const passedIndex = here && !off ? nearestIndex(here, path) : 0;
+  const passedCoords = useMemo(() => coords.slice(0, passedIndex + 1), [coords, passedIndex]);
   const remaining = remainingMeters(here, path);
   const arrived = !off && isArrived(remaining);
   const steps = route.steps;
-  const current = steps[Math.min(step, steps.length - 1)];
+  // Canlı takipte güncel adım konumdan bulunur; önizlemede (ya da konum yokken) ok düğmeleriyle gezilir.
+  const auto = Boolean(here) && !off;
+  const idx = Math.max(0, Math.min(auto ? currentStepIndex(here, stepPaths.map((parts) => parts.flat()), step) : step, steps.length - 1));
+  const current = steps[idx];
   const tr = current?.transit;
-  const next = steps[step + 1];
+  const next = steps[idx + 1];
   const end = coords[coords.length - 1];
 
   const instruction = tr
     ? [tr.lineShort ?? tr.line ?? tr.vehicleName, tr.headsign ? `→ ${tr.headsign}` : null].filter(Boolean).join(' ')
     : current
-      ? t('route.walk', { count: current.durationMin })
+      ? (current.instruction ?? t('route.walk', { count: current.durationMin }))
       : destinationName;
   const detail = tr?.from && tr?.to ? `${tr.from} → ${tr.to}` : null;
 
@@ -89,15 +103,30 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
             ref={map}
             style={StyleSheet.absoluteFill}
             initialRegion={coords[0] ? { ...coords[0], latitudeDelta: 0.01, longitudeDelta: 0.01 } : undefined}
-            userInterfaceStyle={isDark ? 'dark' : 'light'}
-            customMapStyle={usesGoogleMap && isDark ? DARK_MAP_STYLE : undefined}
+            userInterfaceStyle={mapDark ? 'dark' : 'light'}
+            mapType={satellite ? 'hybrid' : 'standard'}
+            customMapStyle={usesGoogleMap && mapDark && !satellite ? DARK_MAP_STYLE : undefined}
             showsUserLocation
             showsMyLocationButton={false}
             showsCompass={false}
             showsBuildings
             toolbarEnabled={false}
             onPanDrag={() => setFollowing(false)}>
-            {coords.length > 1 && <Polyline coordinates={coords} strokeColor={colors.primary} strokeWidth={7} lineJoin="round" />}
+            {/* Kalan yol: yürüyüş noktalı, toplu taşıma hat renginde; geçilen kısım üstte soluk gri. */}
+            {stepCoords.some((parts) => parts.length > 0)
+              ? stepCoords.flatMap((parts, i) =>
+                  parts.map((part, j) =>
+                    route.steps[i].transit ? (
+                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={route.steps[i].transit?.color ?? colors.primary} strokeWidth={7} lineJoin="round" />
+                    ) : route.steps[i].mode === 'walk' ? (
+                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={colors.primary} strokeWidth={6} lineCap="round" lineDashPattern={[0.1, 12]} />
+                    ) : (
+                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={colors.primary} strokeWidth={7} lineJoin="round" />
+                    ),
+                  ),
+                )
+              : coords.length > 1 && <Polyline coordinates={coords} strokeColor={colors.primary} strokeWidth={7} lineJoin="round" />}
+            {passedCoords.length > 1 && <Polyline coordinates={passedCoords} strokeColor="rgba(150,160,185,0.85)" strokeWidth={8} lineJoin="round" zIndex={5} />}
             {end && <Marker coordinate={end} title={destinationName} />}
           </MapView>
         ) : (
@@ -121,7 +150,7 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
           ) : (
             <>
               <View style={styles.row}>
-                <Ionicons name={tr ? VEHICLE_ICONS[tr.vehicle] : 'walk'} size={30} color={colors.primary} />
+                <Ionicons name={tr ? VEHICLE_ICONS[tr.vehicle] : current && current.mode !== 'transit' && current.maneuver ? TURN_ICON[turnIcon(current.maneuver)] : 'walk'} size={30} color={colors.primary} />
                 <View style={styles.flex}>
                   <Text variant="title" numberOfLines={2}>
                     {instruction}
@@ -133,21 +162,30 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
                   )}
                 </View>
               </View>
-              {steps.length > 1 && (
+              {steps.length > 1 && !auto && (
                 <View style={styles.stepNav}>
-                  <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.prev')} disabled={step === 0} onPress={() => setStep((s) => Math.max(s - 1, 0))} hitSlop={10} style={{ opacity: step === 0 ? 0.3 : 1 }}>
+                  <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.prev')} disabled={idx === 0} onPress={() => setStep(Math.max(idx - 1, 0))} hitSlop={10} style={{ opacity: idx === 0 ? 0.3 : 1 }}>
                     <Ionicons name="chevron-back-circle" size={32} color={colors.textSecondary} />
                   </Pressable>
                   <Text variant="caption" color="textMuted" style={styles.flex}>
                     {next ? t('route.nav.then', { next: next.transit ? (next.transit.lineShort ?? next.transit.line ?? next.transit.vehicleName ?? '') : t('route.walk', { count: next.durationMin }) }) : t('route.nav.lastStep')}
                   </Text>
-                  <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.next')} disabled={step >= steps.length - 1} onPress={() => setStep((s) => Math.min(s + 1, steps.length - 1))} hitSlop={10} style={{ opacity: step >= steps.length - 1 ? 0.3 : 1 }}>
+                  <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.next')} disabled={idx >= steps.length - 1} onPress={() => setStep(Math.min(idx + 1, steps.length - 1))} hitSlop={10} style={{ opacity: idx >= steps.length - 1 ? 0.3 : 1 }}>
                     <Ionicons name="chevron-forward-circle" size={32} color={colors.primary} />
                   </Pressable>
                 </View>
               )}
             </>
           )}
+        </View>
+
+        <View style={[styles.controls, { top: insets.top + 130 }]}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.theme')} onPress={() => setTheme((v) => (v === 'auto' ? 'light' : v === 'light' ? 'dark' : 'auto'))} style={[styles.control, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Ionicons name={theme === 'auto' ? 'contrast' : theme === 'light' ? 'sunny' : 'moon'} size={22} color={colors.primary} />
+          </Pressable>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.satellite')} onPress={() => setSatellite((v) => !v)} style={[styles.control, { backgroundColor: satellite ? colors.primary : colors.surface, borderColor: colors.border }]}>
+            <Ionicons name="earth" size={22} color={satellite ? colors.onPrimary : colors.primary} />
+          </Pressable>
         </View>
 
         {!following && !off && (
@@ -181,6 +219,8 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   stepNav: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   flex: { flex: 1 },
+  controls: { position: 'absolute', right: Spacing.md, gap: Spacing.sm },
+  control: { width: 48, height: 48, borderRadius: 24, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   recenter: { position: 'absolute', right: Spacing.md, width: 52, height: 52, borderRadius: 26, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   bottom: { position: 'absolute', left: 0, right: 0, bottom: 0, gap: Spacing.md, padding: Spacing.lg, borderTopLeftRadius: Radius.xl, borderTopRightRadius: Radius.xl, borderWidth: 1 },
 });

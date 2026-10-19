@@ -1414,7 +1414,9 @@
       "then": "Sonra: {{next}}",
       "lastStep": "Son adım",
       "recenter": "Konumuma dön",
-      "arrivedShort": "Vardın"
+      "arrivedShort": "Vardın",
+      "theme": "Harita görünümü: otomatik, açık, koyu",
+      "satellite": "Uydu görünümü"
     }
   },
   "widget": {

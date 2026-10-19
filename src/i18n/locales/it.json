@@ -1414,7 +1414,9 @@
       "then": "Poi: {{next}}",
       "lastStep": "Ultimo passo",
       "recenter": "Torna alla mia posizione",
-      "arrivedShort": "Arrivato"
+      "arrivedShort": "Arrivato",
+      "theme": "Aspetto mappa: auto, chiaro, scuro",
+      "satellite": "Vista satellite"
     }
   },
   "widget": {

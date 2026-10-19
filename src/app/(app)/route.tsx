@@ -166,7 +166,7 @@ export default function RouteScreen() {
             <>
               <RouteMap polyline={data.routes[Math.min(selected, data.routes.length - 1)]?.polyline ?? null} />
               {data.routes.map((r, i) => (
-                <RouteCard key={i} route={r} best={i === Math.min(selected, data.routes.length - 1)} onPress={() => setSelected(i)} />
+                <RouteCard key={i} mode={mode} route={r} best={i === Math.min(selected, data.routes.length - 1)} onPress={() => setSelected(i)} />
               ))}
             </>
           )}
@@ -193,7 +193,7 @@ export default function RouteScreen() {
   );
 }
 
-function RouteCard({ route, best, onPress }: { route: RouteChoice; best: boolean; onPress: () => void }) {
+function RouteCard({ route, best, mode, onPress }: { route: RouteChoice; best: boolean; mode: RouteMode; onPress: () => void }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const transfers = Math.max(route.steps.filter((s) => s.transit).length - 1, 0);
@@ -218,9 +218,7 @@ function RouteCard({ route, best, onPress }: { route: RouteChoice; best: boolean
           </View>
         )}
       </View>
-      {route.steps.map((s, i) => (
-        <StepRow key={i} step={s} />
-      ))}
+      {mode === 'transit' && route.steps.map((s, i) => <StepRow key={i} step={s} />)}
     </Card>
   );
 }

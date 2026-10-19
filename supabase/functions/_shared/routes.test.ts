@@ -59,7 +59,7 @@ Deno.test('normalizeRoutes: hatlar, araç türleri, işletmeci sitesi, ücret ve
   assertEquals(r.departAt, '09:05');
   assertEquals(r.arriveAt, '10:15'); // son adımın saati yoksa bilinen son varış
   assertEquals(r.steps.length, 4);
-  assertEquals(r.steps[0], { mode: 'walk', durationMin: 3, distanceM: 200, instruction: 'Interlaken Ost istasyonuna yürü', transit: null });
+  assertEquals(r.steps[0], { mode: 'walk', durationMin: 3, distanceM: 200, instruction: 'Interlaken Ost istasyonuna yürü', maneuver: null, polylines: [], transit: null });
   const train = r.steps[1].transit!;
   assertEquals([train.vehicle, train.lineShort, train.color, train.agency, train.agencyUrl, train.from, train.to, train.stops], ['train', 'R61', '#e2001a', 'BOB', 'https://www.jungfrau.ch/', 'Interlaken Ost', 'Grindelwald', 4]);
   assertEquals(train.longDistance, false);
@@ -73,7 +73,7 @@ Deno.test('normalizeRoutes: boş/bozuk cevap ve araba özeti', () => {
   assertEquals(normalizeRoutes({}, 'transit'), []);
   assertEquals(normalizeRoutes({ routes: [{}] }, 'transit')[0].steps, []);
   const [car] = normalizeRoutes({ routes: [{ duration: '3600s', distanceMeters: 80000, legs: [{ steps: [{ travelMode: 'DRIVE', staticDuration: '100s' }] }] }] }, 'drive');
-  assertEquals([car.durationMin, car.distanceKm, car.steps.length, car.fare], [60, 80, 0, null]);
+  assertEquals([car.durationMin, car.distanceKm, car.steps.length, car.fare], [60, 80, 1, null]);
 });
 
 Deno.test('routesRequest: mod, geçmiş saat gönderilmez, adres veya koordinat', () => {
@@ -105,4 +105,26 @@ Deno.test('normalizeRoutes: çizgi yoksa veya çok uzunsa null', () => {
   assertEquals(normalizeRoutes({ routes: [base] }, 'walk')[0].polyline, null);
   assertEquals(normalizeRoutes({ routes: [{ ...base, polyline: { encodedPolyline: 'a'.repeat(60_001) } }] }, 'walk')[0].polyline, null);
   assertEquals(normalizeRoutes({ routes: [{ ...base, polyline: { encodedPolyline: 'abc' } }] }, 'walk')[0].polyline, 'abc');
+});
+
+Deno.test('normalizeRoutes: yürüyüşte tüm manevralar ve adım çizgileri gelir', () => {
+  const data = {
+    routes: [{
+      duration: '600s',
+      distanceMeters: 700,
+      legs: [{
+        steps: [
+          { travelMode: 'WALK', staticDuration: '300s', distanceMeters: 350, navigationInstruction: { instructions: 'Kuzeye yürüyün', maneuver: 'DEPART' }, polyline: { encodedPolyline: 'abc' } },
+          { travelMode: 'WALK', staticDuration: '300s', distanceMeters: 350, navigationInstruction: { instructions: 'Sola dönün', maneuver: 'TURN_LEFT' }, polyline: { encodedPolyline: 'def' } },
+        ],
+      }],
+    }],
+  };
+  const [r] = normalizeRoutes(data, 'walk');
+  assertEquals(r.steps.length, 2);
+  assertEquals([r.steps[1].maneuver, r.steps[1].instruction, r.steps[1].polylines], ['TURN_LEFT', 'Sola dönün', ['def']]);
+  // Toplu taşımada art arda yürüyüşler birleşir ama çizgiler korunur.
+  const [t] = normalizeRoutes(data, 'transit');
+  assertEquals(t.steps.length, 1);
+  assertEquals(t.steps[0].polylines, ['abc', 'def']);
 });

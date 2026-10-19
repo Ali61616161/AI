@@ -18,6 +18,7 @@ export const ROUTE_FIELD_MASK = [
   'routes.legs.steps.staticDuration',
   'routes.legs.steps.distanceMeters',
   'routes.legs.steps.navigationInstruction',
+  'routes.legs.steps.polyline.encodedPolyline',
   'routes.legs.steps.transitDetails',
 ].join(',');
 
@@ -51,6 +52,10 @@ export type RouteStep = {
   durationMin: number;
   distanceM: number;
   instruction: string | null;
+  /** Google manevra kodu (TURN_LEFT, TURN_RIGHT, STRAIGHT, UTURN_LEFT...); yürüme ve araba adımlarında. */
+  maneuver: string | null;
+  /** Bu adımın kodlanmış çizgileri (birleşen yürüyüşlerde birden fazla); haritada yürüyüş noktalı, toplu taşıma hat renginde çizilir. */
+  polylines: string[];
   transit: TransitInfo | null;
 };
 
@@ -173,6 +178,8 @@ export function normalizeRoutes(data: any, mode: RouteMode): RouteOption[] {
         durationMin: Math.round(seconds(s.staticDuration) / 60),
         distanceM: Math.round(seconds(s.distanceMeters)),
         instruction: str(s.navigationInstruction?.instructions),
+        maneuver: str(s.navigationInstruction?.maneuver),
+        polylines: typeof s.polyline?.encodedPolyline === 'string' ? [s.polyline.encodedPolyline] : [],
         transit: isTransit ? transitInfo(s.transitDetails) : null,
       };
       // Toplu taşımada art arda yürüme adımları tek adımda birleştirilir.
@@ -180,10 +187,11 @@ export function normalizeRoutes(data: any, mode: RouteMode): RouteOption[] {
       if (mode === 'transit' && step.mode === 'walk' && prev?.mode === 'walk') {
         prev.durationMin += step.durationMin;
         prev.distanceM += step.distanceM;
+        prev.polylines.push(...step.polylines);
       } else steps.push(step);
     }
-    // Araba ve yürüyüşte adım adım tarif haritaya bırakılır; sadece özet gösterilir.
-    const visible = mode === 'transit' ? steps.filter((s) => s.mode === 'transit' || s.durationMin >= 1) : [];
+    // Toplu taşımada çok kısa yürüyüşler gizlenir; araba ve yürüyüşte tüm manevralar gelir (uygulama içi gezinme).
+    const visible = mode === 'transit' ? steps.filter((s) => s.mode === 'transit' || s.durationMin >= 1) : steps;
     const transit = visible.filter((s) => s.transit);
     const fare = r.travelAdvisory?.transitFare;
     const units = Number(fare?.units ?? 0) + Number(fare?.nanos ?? 0) / 1e9;

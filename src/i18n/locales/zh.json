@@ -1377,7 +1377,9 @@
       "then": "然后：{{next}}",
       "lastStep": "最后一步",
       "recenter": "回到我的位置",
-      "arrivedShort": "已到达"
+      "arrivedShort": "已到达",
+      "theme": "地图外观：自动、浅色、深色",
+      "satellite": "卫星视图"
     }
   },
   "widget": {
