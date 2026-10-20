@@ -20,7 +20,7 @@ import { DeleteAccountModal } from '@/features/account/delete-account-modal';
 import { adPrivacyOptionsAvailable, openAdPrivacyOptions } from '@/features/ads/privacy-options';
 import { PassportCard } from '@/features/identity/passport-card';
 import { usePassportPower } from '@/features/identity/use-passport-power';
-import { clearOfflineData } from '@/features/offline/download';
+import { resetLocalUserData } from '@/features/auth/reset-local-data';
 import { useCurrentPlan } from '@/features/subscription/purchases';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useAppearanceStore, type Appearance } from '@/stores/appearance-store';
@@ -48,7 +48,6 @@ export default function ProfileScreen() {
   const preferences = useSessionStore((s) => s.preferences);
   const identity = useSessionStore((s) => s.identity);
   const power = usePassportPower(identity);
-  const signOut = useSessionStore((s) => s.signOut);
   const appearance = useAppearanceStore((s) => s.appearance);
   const setAppearance = useAppearanceStore((s) => s.setAppearance);
 
@@ -64,8 +63,7 @@ export default function ProfileScreen() {
   async function handleDeleted() {
     setConfirmDelete(false);
     await getSupabase().auth.signOut().catch(() => undefined);
-    clearOfflineData();
-    signOut();
+    await resetLocalUserData();
   }
 
   function confirmSignOut() {
@@ -80,8 +78,7 @@ export default function ProfileScreen() {
       if (session && isSupabaseConfigured()) await getSupabase().auth.signOut();
     } finally {
       // Çıkış isteği başarısız olsa bile telefondaki seyahat verileri silinir.
-      clearOfflineData();
-      signOut();
+      await resetLocalUserData();
     }
   }
 

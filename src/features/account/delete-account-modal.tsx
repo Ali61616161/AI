@@ -15,6 +15,8 @@ type Step = 'confirm' | 'password' | 'code';
  * Hesap silme: önce ekranın ortasında onay penceresi, sonra kimlik doğrulama (şifre ya da
  * e-postaya gelen kod). Sadece doğrulama geçilirse silme isteği gönderilir.
  */
+class DeleteFailed extends Error {}
+
 export function DeleteAccountModal({ visible, email, hasPassword, onClose, onDeleted }: { visible: boolean; email: string; hasPassword: boolean; onClose: () => void; onDeleted: () => void }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
@@ -38,7 +40,7 @@ export function DeleteAccountModal({ visible, email, hasPassword, onClose, onDel
 
   async function deleteNow() {
     const { error: deleteError } = await getSupabase().functions.invoke('delete-account', { body: { confirm: 'DELETE' } });
-    if (deleteError) throw deleteError;
+    if (deleteError) throw new DeleteFailed();
     reset();
     onDeleted();
   }
@@ -48,8 +50,8 @@ export function DeleteAccountModal({ visible, email, hasPassword, onClose, onDel
     setError(null);
     try {
       await action();
-    } catch {
-      setError(failure);
+    } catch (e) {
+      setError(e instanceof DeleteFailed ? t('deleteAccount.deleteFailed') : failure);
     } finally {
       setBusy(false);
     }
@@ -90,6 +92,11 @@ export function DeleteAccountModal({ visible, email, hasPassword, onClose, onDel
               <Text variant="body" color="textSecondary">
                 {t('profile.deleteBody')}
               </Text>
+              {error && (
+                <Text variant="caption" color="danger">
+                  {error}
+                </Text>
+              )}
               <Button title={t('deleteAccount.continue')} variant="danger" onPress={() => (hasPassword ? setStep('password') : sendCode())} loading={busy} />
               <Button title={t('common.cancel')} variant="ghost" onPress={close} />
             </>

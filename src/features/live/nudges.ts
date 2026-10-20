@@ -11,7 +11,16 @@ const keyFor = (tripId: string) => `yola.liveNudges.${tripId}`;
  * Bugünün işaretlenmemiş duraklarının saatinden 25 dakika sonrası için "yolda mısın?" bildirimi kurar.
  * Önceki bildirimler iptal edilir; serbest günde hiçbiri kurulmaz. İzin yoksa sessizce vazgeçer.
  */
-export async function scheduleStopNudges(tripId: string, stops: DriftStop[], marks: Record<string, StopMark>, freeDay: boolean, extra?: { id: string; at: Date; title: string; body: string }): Promise<void> {
+let queue: Promise<unknown> = Promise.resolve();
+
+/** Çağrılar sırayla çalışır; üst üste tetiklenince bildirimler ikilenmez. */
+export function scheduleStopNudges(...args: Parameters<typeof scheduleStopNudgesNow>): Promise<void> {
+  const run = queue.then(() => scheduleStopNudgesNow(...args));
+  queue = run.catch(() => undefined);
+  return run;
+}
+
+async function scheduleStopNudgesNow(tripId: string, stops: DriftStop[], marks: Record<string, StopMark>, freeDay: boolean, extra?: { id: string; at: Date; title: string; body: string }): Promise<void> {
   const permission = await Notifications.getPermissionsAsync();
   if (!permission.granted) return;
   const previous: string[] = JSON.parse((await AsyncStorage.getItem(keyFor(tripId))) ?? '[]');

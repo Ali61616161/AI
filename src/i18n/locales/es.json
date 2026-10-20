@@ -1582,6 +1582,7 @@
     "resend": "Reenviar código",
     "wrongPassword": "Contraseña incorrecta.",
     "codeSendFailed": "No se pudo enviar el código. Inténtalo de nuevo.",
+    "deleteFailed": "No se pudo eliminar la cuenta. Revisa tu conexión e inténtalo de nuevo.",
     "wrongCode": "El código es incorrecto o ha caducado."
   },
   "wallet": {
@@ -1614,5 +1615,31 @@
     "title": "Hoy",
     "noStops": "No quedan paradas para hoy.",
     "noPlan": "Este viaje aún no tiene plan."
+  },
+  "share": {
+    "title": "Compartir con amigos",
+    "body": "Tus amigos pueden ver el viaje en su móvil, pero no cambiar nada.",
+    "proOnly": "Compartir es solo para Pro. Tus amigos lo ven gratis.",
+    "emailLabel": "Correo de tu amigo",
+    "send": "Invitar",
+    "pending": "Pendiente",
+    "accepted": "Puede ver",
+    "resend": "Reenviar enlace",
+    "revoke": "Quitar",
+    "hint": "Cuando tu amigo inicie sesión en Yola con este correo, el viaje aparecerá solo. El enlace que envíes también sirve.",
+    "message": "Compartí contigo el viaje «{{title}}». Inicia sesión en Yola con este correo para verlo: {{link}}",
+    "errInvalid": "Escribe un correo válido.",
+    "errSelf": "No puedes invitarte a ti mismo.",
+    "errMany": "Puedes invitar hasta 10 personas a un viaje.",
+    "errUnknown": "No se pudo enviar la invitación. Inténtalo de nuevo.",
+    "inviteTitle": "Invitación de viaje",
+    "inviteBody": "«{{title}}» se compartió contigo. Solo puedes verlo.",
+    "accept": "Aceptar",
+    "acceptFailed": "No se pudo aceptar. Asegúrate de haber iniciado sesión con el correo invitado.",
+    "joining": "Aceptando la invitación…",
+    "viewerBanner": "Este viaje se compartió contigo. Solo puedes verlo.",
+    "leave": "Salir del viaje",
+    "leaveBody": "El viaje desaparece de tu lista. El dueño puede invitarte de nuevo.",
+    "noPlan": "El dueño aún no ha creado un plan."
   }
 }

@@ -1544,6 +1544,7 @@
     "resend": "重新发送验证码",
     "wrongPassword": "密码错误。",
     "codeSendFailed": "验证码发送失败，请重试。",
+    "deleteFailed": "无法删除账户。请检查网络后重试。",
     "wrongCode": "验证码错误或已过期。"
   },
   "wallet": {
@@ -1576,5 +1577,31 @@
     "title": "今天",
     "noStops": "今天没有剩余的行程。",
     "noPlan": "这次旅行还没有行程。"
+  },
+  "share": {
+    "title": "与朋友分享",
+    "body": "朋友可以在自己的手机上查看行程，但无法修改任何内容。",
+    "proOnly": "分享仅限 Pro 会员，朋友可免费查看。",
+    "emailLabel": "朋友的邮箱",
+    "send": "邀请",
+    "pending": "待接受",
+    "accepted": "可查看",
+    "resend": "重新发送链接",
+    "revoke": "移除",
+    "hint": "朋友用该邮箱登录 Yola 后行程会自动出现，点击你发送的链接也可以。",
+    "message": "我与你分享了行程“{{title}}”。用此邮箱登录 Yola 即可查看：{{link}}",
+    "errInvalid": "请输入有效邮箱。",
+    "errSelf": "不能邀请自己。",
+    "errMany": "每个行程最多邀请 10 人。",
+    "errUnknown": "邀请发送失败，请重试。",
+    "inviteTitle": "行程邀请",
+    "inviteBody": "“{{title}}”已与你分享，仅可查看。",
+    "accept": "接受",
+    "acceptFailed": "无法接受邀请，请确认使用受邀邮箱登录。",
+    "joining": "正在接受邀请…",
+    "viewerBanner": "此行程已与你分享，仅可查看。",
+    "leave": "退出行程",
+    "leaveBody": "行程将从你的列表中消失，所有者可再次邀请你。",
+    "noPlan": "所有者尚未创建计划。"
   }
 }

@@ -27,12 +27,15 @@ import {
   useActivePlan,
   useGenerateItinerary,
   useDeleteTrip,
+  useLeaveTrip,
   useTrip,
   type TripReservation,
 } from '@/features/trips/queries';
 import { daysUntil, formatDateRange, formatDayShort, formatLocalDateTime, todayIsoDate } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
+import { ShareSection } from '@/features/sharing/share-section';
+import { useSessionStore } from '@/stores/session-store';
 import { NativeAdCard } from '@/features/ads/native-ad-card';
 
 function ReservationRow({ reservation: r }: { reservation: TripReservation }) {
@@ -84,6 +87,8 @@ export default function TripScreen() {
   const { data: plan, isLoading: planLoading } = useActivePlan(id);
   const generate = useGenerateItinerary(id);
   const deleteTrip = useDeleteTrip();
+  const leaveTrip = useLeaveTrip();
+  const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [showReservations, setShowReservations] = useState(false);
   const [showMap, setShowMap] = useState(true);
@@ -105,6 +110,8 @@ export default function TripScreen() {
     );
   }
 
+  // Başkasının paylaştığı seyahat: yalnızca görüntülenir.
+  const readOnly = trip.owner_id !== userId;
   const days = plan?.day_plans ?? [];
   const dayIndex = Math.min(selectedDay ?? initialDayIndex(days.map((d) => d.date)), Math.max(days.length - 1, 0));
   const totalDays = trip.start_date && trip.end_date ? daysUntil(trip.end_date, new Date(`${trip.start_date}T12:00:00`)) + 1 : 0;
@@ -120,23 +127,38 @@ export default function TripScreen() {
   return (
     <Screen
       footer={
-        <Button
-          title={t('trip.addDocument')}
-          variant="secondary"
-          onPress={() => router.push({ pathname: '/ticket', params: { tripId: trip.id } })}
-        />
+        readOnly ? undefined : (
+          <Button
+            title={t('trip.addDocument')}
+            variant="secondary"
+            onPress={() => router.push({ pathname: '/ticket', params: { tripId: trip.id } })}
+          />
+        )
       }>
       <TripHero
         id={trip.id}
         city={trip.trip_destinations[0]?.city ?? trip.title}
         title={trip.title}
         subtitle={formatDateRange(trip.start_date, trip.end_date)}
-        actions={[
-          { icon: 'calendar-outline', label: t('trip.changeDates'), onPress: () => router.push({ pathname: '/trip-dates', params: { tripId: trip.id } }) },
-          ...(plan ? [{ icon: 'git-branch-outline' as const, label: t('trip.versions'), onPress: () => router.push({ pathname: '/trip-versions', params: { tripId: trip.id } }) }] : []),
-          { icon: 'bed-outline', label: t('hotels.button'), onPress: () => router.push({ pathname: '/hotels', params: { tripId: trip.id } }) },
-        ]}
+        actions={
+          readOnly
+            ? []
+            : [
+                { icon: 'calendar-outline', label: t('trip.changeDates'), onPress: () => router.push({ pathname: '/trip-dates', params: { tripId: trip.id } }) },
+                ...(plan ? [{ icon: 'git-branch-outline' as const, label: t('trip.versions'), onPress: () => router.push({ pathname: '/trip-versions', params: { tripId: trip.id } }) }] : []),
+                { icon: 'bed-outline', label: t('hotels.button'), onPress: () => router.push({ pathname: '/hotels', params: { tripId: trip.id } }) },
+              ]
+        }
       />
+
+      {readOnly && (
+        <View style={[styles.notice, { backgroundColor: colors.surfaceMuted }]}>
+          <Ionicons name="eye-outline" size={18} color={colors.primary} />
+          <Text variant="caption" style={styles.flex}>
+            {t('share.viewerBanner')}
+          </Text>
+        </View>
+      )}
 
       {/* Seyahat merkezi: canlı görünüm, cüzdan ve acil durum tek dokunuşla. */}
       <View style={styles.hub}>
@@ -199,6 +221,10 @@ export default function TripScreen() {
 
         {planLoading ? (
           <ActivityIndicator color={colors.primary} />
+        ) : !plan && readOnly ? (
+          <Text variant="body" color="textSecondary">
+            {t('share.noPlan')}
+          </Text>
         ) : !plan || generate.isPending ? (
           <GenerateCard pending={generate.isPending} error={generateError} onGenerate={(options) => generate.mutate(options)} />
         ) : (
@@ -240,7 +266,7 @@ export default function TripScreen() {
                 {generateError}
               </Text>
             )}
-            <Button title={t('plan.regenerate')} variant="ghost" onPress={() => generate.mutate()} />
+            {!readOnly && <Button title={t('plan.regenerate')} variant="ghost" onPress={() => generate.mutate()} />}
           </>
         )}
       </View>
@@ -281,6 +307,20 @@ export default function TripScreen() {
           {showReservations && trip.reservations.map((r) => <ReservationRow key={r.id} reservation={r} />)}
         </View>
       )}
+      {!readOnly && <ShareSection tripId={trip.id} tripTitle={trip.title} />}
+      {readOnly ? (
+        <Button
+          title={t('share.leave')}
+          variant="ghost"
+          loading={leaveTrip.isPending}
+          onPress={() =>
+            Alert.alert(t('share.leave'), t('share.leaveBody'), [
+              { text: t('common.cancel'), style: 'cancel' },
+              { text: t('share.leave'), style: 'destructive', onPress: () => leaveTrip.mutate(trip.id, { onSuccess: () => router.replace('/trips') }) },
+            ])
+          }
+        />
+      ) : (
       <Button
         title={t('trip.delete')}
         variant="ghost"
@@ -292,6 +332,7 @@ export default function TripScreen() {
           ])
         }
       />
+      )}
     </Screen>
   );
 }

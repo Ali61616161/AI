@@ -65,16 +65,14 @@ export function Conversation({ myLanguage, theirLanguage, onLanguages }: { myLan
     setTurns((prev) => [...prev, { id, side: who, original: text, translated: null, error: null }]);
     const source = langOf(who);
     const target = langOf(who === 'me' ? 'them' : 'me');
-    translate.mutate(
-      { text, source, target, seconds },
-      {
-        onSuccess: (r) => {
-          setTurns((prev) => prev.map((x) => (x.id === id ? { ...x, translated: r.text } : x)));
-          speakNatural(r.text, translateLanguage(target).speech);
-        },
-        onError: (err) => setTurns((prev) => prev.map((x) => (x.id === id ? { ...x, error: t(translateErrorKey(err)) } : x))),
-      },
-    );
+    // mutateAsync: arka arkaya konuşmada her tur kendi sonucunu alır (mutate'in geri çağrıları eskisini düşürür).
+    translate
+      .mutateAsync({ text, source, target, seconds })
+      .then((r) => {
+        setTurns((prev) => prev.map((x) => (x.id === id ? { ...x, translated: r.text } : x)));
+        speakNatural(r.text, translateLanguage(target).speech);
+      })
+      .catch((err) => setTurns((prev) => prev.map((x) => (x.id === id ? { ...x, error: t(translateErrorKey(err)) } : x))));
   });
 
   async function start(who: Side) {

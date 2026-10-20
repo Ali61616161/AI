@@ -16,6 +16,7 @@ import { Text } from '@/components/ui/text';
 import { useTrips } from '@/features/trips/queries';
 import { PreTripTools } from '@/features/trips/pre-trip-tools';
 import { TripBrief } from '@/features/trips/trip-brief';
+import { PendingTripInvites } from '@/features/sharing/pending-invites';
 import { tripPhase } from '@/features/trips/trip-phase';
 import { TripToday } from '@/features/trips/trip-today';
 import { TripCard } from '@/features/trips/trip-card';
@@ -75,6 +76,8 @@ export default function TodayScreen() {
           </LinearGradient>
         </Tap>
       </Animated.View>
+
+      <PendingTripInvites />
 
       {/* Seyahat yoksa ya da çok uzaktaysa: iki ana özellik. 15 günden az kalınca özet, sürerken "Bugün". */}
       {nextTrip ? (

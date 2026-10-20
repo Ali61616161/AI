@@ -1582,6 +1582,7 @@
     "resend": "Kodu tekrar gönder",
     "wrongPassword": "Şifre yanlış.",
     "codeSendFailed": "Kod gönderilemedi. Tekrar dene.",
+    "deleteFailed": "Hesap silinemedi. İnternetini kontrol edip tekrar dene.",
     "wrongCode": "Kod yanlış ya da süresi dolmuş."
   },
   "wallet": {
@@ -1614,5 +1615,31 @@
     "title": "Bugün",
     "noStops": "Bugün için planlanmış durak kalmadı.",
     "noPlan": "Bu seyahat için henüz rota yok."
+  },
+  "share": {
+    "title": "Arkadaşlarınla paylaş",
+    "body": "Arkadaşların seyahatini kendi telefonunda yalnızca görüntüleyebilir; hiçbir şeyi değiştiremez.",
+    "proOnly": "Paylaşım Pro üyelere özel. Arkadaşların ücretsiz görüntüler.",
+    "emailLabel": "Arkadaşının e-postası",
+    "send": "Davet et",
+    "pending": "Bekliyor",
+    "accepted": "Görüntülüyor",
+    "resend": "Bağlantıyı tekrar gönder",
+    "revoke": "Kaldır",
+    "hint": "Arkadaşın Yola'da bu e-postayla giriş yapınca seyahat otomatik görünür. Gönderilen bağlantıya basması da yeter.",
+    "message": "{{title}} seyahatini seninle paylaştım. Yola uygulamasında bu e-postayla giriş yapınca görünür: {{link}}",
+    "errInvalid": "Geçerli bir e-posta yaz.",
+    "errSelf": "Kendini davet edemezsin.",
+    "errMany": "Bir seyahate en fazla 10 kişi davet edebilirsin.",
+    "errUnknown": "Davet gönderilemedi. Tekrar dene.",
+    "inviteTitle": "Seyahat daveti",
+    "inviteBody": "{{title}} seyahati seninle paylaşıldı. Yalnızca görüntüleyebilirsin.",
+    "accept": "Kabul et",
+    "acceptFailed": "Davet kabul edilemedi. Aynı e-postayla giriş yaptığından emin ol.",
+    "joining": "Davet kabul ediliyor…",
+    "viewerBanner": "Bu seyahat seninle paylaşıldı. Yalnızca görüntüleyebilirsin.",
+    "leave": "Seyahatten ayrıl",
+    "leaveBody": "Bu seyahat listenden kalkar. Sahibi tekrar davet edebilir.",
+    "noPlan": "Seyahat sahibi henüz plan oluşturmadı."
   }
 }

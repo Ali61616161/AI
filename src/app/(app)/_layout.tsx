@@ -44,6 +44,7 @@ export default function AppLayout() {
       <Stack.Screen name="trip-ended" options={{ presentation: 'modal' }} />
       <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
       <Stack.Screen name="invite" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="join" options={{ presentation: 'modal' }} />
       <Stack.Screen name="chat/[id]" />
       <Stack.Screen name="trip-new" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-documents" options={{ presentation: 'modal' }} />

@@ -44,14 +44,20 @@ export default function SignInScreen() {
     setError(null);
     setLoading(true);
     rememberConsent();
-    const result = await run();
-    if ('session' in result) {
-      await completeSignIn(result.session);
-    } else if ('error' in result) {
+    try {
+      const result = await run();
+      if ('session' in result) {
+        await completeSignIn(result.session);
+      } else if ('error' in result) {
+        setError(t('auth.socialError'));
+        console.warn('social sign-in failed', result.error);
+      }
+    } catch (e) {
       setError(t('auth.socialError'));
-      console.warn('social sign-in failed', result.error);
+      console.warn('social sign-in failed', e);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   function switchMode(next: typeof mode) {

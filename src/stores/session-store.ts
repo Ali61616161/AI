@@ -28,6 +28,8 @@ export type PendingConsents = { version: string; marketing: boolean };
 type SessionState = {
   /** Supabase oturumu. Kalıcı saklanmaz; Supabase kendi oturumunu ayrıca saklar. */
   session: Session | null;
+  /** Son giriş yapan kullanıcı. Oturum süresi dolmuş ve internet yokken de (uçakta) uygulama kilitlenmesin diye saklanır. */
+  userId: string | null;
   preferences: TravelPreferences;
   identity: TravelIdentity;
   /** Gezilen ülkeler (misafirken de tutulur; girişte hesaba eşitlenir). */
@@ -54,6 +56,7 @@ export const useSessionStore = create<SessionState>()(
   persist(
     (set) => ({
       session: null,
+      userId: null,
       preferences: emptyPreferences,
       identity: emptyIdentity,
       visitedCountries: [],
@@ -61,7 +64,7 @@ export const useSessionStore = create<SessionState>()(
       introSeen: false,
       consents: null,
 
-      setSession: (session) => set({ session }),
+      setSession: (session) => set((state) => ({ session, userId: session ? session.user.id : state.userId })),
       setPreferences: (patch) => set((state) => ({ preferences: { ...state.preferences, ...patch } })),
       setIdentity: (patch) => set((state) => ({ identity: { ...state.identity, ...patch } })),
       setIntroSeen: () => set({ introSeen: true }),
@@ -69,12 +72,13 @@ export const useSessionStore = create<SessionState>()(
       setConsents: (consents) => set({ consents }),
       completeOnboarding: () => set({ onboardingCompleted: true }),
       signOut: () =>
-        set({ session: null, preferences: emptyPreferences, identity: emptyIdentity, visitedCountries: [], onboardingCompleted: false }),
+        set({ session: null, userId: null, preferences: emptyPreferences, identity: emptyIdentity, visitedCountries: [], onboardingCompleted: false }),
     }),
     {
       name: 'yola.session',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
+        userId: state.userId,
         preferences: state.preferences,
         identity: state.identity,
         visitedCountries: state.visitedCountries,
@@ -91,4 +95,4 @@ export const useSessionStore = create<SessionState>()(
   ),
 );
 
-export const useIsSignedIn = () => useSessionStore((s) => s.session !== null);
+export const useIsSignedIn = () => useSessionStore((s) => s.session !== null || s.userId !== null);

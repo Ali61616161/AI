@@ -1582,6 +1582,7 @@
     "resend": "Resend code",
     "wrongPassword": "Wrong password.",
     "codeSendFailed": "Couldn't send the code. Try again.",
+    "deleteFailed": "Couldn't delete the account. Check your connection and try again.",
     "wrongCode": "The code is wrong or has expired."
   },
   "wallet": {
@@ -1614,5 +1615,31 @@
     "title": "Today",
     "noStops": "No stops left for today.",
     "noPlan": "There's no plan for this trip yet."
+  },
+  "share": {
+    "title": "Share with friends",
+    "body": "Friends can view the trip on their own phone, but they can't change anything.",
+    "proOnly": "Sharing is for Pro members. Your friends view for free.",
+    "emailLabel": "Friend's email",
+    "send": "Invite",
+    "pending": "Pending",
+    "accepted": "Can view",
+    "resend": "Send link again",
+    "revoke": "Remove",
+    "hint": "When your friend signs in to Yola with this email, the trip appears automatically. Tapping the link you send works too.",
+    "message": "I shared my trip \"{{title}}\" with you. Sign in to Yola with this email to see it: {{link}}",
+    "errInvalid": "Enter a valid email.",
+    "errSelf": "You can't invite yourself.",
+    "errMany": "You can invite up to 10 people to a trip.",
+    "errUnknown": "Couldn't send the invite. Try again.",
+    "inviteTitle": "Trip invitation",
+    "inviteBody": "\"{{title}}\" was shared with you. You can view it only.",
+    "accept": "Accept",
+    "acceptFailed": "Couldn't accept the invite. Make sure you're signed in with the invited email.",
+    "joining": "Accepting the invite…",
+    "viewerBanner": "This trip was shared with you. You can view it only.",
+    "leave": "Leave trip",
+    "leaveBody": "The trip disappears from your list. The owner can invite you again.",
+    "noPlan": "The trip owner hasn't created a plan yet."
   }
 }

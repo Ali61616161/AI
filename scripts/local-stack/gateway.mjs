@@ -59,7 +59,7 @@ function session(id, email) {
   const exp = iat + expiresIn;
   return {
     // Gerçek Supabase anahtarında olduğu gibi "iat" (verilme zamanı) vardır; hesap silme taze giriş ister.
-    access_token: signJwt({ sub: id, email, role: 'authenticated', aud: 'authenticated', iat, exp }),
+    access_token: signJwt({ sub: id, email, role: 'authenticated', aud: 'authenticated', iat, exp, amr: [{ method: 'password', timestamp: iat }] }),
     token_type: 'bearer',
     expires_in: expiresIn,
     expires_at: exp,

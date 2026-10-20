@@ -15,13 +15,13 @@ const TRIP_LIST_SELECT =
   'id, title, status, start_date, end_date, trip_destinations(city, country_code, position), reservations(count)';
 
 const TRIP_DETAIL_SELECT =
-  'id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, budget_amount, local_transport, notes, arrival_time, departure_time, arrival_airport, departure_airport, adults, children, interests, ' +
+  'id, owner_id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, budget_amount, local_transport, notes, arrival_time, departure_time, arrival_airport, departure_airport, adults, children, interests, ' +
   'trip_destinations(id, city, country_code, arrive_on, depart_on, position), ' +
   'reservations(id, type, title, provider_name, reference_code, starts_at, ends_at, start_timezone, end_timezone, ' +
   'origin_name, origin_code, destination_name, destination_code, address, details)';
 
 function useUserId() {
-  return useSessionStore((s) => s.session?.user.id ?? null);
+  return useSessionStore((s) => s.session?.user.id ?? s.userId);
 }
 
 export function useTrips() {
@@ -51,6 +51,20 @@ export function useTrips() {
 export type TripListItem = NonNullable<ReturnType<typeof useTrips>['data']>[number];
 
 /** Seyahati ve bağlı her şeyi (rezervasyon, plan, harcama...) siler; sadece sahibi yapabilir (RLS). */
+/** Görüntüleyici olarak eklendiği seyahatten kendi üyeliğini kaldırır. */
+export function useLeaveTrip() {
+  const queryClient = useQueryClient();
+  const userId = useUserId();
+  return useMutation({
+    mutationFn: async (tripId: string) => {
+      if (!userId) throw new Error('not signed in');
+      const { error } = await getSupabase().from('trip_members').delete().eq('trip_id', tripId).eq('user_id', userId);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['trips'] }),
+  });
+}
+
 export function useDeleteTrip() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -100,6 +114,7 @@ export type TripReservation = {
 
 export type TripDetail = {
   id: string;
+  owner_id: string;
   title: string;
   status: string;
   start_date: string | null;

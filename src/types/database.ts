@@ -1213,6 +1213,48 @@ export type Database = {
           },
         ];
       };
+      trip_invites: {
+        Row: {
+          accepted_at: string | null;
+          created_at: string;
+          email: string;
+          expires_at: string;
+          id: string;
+          invited_by: string;
+          token: string;
+          trip_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          accepted_at?: string | null;
+          created_at?: string;
+          email: string;
+          expires_at?: string;
+          id?: string;
+          invited_by: string;
+          token?: string;
+          trip_id: string;
+        };
+        Update: {
+          accepted_at?: string | null;
+          created_at?: string;
+          email?: string;
+          expires_at?: string;
+          id?: string;
+          invited_by?: string;
+          token?: string;
+          trip_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'trip_invites_trip_id_fkey';
+            columns: ['trip_id'];
+            isOneToOne: false;
+            referencedRelation: 'trips';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       trip_members: {
         Row: {
           created_at: string;
@@ -1513,7 +1555,14 @@ export type Database = {
         Args: { p_feature: Database['public']['Enums']['quota_feature']; p_user: string };
         Returns: number;
       };
+      accept_trip_invite: { Args: { p_token: string }; Returns: string };
       can_edit_trip: { Args: { p_trip_id: string }; Returns: boolean };
+      create_trip_invite: { Args: { p_email: string; p_trip_id: string }; Returns: string };
+      my_trip_invites: {
+        Args: Record<PropertyKey, never>;
+        Returns: { created_at: string; token: string; trip_id: string; trip_title: string }[];
+      };
+      revoke_trip_invite: { Args: { p_invite_id: string }; Returns: undefined };
       city_passport_stats: {
         Args: Record<PropertyKey, never>;
         Returns: {

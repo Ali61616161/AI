@@ -1582,6 +1582,7 @@
     "resend": "Code erneut senden",
     "wrongPassword": "Falsches Passwort.",
     "codeSendFailed": "Code konnte nicht gesendet werden. Versuche es erneut.",
+    "deleteFailed": "Konto konnte nicht gelöscht werden. Prüfe deine Verbindung und versuche es erneut.",
     "wrongCode": "Der Code ist falsch oder abgelaufen."
   },
   "wallet": {
@@ -1614,5 +1615,31 @@
     "title": "Heute",
     "noStops": "Für heute sind keine Stopps mehr geplant.",
     "noPlan": "Für diese Reise gibt es noch keinen Plan."
+  },
+  "share": {
+    "title": "Mit Freunden teilen",
+    "body": "Freunde sehen die Reise auf dem eigenen Handy, können aber nichts ändern.",
+    "proOnly": "Teilen ist Pro-Mitgliedern vorbehalten. Deine Freunde sehen kostenlos.",
+    "emailLabel": "E-Mail deines Freundes",
+    "send": "Einladen",
+    "pending": "Ausstehend",
+    "accepted": "Kann ansehen",
+    "resend": "Link erneut senden",
+    "revoke": "Entfernen",
+    "hint": "Meldet sich dein Freund mit dieser E-Mail in Yola an, erscheint die Reise automatisch. Der gesendete Link funktioniert auch.",
+    "message": "Ich habe die Reise „{{title}}\" mit dir geteilt. Melde dich mit dieser E-Mail in Yola an: {{link}}",
+    "errInvalid": "Gib eine gültige E-Mail ein.",
+    "errSelf": "Du kannst dich nicht selbst einladen.",
+    "errMany": "Du kannst bis zu 10 Personen zu einer Reise einladen.",
+    "errUnknown": "Einladung konnte nicht gesendet werden. Versuche es erneut.",
+    "inviteTitle": "Reiseeinladung",
+    "inviteBody": "„{{title}}\" wurde mit dir geteilt. Du kannst sie nur ansehen.",
+    "accept": "Annehmen",
+    "acceptFailed": "Einladung konnte nicht angenommen werden. Melde dich mit der eingeladenen E-Mail an.",
+    "joining": "Einladung wird angenommen…",
+    "viewerBanner": "Diese Reise wurde mit dir geteilt. Du kannst sie nur ansehen.",
+    "leave": "Reise verlassen",
+    "leaveBody": "Die Reise verschwindet aus deiner Liste. Der Besitzer kann dich erneut einladen.",
+    "noPlan": "Der Besitzer hat noch keinen Plan erstellt."
   }
 }

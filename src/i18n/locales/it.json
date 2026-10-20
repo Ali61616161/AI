@@ -1582,6 +1582,7 @@
     "resend": "Invia di nuovo il codice",
     "wrongPassword": "Password errata.",
     "codeSendFailed": "Impossibile inviare il codice. Riprova.",
+    "deleteFailed": "Impossibile eliminare l'account. Controlla la connessione e riprova.",
     "wrongCode": "Il codice è errato o scaduto."
   },
   "wallet": {
@@ -1614,5 +1615,31 @@
     "title": "Oggi",
     "noStops": "Nessuna tappa rimasta per oggi.",
     "noPlan": "Questo viaggio non ha ancora un piano."
+  },
+  "share": {
+    "title": "Condividi con gli amici",
+    "body": "Gli amici possono vedere il viaggio sul proprio telefono, ma non modificare nulla.",
+    "proOnly": "La condivisione è per i membri Pro. Gli amici vedono gratis.",
+    "emailLabel": "Email dell'amico",
+    "send": "Invita",
+    "pending": "In attesa",
+    "accepted": "Può vedere",
+    "resend": "Invia di nuovo il link",
+    "revoke": "Rimuovi",
+    "hint": "Quando l'amico accede a Yola con questa email, il viaggio compare da solo. Funziona anche il link inviato.",
+    "message": "Ho condiviso con te il viaggio «{{title}}». Accedi a Yola con questa email: {{link}}",
+    "errInvalid": "Inserisci un'email valida.",
+    "errSelf": "Non puoi invitare te stesso.",
+    "errMany": "Puoi invitare fino a 10 persone a un viaggio.",
+    "errUnknown": "Impossibile inviare l'invito. Riprova.",
+    "inviteTitle": "Invito al viaggio",
+    "inviteBody": "«{{title}}» è stato condiviso con te. Puoi solo visualizzarlo.",
+    "accept": "Accetta",
+    "acceptFailed": "Impossibile accettare. Accedi con l'email invitata.",
+    "joining": "Accettazione dell'invito…",
+    "viewerBanner": "Questo viaggio è stato condiviso con te. Puoi solo visualizzarlo.",
+    "leave": "Lascia il viaggio",
+    "leaveBody": "Il viaggio sparisce dalla lista. Il proprietario può invitarti di nuovo.",
+    "noPlan": "Il proprietario non ha ancora creato un piano."
   }
 }

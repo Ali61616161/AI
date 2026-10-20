@@ -739,6 +739,70 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18d. Seyahat paylaşımı: Pro üye arkadaşını yalnızca görüntüleyici olarak ekler'
+reset role;
+insert into public.subscriptions (user_id, plan, status, store, product_id, expires_at)
+  values ('00000000-0000-0000-0000-00000000000a', 'pro_monthly', 'active', 'promotional', 'test_share', now() + interval '30 days');
+call tests.login('00000000-0000-0000-0000-00000000000b');
+set role authenticated;
+do $$ begin
+  assert tests.throws($q$ select public.create_trip_invite('10000000-0000-0000-0000-000000000001', 'can@example.com') $q$), 'başkasının seyahatine davet edilemez';
+end $$;
+reset role;
+call tests.login('00000000-0000-0000-0000-00000000000a');
+set role authenticated;
+do $$
+declare v_token text;
+begin
+  assert tests.throws($q$ select public.create_trip_invite('10000000-0000-0000-0000-000000000001', 'ayse@example.com') $q$), 'kendini davet edemez';
+  assert tests.throws($q$ select public.create_trip_invite('10000000-0000-0000-0000-000000000001', 'gecersiz') $q$), 'geçersiz e-posta reddedilir';
+  v_token := public.create_trip_invite('10000000-0000-0000-0000-000000000001', ' CAN@Example.com ');
+  assert length(v_token) >= 40, 'davet kodu üretilir';
+  assert (select count(*) from public.trip_invites) = 1, 'sahibi davetini görür';
+  perform set_config('tests.invite', v_token, false);
+end $$;
+reset role;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+set role authenticated;
+do $$ begin
+  assert (select count(*) from public.trip_invites) = 0, 'başkası davetleri göremez';
+  assert tests.throws(format($q$ select public.accept_trip_invite(%L) $q$, current_setting('tests.invite'))), 'başka e-posta kabul edemez';
+end $$;
+reset role;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+set role authenticated;
+do $$ begin
+  assert (select count(*) from public.my_trip_invites()) = 1, 'davet edilen bekleyen daveti görür';
+  assert not exists (select 1 from public.trips where id = '10000000-0000-0000-0000-000000000001'), 'kabulden önce seyahati görmez';
+  assert public.accept_trip_invite(current_setting('tests.invite')) = '10000000-0000-0000-0000-000000000001', 'kabul edilir';
+  assert exists (select 1 from public.trips where id = '10000000-0000-0000-0000-000000000001'), 'kabulden sonra seyahati görür';
+  assert (select count(*) from public.my_trip_invites()) = 0, 'kabul edilen davet bekleyenlerden düşer';
+  assert (select role from public.trip_members where user_id = auth.uid() and trip_id = '10000000-0000-0000-0000-000000000001') = 'viewer', 'rol yalnızca görüntüleyici';
+  assert not public.can_edit_trip('10000000-0000-0000-0000-000000000001'), 'düzenleyemez';
+  update public.trips set title = 'Hacklendi' where id = '10000000-0000-0000-0000-000000000001';
+  assert (select title from public.trips where id = '10000000-0000-0000-0000-000000000001') <> 'Hacklendi', 'görüntüleyici başlığı değiştiremez';
+  assert tests.throws($q$ select public.create_trip_invite('10000000-0000-0000-0000-000000000001', 'bea@example.com') $q$), 'görüntüleyici başkasını davet edemez';
+  delete from public.trips where id = '10000000-0000-0000-0000-000000000001';
+  assert exists (select 1 from public.trips where id = '10000000-0000-0000-0000-000000000001'), 'görüntüleyici seyahati silemez';
+end $$;
+reset role;
+call tests.login('00000000-0000-0000-0000-00000000000a');
+set role authenticated;
+do $$ begin
+  perform public.revoke_trip_invite((select id from public.trip_invites limit 1));
+  assert not exists (select 1 from public.trip_members where user_id = '00000000-0000-0000-0000-00000000000c' and trip_id = '10000000-0000-0000-0000-000000000001'), 'geri alınca görüntüleyici çıkar';
+end $$;
+reset role;
+-- Pro olmayan sahip davet edemez.
+delete from public.subscriptions where user_id = '00000000-0000-0000-0000-00000000000a';
+call tests.login('00000000-0000-0000-0000-00000000000a');
+set role authenticated;
+do $$ begin
+  assert tests.throws($q$ select public.create_trip_invite('10000000-0000-0000-0000-000000000001', 'can@example.com') $q$), 'Pro olmayan davet edemez';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
