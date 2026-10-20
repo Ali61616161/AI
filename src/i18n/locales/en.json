@@ -109,7 +109,14 @@
     "mid": "Mid (Smart-Casual)",
     "mid_desc": "Good-value hotels, local restaurants, a few paid activities",
     "lux": "High (Luxury)",
-    "lux_desc": "Boutique hotels, fine dining, private tours"
+    "lux_desc": "Boutique hotels, fine dining, private tours",
+    "ok": "Within budget",
+    "near": "Close to budget",
+    "over": "Over budget",
+    "mostExpensive": "Most expensive: {{items}}",
+    "askCheaper": "Suggest cheaper",
+    "askMessage": "My daily budget is {{budget}} but today's estimate is {{total}}. Swap the rest of today for cheaper places that fit my budget.",
+    "skipped": "{{count}} item(s) have no exchange rate and were left out."
   },
   "interest": {
     "art": "Art",
@@ -670,7 +677,8 @@
       "activity": "Activities",
       "shopping": "Shopping",
       "other": "Other"
-    }
+    },
+    "shareSettle": "Share the tab"
   },
   "packing": {
     "title": "Packing list",
@@ -1423,7 +1431,8 @@
       "recenter": "Back to my location",
       "arrivedShort": "Arrived",
       "theme": "Map look: auto, light, dark",
-      "satellite": "Satellite view"
+      "satellite": "Satellite view",
+      "rerouting": "Recalculating route…"
     }
   },
   "widget": {

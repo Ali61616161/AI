@@ -66,6 +66,8 @@ export default function RouteScreen() {
   const [selected, setSelected] = useState(0);
   const [fromChoice, setFromChoice] = useState<FromChoice | null>(null);
   const [navigating, setNavigating] = useState(false);
+  // Gezinirken rotadan çıkılınca rota bu noktadan yeniden hesaplanır.
+  const [rerouteFrom, setRerouteFrom] = useState<{ lat: number; lng: number } | null>(null);
 
   // Kullanıcının konumu her zaman alınır: başlangıç verilmediyse başlangıçtır, verildiyse
   // (plan durağı) "Konumum / Önceki durak" seçiminin varsayılanını belirler.
@@ -88,9 +90,10 @@ export default function RouteScreen() {
   const usePrev = given !== null && choice === 'prev';
   const far = !usePrev && hereCoords !== null && dest !== null && isFar(hereCoords, dest);
   const tripOrigin = far && trip ? pickTripOrigin(trip.reservations) : null;
-  const origin: RoutePoint | null = usePrev ? given : tripOrigin ? { address: tripOrigin.address } : hereCoords;
+  const baseOrigin: RoutePoint | null = usePrev ? given : tripOrigin ? { address: tripOrigin.address } : hereCoords;
   // Başlangıç kullanıcının kendi konumuysa Google'a başlangıç verilmez: Google "Konumunuz"u kendisi kullanır
   // (koordinat verilirse başlangıç "işaretli yer" olarak görünür).
+  const origin: RoutePoint | null = navigating && rerouteFrom ? rerouteFrom : baseOrigin;
   const originIsHere = origin !== null && hereCoords !== null && origin === hereCoords;
   const googleLink = (url: string) => {
     if (!originIsHere) return url;
@@ -106,7 +109,7 @@ export default function RouteScreen() {
     destinationName: p.toName ?? p.toAddress ?? null,
     countryCode: p.country ?? null,
     departAt: p.departAt ?? null,
-  });
+  }, { keepPrevious: navigating });
   const data = query.data;
 
   return (
@@ -149,7 +152,15 @@ export default function RouteScreen() {
           route={data.routes[Math.min(selected, data.routes.length - 1)]}
           googleUrl={googleLink(data.navigation_url)}
           destinationName={p.toName ?? p.toAddress ?? ''}
-          onClose={() => setNavigating(false)}
+          onClose={() => {
+            setNavigating(false);
+            setRerouteFrom(null);
+          }}
+          onReroute={(from) => {
+            setSelected(0);
+            setRerouteFrom({ lat: Math.round(from.lat * 1e4) / 1e4, lng: Math.round(from.lng * 1e4) / 1e4 });
+          }}
+          rerouting={query.isFetching && navigating}
         />
       )}
 

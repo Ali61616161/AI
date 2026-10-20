@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { DirIcon } from '@/components/ui/dir-icon';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, Share, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,7 @@ import { Text } from '@/components/ui/text';
 import { EXPENSE_CATEGORIES, useAddExpense, useDeleteExpense, useExpenses, type ExpenseCategory, type ExpenseRow } from '@/features/tools/api';
 import { settle } from '@/features/tools/settle';
 import { useTrip } from '@/features/trips/queries';
+import { useSessionStore } from '@/stores/session-store';
 import { formatMoney } from '@/lib/format';
 import { Radius, Spacing, Typography } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -38,6 +39,9 @@ export default function ExpensesScreen() {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const { data: trip } = useTrip(tripId);
   const budget = trip?.budget_currency ?? 'EUR';
+  const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
+  // Paylaşılan seyahatte görüntüleyen harcama ekleyemez/silemez, hesabı görür.
+  const readOnly = Boolean(trip && trip.owner_id !== userId);
   const { data: expenses, isLoading } = useExpenses(tripId);
   const addExpense = useAddExpense(tripId, budget);
   const deleteExpense = useDeleteExpense(tripId);
@@ -82,7 +86,7 @@ export default function ExpensesScreen() {
 
   return (
     <Screen
-      footer={!adding ? <Button title={t('expenses.add')} onPress={() => setAdding(true)} /> : undefined}>
+      footer={!adding && !readOnly ? <Button title={t('expenses.add')} onPress={() => setAdding(true)} /> : undefined}>
       <ModalHeader title={t('expenses.title')} subtitle={trip?.title} />
 
       <Card variant="gradient" padding={Spacing.xl}>
@@ -196,7 +200,20 @@ export default function ExpensesScreen() {
 
       {transfers.length > 0 && (
         <View style={styles.section}>
-          <Text variant="subtitle">{t('expenses.settleUp')}</Text>
+          <View style={styles.row}>
+            <Text variant="subtitle" style={styles.flex}>
+              {t('expenses.settleUp')}
+            </Text>
+            <Chip
+              icon="share-outline"
+              label={t('expenses.shareSettle')}
+              onPress={() =>
+                Share.share({
+                  message: [trip?.title ?? '', ...transfers.map((x) => `${x.from} → ${x.to}: ${formatMoney(x.amount, budget)}`)].filter(Boolean).join('\n'),
+                }).catch(() => undefined)
+              }
+            />
+          </View>
           {transfers.map((x) => (
             <View key={`${x.from}-${x.to}`} style={[styles.transfer, { backgroundColor: colors.surfaceMuted }]}>
               <Text variant="bodyStrong">{x.from}</Text>
@@ -235,9 +252,11 @@ export default function ExpensesScreen() {
                   </Text>
                 )}
               </View>
-              <Pressable accessibilityRole="button" accessibilityLabel={t('expenses.delete')} onPress={() => deleteExpense.mutate(e.id)} hitSlop={8}>
-                <Ionicons name="trash-outline" size={18} color={colors.textMuted} />
-              </Pressable>
+              {!readOnly && (
+                <Pressable accessibilityRole="button" accessibilityLabel={t('expenses.delete')} onPress={() => deleteExpense.mutate(e.id)} hitSlop={8}>
+                  <Ionicons name="trash-outline" size={18} color={colors.textMuted} />
+                </Pressable>
+              )}
             </View>
           ))}
         </View>

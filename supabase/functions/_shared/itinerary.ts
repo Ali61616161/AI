@@ -258,6 +258,9 @@ export const COMPANION_RULES: Record<Companion, string> = {
 // ---------------------------------------------------------------------------
 
 /** Tek satır, kısa ve tırnaksız: modele talimat değil tercih olarak iletilir. */
+/** Prompt'a giren kısa, güvenilmeyen metinler (başlık, şehir, ad): satır sonu ve tırnak temizlenir, kısaltılır. */
+export const safeText = (value: unknown, max = 120): string => cleanNote(value, max) ?? '';
+
 export function cleanNote(value: unknown, max = 1000): string | null {
   if (typeof value !== 'string') return null;
   const note = value.replace(/[\r\n\t]+/g, ' ').replace(/["`]/g, "'").replace(/\s+/g, ' ').trim().slice(0, max);
@@ -384,7 +387,7 @@ export function buildItineraryPrompt(
 ): string {
   extraRules = [...tripAnswerRules(ctx), ...tripTimingRules(ctx, dates), ...extraRules];
   const stops = ctx.destinations
-    .map((d) => `- ${d.city}${d.country_code ? ` (${d.country_code})` : ''}: ${d.arrive_on ?? '?'} → ${d.depart_on ?? '?'}`)
+    .map((d) => `- ${safeText(d.city)}${d.country_code ? ` (${d.country_code})` : ''}: ${d.arrive_on ?? '?'} → ${d.depart_on ?? '?'}`)
     .join('\n');
   const fixedText = dates
     .map((date) => {
@@ -397,7 +400,7 @@ export function buildItineraryPrompt(
           .map((i) => {
             const startMin = minutesInDay(date, i.start_time, i.timezone, tz);
             const endMin = i.end_time ? minutesInDay(date, i.end_time, i.timezone, tz) : null;
-            return `${formatMinutes(startMin)}${endMin !== null ? `–${formatMinutes(endMin)}` : ''} ${i.kind}${i.category ? `/${i.category}` : ''} "${i.title}"`;
+            return `${formatMinutes(startMin)}${endMin !== null ? `–${formatMinutes(endMin)}` : ''} ${i.kind}${i.category ? `/${i.category}` : ''} "${safeText(i.title)}"`;
           })
           .join('; ')
       );

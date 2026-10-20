@@ -1,7 +1,7 @@
 // Şehrim: yaşanan şehirde "bu akşam / hafta sonu" planı ve yakın, bütçeye uygun kaçamaklar.
 // AI sadece fikir ve sıra üretir; mekanlar Google Places ile doğrulanır, kaçamak
 // mesafeleri gerçek koordinatlarla kontrol edilir. Maliyetler "tahmini" olarak gösterilir.
-import { cleanNote, LANGUAGE_NAMES } from './itinerary.ts';
+import { cleanNote, LANGUAGE_NAMES, safeText } from './itinerary.ts';
 import { distanceMeters } from './places.ts';
 
 export const WHEN = ['tonight', 'tomorrow', 'weekend'] as const;
@@ -81,7 +81,7 @@ export function buildEveningPrompt(ctx: CityContext, input: EveningInput): strin
     tomorrow: 'tomorrow afternoon and evening',
     weekend: 'a full day this coming weekend (Saturday or Sunday), morning to evening',
   };
-  return `You are a local friend in ${ctx.city}${ctx.countryCode ? ` (${ctx.countryCode})` : ''} who knows the city very well.
+  return `You are a local friend in ${safeText(ctx.city)}${ctx.countryCode ? ` (${ctx.countryCode})` : ''} who knows the city very well.
 Plan ${timing[input.when]} for someone going out ${COMPANION_TEXT[input.companion] ?? 'alone'}${input.groupSize > 1 ? `, group of ${input.groupSize}` : ''}.
 Budget: ${input.budgetAmount ? `about ${input.budgetAmount} ${ctx.currency} per person for the whole outing (the traveler chose this amount; use realistic current local prices)` : (BUDGET_TEXT[input.budget] ?? 'mid-range')}. Mood: ${input.moods.length ? input.moods.join(', ') : 'surprise me'}.${noteLine(input.note)}
 Weather now: ${ctx.weather ?? 'unknown'} — prefer indoor stops if it rains or is very cold/hot.
@@ -177,12 +177,12 @@ export type GetawayInput = { days: number; budgetPerPerson: number; transport: T
 
 export function buildGetawayPrompt(ctx: Pick<CityContext, 'city' | 'countryCode' | 'language' | 'currency'>, input: GetawayInput, excluded: string[] = []): string {
   const nights = Math.max(input.days - 1, 0);
-  return `Suggest 6 getaway destinations from ${ctx.city}${ctx.countryCode ? ` (${ctx.countryCode})` : ''} for ${input.days} day${input.days > 1 ? 's' : ''} (${nights} night${nights === 1 ? '' : 's'}) in ${input.month}, travelling ${COMPANION_TEXT[input.companion] ?? 'alone'}.
+  return `Suggest 6 getaway destinations from ${safeText(ctx.city)}${ctx.countryCode ? ` (${ctx.countryCode})` : ''} for ${input.days} day${input.days > 1 ? 's' : ''} (${nights} night${nights === 1 ? '' : 's'}) in ${input.month}, travelling ${COMPANION_TEXT[input.companion] ?? 'alone'}.
 Total budget per person: about ${input.budgetPerPerson} ${ctx.currency} including transport, ${nights ? 'accommodation, ' : ''}food and activities.
 Transport preference: ${input.transport === 'public' ? 'bus, train or ferry only (no car)' : input.transport === 'car' ? 'by car (driving)' : 'cheapest sensible option'}.${noteLine(input.note)}
 
 Rules:
-- Real places at most ${input.days === 1 ? '2.5' : '4.5'} hours one-way from ${ctx.city}; prefer lesser-known towns, nature spots and coastal or mountain villages over the obvious; at most 2 well-known places.${excluded.length ? `\n- Do not suggest: ${excluded.join(', ')}.` : ''}
+- Real places at most ${input.days === 1 ? '2.5' : '4.5'} hours one-way from ${safeText(ctx.city)}; prefer lesser-known towns, nature spots and coastal or mountain villages over the obvious; at most 2 well-known places.${excluded.length ? `\n- Do not suggest: ${excluded.map((x) => safeText(x, 80)).join(', ')}.` : ''}
 - Costs per person in ${ctx.currency}, realistic ${input.month} prices: transport_cost round trip, stay_per_night (0 if day trip), daily_spend.
 - The total (transport + nights × stay + days × daily) should fit the budget; if nothing fits, give the cheapest realistic options.
 - Consider the season: no beach towns in winter unless it is warm, no closed mountain passes.

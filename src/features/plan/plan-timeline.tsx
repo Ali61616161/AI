@@ -17,6 +17,8 @@ import { formatDayShort, formatMoney, formatTime } from '@/lib/format';
 import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+import { BudgetBar, type TripBudget } from './budget-bar';
+
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
 const KIND_ICONS: Record<PlanItemRow['kind'], IconName> = {
@@ -206,7 +208,7 @@ export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: str
   });
 }
 
-export function DayTimeline({ day, weather, tripId }: { day: PlanDayRow; weather?: DayForecast | null; tripId?: string }) {
+export function DayTimeline({ day, weather, tripId, budget }: { day: PlanDayRow; weather?: DayForecast | null; tripId?: string; budget?: TripBudget | null }) {
   const { t } = useTranslation();
   return (
     <View style={styles.timeline}>
@@ -221,6 +223,7 @@ export function DayTimeline({ day, weather, tripId }: { day: PlanDayRow; weather
         </View>
       )}
       {weather && <WeatherBadge forecast={weather} />}
+      {budget && <BudgetBar date={day.date} items={day.plan_items} budget={budget} />}
       {day.notes && (
         <Text variant="body" color="textSecondary">
           {day.notes}

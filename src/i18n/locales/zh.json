@@ -109,7 +109,14 @@
     "mid": "中（精明休闲）",
     "mid_desc": "实惠酒店、本地餐厅、少量付费活动",
     "lux": "高（奢华）",
-    "lux_desc": "精品酒店、高级餐厅、私人导览"
+    "lux_desc": "精品酒店、高级餐厅、私人导览",
+    "ok": "在预算内",
+    "near": "接近预算",
+    "over": "超出预算",
+    "mostExpensive": "最贵：{{items}}",
+    "askCheaper": "推荐更便宜的",
+    "askMessage": "我的每日预算是 {{budget}}，但今天预计 {{total}}。请把今天剩下的安排换成更便宜的地方。",
+    "skipped": "{{count}} 项缺少汇率，未计入。"
   },
   "interest": {
     "art": "艺术",
@@ -660,7 +667,8 @@
       "activity": "活动",
       "shopping": "购物",
       "other": "其他"
-    }
+    },
+    "shareSettle": "分享结算"
   },
   "packing": {
     "title": "行李清单",
@@ -1386,7 +1394,8 @@
       "recenter": "回到我的位置",
       "arrivedShort": "已到达",
       "theme": "地图外观：自动、浅色、深色",
-      "satellite": "卫星视图"
+      "satellite": "卫星视图",
+      "rerouting": "正在重新规划路线…"
     }
   },
   "widget": {

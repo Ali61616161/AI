@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState, type ComponentProps } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -100,7 +100,8 @@ export default function AssistantScreen() {
   const currentTrip = trips?.find((trip) => trip.start_date && trip.end_date && trip.start_date <= today && trip.end_date >= today) ?? null;
   const replan = useCrisisReplan();
   const restore = useRestoreVersion(currentTrip?.id ?? '');
-  const [input, setInput] = useState('');
+  const { prefill } = useLocalSearchParams<{ prefill?: string }>();
+  const [input, setInput] = useState(prefill ?? '');
   const [messages, setMessages] = useState<Message[]>([]);
   const online = useIsOnline();
   const canAsk = Boolean(session) && isSupabaseConfigured() && online;

@@ -9,6 +9,7 @@ import {
   LANGUAGE_NAMES,
   minutesInDay,
   overlaps,
+  safeText,
   toMinutes,
   type BudgetTier,
   type Companion,
@@ -143,10 +144,10 @@ export function shortenRules(currentDays: StoredDay[], keepDates: string[], high
   const rules = ['The trip got shorter. Replan these days, changing the current plan as little as possible.'];
   const current = currentDays
     .filter((d) => keepDates.includes(d.date))
-    .map((d) => `${d.date}: ${d.plan_items.filter((i) => !i.is_locked).map((i) => i.title).join(', ') || '(empty)'}`);
+    .map((d) => `${d.date}: ${d.plan_items.filter((i) => !i.is_locked).map((i) => safeText(i.title)).join(', ') || '(empty)'}`);
   if (current.length) rules.push(`Current plan: ${current.join(' | ')}`);
   if (highlights.length) {
-    rules.push(`These highlights were on removed days; fit as many as possible into the remaining days: ${highlights.map((h) => h.title).join(', ')}`);
+    rules.push(`These highlights were on removed days; fit as many as possible into the remaining days: ${highlights.map((h) => safeText(h.title)).join(', ')}`);
   }
   return rules;
 }
@@ -214,12 +215,12 @@ export const CRISIS_RESPONSE_SCHEMA = {
 
 export function buildCrisisPrompt(ctx: CrisisContext): string {
   const where = ctx.location
-    ? `${ctx.location.lat.toFixed(4)}, ${ctx.location.lng.toFixed(4)}${ctx.city ? ` (${ctx.city})` : ''}`
+    ? `${ctx.location.lat.toFixed(4)}, ${ctx.location.lng.toFixed(4)}${ctx.city ? ` (${safeText(ctx.city)})` : ''}`
     : ctx.city ?? 'unknown';
-  const remaining = ctx.remaining.length ? ctx.remaining.map((r) => `${r.time} ${r.title}${r.place ? ` @ ${r.place}` : ''}`).join('; ') : 'nothing planned';
-  const fixed = ctx.fixedLater.length ? ctx.fixedLater.map((f) => `${f.time} ${f.title}`).join('; ') : 'none';
+  const remaining = ctx.remaining.length ? ctx.remaining.map((r) => `${r.time} ${safeText(r.title)}${r.place ? ` @ ${safeText(r.place)}` : ''}`).join('; ') : 'nothing planned';
+  const fixed = ctx.fixedLater.length ? ctx.fixedLater.map((f) => `${f.time} ${safeText(f.title)}`).join('; ') : 'none';
   const nearby = (ctx.nearby ?? [])
-    .map((p) => `- ${p.name}${p.type ? ` [${p.type}]` : ''}${p.rating !== null ? `, rating ${p.rating}` : ''}${p.distanceM !== null ? `, ${p.distanceM} m away` : ''}${p.address ? `, ${p.address}` : ''}`)
+    .map((p) => `- ${safeText(p.name)}${p.type ? ` [${safeText(p.type, 40)}]` : ''}${p.rating !== null ? `, rating ${p.rating}` : ''}${p.distanceM !== null ? `, ${p.distanceM} m away` : ''}${p.address ? `, ${safeText(p.address, 160)}` : ''}`)
     .join('\n');
 
   return `You are a travel assistant helping a traveler who is on their trip right now.

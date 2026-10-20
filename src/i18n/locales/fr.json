@@ -109,7 +109,14 @@
     "mid": "Moyen (Smart-Casual)",
     "mid_desc": "Hôtels abordables, restaurants locaux, quelques activités payantes",
     "lux": "Élevé (Luxe)",
-    "lux_desc": "Hôtels de charme, gastronomie, visites privées"
+    "lux_desc": "Hôtels de charme, gastronomie, visites privées",
+    "ok": "Dans le budget",
+    "near": "Proche du budget",
+    "over": "Dépasse le budget",
+    "mostExpensive": "Les plus chers : {{items}}",
+    "askCheaper": "Proposer moins cher",
+    "askMessage": "Mon budget quotidien est {{budget}} mais l'estimation du jour est {{total}}. Remplace la suite par des lieux moins chers.",
+    "skipped": "{{count}} élément(s) sans taux de change ont été exclus."
   },
   "interest": {
     "art": "Art",
@@ -670,7 +677,8 @@
       "activity": "Activités",
       "shopping": "Shopping",
       "other": "Autre"
-    }
+    },
+    "shareSettle": "Partager les comptes"
   },
   "packing": {
     "title": "Valise",
@@ -1423,7 +1431,8 @@
       "recenter": "Revenir à ma position",
       "arrivedShort": "Arrivé",
       "theme": "Style de carte : auto, clair, sombre",
-      "satellite": "Vue satellite"
+      "satellite": "Vue satellite",
+      "rerouting": "Recalcul de l'itinéraire…"
     }
   },
   "widget": {

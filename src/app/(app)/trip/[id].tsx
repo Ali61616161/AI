@@ -260,7 +260,7 @@ export default function TripScreen() {
                 {showMap && <PlacesMap key={day?.id} points={mapPoints} />}
               </View>
             )}
-            {day && <DayTimeline day={day} weather={dayWeather} tripId={trip.id} />}
+            {day && <DayTimeline day={day} weather={dayWeather} tripId={trip.id} budget={trip.budget_amount && trip.budget_currency ? { amount: trip.budget_amount, currency: trip.budget_currency } : null} />}
             {generateError && (
               <Text variant="caption" color="danger">
                 {generateError}

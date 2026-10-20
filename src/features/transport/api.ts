@@ -1,5 +1,5 @@
 import type Ionicons from '@expo/vector-icons/Ionicons';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import type { ComponentProps } from 'react';
 
 import { invokePlaces } from '@/features/places/api';
@@ -29,13 +29,15 @@ export type RouteRequest = {
 };
 
 /** "Nasıl giderim?": gerçek tarifelerle güzergah, işletmeci siteleri ve bilet bağlantıları. */
-export function useRoute(req: RouteRequest) {
+export function useRoute(req: RouteRequest, options: { keepPrevious?: boolean } = {}) {
   const canCall = useSessionStore((s) => Boolean(s.session)) && isSupabaseConfigured();
   return useQuery({
     queryKey: ['route', req],
     enabled: canCall && req.origin !== null && req.destination !== null,
     staleTime: 5 * 60_000,
     retry: false,
+    // Gezinirken yeniden rota hesaplanırken eski rota ekranda kalır (gezinme penceresi kapanmasın).
+    placeholderData: options.keepPrevious ? keepPreviousData : undefined,
     queryFn: () =>
       invokePlaces<RouteResult>({
         action: 'route',

@@ -109,7 +109,14 @@
     "mid": "Medio (Smart-Casual)",
     "mid_desc": "Hoteles asequibles, restaurantes locales, algunas actividades de pago",
     "lux": "Alto (Lujo)",
-    "lux_desc": "Hoteles boutique, alta cocina, tours privados"
+    "lux_desc": "Hoteles boutique, alta cocina, tours privados",
+    "ok": "Dentro del presupuesto",
+    "near": "Cerca del presupuesto",
+    "over": "Supera el presupuesto",
+    "mostExpensive": "Más caros: {{items}}",
+    "askCheaper": "Sugerir más barato",
+    "askMessage": "Mi presupuesto diario es {{budget}} pero hoy se estima {{total}}. Cambia el resto del día por lugares más baratos.",
+    "skipped": "{{count}} elemento(s) sin tipo de cambio no se incluyeron."
   },
   "interest": {
     "art": "Arte",
@@ -670,7 +677,8 @@
       "activity": "Actividades",
       "shopping": "Compras",
       "other": "Otros"
-    }
+    },
+    "shareSettle": "Compartir cuentas"
   },
   "packing": {
     "title": "Equipaje",
@@ -1423,7 +1431,8 @@
       "recenter": "Volver a mi ubicación",
       "arrivedShort": "Has llegado",
       "theme": "Aspecto del mapa: automático, claro, oscuro",
-      "satellite": "Vista de satélite"
+      "satellite": "Vista de satélite",
+      "rerouting": "Recalculando la ruta…"
     }
   },
   "widget": {

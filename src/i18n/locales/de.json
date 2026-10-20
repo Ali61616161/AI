@@ -109,7 +109,14 @@
     "mid": "Mittel (Smart-Casual)",
     "mid_desc": "Preiswerte Hotels, lokale Restaurants, einige bezahlte Aktivitäten",
     "lux": "Hoch (Luxus)",
-    "lux_desc": "Boutique-Hotels, gehobene Küche, private Touren"
+    "lux_desc": "Boutique-Hotels, gehobene Küche, private Touren",
+    "ok": "Im Budget",
+    "near": "Nah am Budget",
+    "over": "Über dem Budget",
+    "mostExpensive": "Am teuersten: {{items}}",
+    "askCheaper": "Günstiger vorschlagen",
+    "askMessage": "Mein Tagesbudget ist {{budget}}, die Schätzung für heute {{total}}. Ersetze den Rest des Tages durch günstigere Orte.",
+    "skipped": "{{count}} Posten ohne Wechselkurs wurden ausgelassen."
   },
   "interest": {
     "art": "Kunst",
@@ -670,7 +677,8 @@
       "activity": "Aktivitäten",
       "shopping": "Einkaufen",
       "other": "Sonstiges"
-    }
+    },
+    "shareSettle": "Abrechnung teilen"
   },
   "packing": {
     "title": "Packliste",
@@ -1423,7 +1431,8 @@
       "recenter": "Zurück zu meinem Standort",
       "arrivedShort": "Angekommen",
       "theme": "Kartenstil: automatisch, hell, dunkel",
-      "satellite": "Satellitenansicht"
+      "satellite": "Satellitenansicht",
+      "rerouting": "Route wird neu berechnet…"
     }
   },
   "widget": {

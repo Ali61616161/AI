@@ -109,7 +109,14 @@
     "mid": "Orta (Smart-Casual)",
     "mid_desc": "Uygun oteller, yerel restoranlar, birkaç ücretli aktivite",
     "lux": "Yüksek (Lüks)",
-    "lux_desc": "Butik oteller, iyi restoranlar, özel turlar"
+    "lux_desc": "Butik oteller, iyi restoranlar, özel turlar",
+    "ok": "Bütçeye uygun",
+    "near": "Bütçeye yakın",
+    "over": "Bütçeyi aşıyor",
+    "mostExpensive": "En pahalılar: {{items}}",
+    "askCheaper": "Daha ucuz öner",
+    "askMessage": "Günlük bütçem {{budget}} ama bugünün tahmini harcaması {{total}}. Kalan planı bütçeme uyacak şekilde daha ucuz yerlerle değiştir.",
+    "skipped": "{{count}} kalemin kuru bulunamadı, toplama katılmadı."
   },
   "interest": {
     "art": "Sanat",
@@ -670,7 +677,8 @@
       "activity": "Etkinlik",
       "shopping": "Alışveriş",
       "other": "Diğer"
-    }
+    },
+    "shareSettle": "Hesabı paylaş"
   },
   "packing": {
     "title": "Bavul listesi",
@@ -1423,7 +1431,8 @@
       "recenter": "Konumuma dön",
       "arrivedShort": "Vardın",
       "theme": "Harita görünümü: otomatik, açık, koyu",
-      "satellite": "Uydu görünümü"
+      "satellite": "Uydu görünümü",
+      "rerouting": "Rota yeniden hesaplanıyor…"
     }
   },
   "widget": {

@@ -14,7 +14,7 @@ import { Colors, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { VEHICLE_ICONS, type RouteChoice } from './api';
-import { currentStepIndex, formatDistance, isArrived, isOffRoute, nearestIndex, remainingMeters, turnIcon, type TurnIcon } from './navigation-logic';
+import { currentStepIndex, distanceToPathM, formatDistance, isArrived, isOffRoute, nearestIndex, REROUTE_M, remainingMeters, turnIcon, type TurnIcon } from './navigation-logic';
 import { decodePolyline, thin } from './polyline';
 
 const LINE = '#FF5A36';
@@ -30,13 +30,13 @@ function Txt({ color, style, ...rest }: React.ComponentProps<typeof Text>) {
 type MapTheme = 'auto' | 'light' | 'dark';
 const TURN_ICON: Record<TurnIcon, 'arrow-up' | 'arrow-back' | 'arrow-forward' | 'refresh'> = { straight: 'arrow-up', left: 'arrow-back', right: 'arrow-forward', uturn: 'refresh' };
 
-type Props = { visible: boolean; route: RouteChoice; googleUrl: string; destinationName: string; onClose: () => void };
+type Props = { visible: boolean; route: RouteChoice; googleUrl: string; destinationName: string; onClose: () => void; onReroute?: (from: { lat: number; lng: number }) => void; rerouting?: boolean };
 
 /**
  * Tam ekran gezinme: harita seni yönüne göre takip eder, üstte sıradaki adım, altta kalan mesafe.
  * Başlangıç noktasından uzaksan canlı takip yerine rotanın tamamı önizlenir.
  */
-export function NavigationView({ visible, route, googleUrl, destinationName, onClose }: Props) {
+export function NavigationView({ visible, route, googleUrl, destinationName, onClose, onReroute, rerouting = false }: Props) {
   const { t } = useTranslation();
   const { isDark } = useTheme();
   const insets = useSafeAreaInsets();
@@ -107,6 +107,30 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     : current
       ? (current.instruction ?? t('route.walk', { count: current.durationMin }))
       : destinationName;
+  // Yürürken/sürerken rotadan 80 m'den fazla ve 8 sn'den uzun süre ayrılırsan rota bulunduğun yerden yeniden hesaplanır
+  // (toplu taşıtta çizgiden sapma normal olduğundan yalnızca yürüme/sürüş adımlarında).
+  const offSince = useRef<number | null>(null);
+  const lastReroute = useRef(0);
+  const isTransitStep = Boolean(tr);
+  useEffect(() => {
+    if (!visible || !here || off || !onReroute || isTransitStep || arrived) {
+      offSince.current = null;
+      return;
+    }
+    const d = distanceToPathM(here, path);
+    if (d === null || d <= REROUTE_M) {
+      offSince.current = null;
+      return;
+    }
+    const now = Date.now();
+    offSince.current ??= now;
+    if (now - offSince.current >= 8000 && now - lastReroute.current >= 30_000) {
+      lastReroute.current = now;
+      offSince.current = null;
+      onReroute({ lat: here.lat, lng: here.lng });
+    }
+  }, [visible, here, off, onReroute, isTransitStep, arrived, path]);
+
   // Sesli yönlendirme: canlı takipte adım değişince talimat okunur.
   const spokenStep = useRef(-1);
   useEffect(() => {
@@ -174,6 +198,11 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
         )}
 
         <View style={[styles.top, { top: insets.top + Spacing.sm, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
+          {rerouting && (
+            <Txt variant="caption" style={{ color: ui.warning }}>
+              {t('route.nav.rerouting')}
+            </Txt>
+          )}
           {arrived ? (
             <Txt variant="title">{t('route.nav.arrived')}</Txt>
           ) : off ? (

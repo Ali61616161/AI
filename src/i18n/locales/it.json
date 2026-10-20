@@ -109,7 +109,14 @@
     "mid": "Medio (Smart-Casual)",
     "mid_desc": "Hotel convenienti, ristoranti locali, alcune attività a pagamento",
     "lux": "Alto (Lusso)",
-    "lux_desc": "Hotel boutique, alta cucina, tour privati"
+    "lux_desc": "Hotel boutique, alta cucina, tour privati",
+    "ok": "Nel budget",
+    "near": "Vicino al budget",
+    "over": "Oltre il budget",
+    "mostExpensive": "I più cari: {{items}}",
+    "askCheaper": "Suggerisci più economico",
+    "askMessage": "Il mio budget giornaliero è {{budget}} ma oggi si stima {{total}}. Sostituisci il resto con posti più economici.",
+    "skipped": "{{count}} voci senza cambio sono state escluse."
   },
   "interest": {
     "art": "Arte",
@@ -670,7 +677,8 @@
       "activity": "Attività",
       "shopping": "Shopping",
       "other": "Altro"
-    }
+    },
+    "shareSettle": "Condividi i conti"
   },
   "packing": {
     "title": "Valigia",
@@ -1423,7 +1431,8 @@
       "recenter": "Torna alla mia posizione",
       "arrivedShort": "Arrivato",
       "theme": "Aspetto mappa: auto, chiaro, scuro",
-      "satellite": "Vista satellite"
+      "satellite": "Vista satellite",
+      "rerouting": "Ricalcolo del percorso…"
     }
   },
   "widget": {
