@@ -1513,7 +1513,32 @@
       "rearrangeFailed": "Plan düzenlenemedi. Tekrar dene.",
       "leaveNowTitle": "Havalimanına çıkma zamanı",
       "leaveNowBody": "{{airport}} için şimdi yola çık."
-    }
+    },
+    "strip": {
+      "next": "Sıradaki · {{time}}",
+      "leaveIn": "{{min}} dk içinde çık",
+      "leaveNow": "Şimdi çık",
+      "eta": "~{{min}} dk",
+      "progress": "{{done}}/{{total}} durak",
+      "dayDone": "Bugünün planı tamamlandı 🎉",
+      "noMore": "Bugün için sıradaki durak yok",
+      "freeDay": "Serbest gün: plan seni bekletmez"
+    },
+    "status": {
+      "now": "Şimdi",
+      "next": "Sıradaki",
+      "done": "Gidildi",
+      "skipped": "Atlandı",
+      "past": "Geçti"
+    },
+    "viewList": "Liste görünümü",
+    "viewCards": "Kart görünümü",
+    "locate": "Konumum",
+    "fitAll": "Tüm duraklar",
+    "nearby": "Yakında ne var?",
+    "arrivedTitle": "{{title}} — geldin mi?",
+    "arrivedYes": "Evet, buradayım",
+    "notNow": "Şimdi değil"
   },
   "tripQuestions": {
     "title": "Bu seyahat için",

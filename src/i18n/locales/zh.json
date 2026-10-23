@@ -1475,7 +1475,32 @@
       "rearrangeFailed": "无法调整计划，请重试。",
       "leaveNowTitle": "该去机场了",
       "leaveNowBody": "现在出发前往 {{airport}}。"
-    }
+    },
+    "strip": {
+      "next": "下一站 · {{time}}",
+      "leaveIn": "{{min}} 分钟内出发",
+      "leaveNow": "现在出发",
+      "eta": "约 {{min}} 分钟",
+      "progress": "{{done}}/{{total}} 站",
+      "dayDone": "今天的计划完成了 🎉",
+      "noMore": "今天没有更多站点",
+      "freeDay": "自由日：计划不会打扰你"
+    },
+    "status": {
+      "now": "现在",
+      "next": "下一站",
+      "done": "已去过",
+      "skipped": "已跳过",
+      "past": "已过"
+    },
+    "viewList": "列表视图",
+    "viewCards": "卡片视图",
+    "locate": "我的位置",
+    "fitAll": "全部站点",
+    "nearby": "附近有什么？",
+    "arrivedTitle": "{{title}}：你到了吗？",
+    "arrivedYes": "是的，我到了",
+    "notNow": "以后再说"
   },
   "tripQuestions": {
     "title": "关于这次旅行",

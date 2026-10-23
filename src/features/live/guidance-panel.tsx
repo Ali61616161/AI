@@ -14,7 +14,7 @@ import { useTheme } from '@/theme/use-theme';
 
 import { LATE_WARN_MIN, type DriftStop } from './drift-logic';
 import { useLiveStore } from './live-store';
-import type { useLiveGuidance } from './use-live-guidance';
+import { airportSearchName, type useLiveGuidance } from './use-live-guidance';
 
 type Guidance = ReturnType<typeof useLiveGuidance>;
 type Props = { tripId: string; guidance: Guidance; timezone: string | null; nowMs: number };
@@ -29,7 +29,7 @@ export function GuidancePanel({ tripId, guidance, timezone, nowMs }: Props) {
   const mark = useLiveStore((s) => s.mark);
   const replan = useCrisisReplan();
   const [done, setDone] = useState(false);
-  const { overdue, upcoming, late, etaMin, flight, leaveAt, airportName, airportTravelMin } = guidance;
+  const { overdue, upcoming, late, flight, leaveAt, airportName, airportTravelMin } = guidance;
 
   const fix = async (stop: DriftStop, reason: 'overdue' | 'late') => {
     setDone(false);
@@ -61,7 +61,7 @@ export function GuidancePanel({ tripId, guidance, timezone, nowMs }: Props) {
               {t('live.guidance.airportBody', { airport: airportName ?? '', min: airportTravelMin ?? 0 })}
             </Text>
           </View>
-          <Button title={t('route.howToGet')} variant="secondary" onPress={() => router.push({ pathname: '/route', params: { toName: airportName?.match(/airport/i) ? airportName : `${airportName} Airport`, tripId } })} />
+          <Button title={t('route.howToGet')} variant="secondary" onPress={() => router.push({ pathname: '/route', params: { toName: airportName ? airportSearchName(airportName) : '', tripId } })} />
         </View>
       </Card>,
     );
@@ -88,14 +88,6 @@ export function GuidancePanel({ tripId, guidance, timezone, nowMs }: Props) {
           </Text>
         </View>
         <Button title={t('live.guidance.rearrange')} loading={replan.isPending} onPress={() => fix(upcoming, 'late')} />
-      </Card>,
-    );
-  } else if (upcoming && etaMin !== null) {
-    cards.push(
-      <Card key="eta" variant="solid" padding={Spacing.md}>
-        <Text variant="caption" color="textSecondary">
-          {t('live.guidance.eta', { title: upcoming.title, min: etaMin })}
-        </Text>
       </Card>,
     );
   }

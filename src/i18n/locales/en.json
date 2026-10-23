@@ -1513,7 +1513,32 @@
       "rearrangeFailed": "Couldn't rearrange the plan. Try again.",
       "leaveNowTitle": "Time to leave for the airport",
       "leaveNowBody": "Leave now for {{airport}}."
-    }
+    },
+    "strip": {
+      "next": "Next · {{time}}",
+      "leaveIn": "Leave in {{min}} min",
+      "leaveNow": "Leave now",
+      "eta": "~{{min}} min",
+      "progress": "{{done}}/{{total}} stops",
+      "dayDone": "Today's plan is done 🎉",
+      "noMore": "No more stops today",
+      "freeDay": "Free day: the plan won't nag you"
+    },
+    "status": {
+      "now": "Now",
+      "next": "Next",
+      "done": "Visited",
+      "skipped": "Skipped",
+      "past": "Passed"
+    },
+    "viewList": "List view",
+    "viewCards": "Card view",
+    "locate": "My location",
+    "fitAll": "All stops",
+    "nearby": "What's nearby?",
+    "arrivedTitle": "{{title}}: are you here?",
+    "arrivedYes": "Yes, I'm here",
+    "notNow": "Not now"
   },
   "tripQuestions": {
     "title": "For this trip",

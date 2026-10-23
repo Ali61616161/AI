@@ -40,3 +40,37 @@ Deno.test('dayIndexFor: bugünün sırası, yoksa null', () => {
   assertEquals(dayIndexFor(['2026-10-17', '2026-10-18'], '2026-10-18'), 1);
   assertEquals(dayIndexFor(['2026-10-17'], '2026-10-18'), null);
 });
+
+Deno.test('durak durumları ve günün ilerlemesi', async () => {
+  const { stopStatuses, dayProgress } = await import('./live-logic.ts');
+  const stops = [stop('a', at(9), at(10)), stop('b', at(11), at(12)), stop('c', at(14)), stop('d', null)];
+  const st = stopStatuses(stops, now(11, 30), { a: 'done' });
+  assertEquals(st, ['done', 'now', 'later', 'later']);
+  const later = stopStatuses(stops, now(13), {});
+  assertEquals(later, ['past', 'past', 'next', 'later']);
+  assertEquals(dayProgress(later).done, 2);
+  assertEquals(dayProgress([]).ratio, 0);
+});
+
+Deno.test('varış algılama: yakın ve saati uygun durak', async () => {
+  const { arrivedStop } = await import('./live-logic.ts');
+  const s = { id: 'x', lat: 41.0, lng: 29.0, starts_at: at(14), ends_at: at(15) };
+  const near = { lat: 41.0005, lng: 29.0 }; // ~55 m
+  assertEquals(arrivedStop([s], near, now(14, 10), {})?.id, 'x');
+  assertEquals(arrivedStop([s], near, now(10), {}), null); // çok erken
+  assertEquals(arrivedStop([s], near, now(14, 10), { x: 'done' }), null); // zaten işaretli
+  assertEquals(arrivedStop([s], { lat: 41.01, lng: 29.0 }, now(14, 10), {}), null); // ~1 km uzak
+  assertEquals(arrivedStop([s], null, now(14, 10), {}), null);
+});
+
+Deno.test('çıkış zamanı ve sabit rota başlangıcı', async () => {
+  const { leaveInMin, stableOrigin } = await import('./live-logic.ts');
+  assertEquals(leaveInMin(now(13, 30), 20, at(14)), 10);
+  assertEquals(leaveInMin(now(13, 50), 20, at(14)), -10);
+  assertEquals(leaveInMin(now(13), null, at(14)), null);
+  const a = stableOrigin(null, { lat: 41.00001, lng: 29.00001 })!;
+  assertEquals(a, { lat: 41, lng: 29 });
+  assertEquals(stableOrigin(a, { lat: 41.001, lng: 29 }), a); // ~110 m: değişmez
+  assertEquals(stableOrigin(a, { lat: 41.01, lng: 29 }), { lat: 41.01, lng: 29 }); // ~1.1 km: güncellenir
+  assertEquals(stableOrigin(a, null), a);
+});

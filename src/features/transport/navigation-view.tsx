@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Location from 'expo-location';
 import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import * as Speech from 'expo-speech';
 import { Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
@@ -144,7 +145,13 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     if (!visible) {
       spokenStep.current = -1;
       Speech.stop();
+      return;
     }
+    // Gezinirken ekran kararmasın (navigasyon uygulamalarındaki gibi); pencere kapanınca normale döner.
+    activateKeepAwakeAsync('yola-navigation').catch(() => undefined);
+    return () => {
+      deactivateKeepAwake('yola-navigation').catch(() => undefined);
+    };
   }, [visible]);
 
   const detail = tr?.from && tr?.to ? `${tr.from} → ${tr.to}` : null;

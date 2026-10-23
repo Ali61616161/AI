@@ -1513,7 +1513,32 @@
       "rearrangeFailed": "Plan konnte nicht angepasst werden. Versuche es erneut.",
       "leaveNowTitle": "Zeit, zum Flughafen aufzubrechen",
       "leaveNowBody": "Brich jetzt nach {{airport}} auf."
-    }
+    },
+    "strip": {
+      "next": "Als Nächstes · {{time}}",
+      "leaveIn": "In {{min}} Min. losgehen",
+      "leaveNow": "Jetzt losgehen",
+      "eta": "~{{min}} Min.",
+      "progress": "{{done}}/{{total}} Stopps",
+      "dayDone": "Der Plan für heute ist geschafft 🎉",
+      "noMore": "Heute keine weiteren Stopps",
+      "freeDay": "Freier Tag: der Plan drängt nicht"
+    },
+    "status": {
+      "now": "Jetzt",
+      "next": "Als Nächstes",
+      "done": "Besucht",
+      "skipped": "Übersprungen",
+      "past": "Vorbei"
+    },
+    "viewList": "Listenansicht",
+    "viewCards": "Kartenansicht",
+    "locate": "Mein Standort",
+    "fitAll": "Alle Stopps",
+    "nearby": "Was ist in der Nähe?",
+    "arrivedTitle": "{{title}}: bist du da?",
+    "arrivedYes": "Ja, bin da",
+    "notNow": "Nicht jetzt"
   },
   "tripQuestions": {
     "title": "Für diese Reise",

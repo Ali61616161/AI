@@ -1665,7 +1665,32 @@
       "rearrangeFailed": "تعذّر تعديل الخطة. حاول مجددًا.",
       "leaveNowTitle": "حان وقت التوجه إلى المطار",
       "leaveNowBody": "غادر الآن إلى {{airport}}."
-    }
+    },
+    "strip": {
+      "next": "التالي · {{time}}",
+      "leaveIn": "انطلق خلال {{min}} د",
+      "leaveNow": "انطلق الآن",
+      "eta": "~{{min}} د",
+      "progress": "{{done}}/{{total}} محطات",
+      "dayDone": "اكتملت خطة اليوم 🎉",
+      "noMore": "لا محطات أخرى اليوم",
+      "freeDay": "يوم حر: لن تزعجك الخطة"
+    },
+    "status": {
+      "now": "الآن",
+      "next": "التالي",
+      "done": "تمت الزيارة",
+      "skipped": "تم التخطي",
+      "past": "مضى"
+    },
+    "viewList": "عرض القائمة",
+    "viewCards": "عرض البطاقات",
+    "locate": "موقعي",
+    "fitAll": "كل المحطات",
+    "nearby": "ماذا يوجد بالقرب؟",
+    "arrivedTitle": "{{title}}: هل وصلت؟",
+    "arrivedYes": "نعم، أنا هنا",
+    "notNow": "ليس الآن"
   },
   "tripQuestions": {
     "title": "لهذه الرحلة",

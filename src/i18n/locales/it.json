@@ -1513,7 +1513,32 @@
       "rearrangeFailed": "Impossibile riorganizzare il piano. Riprova.",
       "leaveNowTitle": "È ora di partire per l'aeroporto",
       "leaveNowBody": "Parti ora per {{airport}}."
-    }
+    },
+    "strip": {
+      "next": "Prossima · {{time}}",
+      "leaveIn": "Parti tra {{min}} min",
+      "leaveNow": "Parti ora",
+      "eta": "~{{min}} min",
+      "progress": "{{done}}/{{total}} tappe",
+      "dayDone": "Piano di oggi completato 🎉",
+      "noMore": "Nessun'altra tappa oggi",
+      "freeDay": "Giorno libero: il piano non ti disturba"
+    },
+    "status": {
+      "now": "Ora",
+      "next": "Prossima",
+      "done": "Visitato",
+      "skipped": "Saltato",
+      "past": "Passato"
+    },
+    "viewList": "Vista elenco",
+    "viewCards": "Vista schede",
+    "locate": "La mia posizione",
+    "fitAll": "Tutte le tappe",
+    "nearby": "Cosa c'è vicino?",
+    "arrivedTitle": "{{title}}: sei arrivato?",
+    "arrivedYes": "Sì, sono qui",
+    "notNow": "Non ora"
   },
   "tripQuestions": {
     "title": "Per questo viaggio",
