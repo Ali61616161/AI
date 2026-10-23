@@ -33,3 +33,15 @@ Deno.test('currencyFlag: her para biriminin bayrağı var', async () => {
   assertEquals(currencyFlag('XXX'), '');
   assertEquals(CURRENCIES.filter((c) => !currencyFlag(c)), []);
 });
+
+Deno.test('parseAmount: TR/EN ondalık ve binlik ayırıcılar', async () => {
+  const { parseAmount } = await import('./fx-logic.ts');
+  assertEquals(parseAmount('12,5'), 12.5);
+  assertEquals(parseAmount('12.5'), 12.5);
+  assertEquals(parseAmount('1.234,56'), 1234.56);
+  assertEquals(parseAmount('1,234.56'), 1234.56);
+  assertEquals(parseAmount('1.000'), 1000);
+  assertEquals(parseAmount('1 000'), 1000);
+  assertEquals(parseAmount(''), null);
+  assertEquals(parseAmount('abc'), null);
+});

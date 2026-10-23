@@ -17,6 +17,29 @@ export function parseRate(data: unknown, to: string): number | null {
   return typeof rate === 'number' && Number.isFinite(rate) && rate > 0 ? rate : null;
 }
 
+/**
+ * Kullanıcının yazdığı tutar: "1.234,56", "1,234.56", "12,5" ve "12.5" doğru okunur; boşluklar atılır.
+ * Son ayırıcı ondalık sayılır (2'den fazla haneli tek ayırıcı binlik kabul edilir: "1.000" → 1000).
+ */
+export function parseAmount(input: string): number | null {
+  const s = input.replace(/[\s\u00a0']/g, '');
+  if (!s) return null;
+  if (!/^-?[\d.,]+$/.test(s)) return null;
+  const lastDot = s.lastIndexOf('.');
+  const lastComma = s.lastIndexOf(',');
+  const sep = Math.max(lastDot, lastComma);
+  let normalized: string;
+  if (sep === -1) normalized = s;
+  else {
+    const decimals = s.length - sep - 1;
+    const single = (s.match(/[.,]/g) ?? []).length === 1;
+    if (single && decimals === 3) normalized = s.replace(/[.,]/g, '');
+    else normalized = s.slice(0, sep).replace(/[.,]/g, '') + '.' + s.slice(sep + 1);
+  }
+  const n = Number(normalized);
+  return Number.isFinite(n) ? n : null;
+}
+
 export function convert(amount: number, rate: number): number {
   return Math.round(amount * rate * 100) / 100;
 }

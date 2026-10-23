@@ -17,6 +17,7 @@ import { settle } from '@/features/tools/settle';
 import { useTrip } from '@/features/trips/queries';
 import { useSessionStore } from '@/stores/session-store';
 import { formatMoney } from '@/lib/format';
+import { parseAmount } from '@/lib/fx-logic';
 import { Radius, Spacing, Typography } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -76,8 +77,8 @@ export default function ExpensesScreen() {
   );
 
   async function save() {
-    const value = Number(amount.replace(',', '.'));
-    if (!Number.isFinite(value) || value <= 0) return;
+    const value = parseAmount(amount);
+    if (value === null || value <= 0) return;
     await addExpense.mutateAsync({ amount: value, currency: currency ?? budget, category, description, paidBy, participants: people.length > 1 ? splitWith : [] });
     setAmount('');
     setDescription('');
@@ -193,7 +194,7 @@ export default function ExpensesScreen() {
           )}
           <View style={styles.row}>
             <Button title={t('common.cancel')} variant="ghost" onPress={() => setAdding(false)} style={styles.flex} />
-            <Button title={t('common.save')} loading={addExpense.isPending} disabled={!(Number(amount.replace(',', '.')) > 0)} onPress={save} style={styles.flex} />
+            <Button title={t('common.save')} loading={addExpense.isPending} disabled={!((parseAmount(amount) ?? 0) > 0)} onPress={save} style={styles.flex} />
           </View>
         </View>
       )}

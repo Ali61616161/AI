@@ -9,7 +9,7 @@ import { Screen } from '@/components/ui/screen';
 import { SelectSheet } from '@/components/ui/select-sheet';
 import { Text } from '@/components/ui/text';
 import { TextField } from '@/components/ui/text-field';
-import { CURRENCIES, currencyFlag } from '@/lib/fx-logic';
+import { CURRENCIES, currencyFlag, parseAmount } from '@/lib/fx-logic';
 import { getRate } from '@/lib/fx';
 import { currentLanguage } from '@/i18n';
 import { useTheme } from '@/theme/use-theme';
@@ -42,8 +42,8 @@ export default function CurrencyScreen() {
     };
   }, [from, to]);
 
-  const value = Number(amount.replace(',', '.'));
-  const result = rate && Number.isFinite(value) ? value * rate : null;
+  const value = parseAmount(amount);
+  const result = rate && value !== null ? value * rate : null;
   const fmt = (n: number, code: string) => new Intl.NumberFormat(currentLanguage(), { style: 'currency', currency: code, maximumFractionDigits: 2 }).format(n);
   const options = CURRENCIES.map((c) => ({ value: c, label: currencyName(c) }));
   const swap = () => {

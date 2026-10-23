@@ -31,7 +31,10 @@ export async function getRate(from: string, to: string): Promise<number | null> 
   ];
   for (const url of sources) {
     try {
-      const res = await fetch(url);
+      // Yavaş/kapalı ağda (otel Wi-Fi giriş sayfası gibi) takılmamak için kaynak başına 6 sn.
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 6000);
+      const res = await fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
       const rate = res.ok ? parseRate(await res.json(), to) : null;
       if (rate !== null) {
         cache[key] = { rate, at: Date.now() };
