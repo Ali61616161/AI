@@ -18,6 +18,7 @@ import { IconBadge } from '@/components/ui/icon-badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
+import { stableOrigin } from '@/features/live/live-logic';
 import { ExploreMap } from '@/features/explore/explore-map';
 import { distanceM, type Coords, type ExploreMapHandle } from '@/features/explore/types';
 import { formatDistance, NEARBY_CATEGORY_LIST, openDirections, PlacesError, useOpenNow, type NearbyCategory, type Place } from '@/features/places/api';
@@ -66,11 +67,23 @@ export default function ExploreScreen() {
   const [chosenId, setChosenId] = useState<string | null>(null);
   // İlk konum gelince harita ve arama oraya oturur; sonra konum canlı izlenir.
   const user = liveUser ?? location.coords;
-  const searchCenter = searchedAt ?? location.coords;
+  // Canlı arama bulunduğun yerin çevresinde yapılır: konum ~400 m'den fazla değişince arama noktası da taşınır
+  // (ilk alınan eski konuma takılı kalmaz). "Bu bölgede ara" ile seçilen nokta bunun önüne geçer.
+  const [anchor, setAnchor] = useState<Coords | null>(null);
+  const here = liveUser ?? location.coords;
+  const nextAnchor = stableOrigin(anchor, here, 400);
+  if (nextAnchor !== anchor) setAnchor(nextAnchor);
+  const searchCenter = searchedAt ?? anchor ?? location.coords;
   const mapCenter = movedTo ?? searchCenter;
   const map = useRef<ExploreMapHandle>(null);
   const list = useRef<FlatList<Place>>(null);
   const cardWidth = Math.min(width - Spacing.xl * 2, 420);
+
+  // Haritayı elle kaydırmadıysan, konum değişince harita da seninle gelir.
+  useEffect(() => {
+    if (anchor && !searchedAt && !movedTo) map.current?.flyTo(anchor);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [anchor]);
 
   const hasLocation = location.coords !== null;
   useEffect(() => {
@@ -188,7 +201,13 @@ export default function ExploreScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('explore.locate')}
           feedback="select"
-          onPress={() => user && map.current?.flyTo(user)}
+          onPress={() => {
+            if (!user) return;
+            // Konuma dönünce arama da yeniden bulunduğun yerin çevresine alınır.
+            setSearchedAt(null);
+            setMovedTo(null);
+            map.current?.flyTo(user);
+          }}
           style={[styles.locate, { bottom: bottom + CAROUSEL_H + Spacing.md }]}>
           <View style={[styles.glass, styles.roundBtn, { backgroundColor: isDark ? 'rgba(7,11,22,0.85)' : 'rgba(255,255,255,0.95)', borderColor: colors.border }]}>
             <Ionicons name="locate" size={20} color={colors.primary} />

@@ -56,3 +56,24 @@ Deno.test('rotadan sapma: doğru parçasına dik mesafe', async () => {
   assertEquals(distanceToPathM(null, path), null);
   assertEquals(distanceToPathM({ lat: 41, lng: 28.6 }, []), null);
 });
+
+Deno.test('akıcı takip: tahmin, yön geçişi, bölme', async () => {
+  const m = await import('./navigation-logic.ts');
+  const fix = { lat: 41, lng: 28, heading: 0, speed: 10, at: 0 };
+  const p = m.predictPosition(fix, 1000);
+  assertEquals(Math.round((p.lat - 41) * 111_320), 10);
+  assertEquals(m.predictPosition(fix, 60_000).lat > p.lat, true); // en fazla 2.5 sn ilerler
+  assertEquals(Math.round((m.predictPosition(fix, 60_000).lat - 41) * 111_320), 25);
+  assertEquals(m.predictPosition({ ...fix, speed: 0.1 }, 1000), { lat: 41, lng: 28 });
+  assertEquals(m.predictPosition({ ...fix, heading: null }, 1000), { lat: 41, lng: 28 });
+  assertEquals(Math.round(m.blendHeading(350, 10, 0.5)), 0);
+  assertEquals(Math.round(m.blendHeading(10, 350, 0.5)), 0);
+  assertEquals(m.zoomForSpeed(null), 18);
+  assertEquals(m.zoomForSpeed(25) < m.zoomForSpeed(5), true);
+  const line = [[{ lat: 41, lng: 28 }, { lat: 41.001, lng: 28 }, { lat: 41.002, lng: 28 }]];
+  const s = m.splitAtNearest(line, { lat: 41.0015, lng: 28.0001 });
+  assertEquals(s.passed[0].length, 3);
+  assertEquals(s.rest[0].length, 2);
+  assertEquals(Math.round((s.rest[0][0].lat - 41) * 1e4), 15);
+  assertEquals(m.splitAtNearest([], { lat: 1, lng: 1 }).rest, []);
+});

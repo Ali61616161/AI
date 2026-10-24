@@ -17,10 +17,15 @@ import { useTheme } from '@/theme/use-theme';
 import { VEHICLE_ICONS, type RouteChoice } from './api';
 import { speakNatural, stopSpeaking } from '@/features/translate/speak';
 import { translateLanguage } from '@/features/translate/languages';
-import { currentStepIndex, distanceToPathM, formatDistance, isArrived, isOffRoute, nearestIndex, REROUTE_M, remainingMeters, turnIcon, type TurnIcon } from './navigation-logic';
+import { blendHeading, currentStepIndex, destinationPoint, distanceToPathM, formatDistance, isArrived, isOffRoute, predictPosition, REROUTE_M, remainingMeters, splitAtNearest, turnIcon, zoomForSpeed, type Fix, type TurnIcon } from './navigation-logic';
 import { decodePolyline, thin } from './polyline';
 
 const LINE = '#FF5A36';
+const PASSED = '#8C97B2';
+/** Kamera bu aralıkla (ms) güncellenir; konum 1-2 sn'de bir gelse de harita kesintisiz akar. */
+const TICK_MS = 200;
+/** Kamera merkezi, konumun bu kadar (m) önüne konur; böylece ok ekranın alt yarısında kalır (Google Haritalar gibi). */
+const AHEAD_M = 35;
 
 /** Harita temasına göre panel renkleri (açık haritada koyu yazı, koyu haritada açık yazı). */
 const UiColors = createContext<(typeof Colors)[keyof typeof Colors]>(Colors.dark);
@@ -47,6 +52,7 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const path = useMemo(() => (route.polyline ? thin(decodePolyline(route.polyline)) : []), [route.polyline]);
   const coords = useMemo(() => path.map((p) => ({ latitude: p.lat, longitude: p.lng })), [path]);
   const [here, setHere] = useState<{ lat: number; lng: number; heading: number | null } | null>(null);
+  const fix = useRef<Fix | null>(null);
   const [step, setStep] = useState(0);
   const [following, setFollowing] = useState(true);
   const [theme, setTheme] = useState<MapTheme>('auto');
@@ -56,7 +62,6 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const ui = Colors[mapDark ? 'dark' : 'light'];
   // Adım çizgileri: yürüyüş noktalı, toplu taşıma hat renginde, araba düz çizilir.
   const stepPaths = useMemo(() => route.steps.map((st) => st.polylines.map((pl) => thin(decodePolyline(pl)))), [route.steps]);
-  const stepCoords = useMemo(() => stepPaths.map((parts) => parts.map((part) => part.map((p) => ({ latitude: p.lat, longitude: p.lng })))), [stepPaths]);
 
   useEffect(() => {
     if (!visible) return;
@@ -65,9 +70,11 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     (async () => {
       const permission = await Location.requestForegroundPermissionsAsync();
       if (!permission.granted || !alive) return;
-      sub = await Location.watchPositionAsync({ accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 8, timeInterval: 2000 }, (p) =>
-        setHere({ lat: p.coords.latitude, lng: p.coords.longitude, heading: p.coords.heading !== null && p.coords.heading >= 0 ? p.coords.heading : null }),
-      );
+      sub = await Location.watchPositionAsync({ accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 1, timeInterval: 1000 }, (p) => {
+        const heading = p.coords.heading !== null && p.coords.heading >= 0 ? p.coords.heading : null;
+        fix.current = { lat: p.coords.latitude, lng: p.coords.longitude, heading, speed: p.coords.speed !== null && p.coords.speed >= 0 ? p.coords.speed : null, at: Date.now() };
+        setHere({ lat: p.coords.latitude, lng: p.coords.longitude, heading });
+      });
       if (!alive) sub.remove();
     })();
     return () => {
@@ -80,20 +87,31 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const off = isOffRoute(here, path);
   const live = !off && following;
 
-  // Canlı takip: kamera konumuna, yönüne ve hafif eğik açıya gider. Önizlemede tüm rota görünür.
+  // Canlı takip: kamera konum, yön ve hıza göre akar. Her 200 ms'de tahmini konuma kısa bir kayma
+  // verilir (konum güncellemeleri arasında da); yön yumuşatılır, hızlandıkça uzaklaşır, ok altta kalır.
+  const camera = useRef({ heading: 0, zoom: 18, init: false });
   useEffect(() => {
-    if (!visible) return;
-    if (live && here) {
-      fitted.current = false;
-      map.current?.animateCamera({ center: { latitude: here.lat, longitude: here.lng }, zoom: 18, pitch: 50, ...(here.heading !== null ? { heading: here.heading } : {}) }, { duration: 700 });
-    } else if (coords.length > 1 && !fitted.current) {
-      fitted.current = true;
-      map.current?.fitToCoordinates(coords, { edgePadding: { top: insets.top + 180, right: 48, bottom: 260, left: 48 }, animated: true });
-    }
-  }, [visible, live, here, coords, insets.top]);
+    if (!visible || !live) return;
+    fitted.current = false;
+    const id = setInterval(() => {
+      const f = fix.current;
+      if (!f) return;
+      const c = camera.current;
+      if (f.heading !== null && (f.speed ?? 0) >= 0.7) c.heading = c.init ? blendHeading(c.heading, f.heading, 0.25) : f.heading;
+      c.zoom = c.init ? c.zoom + (zoomForSpeed(f.speed) - c.zoom) * 0.08 : zoomForSpeed(f.speed);
+      c.init = true;
+      const at = destinationPoint(predictPosition(f, Date.now()), c.heading, AHEAD_M);
+      map.current?.animateCamera({ center: { latitude: at.lat, longitude: at.lng }, heading: c.heading, zoom: c.zoom, pitch: 50 }, { duration: TICK_MS + 60 });
+    }, TICK_MS);
+    return () => clearInterval(id);
+  }, [visible, live]);
+  // Önizleme: tüm rota görünür.
+  useEffect(() => {
+    if (!visible || live || !following || fitted.current || coords.length < 2) return;
+    fitted.current = true;
+    map.current?.fitToCoordinates(coords, { edgePadding: { top: insets.top + 180, right: 48, bottom: 260, left: 48 }, animated: true });
+  }, [visible, live, following, coords, insets.top]);
 
-  const passedIndex = here && !off ? nearestIndex(here, path) : 0;
-  const passedCoords = useMemo(() => coords.slice(0, passedIndex + 1), [coords, passedIndex]);
   const remaining = remainingMeters(here, path);
   const arrived = !off && isArrived(remaining);
   const steps = route.steps;
@@ -101,9 +119,33 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const auto = Boolean(here) && !off;
   const idx = Math.max(0, Math.min(auto ? currentStepIndex(here, stepPaths.map((parts) => parts.flat()), step) : step, steps.length - 1));
   const current = steps[idx];
+  // Çizilecek çizgiler: önceki adımlar ve bu adımın geçilen kısmı gri, kalanı rengiyle.
+  const routeLines = useMemo(() => {
+    const lines: { key: string; coords: { latitude: number; longitude: number }[]; color: string; width: number; z: number }[] = [];
+    const toMap = (pts: { lat: number; lng: number }[]) => pts.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+    const add = (key: string, pts: { lat: number; lng: number }[], color: string, z: number) => pts.length > 1 && lines.push({ key, coords: toMap(pts), color, width: 6, z });
+    if (!stepPaths.some((parts) => parts.length > 0)) {
+      add('all', path, LINE, 2);
+      return lines;
+    }
+    stepPaths.forEach((parts, i) => {
+      const color = route.steps[i].transit?.color ?? LINE;
+      if (!auto || i > idx) parts.forEach((pts, j) => add(`s${i}-${j}`, pts, color, 2));
+      else if (i < idx) parts.forEach((pts, j) => add(`s${i}-${j}`, pts, PASSED, 2));
+      else if (here) {
+        const { passed, rest } = splitAtNearest(parts, here);
+        passed.forEach((pts, j) => add(`p${i}-${j}`, pts, PASSED, 2));
+        rest.forEach((pts, j) => add(`r${i}-${j}`, pts, color, 2));
+      } else parts.forEach((pts, j) => add(`s${i}-${j}`, pts, color, 2));
+    });
+    return lines;
+  }, [stepPaths, route.steps, path, auto, idx, here]);
   const tr = current?.transit;
   const next = steps[idx + 1];
   const end = coords[coords.length - 1];
+  // Bu adımın bitimine (bir sonraki dönüşe) kalan mesafe.
+  const stepEnd = stepPaths[idx]?.flat().at(-1);
+  const stepLeft = stepEnd ? remainingMeters(here, [stepEnd]) : null;
 
   const instruction = tr
     ? [tr.lineShort ?? tr.line ?? tr.vehicleName, tr.headsign ? `→ ${tr.headsign}` : null].filter(Boolean).join(' ')
@@ -177,25 +219,13 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
             showsBuildings
             toolbarEnabled={false}
             onPanDrag={() => setFollowing(false)}>
-            {/* Kalan yol: yürüyüş noktalı, toplu taşıma hat renginde; geçilen kısım üstte soluk gri. */}
-            {stepCoords.some((parts) => parts.length > 0)
-              ? stepCoords.flatMap((parts, i) =>
-                  parts.map((part, j) =>
-                    route.steps[i].transit ? (
-                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={route.steps[i].transit?.color ?? LINE} strokeWidth={7} lineJoin="round" />
-                    ) : route.steps[i].mode === 'walk' ? (
-                      <Fragment key={`s${i}-${j}`}>
-                        {/* İnce düz çizgi rotayı belli eder; üstündeki büyük noktalar yürüyüşü gösterir. */}
-                        <Polyline coordinates={part} strokeColor={LINE} strokeWidth={2} />
-                        <Polyline coordinates={part} strokeColor={LINE} strokeWidth={9} lineCap="round" lineDashPattern={[1, 14]} />
-                      </Fragment>
-                    ) : (
-                      <Polyline key={`s${i}-${j}`} coordinates={part} strokeColor={LINE} strokeWidth={7} lineJoin="round" />
-                    ),
-                  ),
-                )
-              : coords.length > 1 && <Polyline coordinates={coords} strokeColor={LINE} strokeWidth={7} lineJoin="round" />}
-            {passedCoords.length > 1 && <Polyline coordinates={passedCoords} strokeColor="rgba(150,160,185,0.85)" strokeWidth={8} lineJoin="round" zIndex={5} />}
+            {/* Yol: koyu kenarlıklı düz çizgi (her haritada okunur). Toplu taşıma hat renginde; geçilen kısım gri. */}
+            {routeLines.map((l) => (
+              <Fragment key={l.key}>
+                <Polyline coordinates={l.coords} strokeColor={mapDark ? 'rgba(5,8,18,0.85)' : 'rgba(255,255,255,0.95)'} strokeWidth={l.width + 4} lineJoin="round" lineCap="round" zIndex={l.z} />
+                <Polyline coordinates={l.coords} strokeColor={l.color} strokeWidth={l.width} lineJoin="round" lineCap="round" zIndex={l.z + 1} />
+              </Fragment>
+            ))}
             {end && <Marker coordinate={end} title={destinationName} />}
           </MapView>
         ) : (
@@ -226,7 +256,12 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
               <View style={styles.row}>
                 <Ionicons name={tr ? VEHICLE_ICONS[tr.vehicle] : current && current.mode !== 'transit' && current.maneuver ? TURN_ICON[turnIcon(current.maneuver)] : 'walk'} size={30} color={ui.primary} />
                 <View style={styles.flex}>
-                  <Txt variant="title" numberOfLines={2}>
+                  {auto && stepLeft !== null && stepLeft > 15 && (
+                    <Txt variant="caption" color="textSecondary">
+                      {formatDistance(stepLeft)}
+                    </Txt>
+                  )}
+                  <Txt variant="title" numberOfLines={3} adjustsFontSizeToFit minimumFontScale={0.8}>
                     {instruction}
                   </Txt>
                   {detail && (

@@ -111,3 +111,76 @@ export function distanceToPathM(here: LatLng | null, path: LatLng[]): number | n
   }
   return Math.round(best);
 }
+
+// ---------------------------------------------------------------------------
+// Akıcı takip: konum güncellemeleri arasında kamera, hız ve yöne göre öne doğru kayar
+// ---------------------------------------------------------------------------
+
+export type Fix = { lat: number; lng: number; heading: number | null; speed: number | null; at: number };
+
+const M_PER_DEG = 111_320;
+
+/** Bir noktadan verilen yönde (0 = kuzey, saat yönü) `meters` ileri nokta. */
+export function destinationPoint(p: LatLng, headingDeg: number, meters: number): LatLng {
+  const rad = (headingDeg * Math.PI) / 180;
+  return {
+    lat: p.lat + (Math.cos(rad) * meters) / M_PER_DEG,
+    lng: p.lng + (Math.sin(rad) * meters) / (M_PER_DEG * Math.cos((p.lat * Math.PI) / 180)),
+  };
+}
+
+/** Bu hızın (m/sn) altında yön güvenilmez; kamera olduğu gibi kalır. */
+export const MOVING_MS = 0.7;
+
+/**
+ * Son konum bilgisinden şimdiki tahmini konum: hız ve yöne göre ilerletilir (en fazla `maxSec` sn),
+ * böylece konum 1-2 sn'de bir gelse de harita sıçramadan akar.
+ */
+export function predictPosition(fix: Fix, nowMs: number, maxSec = 2.5): LatLng {
+  if (fix.heading === null || fix.speed === null || fix.speed < MOVING_MS) return { lat: fix.lat, lng: fix.lng };
+  const sec = Math.max(0, Math.min((nowMs - fix.at) / 1000, maxSec));
+  return destinationPoint(fix, fix.heading, Math.min(fix.speed, 45) * sec);
+}
+
+/** İki yön arasında en kısa yoldan yumuşak geçiş (0-360). */
+export function blendHeading(prev: number, next: number, alpha: number): number {
+  const diff = ((((next - prev) % 360) + 540) % 360) - 180;
+  return (prev + diff * alpha + 360) % 360;
+}
+
+/** Hıza göre yakınlaştırma: yürürken yakın, arabayla uzak. */
+export function zoomForSpeed(speed: number | null): number {
+  if (speed === null || speed < 3) return 18;
+  if (speed < 9) return 17.5;
+  if (speed < 18) return 17;
+  return 16.3;
+}
+
+/** Konumun çizgiye izdüşümünden böler: geçilen kısım ve kalan kısım (çizgi parçaları listesi). */
+export function splitAtNearest(parts: LatLng[][], here: LatLng): { passed: LatLng[][]; rest: LatLng[][] } {
+  const mLng = M_PER_DEG * Math.cos((here.lat * Math.PI) / 180);
+  let best = { d: Infinity, part: -1, seg: -1, t: 0 };
+  parts.forEach((pts, pi) => {
+    for (let i = 0; i < pts.length - 1; i++) {
+      const ax = pts[i].lng * mLng;
+      const ay = pts[i].lat * M_PER_DEG;
+      const dx = pts[i + 1].lng * mLng - ax;
+      const dy = pts[i + 1].lat * M_PER_DEG - ay;
+      const len2 = dx * dx + dy * dy;
+      const px = here.lng * mLng - ax;
+      const py = here.lat * M_PER_DEG - ay;
+      const t = len2 === 0 ? 0 : Math.max(0, Math.min(1, (px * dx + py * dy) / len2));
+      const d = Math.hypot(px - t * dx, py - t * dy);
+      if (d < best.d) best = { d, part: pi, seg: i, t };
+    }
+  });
+  if (best.part < 0) return { passed: [], rest: parts };
+  const pts = parts[best.part];
+  const a = pts[best.seg];
+  const b = pts[best.seg + 1];
+  const cut = { lat: a.lat + (b.lat - a.lat) * best.t, lng: a.lng + (b.lng - a.lng) * best.t };
+  return {
+    passed: [...parts.slice(0, best.part), [...pts.slice(0, best.seg + 1), cut]],
+    rest: [[cut, ...pts.slice(best.seg + 1)], ...parts.slice(best.part + 1)],
+  };
+}
