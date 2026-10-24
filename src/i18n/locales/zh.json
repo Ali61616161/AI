@@ -607,12 +607,10 @@
       "title": "语音",
       "enhanced": "增强版",
       "none": "未找到该语言的语音。",
-      "hint": "让手机语音更自然：iPhone 设置 → 辅助功能 → 朗读内容 → 声音 → 语言 → 下载“增强/高级”语音。Android：设置 → 文字转语音。",
-      "cloudFemale": "Yola 自然语音 · 女声",
-      "cloudMale": "Yola 自然语音 · 男声",
-      "recommended": "推荐",
-      "cloudNote": "无需设置。需要网络；播放过的句子会保存在手机上，之后离线也能播放。",
-      "deviceTitle": "手机语音（离线）"
+      "cloudNote": "自然语音无需设置，需要联网。播放过的句子会保存在手机上。",
+      "deviceTitle": "手机语音（离线）",
+      "female": "女声",
+      "male": "男声"
     }
   },
   "tools": {
@@ -1505,7 +1503,11 @@
     "nearby": "附近有什么？",
     "arrivedTitle": "{{title}}：你到了吗？",
     "arrivedYes": "是的，我到了",
-    "notNow": "以后再说"
+    "notNow": "以后再说",
+    "freeDayThis": "这天自由活动",
+    "freeDayNote": "自由日：此日的提问和提醒已关闭，计划仍可查看。",
+    "fullMap": "全屏地图",
+    "exitFullMap": "退出全屏"
   },
   "tripQuestions": {
     "title": "关于这次旅行",

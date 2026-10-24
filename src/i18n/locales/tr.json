@@ -616,12 +616,10 @@
       "title": "Ses",
       "enhanced": "Gelişmiş",
       "none": "Bu dil için ses bulunamadı.",
-      "hint": "Telefon seslerini doğallaştırmak için: iPhone'da Ayarlar (Settings) → Erişilebilirlik (Accessibility) → Oku ve Konuş (Read & Speak) → Sesler (Voices) → dil → \"Gelişmiş/Premium\" sesi indir. Android'de Ayarlar → Metin okuma.",
-      "cloudFemale": "Yola doğal ses · kadın",
-      "cloudMale": "Yola doğal ses · erkek",
-      "recommended": "Önerilen",
-      "cloudNote": "Ayar gerektirmez. İnternet ister; bir kez çalınan cümle telefonda saklanır, sonra internetsiz de çalar.",
-      "deviceTitle": "Telefonun sesleri (internetsiz)"
+      "cloudNote": "Doğal ses ayar gerektirmez, internet ister. Bir kez çalınan cümle telefonda saklanır.",
+      "deviceTitle": "Telefonun sesleri (internetsiz)",
+      "female": "Kadın sesi",
+      "male": "Erkek sesi"
     }
   },
   "tools": {
@@ -1543,7 +1541,11 @@
     "nearby": "Yakında ne var?",
     "arrivedTitle": "{{title}} — geldin mi?",
     "arrivedYes": "Evet, buradayım",
-    "notNow": "Şimdi değil"
+    "notNow": "Şimdi değil",
+    "freeDayThis": "Bu gün serbest",
+    "freeDayNote": "Serbest gün: bu gün için sorular ve hatırlatmalar kapalı. Plan yine de görünür.",
+    "fullMap": "Tam ekran harita",
+    "exitFullMap": "Tam ekrandan çık"
   },
   "tripQuestions": {
     "title": "Bu seyahat için",

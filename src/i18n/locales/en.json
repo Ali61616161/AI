@@ -616,12 +616,10 @@
       "title": "Voice",
       "enhanced": "Enhanced",
       "none": "No voices found for this language.",
-      "hint": "To make phone voices more natural: on iPhone, Settings → Accessibility → Read & Speak (older iOS: Spoken Content) → Voices → language → download an \"Enhanced/Premium\" voice. On Android, Settings → Text-to-speech.",
-      "cloudFemale": "Yola natural voice · female",
-      "cloudMale": "Yola natural voice · male",
-      "recommended": "Recommended",
-      "cloudNote": "No setup needed. Needs internet; a sentence played once is saved and then works offline.",
-      "deviceTitle": "Phone voices (offline)"
+      "cloudNote": "The natural voice needs no setup and uses the internet. A sentence played once is saved on your phone.",
+      "deviceTitle": "Phone voices (offline)",
+      "female": "Female voice",
+      "male": "Male voice"
     }
   },
   "tools": {
@@ -1543,7 +1541,11 @@
     "nearby": "What's nearby?",
     "arrivedTitle": "{{title}}: are you here?",
     "arrivedYes": "Yes, I'm here",
-    "notNow": "Not now"
+    "notNow": "Not now",
+    "freeDayThis": "This day is free",
+    "freeDayNote": "Free day: questions and reminders are off for this day. The plan stays visible.",
+    "fullMap": "Full-screen map",
+    "exitFullMap": "Exit full screen"
   },
   "tripQuestions": {
     "title": "For this trip",

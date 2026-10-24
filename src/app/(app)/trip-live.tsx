@@ -120,6 +120,8 @@ export default function TripLiveScreen() {
   }, [isToday, guidance.etaRoute?.polyline, guidance.etaMode]);
 
   const [mode, setMode] = useState<ViewMode>('cards');
+  // Tam ekran harita: paneller gizlenir, yalnızca harita ve küçük düğmeler kalır.
+  const [fullMap, setFullMap] = useState(false);
   const map = useRef<LiveMapHandle>(null);
   const list = useRef<FlatList<Stop>>(null);
   const cardWidth = Math.min(width - Spacing.lg * 2 - 24, 420);
@@ -173,12 +175,21 @@ export default function TripLiveScreen() {
           onSelect={(id) => select(id, true)}
           guide={guide}
           here={guidance.here}
-          topInset={topHeight}
-          bottomInset={bottomHeight}
+          topInset={fullMap ? insets.top + 72 : topHeight}
+          bottomInset={fullMap ? insets.bottom + 96 : bottomHeight}
         />
       )}
 
-      <View style={[styles.top, { paddingTop: top }]} pointerEvents="box-none" onLayout={(e) => setTopHeight(e.nativeEvent.layout.height)}>
+      {fullMap && (
+        <View style={[styles.fullTop, { top }]} pointerEvents="box-none">
+          <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={() => router.back()} hitSlop={12} feedback="press">
+            <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Ionicons name="close" size={20} color={colors.text} />
+            </View>
+          </Tap>
+        </View>
+      )}
+      <View style={[styles.top, { paddingTop: top }, fullMap && styles.hidden]} pointerEvents={fullMap ? 'none' : 'box-none'} onLayout={(e) => setTopHeight(e.nativeEvent.layout.height)}>
         <View style={styles.titleRow}>
           <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={() => router.back()} hitSlop={12} feedback="press">
             <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -209,9 +220,14 @@ export default function TripLiveScreen() {
         {days.length > 0 && <DaySelector days={days} selected={dayIndex} onSelect={setPickedDay} />}
         {freeKey && (
           <View style={styles.chipRow}>
-            <Chip icon={guidance.freeDay ? 'checkmark-circle' : 'sunny-outline'} label={t('live.freeDay')} selected={guidance.freeDay} onPress={() => setFreeDay(freeKey, !guidance.freeDay)} />
+            <Chip icon={guidance.freeDay ? 'checkmark-circle' : 'sunny-outline'} label={isToday ? t('live.freeDay') : t('live.freeDayThis')} selected={guidance.freeDay} onPress={() => setFreeDay(freeKey, !guidance.freeDay)} />
             {isToday && <Chip icon="cafe-outline" label={t('live.nearby')} onPress={() => router.dismissTo('/explore')} />}
           </View>
+        )}
+        {guidance.freeDay && (
+          <Text variant="caption" color="textSecondary" style={styles.freeNote}>
+            {t('live.freeDayNote')}
+          </Text>
         )}
         {isToday && stops.length > 0 && (
           <NowStrip guidance={guidance} progress={progress} weather={weather.data?.days.find((w) => w.date === today) ?? null} timezone={stops[0]?.timezone ?? null} />
@@ -219,7 +235,7 @@ export default function TripLiveScreen() {
       </View>
 
       {stops.length > 0 && (
-        <View style={[styles.controls, { bottom: bottomHeight + Spacing.sm }]} pointerEvents="box-none">
+        <View style={[styles.controls, { bottom: fullMap ? insets.bottom + Spacing.lg : bottomHeight + Spacing.sm }]} pointerEvents="box-none">
           {guidance.here && (
             <Tap accessibilityRole="button" accessibilityLabel={t('live.locate')} onPress={() => map.current?.locate()} feedback="select">
               <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -230,6 +246,19 @@ export default function TripLiveScreen() {
           <Tap accessibilityRole="button" accessibilityLabel={t('live.fitAll')} onPress={() => map.current?.fit()} feedback="select">
             <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Ionicons name="scan-outline" size={20} color={colors.text} />
+            </View>
+          </Tap>
+          <Tap
+            accessibilityRole="button"
+            accessibilityLabel={fullMap ? t('live.exitFullMap') : t('live.fullMap')}
+            onPress={() => {
+              setFullMap((v) => !v);
+              // Paneller kapanıp açılınca duraklar yeni boşluğa yeniden sığdırılır.
+              setTimeout(() => map.current?.fit(), 350);
+            }}
+            feedback="select">
+            <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Ionicons name={fullMap ? 'contract-outline' : 'expand-outline'} size={20} color={colors.text} />
             </View>
           </Tap>
         </View>
@@ -244,7 +273,7 @@ export default function TripLiveScreen() {
           <EmptyState icon="map-outline" title={t('live.emptyTitle')} description={t('live.emptyBody')} />
         </View>
       ) : (
-        <View style={[styles.bottom, { paddingBottom: insets.bottom + Spacing.md }]} pointerEvents="box-none" onLayout={(e) => setBottomHeight(e.nativeEvent.layout.height)}>
+        <View style={[styles.bottom, { paddingBottom: insets.bottom + Spacing.md }, fullMap && styles.hidden]} pointerEvents={fullMap ? 'none' : 'box-none'} onLayout={(e) => setBottomHeight(e.nativeEvent.layout.height)}>
           {isToday && (
             <View style={styles.guidance}>
               {arrived && (
@@ -385,6 +414,9 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   flex: { flex: 1 },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  hidden: { opacity: 0 },
+  fullTop: { position: 'absolute', left: Spacing.lg, zIndex: 5 },
+  freeNote: { paddingHorizontal: Spacing.lg },
   top: { position: 'absolute', top: 0, left: 0, right: 0, gap: Spacing.sm, paddingBottom: Spacing.sm },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingHorizontal: Spacing.lg },
   round: { width: 40, height: 40, borderRadius: Radius.pill, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },

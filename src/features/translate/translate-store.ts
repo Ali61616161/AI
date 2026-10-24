@@ -21,6 +21,13 @@ export const useTranslateStore = create<TranslateState>()(
       setLanguages: (myLanguage, theirLanguage) => set({ myLanguage, theirLanguage }),
       setVoice: (speechTag, identifier) => set((s) => ({ voices: { ...s.voices, [speechTag]: identifier } })),
     }),
-    { name: 'yola-translate', storage: createJSONStorage(() => AsyncStorage) },
+    {
+      name: 'yola-translate',
+      storage: createJSONStorage(() => AsyncStorage),
+      // v2: eski sürümde ses satırına dokunmak sesi de seçiyordu; bu yüzden kayıtlı telefon sesleri sıfırlanır
+      // ve varsayılan olarak Yola'nın doğal sesi kullanılır.
+      version: 2,
+      migrate: (persisted) => ({ ...(persisted as object), voices: {} }) as TranslateState,
+    },
   ),
 );

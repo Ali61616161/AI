@@ -616,12 +616,10 @@
       "title": "Voce",
       "enhanced": "Avanzata",
       "none": "Nessuna voce per questa lingua.",
-      "hint": "Per voci più naturali: su iPhone, Impostazioni → Accessibilità → Contenuto letto → Voci → lingua → scarica una voce \"Avanzata/Premium\". Su Android, Impostazioni → Sintesi vocale.",
-      "cloudFemale": "Voce naturale Yola · femminile",
-      "cloudMale": "Voce naturale Yola · maschile",
-      "recommended": "Consigliata",
-      "cloudNote": "Nessuna impostazione. Serve internet; una frase riprodotta viene salvata e poi funziona offline.",
-      "deviceTitle": "Voci del telefono (offline)"
+      "cloudNote": "La voce naturale non richiede impostazioni e usa internet. Le frasi già riprodotte vengono salvate.",
+      "deviceTitle": "Voci del telefono (offline)",
+      "female": "Voce femminile",
+      "male": "Voce maschile"
     }
   },
   "tools": {
@@ -1543,7 +1541,11 @@
     "nearby": "Cosa c'è vicino?",
     "arrivedTitle": "{{title}}: sei arrivato?",
     "arrivedYes": "Sì, sono qui",
-    "notNow": "Non ora"
+    "notNow": "Non ora",
+    "freeDayThis": "Questo giorno è libero",
+    "freeDayNote": "Giorno libero: domande e promemoria disattivati. Il piano resta visibile.",
+    "fullMap": "Mappa a schermo intero",
+    "exitFullMap": "Esci dallo schermo intero"
   },
   "tripQuestions": {
     "title": "Per questo viaggio",
