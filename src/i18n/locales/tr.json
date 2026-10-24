@@ -616,7 +616,7 @@
       "title": "Ses",
       "enhanced": "Gelişmiş",
       "none": "Bu dil için ses bulunamadı.",
-      "hint": "Telefon seslerini doğallaştırmak için: iPhone'da Ayarlar (Settings) → Erişilebilirlik (Accessibility) → Okunan İçerik (Spoken Content) → Sesler (Voices) → dil → \"Gelişmiş/Premium\" sesi indir. Android'de Ayarlar → Metin okuma.",
+      "hint": "Telefon seslerini doğallaştırmak için: iPhone'da Ayarlar (Settings) → Erişilebilirlik (Accessibility) → Oku ve Konuş (Read & Speak) → Sesler (Voices) → dil → \"Gelişmiş/Premium\" sesi indir. Android'de Ayarlar → Metin okuma.",
       "cloudFemale": "Yola doğal ses · kadın",
       "cloudMale": "Yola doğal ses · erkek",
       "recommended": "Önerilen",
