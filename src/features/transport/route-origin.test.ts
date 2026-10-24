@@ -4,12 +4,12 @@ import { distanceKm, FAR_KM, isFar, pickTripOrigin } from './route-origin.ts';
 
 const res = (over: Record<string, unknown>) => ({ type: 'flight', title: 'IST → ZRH', starts_at: '2027-01-11T09:45:00Z', address: null, destination_name: null, destination_code: null, ...over });
 
-Deno.test('isFar: aynı şehir yakın, Büyükçekmece–Zürih uzak', () => {
-  const home = { lat: 41.0214, lng: 28.5778 };
+Deno.test('isFar: aynı şehir yakın, Taksim–Zürih uzak', () => {
+  const home = { lat: 41.0370, lng: 28.9850 };
   assertEquals(isFar(home, { lat: 41.0082, lng: 28.9784 }), false);
   assertEquals(isFar(home, { lat: 47.3779, lng: 8.5403 }), true);
   assertEquals(FAR_KM, 150);
-  assertEquals(Math.round(distanceKm(home, { lat: 47.3779, lng: 8.5403 }) / 100), 17);
+  assertEquals(Math.round(distanceKm(home, { lat: 47.3779, lng: 8.5403 }) / 100), 18);
 });
 
 Deno.test('pickTripOrigin: otel varsa adresiyle, uçuş varsa varış havalimanı, yoksa null', () => {

@@ -15,7 +15,7 @@ import {
   normalizeParsedDocument,
 } from '../_shared/documents.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
-import { corsHeaders, error, json } from '../_shared/http.ts';
+import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 
 const SUPPORTED_MIME_TYPES = new Set([
   'application/pdf',
@@ -67,14 +67,16 @@ Deno.serve(async (req) => {
   const { data: quota, error: quotaError } = await supabase
     .rpc('consume_quota', { p_feature: 'document_scan', p_trip_id: doc.trip_id })
     .single<{ allowed: boolean; plan: string; remaining: number | null }>();
-  if (quotaError) return error('bad_request', 400, quotaError.message);
+  if (quotaError) return dbError('parse-document', quotaError, 400);
   if (!quota.allowed) return error('quota_exceeded', 402);
 
   await supabase.from('documents').update({ status: 'processing', error: null }).eq('id', doc.id);
 
   const fail = async (code: 'ai_failed' | 'file_too_large' | 'not_found', status: number, message: string) => {
-    await supabase.from('documents').update({ status: 'failed', error: message.slice(0, 500) }).eq('id', doc.id);
-    return error(code, status, message);
+    // Ayrıntı (Gemini/depo hata metni) yalnızca günlüğe; belgeye ve istemciye kod yazılır.
+    console.error(`parse-document: ${code}`, message.slice(0, 500));
+    await supabase.from('documents').update({ status: 'failed', error: code }).eq('id', doc.id);
+    return error(code, status);
   };
 
   const { data: file, error: downloadError } = await supabase.storage.from('documents').download(doc.storage_path);
@@ -111,7 +113,7 @@ Deno.serve(async (req) => {
     .eq('id', doc.id)
     .select('id, status, detected_type, parsed_data, confidence')
     .single();
-  if (saveError) return error('bad_request', 400, saveError.message);
+  if (saveError) return dbError('parse-document', saveError, 400);
 
   return json({ document: saved, quota: { plan: quota.plan, remaining: quota.remaining } });
 });

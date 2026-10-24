@@ -44,6 +44,8 @@ const config: ExpoConfig = {
       monochromeImage: './assets/images/android-icon-monochrome.png',
     },
     predictiveBackGestureEnabled: false,
+    // Oturum anahtarı, çevrimdışı biletler ve acil durum kişileri Google yedeğine / cihaz taşımaya gitmesin.
+    allowBackup: false,
     // Kullanılmayan izinler (bazı kütüphaneler varsayılan olarak ekler).
     blockedPermissions: ['android.permission.ACCESS_BACKGROUND_LOCATION', 'android.permission.SYSTEM_ALERT_WINDOW'],
   },
@@ -71,7 +73,7 @@ const config: ExpoConfig = {
     [
       'expo-location',
       {
-        locationWhenInUsePermission: `${brand.name} uses your location to show places open near you and to adjust your plan.`,
+        locationWhenInUsePermission: `${brand.name} uses your location to show places open near you, guide you during your trip and, only if you turn on Travelers, show other travelers your approximate area.`,
         locationAlwaysAndWhenInUsePermission: false,
         isAndroidBackgroundLocationEnabled: false,
       },

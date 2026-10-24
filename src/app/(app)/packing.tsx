@@ -17,18 +17,20 @@ import { suggestPacking, type PackingCategory } from '@/features/tools/packing';
 import { useActivePlan, useTrip } from '@/features/trips/queries';
 import { daysUntil } from '@/lib/format';
 import { Radius, Spacing, Typography } from '@/theme/tokens';
+import { useSessionStore } from '@/stores/session-store';
 import { useTheme } from '@/theme/use-theme';
 
 const ORDER: PackingCategory[] = ['documents', 'clothes', 'toiletries', 'health', 'electronics', 'kids', 'extras'];
 
-function Row({ item, onToggle, onRemove }: { item: PackingRow; onToggle: () => void; onRemove: () => void }) {
+function Row({ item, onToggle, onRemove, readOnly }: { item: PackingRow; onToggle: () => void; onRemove: () => void; readOnly: boolean }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
     return (
       <View style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <Pressable
           accessibilityRole="checkbox"
-          accessibilityState={{ checked: item.is_packed }}
+          accessibilityState={{ checked: item.is_packed, disabled: readOnly }}
+          disabled={readOnly}
           onPress={onToggle}
           style={styles.check}>
           <Ionicons name={item.is_packed ? 'checkbox' : 'square-outline'} size={22} color={item.is_packed ? colors.success : colors.textSecondary} />
@@ -37,9 +39,11 @@ function Row({ item, onToggle, onRemove }: { item: PackingRow; onToggle: () => v
             {item.quantity > 1 ? ` ×${item.quantity}` : ''}
           </Text>
         </Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel={t('packing.remove', { item: item.label })} onPress={onRemove} hitSlop={8}>
-          <Ionicons name="close" size={18} color={colors.textMuted} />
-        </Pressable>
+        {!readOnly && (
+          <Pressable accessibilityRole="button" accessibilityLabel={t('packing.remove', { item: item.label })} onPress={onRemove} hitSlop={8}>
+            <Ionicons name="close" size={18} color={colors.textMuted} />
+          </Pressable>
+        )}
       </View>
     );
   }
@@ -56,6 +60,9 @@ export default function PackingScreen() {
   const { data: profile } = useProfileCountries();
   const { data: items, isLoading } = usePacking(tripId);
   const { add, toggle, remove } = usePackingMutations(tripId);
+  // Paylaşılan seyahatte görüntüleyen listeyi görür ama değiştiremez (sunucu da reddeder).
+  const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
+  const readOnly = Boolean(trip && trip.owner_id !== userId);
   const [label, setLabel] = useState('');
 
   function generate() {
@@ -96,7 +103,7 @@ export default function PackingScreen() {
         <ActivityIndicator />
       ) : !items?.length ? (
         <EmptyState icon="briefcase-outline" title={t('packing.emptyTitle')} description={t('packing.emptyBody')}>
-          <Button title={t('packing.generate')} loading={add.isPending} onPress={generate} disabled={!trip} />
+          {!readOnly && <Button title={t('packing.generate')} loading={add.isPending} onPress={generate} disabled={!trip} />}
         </EmptyState>
       ) : (
         <>
@@ -104,16 +111,17 @@ export default function PackingScreen() {
             <View key={g.c} style={styles.section}>
               <Text variant="subtitle">{t(`packing.categories.${g.c}`)}</Text>
               {g.rows.map((i) => (
-                <Row key={i.id} item={i} onToggle={() => toggle.mutate(i)} onRemove={() => remove.mutate(i.id)} />
+                <Row key={i.id} item={i} onToggle={() => toggle.mutate(i)} onRemove={() => remove.mutate(i.id)} readOnly={readOnly} />
               ))}
             </View>
           ))}
           {other.map((i) => (
-            <Row key={i.id} item={i} onToggle={() => toggle.mutate(i)} onRemove={() => remove.mutate(i.id)} />
+            <Row key={i.id} item={i} onToggle={() => toggle.mutate(i)} onRemove={() => remove.mutate(i.id)} readOnly={readOnly} />
           ))}
         </>
       )}
 
+      {!readOnly && (
       <View style={styles.addRow}>
         <TextInput
           value={label}
@@ -138,6 +146,7 @@ export default function PackingScreen() {
           </View>
         </Tap>
       </View>
+      )}
     </Screen>
   );
 }

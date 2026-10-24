@@ -30,6 +30,8 @@ type SessionState = {
   session: Session | null;
   /** Son giriş yapan kullanıcı. Oturum süresi dolmuş ve internet yokken de (uçakta) uygulama kilitlenmesin diye saklanır. */
   userId: string | null;
+  /** Son giriş yapan kullanıcının e-postası (çevrimdışıyken profilde göstermek için). */
+  userEmail: string | null;
   preferences: TravelPreferences;
   identity: TravelIdentity;
   /** Gezilen ülkeler (misafirken de tutulur; girişte hesaba eşitlenir). */
@@ -57,6 +59,7 @@ export const useSessionStore = create<SessionState>()(
     (set) => ({
       session: null,
       userId: null,
+      userEmail: null,
       preferences: emptyPreferences,
       identity: emptyIdentity,
       visitedCountries: [],
@@ -64,7 +67,7 @@ export const useSessionStore = create<SessionState>()(
       introSeen: false,
       consents: null,
 
-      setSession: (session) => set((state) => ({ session, userId: session ? session.user.id : state.userId })),
+      setSession: (session) => set((state) => (session ? { session, userId: session.user.id, userEmail: session.user.email ?? null } : { session, userId: state.userId, userEmail: state.userEmail })),
       setPreferences: (patch) => set((state) => ({ preferences: { ...state.preferences, ...patch } })),
       setIdentity: (patch) => set((state) => ({ identity: { ...state.identity, ...patch } })),
       setIntroSeen: () => set({ introSeen: true }),
@@ -72,13 +75,14 @@ export const useSessionStore = create<SessionState>()(
       setConsents: (consents) => set({ consents }),
       completeOnboarding: () => set({ onboardingCompleted: true }),
       signOut: () =>
-        set({ session: null, userId: null, preferences: emptyPreferences, identity: emptyIdentity, visitedCountries: [], onboardingCompleted: false }),
+        set({ session: null, userId: null, userEmail: null, preferences: emptyPreferences, identity: emptyIdentity, visitedCountries: [], onboardingCompleted: false }),
     }),
     {
       name: 'yola.session',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         userId: state.userId,
+        userEmail: state.userEmail,
         preferences: state.preferences,
         identity: state.identity,
         visitedCountries: state.visitedCountries,

@@ -5,7 +5,7 @@
 // Gerekli sunucu sırları: REVENUECAT_WEBHOOK_AUTH, SUPABASE_SERVICE_ROLE_KEY (Supabase verir).
 // JWT doğrulaması kapalı olmalı: supabase/config.toml → [functions.revenuecat-webhook] verify_jwt = false
 import { adminClient } from '../_shared/admin.ts';
-import { error, json } from '../_shared/http.ts';
+import { dbError, error, json } from '../_shared/http.ts';
 import { PROMO_PRODUCTS_FILTER, PRO_PLANS, productMapFromEnv, rowFromWebhook, transferredFromUsers } from '../_shared/subscriptions.ts';
 
 function safeEqual(a: string, b: string): boolean {
@@ -40,7 +40,7 @@ Deno.serve(async (req) => {
       .in('plan', PRO_PLANS)
       .not('product_id', 'in', PROMO_PRODUCTS_FILTER)
       .in('status', ['active', 'in_grace']);
-    if (transferError) return error('bad_request', 500, transferError.message);
+    if (transferError) return dbError('revenuecat-webhook', transferError, 500);
     return json({ ok: true });
   }
 
@@ -53,14 +53,13 @@ Deno.serve(async (req) => {
       .from('subscriptions')
       .update({ status: 'refunded' })
       .eq('original_transaction_id', result.row.original_transaction_id);
-    if (updateError) return error('bad_request', 500, updateError.message);
+    if (updateError) return dbError('revenuecat-webhook', updateError, 500);
     return json({ ok: true });
   }
 
   const { error: upsertError } = await admin.from('subscriptions').upsert(result.row, { onConflict: 'original_transaction_id' });
   if (upsertError) {
-    console.error('revenuecat-webhook: upsert failed', upsertError.message);
-    return error('bad_request', 500, upsertError.message);
+    return dbError('revenuecat-webhook', upsertError, 500);
   }
   return json({ ok: true });
 });

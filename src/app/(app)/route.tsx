@@ -23,6 +23,7 @@ import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { useRoute, VEHICLE_ICONS, type RouteChoice, type RouteMode, type RoutePoint, type RouteStepWithTickets } from '@/features/transport/api';
 import { RouteMap } from '@/features/transport/route-map';
 import { TicketLinks } from '@/features/transport/ticket-links';
+import { isHttpsUrl } from '@/lib/safe-url';
 import { formatMoney } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -206,7 +207,7 @@ export default function RouteScreen() {
           {data.routes.length > 0 && (
             <Button title={t('route.startNavigation')} icon="navigate" onPress={() => setNavigating(true)} />
           )}
-          <Button title={t('route.nav.openGoogle')} variant="ghost" icon="open-outline" onPress={() => Linking.openURL(googleLink(data.navigation_url))} />
+          <Button title={t('route.nav.openGoogle')} variant="ghost" icon="open-outline" onPress={() => isHttpsUrl(data.navigation_url) && Linking.openURL(googleLink(data.navigation_url))} />
         </>
       )}
     </Screen>

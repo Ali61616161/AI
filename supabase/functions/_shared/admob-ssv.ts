@@ -37,6 +37,8 @@ export function derToP1363(der: Uint8Array, size = 32): Uint8Array<ArrayBuffer> 
 export type SsvPayload = {
   userId: string | null;
   customData: string | null;
+  /** Ödülün geldiği reklam birimi (imzalı). */
+  adUnit: string | null;
   transactionId: string;
   keyId: number;
   timestamp: number;
@@ -51,9 +53,11 @@ export async function verifySsv(rawQuery: string, keys: VerifierKey[], now = Dat
   const sigIndex = query.indexOf('&signature=');
   if (sigIndex < 0) return null;
   const message = query.slice(0, sigIndex);
-  const params = new URLSearchParams(query);
-  const signature = params.get('signature');
-  const keyId = Number(params.get('key_id'));
+  // Ödül bilgileri yalnızca imzalı kısımdan okunur; imzadan sonra eklenen alanlar (ör. sahte user_id) yok sayılır.
+  const params = new URLSearchParams(message);
+  const tail = new URLSearchParams(query.slice(sigIndex + 1));
+  const signature = tail.get('signature');
+  const keyId = Number(tail.get('key_id'));
   const transactionId = params.get('transaction_id');
   const timestamp = Number(params.get('timestamp'));
   if (!signature || !Number.isFinite(keyId) || !transactionId || !Number.isFinite(timestamp)) return null;
@@ -68,7 +72,7 @@ export async function verifySsv(rawQuery: string, keys: VerifierKey[], now = Dat
   } catch {
     return null;
   }
-  return { userId: params.get('user_id'), customData: params.get('custom_data'), transactionId, keyId, timestamp };
+  return { userId: params.get('user_id'), customData: params.get('custom_data'), adUnit: params.get('ad_unit'), transactionId, keyId, timestamp };
 }
 
 /** Google'ın doğrulama anahtarlarını getirir. */

@@ -8,7 +8,7 @@
 // Gerekli sunucu sırrı: GEMINI_API_KEY (yoksa sadece istatistikler kaydedilir).
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
-import { corsHeaders, error, json } from '../_shared/http.ts';
+import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import { LANGUAGE_NAMES } from '../_shared/itinerary.ts';
 import { buildReportPrompt, computeTripStats, isPlace, normalizeInsights, REPORT_RESPONSE_SCHEMA, type ReportDay, type ReportInsights } from '../_shared/report.ts';
 import { loadProfile, loadTrip } from '../_shared/trip-context.ts';
@@ -106,7 +106,7 @@ Deno.serve(async (req) => {
     ...(insights ? { ai_insights: insights } : {}),
     generated_at: new Date().toISOString(),
   });
-  if (saveError) return error('bad_request', 400, saveError.message);
+  if (saveError) return dbError('trip-report', saveError, 400);
 
   if (trip.endDate && trip.endDate <= today) {
     await supabase.from('trips').update({ status: 'completed', completed_at: new Date().toISOString() }).eq('id', trip.id).neq('status', 'completed');

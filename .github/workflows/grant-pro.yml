@@ -21,6 +21,9 @@ on:
         type: boolean
         default: false
 
+permissions:
+  contents: read
+
 jobs:
   grant:
     runs-on: ubuntu-latest
@@ -29,12 +32,15 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
-          EMAIL: ${{ inputs.email }}
         run: |
+          # Depo herkese açık: e-posta adımın ortam başlığına yazılmaz, olay dosyasından okunup hemen gizlenir.
+          EMAIL=$(jq -r '.inputs.email // ""' "$GITHUB_EVENT_PATH")
+          echo "::add-mask::$EMAIL"
           ref=$(printf '%s' "$SUPABASE_PROJECT_REF" | tr -d '[:space:]')
           token=$(printf '%s' "$SUPABASE_ACCESS_TOKEN" | tr -d '[:space:]')
           [ -n "$ref" ] && [ -n "$token" ] || { echo "Supabase sırları eksik" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
           email=$(printf '%s' "$EMAIL" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
+          echo "::add-mask::$email"
           # Sadece güvenli karakterler: SQL'e gömülmeden önce doğrulanır.
           printf '%s' "$email" | grep -Eq '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$' || { echo "Geçersiz e-posta"; exit 1; }
           echo "::add-mask::$token"
@@ -64,6 +70,7 @@ jobs:
           fi
           [ -n "$OWNER_PASSWORD" ] && echo "Şifre OWNER_PASSWORD sırrından atandı." | tee -a "$GITHUB_STEP_SUMMARY"
           printf '%s' "$id" | grep -Eq '^[0-9a-f-]{36}$' || { echo "Kullanıcı kimliği alınamadı"; exit 1; }
+          echo "::add-mask::$id"
           echo "USER_ID=$id" >> "$GITHUB_ENV"
       - name: Pro
         env:

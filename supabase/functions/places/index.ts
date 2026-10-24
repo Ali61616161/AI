@@ -19,9 +19,10 @@
 // Gerekli sunucu sırrı: GOOGLE_MAPS_API_KEY (Routes API açık olmalı).
 // İsteğe bağlı: AFFILIATE_BOOKING_URL ve _shared/transport.ts'teki ulaşım ortakları.
 import { hotelLink, templatesFromEnv } from '../_shared/affiliate.ts';
+import { adminClient } from '../_shared/admin.ts';
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { cleanNote } from '../_shared/itinerary.ts';
-import { destinationCoords, googleConfig } from '../_shared/enrich.ts';
+import { destinationCoords, googleConfig, MAX_LOOKUP_DESTINATIONS } from '../_shared/enrich.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import { distanceMeters, fetchPhotoUri, fetchPlaceDetails, hotelRequest, isNearbyCategory, openNowRequest, PLACE_ID_PATTERN, PlacesError, searchText } from '../_shared/places.ts';
 import { computeRoutes, type RouteMode, type RoutePoint, RoutesError, type VehicleKind } from '../_shared/routes.ts';
@@ -133,6 +134,15 @@ Deno.serve(async (req) => {
     const places = await searchText({ apiKey, apiBase: google.placesBase, body: openNowRequest({ ...origin, category: body.category, language, radius, pageSize, keyword: cleanNote(body.keyword, 60) }), origin });
     // Google openNow filtresine rağmen kapalı veya kalıcı kapalı dönebilir; elenir.
     const open = places.filter((p) => p.openNow !== false && p.status !== 'CLOSED_PERMANENTLY' && p.status !== 'CLOSED_TEMPORARILY');
+    // Buluşma davetleri yalnızca burada Google'dan gelen gerçek işletmelere yapılabilir: ad ve konum
+    // sunucuda saklanır, davet bu kaydı kullanır (istemci sahte ad/konum gönderemez).
+    const verified = open
+      .filter((p) => p.lat !== null && p.lng !== null && /^[A-Za-z0-9_-]{10,255}$/.test(p.id) && p.name)
+      .map((p) => ({ google_place_id: p.id, name: p.name.slice(0, 200), location: `SRID=4326;POINT(${p.lng} ${p.lat})`, verified_at: new Date().toISOString() }));
+    if (verified.length) {
+      const { error: verifyError } = (await adminClient()?.from('verified_places').upsert(verified, { onConflict: 'google_place_id' })) ?? { error: null };
+      if (verifyError) console.warn('places: verified_places upsert failed', verifyError.message);
+    }
     return json({ places: open, quota: { plan: quota.plan, remaining: quota.remaining } });
   }
 
@@ -208,7 +218,7 @@ Deno.serve(async (req) => {
     const coords = await destinationCoords(supabase, trip.trip_destinations, language);
     const days = [];
     // Her şehir için o şehirde geçirilen günlerin tahmini (bir şehir bir istek).
-    for (const d of trip.trip_destinations) {
+    for (const d of trip.trip_destinations.slice(0, MAX_LOOKUP_DESTINATIONS)) {
       const c = coords[d.city.toLowerCase()];
       if (!c) continue;
       const from = d.arrive_on ?? trip.start_date;

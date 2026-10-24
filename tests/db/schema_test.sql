@@ -189,6 +189,11 @@ end $$;
 
 -- ---------------------------------------------------------------------------
 \echo '6. Davetler ve mesajlar: günlük limit, kabul öncesi mesaj yok, üçüncü kişi okuyamaz'
+reset role;
+-- Mekân, "şu an açık" aramasında sunucu tarafından doğrulanmış olmalı.
+insert into public.verified_places (google_place_id, name, location)
+  values ('ChIJ_uffizi', 'Caffè Gilli', extensions.st_setsrid(extensions.st_makepoint(11.2546, 43.7714), 4326)::extensions.geography);
+set role authenticated;
 call tests.login('00000000-0000-0000-0000-00000000000b');
 do $$
 declare v_invite uuid;
@@ -201,9 +206,14 @@ begin
   assert not exists (select 1 from public.usage_events where feature = 'social_invite'),
     'reddedilen davet kotadan düşmemeli';
   -- Bea'nın Trip Pass'i bu seyahate bağlı değil; davetler için ücretsiz plan geçerli (günde 1).
-  v_invite := public.send_invite('00000000-0000-0000-0000-00000000000a', 'ChIJ_uffizi', 'Caffè Gilli',
-                                 11.2546, 43.7714, now() + interval '1 day', 'Kahve?');
+  assert tests.throws($q$ select public.send_invite('00000000-0000-0000-0000-00000000000a', 'ChIJ_private_home', 'Starbucks',
+                                 11.25, 43.77, now() + interval '1 day') $q$),
+    'doğrulanmamış mekâna davet gönderilememeli';
+  -- İstemcinin gönderdiği ad ve konum yok sayılır; doğrulanmış kayıt kullanılır.
+  v_invite := public.send_invite('00000000-0000-0000-0000-00000000000a', 'ChIJ_uffizi', 'Sahte Ad',
+                                 29.0, 41.0, now() + interval '1 day', 'Kahve?');
   assert v_invite is not null;
+  assert (select place_name from public.match_invites where id = v_invite) = 'Caffè Gilli', 'mekân adı sunucunun kaydından gelir';
   assert tests.throws($q$ select public.send_invite('00000000-0000-0000-0000-00000000000a', 'p', 'x', 11.25, 43.77,
                                  now() + interval '1 day') $q$),
     'ücretsiz planda günde ikinci davet reddedilmeli';
@@ -715,8 +725,19 @@ do $$ begin
   assert public.referral_count() = 0, 'henüz ödül kazandıran yok';
 end $$;
 reset role;
+-- Kotayı istemciden tüketmek ödül vermez; ödülü yalnızca sunucu (plan üretince) verir.
 insert into public.usage_events (user_id, feature) values ('00000000-0000-0000-0000-00000000000c', 'itinerary_generation');
-insert into public.usage_events (user_id, feature) values ('00000000-0000-0000-0000-00000000000c', 'city_plan');
+do $$ begin
+  assert not exists (select 1 from public.subscriptions where user_id = '00000000-0000-0000-0000-00000000000b' and product_id = 'yola_referral'), 'kota kaydı ödül vermemeli';
+end $$;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$ begin
+  assert tests.throws($q$ select public.reward_referrer(auth.uid()) $q$), 'istemci ödül işlevini çağıramaz';
+end $$;
+reset role;
+select public.reward_referrer('00000000-0000-0000-0000-00000000000c');
+select public.reward_referrer('00000000-0000-0000-0000-00000000000c');
 call tests.login('00000000-0000-0000-0000-00000000000b');
 do $$ begin
   assert (select count(*) from public.subscriptions where user_id = auth.uid() and product_id = 'yola_referral' and expires_at > now() + interval '6 days') = 1, 'ilk planla davet edene bir kez 7 gün Pro';
@@ -769,6 +790,17 @@ do $$ begin
   assert tests.throws(format($q$ select public.accept_trip_invite(%L) $q$, current_setting('tests.invite'))), 'başka e-posta kabul edemez';
 end $$;
 reset role;
+-- Şifreyle doğrudan açılmış (e-postası kanıtlanmamış) oturum daveti göremez ve kabul edemez.
+call tests.login('00000000-0000-0000-0000-00000000000c');
+select set_config('request.jwt.claims', '{"amr":[{"method":"password","timestamp":1}]}', false);
+set role authenticated;
+do $$ begin
+  assert (select count(*) from public.my_trip_invites()) = 0, 'kanıtsız oturum daveti görmemeli';
+  assert tests.throws(format($q$ select public.accept_trip_invite(%L) $q$, current_setting('tests.invite'))), 'kanıtsız oturum kabul edememeli';
+end $$;
+reset role;
+-- E-posta koduyla giriş e-postayı kanıtlar.
+select set_config('request.jwt.claims', '{"amr":[{"method":"otp","timestamp":1}]}', false);
 call tests.login('00000000-0000-0000-0000-00000000000c');
 set role authenticated;
 do $$ begin
@@ -784,6 +816,17 @@ do $$ begin
   assert tests.throws($q$ select public.create_trip_invite('10000000-0000-0000-0000-000000000001', 'bea@example.com') $q$), 'görüntüleyici başkasını davet edemez';
   delete from public.trips where id = '10000000-0000-0000-0000-000000000001';
   assert exists (select 1 from public.trips where id = '10000000-0000-0000-0000-000000000001'), 'görüntüleyici seyahati silemez';
+end $$;
+reset role;
+select set_config('request.jwt.claims', '', false);
+-- Sahip, davet olmadan doğrudan üye ekleyemez (Pro şartı, onay ve engeller atlanmasın).
+call tests.login('00000000-0000-0000-0000-00000000000a');
+set role authenticated;
+do $$ begin
+  assert tests.throws($q$ insert into public.trip_members (trip_id, user_id, role)
+    values ('10000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-00000000000b', 'editor') $q$), 'davetsiz üye eklenemez';
+  -- Bea, Can'ı engelledi; Ayşe bunu öğrenemez.
+  assert not public.is_blocked_between('00000000-0000-0000-0000-00000000000b', '00000000-0000-0000-0000-00000000000c'), 'başkalarının engel durumu sızmamalı';
 end $$;
 reset role;
 call tests.login('00000000-0000-0000-0000-00000000000a');

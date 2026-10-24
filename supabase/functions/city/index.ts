@@ -102,7 +102,7 @@ Deno.serve(async (req) => {
   } catch (e) {
     if (e instanceof GeminiError) {
       console.error('city: AI failed', e.message);
-      return error('ai_failed', 502, e.message);
+      return error('ai_failed', 502);
     }
     if (e instanceof PlacesError) {
       console.error('city: google failed', e.message);
@@ -121,10 +121,11 @@ Deno.serve(async (req) => {
     const groupSize = Number.isInteger(body.group_size) && body.group_size >= 1 && body.group_size <= 10 ? body.group_size : companion === 'couple' ? 2 : 1;
     const timezone = typeof body.timezone === 'string' && isValidTimeZone(body.timezone) ? body.timezone : 'UTC';
 
-    const origin = isCoord(body.lat, body.lng) ? { lat: body.lat as number, lng: body.lng as number } : await homeCoords();
-    if (!origin) return error('bad_request', 400, 'city not found');
+    // Kota, şehir koordinatı için Google'a sorulmadan önce düşülür (bulunamayan şehirle sınırsız arama yapılamaz).
     const quota = await consumeQuota(supabase, 'city_plan', null);
     if (!quota.allowed) return error('quota_exceeded', 402);
+    const origin = isCoord(body.lat, body.lng) ? { lat: body.lat as number, lng: body.lng as number } : await homeCoords();
+    if (!origin) return error('bad_request', 400, 'city not found');
 
     const weather = await fetchCurrent({ ...origin, language, apiKey: mapsKey, apiBase: google.weatherBase }).catch(() => null);
     const now = new Date();
@@ -181,10 +182,10 @@ Deno.serve(async (req) => {
     const note = cleanNote(body.note, 500);
     const exclude = (Array.isArray(body.exclude) ? body.exclude : []).filter((x: unknown): x is string => typeof x === 'string' && x.length <= 80).slice(0, 12);
 
-    const origin = await homeCoords();
-    if (!origin) return error('bad_request', 400, 'city not found');
     const quota = await consumeQuota(supabase, 'getaway', null);
     if (!quota.allowed) return error('quota_exceeded', 402);
+    const origin = await homeCoords();
+    if (!origin) return error('bad_request', 400, 'city not found');
 
     const month = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());
     const list = normalizeGetaways(await ai(buildGetawayPrompt({ city, countryCode: country, language, currency }, { days, budgetPerPerson, transport, companion, month, note }, exclude), GETAWAY_RESPONSE_SCHEMA), days);

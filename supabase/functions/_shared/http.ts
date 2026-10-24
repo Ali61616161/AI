@@ -28,3 +28,9 @@ export type ErrorCode =
 export function error(code: ErrorCode, status: number, message?: string): Response {
   return json({ error: { code, message: message ?? code } }, status);
 }
+
+/** Veritabanı hatası: ayrıntı (tablo/kısıt adları) yalnızca günlüğe yazılır, istemciye kod gider. */
+export function dbError(where: string, e: { message: string }, status = 500): Response {
+  console.error(`${where}: db error`, e.message);
+  return error('bad_request', status, 'db_error');
+}

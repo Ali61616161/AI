@@ -24,6 +24,7 @@ import {
   type SocialMe,
   type Traveler,
 } from '@/features/social/api';
+import { SafetyActions } from '@/features/social/safety-actions';
 import { useTrips } from '@/features/trips/queries';
 import { formatLocalDateTime, todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
@@ -153,6 +154,11 @@ function InviteRow({ invite }: { invite: Invite }) {
             {t(`social.status.${invite.status}`)}
           </Text>
         )}
+        {invite.incoming && invite.status === 'pending' && (
+          <View style={styles.chips}>
+            <SafetyActions userId={invite.other_id} inviteId={invite.id} />
+          </View>
+        )}
       </View>
       {invite.status === 'accepted' && <Ionicons name="chatbubble-ellipses-outline" size={20} color={colors.primary} />}
     </>
@@ -188,6 +194,9 @@ function TravelerRow({ traveler }: { traveler: Traveler }) {
             {traveler.bio}
           </Text>
         )}
+        <View style={styles.chips}>
+          <SafetyActions userId={traveler.user_id} />
+        </View>
       </View>
       <Chip icon="cafe-outline" label={t('social.invite')} onPress={() => router.push({ pathname: '/invite', params: { userId: traveler.user_id, name: traveler.display_name ?? '' } })} />
     </View>

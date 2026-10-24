@@ -14,6 +14,7 @@ import { ToolError, useProfileCountries, useSavePassport, useVisaInfo } from '@/
 import { COUNTRIES, localCountryName } from '@/features/tools/countries';
 import { flag } from '@/features/tools/emergency-numbers';
 import { useTrip } from '@/features/trips/queries';
+import { isHttpsUrl } from '@/lib/safe-url';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 import { RewardedButton } from '@/features/ads/rewarded-button';
@@ -115,7 +116,7 @@ export default function VisaScreen() {
                 ))}
               </View>
             )}
-            {data.officialUrl && <Button title={t('visa.official')} variant="secondary" onPress={() => Linking.openURL(data.officialUrl!)} />}
+            {isHttpsUrl(data.officialUrl) && <Button title={t('visa.official')} variant="secondary" onPress={() => Linking.openURL(data.officialUrl!)} />}
           </View>
         )
       )}

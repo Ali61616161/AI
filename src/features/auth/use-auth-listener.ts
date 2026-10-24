@@ -26,7 +26,8 @@ export function useAuthListener(): void {
     });
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
-        resetLocalUserData();
+        // Oturum Supabase tarafından zaten silindi; tekrar çıkış çağrılmaz (döngü olmasın).
+        resetLocalUserData({ signOut: false });
         return;
       }
       if (session) apply(session);

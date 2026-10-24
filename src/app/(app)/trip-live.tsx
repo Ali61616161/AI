@@ -28,6 +28,7 @@ import { DaySelector, openRoute } from '@/features/plan/plan-timeline';
 import { decodePolyline, thin } from '@/features/transport/polyline';
 import { useActivePlan, useTrip, type PlanItemRow } from '@/features/trips/queries';
 import { formatTime, todayIsoDate } from '@/lib/format';
+import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -48,6 +49,7 @@ export default function TripLiveScreen() {
   const { tripId, day } = useLocalSearchParams<{ tripId: string; day?: string }>();
   const { data: trip } = useTrip(tripId);
   const { data: plan, isPending } = useActivePlan(tripId);
+  const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
   const weather = useTripWeather(tripId);
   const days = plan?.day_plans ?? [];
   // "Şimdi / Sıradaki" ve geri sayımlar dakikada bir yenilenir.
@@ -266,7 +268,7 @@ export default function TripLiveScreen() {
                   </View>
                 </Card>
               )}
-              <GuidancePanel tripId={tripId} guidance={guidance} timezone={stops[0]?.timezone ?? null} nowMs={nowMs} />
+              <GuidancePanel tripId={tripId} guidance={guidance} timezone={stops[0]?.timezone ?? null} nowMs={nowMs} canEdit={!trip || trip.owner_id === userId} />
             </View>
           )}
 

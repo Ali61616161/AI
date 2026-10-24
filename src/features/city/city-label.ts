@@ -2,7 +2,7 @@
 
 type Address = { city?: string | null; subregion?: string | null; region?: string | null };
 
-/** İl (bölge) önce, sonra ilçe; aynı adlar tekrarlanmaz: "İstanbul, Büyükçekmece". */
+/** İl (bölge) önce, sonra ilçe; aynı adlar tekrarlanmaz: "İstanbul, Kadıköy". */
 export function cityLabel(place: Address | null | undefined): string | null {
   const names = [place?.region, place?.city ?? place?.subregion]
     .map((n) => n?.trim())

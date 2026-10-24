@@ -53,13 +53,13 @@ function userObject(id, email) {
   };
 }
 
-function session(id, email) {
+function session(id, email, method = 'password') {
   const expiresIn = 7 * 24 * 3600;
   const iat = Math.floor(Date.now() / 1000);
   const exp = iat + expiresIn;
   return {
     // Gerçek Supabase anahtarında olduğu gibi "iat" (verilme zamanı) vardır; hesap silme taze giriş ister.
-    access_token: signJwt({ sub: id, email, role: 'authenticated', aud: 'authenticated', iat, exp, amr: [{ method: 'password', timestamp: iat }] }),
+    access_token: signJwt({ sub: id, email, role: 'authenticated', aud: 'authenticated', iat, exp, amr: [{ method, timestamp: iat }] }),
     token_type: 'bearer',
     expires_in: expiresIn,
     expires_at: exp,
@@ -126,7 +126,8 @@ const server = http.createServer(async (req, res) => {
       const body = JSON.parse((await readBody(req)).toString() || '{}');
       if (body.token !== OTP) return send(res, 403, { code: 403, error_code: 'otp_expired', msg: 'Token has expired or is invalid' });
       const id = ensureUser(body.email, body.data?.language);
-      return send(res, 200, session(id, body.email));
+      // E-posta koduyla giriş: Supabase'deki gibi amr "otp" (e-posta kanıtlanmış sayılır).
+      return send(res, 200, session(id, body.email, 'otp'));
     }
     if (url.pathname === '/auth/v1/user') {
       const claims = verifyJwt(req.headers.authorization?.replace(/^Bearer /i, ''));

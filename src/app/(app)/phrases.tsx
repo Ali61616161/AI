@@ -45,7 +45,8 @@ export default function PhrasesScreen() {
   const cached = usePhraseCache((s) => s.translations[target]);
   const save = usePhraseCache((s) => s.save);
   const translate = useTranslateText();
-  const needsDownload = !builtin && !cached;
+  // Yeni sürümde cümle eklendiyse eski kayıtta eksik kalanlar için dil yeniden indirilir.
+  const needsDownload = !builtin && (!cached || PHRASES.some((p) => !cached[p.key]));
 
   useEffect(() => {
     if (!needsDownload || !online) return;
@@ -54,9 +55,9 @@ export default function PhrasesScreen() {
       .mutateAsync({ text: buildBatch(PHRASES.map((p) => p.text.en)), target, source: 'en' })
       .then((r) => {
         const texts = parseBatch(r.text, PHRASES.length);
-        if (!alive) return;
-        if (!texts) return setFailedFor(target);
-        save(target, Object.fromEntries(PHRASES.map((p, i) => [p.key, texts[i]])));
+        // Dil bu arada değişse bile sonuç kaydedilir (çeviri hakkı boşa gitmesin, geri dönünce hazır olsun).
+        if (texts) save(target, Object.fromEntries(PHRASES.map((p, i) => [p.key, texts[i]])));
+        else if (alive) setFailedFor(target);
       })
       .catch(() => alive && setFailedFor(target));
     return () => {

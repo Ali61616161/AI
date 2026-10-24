@@ -9,7 +9,7 @@
 // Gerekli sunucu sırları: REVENUECAT_SECRET_KEY, SUPABASE_SERVICE_ROLE_KEY.
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
-import { corsHeaders, error, json } from '../_shared/http.ts';
+import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import { PROMO_PRODUCTS_FILTER, fetchSubscriber, PRO_PLANS, productMapFromEnv, rowsFromSubscriber, tripPassKey, tripPassPurchases } from '../_shared/subscriptions.ts';
 
 Deno.serve(async (req) => {
@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
   const rows = rowsFromSubscriber(user.id, subscriber, products);
   if (rows.length) {
     const { error: upsertError } = await admin.from('subscriptions').upsert(rows, { onConflict: 'original_transaction_id' });
-    if (upsertError) return error('bad_request', 500, upsertError.message);
+    if (upsertError) return dbError('subscription', upsertError, 500);
   }
   // RevenueCat'te artık bu kullanıcıda olmayan Pro abonelikler (ör. başka hesaba
   // geri yüklenmiş) kapatılır.
@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
       .in('plan', stale)
       .not('product_id', 'in', PROMO_PRODUCTS_FILTER)
       .in('status', ['active', 'in_grace']);
-    if (expireError) return error('bad_request', 500, expireError.message);
+    if (expireError) return dbError('subscription', expireError, 500);
   }
 
   let tripId: string | null = null;
@@ -87,7 +87,7 @@ Deno.serve(async (req) => {
       starts_at: free.purchasedAt,
       expires_at: null,
     });
-    if (insertError) return error('bad_request', 500, insertError.message);
+    if (insertError) return dbError('subscription', insertError, 500);
   } else if (body?.action !== 'sync') {
     return error('bad_request', 400, 'action must be sync or claim_trip_pass');
   }

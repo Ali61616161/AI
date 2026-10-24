@@ -37,7 +37,7 @@ Deno.test('derToP1363: DER imza 64 bayta çevrilir', () => {
 Deno.test('verifySsv: geçerli imza kabul, değiştirilmiş veri reddedilir', async () => {
   const { url, keys } = await signed(base);
   const ok = await verifySsv(url, keys, NOW);
-  assertEquals(ok, { userId: U, customData: 'nearby_search', transactionId: 'tx123', keyId: 3335741209, timestamp: NOW });
+  assertEquals(ok, { userId: U, customData: 'nearby_search', adUnit: '1234', transactionId: 'tx123', keyId: 3335741209, timestamp: NOW });
   assertEquals(await verifySsv(url.replace('nearby_search', 'travel_info'), keys, NOW), null, 'veri değişince imza tutmamalı');
   assertEquals(await verifySsv(url.replace(`user_id=${U}`, 'user_id=someone-else'), keys, NOW), null);
 });
@@ -48,4 +48,12 @@ Deno.test('verifySsv: bilinmeyen anahtar, eski istek ve imzasız istek reddedili
   assertEquals(await verifySsv(url, keys, NOW + 2 * 60 * 60_000), null);
   assertEquals(await verifySsv(base, keys, NOW), null);
   assertNotEquals(await verifySsv(`?${url}`, keys, NOW), null, 'baştaki ? kabul edilir');
+});
+
+Deno.test('verifySsv: imzadan sonra eklenen alanlar yok sayılır', async () => {
+  const noUser = base.replace(`&user_id=${U}`, '').replace('custom_data=nearby_search&', '');
+  const { url, keys } = await signed(noUser);
+  const forged = await verifySsv(`${url}&user_id=${U}&custom_data=weather`, keys, NOW);
+  assertEquals(forged?.userId ?? null, null, 'imzasız user_id kabul edilmemeli');
+  assertEquals(forged?.customData ?? null, null, 'imzasız custom_data kabul edilmemeli');
 });

@@ -3,7 +3,7 @@
     "CFBundleDisplayName": "Yola",
     "NSCameraUsageDescription": "يستخدم Yola الكاميرا لتصوير التذاكر والحجوزات وقوائم الطعام.",
     "NSPhotoLibraryUsageDescription": "يستخدم Yola صورك لرفع لقطات التذاكر والحجوزات.",
-    "NSLocationWhenInUseUsageDescription": "يستخدم Yola موقعك لعرض الأماكن المفتوحة بالقرب منك وتعديل خطتك.",
+    "NSLocationWhenInUseUsageDescription": "يستخدم Yola موقعك لعرض الأماكن المفتوحة القريبة وإرشادك أثناء رحلتك، وفقط إذا فعّلت «المسافرون» يعرض منطقتك التقريبية لمسافرين آخرين.",
     "NSMicrophoneUsageDescription": "يستخدم Yola الميكروفون لترجمة محادثاتك.",
     "NSSpeechRecognitionUsageDescription": "يحوّل Yola كلامك إلى نص لترجمته.",
     "NSUserTrackingUsageDescription": "يستخدم Yola هذا لعرض إعلانات أكثر صلة بك. الخطط المدفوعة بدون إعلانات."

@@ -3,7 +3,7 @@
     "CFBundleDisplayName": "Yola",
     "NSCameraUsageDescription": "Yola utilise l’appareil photo pour photographier billets, réservations et menus.",
     "NSPhotoLibraryUsageDescription": "Yola utilise tes photos pour importer des captures de billets et de réservations.",
-    "NSLocationWhenInUseUsageDescription": "Yola utilise ta position pour afficher les lieux ouverts à proximité et adapter ton plan.",
+    "NSLocationWhenInUseUsageDescription": "Yola utilise ta position pour afficher les lieux ouverts à proximité, te guider pendant ton voyage et, seulement si tu actives Voyageurs, montrer ta zone approximative aux autres voyageurs.",
     "NSMicrophoneUsageDescription": "Yola utilise le micro pour traduire tes conversations.",
     "NSSpeechRecognitionUsageDescription": "Yola transforme ta voix en texte pour la traduire.",
     "NSUserTrackingUsageDescription": "Yola l'utilise pour t'afficher des publicités plus pertinentes. Les formules payantes sont sans publicité."

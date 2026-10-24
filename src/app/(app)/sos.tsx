@@ -13,7 +13,8 @@ import { Text } from '@/components/ui/text';
 import { getCurrentLocation } from '@/features/plan/replan';
 import { useContactsStore } from '@/features/tools/contacts-store';
 import { countryName, emergencyNumbersFor, flag, type EmergencyNumbers } from '@/features/tools/emergency-numbers';
-import { useTrip, useTrips } from '@/features/trips/queries';
+import { currentTripFor, useTrip, useTrips } from '@/features/trips/queries';
+import { useSessionStore } from '@/stores/session-store';
 import { todayIsoDate } from '@/lib/format';
 import { Gradients, Radius, Spacing, Typography } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -26,7 +27,9 @@ export default function SosScreen() {
   const { colors } = useTheme();
   const { data: trips } = useTrips();
   const today = todayIsoDate();
-  const current = trips?.find((x) => x.start_date && x.end_date && x.start_date <= today && x.end_date >= today) ?? trips?.find((x) => !x.end_date || x.end_date >= today);
+  const userId = useSessionStore((st) => st.session?.user.id ?? st.userId);
+  const own = trips?.filter((x) => x.owner_id === userId);
+  const current = currentTripFor(trips, today, userId) ?? own?.find((x) => !x.end_date || x.end_date >= today);
   const { data: trip } = useTrip(current?.id);
   // Seyahatteyken o ülkenin numaraları; ülke bilinmiyorsa genel 112 gösterilir. Telefonun
   // bölgesi sadece seyahat yokken (evdeyken) kullanılır, yurt dışında yanlış numara gösterilmesin.

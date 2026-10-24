@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '@/components/ui/text';
 import { DARK_MAP_STYLE } from '@/features/explore/map-style';
 import { mapProvider, nativeMapsAvailable, usesGoogleMap } from '@/features/map/availability';
+import { isHttpsUrl } from '@/lib/safe-url';
 import { Colors, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -276,7 +277,7 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
                 {arrived ? t('route.nav.done') : t('route.nav.stop')}
               </Txt>
             </Pressable>
-            <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.openGoogle')} onPress={() => Linking.openURL(googleUrl)} hitSlop={8} style={[styles.control, { backgroundColor: ui.surfaceMuted, borderColor: ui.border }]}>
+            <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.openGoogle')} onPress={() => isHttpsUrl(googleUrl) && Linking.openURL(googleUrl)} hitSlop={8} style={[styles.control, { backgroundColor: ui.surfaceMuted, borderColor: ui.border }]}>
               <Ionicons name="open-outline" size={22} color={ui.textSecondary} />
             </Pressable>
           </View>

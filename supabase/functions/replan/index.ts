@@ -21,13 +21,14 @@ import { openNowRequest, type Place, searchText } from '../_shared/places.ts';
 import { fetchCurrent, weatherForPrompt } from '../_shared/weather.ts';
 import { isValidTimeZone, utcToLocal } from '../_shared/documents.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
-import { corsHeaders, error, json } from '../_shared/http.ts';
+import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import {
   buildItineraryPrompt,
   datesBetween,
   fixedItemsByDate,
   ITINERARY_RESPONSE_SCHEMA,
   normalizeItinerary,
+  safeText,
   timezonesByDate,
   toPlanPayload,
 } from '../_shared/itinerary.ts';
@@ -209,7 +210,7 @@ Deno.serve(async (req) => {
         p_summary: result.reply,
         p_user_prompt: message,
       });
-      if (saveError) return error('bad_request', 400, saveError.message);
+      if (saveError) return dbError('replan', saveError, 400);
       planVersionId = data;
     }
 
@@ -246,7 +247,7 @@ Deno.serve(async (req) => {
     // Rota yoksa AI gerekmez: sadece tarihler değişir.
     if (!trip.activePlan) {
       const { error: applyError } = await supabase.rpc('apply_trip_dates', { p_trip_id: trip.id, p_start: newStart, p_end: newEnd, p_days: [] });
-      if (applyError) return error('bad_request', 400, applyError.message);
+      if (applyError) return dbError('replan', applyError, 400);
       return json({ plan_version_id: null, previous_version_id: null, analysis, removed: [] });
     }
 
@@ -269,7 +270,11 @@ Deno.serve(async (req) => {
       const extra = shortened
         ? shortenRules(oldDays, toPlan, analysis.removedHighlights)
         : ['The trip got longer. Plan only these new days; the other days are already planned. Avoid repeating places from the existing plan: ' +
-            oldDays.flatMap((d) => d.plan_items.map((i) => i.title)).join(', ')];
+            oldDays
+              .flatMap((d) => d.plan_items.map((i) => safeText(i.title, 80)))
+              .filter(Boolean)
+              .slice(0, 150)
+              .join(', ')];
       const transfer = trip.ctx.departure_time ? await airportTransferMinutes({ apiKey: googleConfig().apiKey, reservations: trip.reservations, manualAirport: trip.ctx.departure_airport, language: trip.ctx.language }) : null;
       const planCtx = { ...trip.ctx, start_date: newStart, end_date: newEnd, airport_transfer_min: transfer };
       // Uzun planlar 3'er günlük parçalara bölünüp paralel üretilir (tek çağrı dakikalar sürüyordu).
@@ -308,7 +313,7 @@ Deno.serve(async (req) => {
       p_days: newDays,
       p_summary: summary,
     });
-    if (applyError) return error('bad_request', 400, applyError.message);
+    if (applyError) return dbError('replan', applyError, 400);
 
     // Kilitli duraklar (rezervasyonlar) silinmez; sadece plandan çıkan öneriler bildirilir.
     const locked = new Set(oldDays.flatMap((d) => d.plan_items.filter((i) => i.is_locked).map((i) => i.title)));

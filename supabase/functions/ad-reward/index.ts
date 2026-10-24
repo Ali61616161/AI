@@ -41,6 +41,10 @@ Deno.serve(async (req) => {
     return error('upstream_failed', 502);
   }
   if (!payload) return error('unauthorized', 401, 'invalid signature');
+  // Google'ın imza anahtarları tüm AdMob yayıncılarında ortaktır: yalnızca bu uygulamanın ödüllü reklam
+  // birimlerinden gelen ödüller kabul edilir (ADMOB_AD_UNIT_IDS: virgülle ayrılmış birim numaraları).
+  const allowedUnits = (Deno.env.get('ADMOB_AD_UNIT_IDS') ?? '').split(',').map((s) => s.trim().split('/').pop()!).filter(Boolean);
+  if (allowedUnits.length && !allowedUnits.includes(payload.adUnit ?? '')) return json({ ok: true, ignored: true });
   if (!payload.userId || !UUID.test(payload.userId) || !payload.customData || !FEATURES.has(payload.customData)) {
     return json({ ok: true, ignored: true });
   }
@@ -52,7 +56,7 @@ Deno.serve(async (req) => {
   });
   if (rpcError) {
     console.error('ad-reward: grant failed', rpcError.message);
-    return error('bad_request', 500, rpcError.message);
+    return error('bad_request', 500, 'grant_failed');
   }
   return json({ ok: true, result: data });
 });

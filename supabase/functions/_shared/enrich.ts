@@ -23,10 +23,13 @@ type Coords = { lat: number; lng: number };
  * Seyahat şehirlerinin merkez koordinatları. Bilinmeyenler Google'dan bir kez
  * bulunur ve trip_destinations'a yazılır (sonraki isteklerde sorgu gerekmez).
  */
+/** Bir istekte en fazla bu kadar şehrin koordinatı aranır (sınırsız şehir eklenerek Google araması çoğaltılamaz). */
+export const MAX_LOOKUP_DESTINATIONS = 10;
+
 export async function destinationCoords(supabase: SupabaseClient, destinations: TripDestination[], language: string): Promise<Record<string, Coords>> {
   const out: Record<string, Coords> = {};
   const { apiKey, placesBase } = googleConfig();
-  for (const d of destinations) {
+  for (const d of destinations.slice(0, MAX_LOOKUP_DESTINATIONS)) {
     if (d.lat !== null && d.lng !== null) {
       out[d.city.toLowerCase()] = { lat: d.lat, lng: d.lng };
       continue;

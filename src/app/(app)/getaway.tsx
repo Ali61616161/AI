@@ -20,6 +20,7 @@ import { COMPANIONS } from '@/features/profile/options';
 import { flag } from '@/features/tools/emergency-numbers';
 import { TicketLinks } from '@/features/transport/ticket-links';
 import { CityArt } from '@/features/trips/city-art';
+import { isHttpsUrl } from '@/lib/safe-url';
 import { formatMoney } from '@/lib/format';
 import { useCityStore } from '@/stores/city-store';
 import { useSessionStore } from '@/stores/session-store';
@@ -112,7 +113,7 @@ function GetawayCard({ g, index, days, currency, budget }: { g: GetawayResult; i
               onPress={() =>
                 g.lat !== null && g.lng !== null
                   ? router.push({ pathname: '/route', params: { toLat: String(g.lat), toLng: String(g.lng), toName: g.city, country: g.countryCode ?? '' } })
-                  : Linking.openURL(g.directionsUrl)
+                  : isHttpsUrl(g.directionsUrl) && Linking.openURL(g.directionsUrl)
               }
             />
           </View>

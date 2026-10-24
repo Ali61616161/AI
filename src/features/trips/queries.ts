@@ -12,7 +12,7 @@ import { useSessionStore } from '@/stores/session-store';
 import type { Json } from '@/types/database';
 
 const TRIP_LIST_SELECT =
-  'id, title, status, start_date, end_date, trip_destinations(city, country_code, position), reservations(count)';
+  'id, owner_id, title, status, start_date, end_date, trip_destinations(city, country_code, position), reservations(count)';
 
 const TRIP_DETAIL_SELECT =
   'id, owner_id, title, status, start_date, end_date, budget_tier, companion_type, budget_currency, budget_amount, local_transport, notes, arrival_time, departure_time, arrival_airport, departure_airport, adults, children, interests, ' +
@@ -50,7 +50,15 @@ export function useTrips() {
 
 export type TripListItem = NonNullable<ReturnType<typeof useTrips>['data']>[number];
 
-/** Seyahati ve bağlı her şeyi (rezervasyon, plan, harcama...) siler; sadece sahibi yapabilir (RLS). */
+/**
+ * Bugünü kapsayan seyahat. Kendi seyahatin, seninle paylaşılmış bir seyahatten önce gelir: SOS ekranı
+ * ve asistan başkasının (ör. davet edenin) seyahatini "şu anki seyahat" sanmasın.
+ */
+export function currentTripFor<T extends { owner_id: string; start_date: string | null; end_date: string | null }>(trips: T[] | undefined, today: string, userId: string | null): T | null {
+  const covering = (trips ?? []).filter((x) => x.start_date && x.end_date && x.start_date <= today && x.end_date >= today);
+  return covering.find((x) => x.owner_id === userId) ?? covering[0] ?? null;
+}
+
 /** Görüntüleyici olarak eklendiği seyahatten kendi üyeliğini kaldırır. */
 export function useLeaveTrip() {
   const queryClient = useQueryClient();
@@ -65,6 +73,7 @@ export function useLeaveTrip() {
   });
 }
 
+/** Seyahati ve bağlı her şeyi (rezervasyon, plan, harcama...) siler; sadece sahibi yapabilir (RLS). */
 export function useDeleteTrip() {
   const queryClient = useQueryClient();
   return useMutation({

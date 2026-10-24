@@ -54,6 +54,6 @@ Deno.serve(async (req) => {
   } catch (e) {
     const message = e instanceof GeminiError ? e.message : String(e);
     console.error('travel-info failed', message);
-    return error('ai_failed', 502, message.slice(0, 300));
+    return error('ai_failed', 502);
   }
 });

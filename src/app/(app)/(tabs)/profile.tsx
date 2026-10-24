@@ -24,7 +24,7 @@ import { resetLocalUserData } from '@/features/auth/reset-local-data';
 import { useCurrentPlan } from '@/features/subscription/purchases';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useAppearanceStore, type Appearance } from '@/stores/appearance-store';
-import { useSessionStore } from '@/stores/session-store';
+import { useIsSignedIn, useSessionStore } from '@/stores/session-store';
 import { Gradients, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -51,7 +51,10 @@ export default function ProfileScreen() {
   const appearance = useAppearanceStore((s) => s.appearance);
   const setAppearance = useAppearanceStore((s) => s.setAppearance);
 
-  const email = session?.user.email;
+  // Çevrimdışıyken (oturum yenilenemedi) son bilinen hesap gösterilir; misafir sanılmaz.
+  const storedEmail = useSessionStore((s) => s.userEmail);
+  const signedIn = useIsSignedIn();
+  const email = session?.user.email ?? storedEmail ?? undefined;
   const initial = email?.[0]?.toUpperCase();
   const notSet = t('profile.notSet');
   const { data: plan } = useCurrentPlan();
@@ -105,19 +108,19 @@ export default function ProfileScreen() {
           </LinearGradient>
           <View style={styles.identityText}>
             <Text variant="overline" color="textMuted">
-              {session ? t('profile.account') : t('profile.guest')}
+              {signedIn ? t('profile.account') : t('profile.guest')}
             </Text>
             <Text variant="bodyStrong" numberOfLines={1} ellipsizeMode="middle">
               {email ?? t('profile.guest')}
             </Text>
-            {!session && (
+            {!signedIn && (
               <Text variant="caption" color="textSecondary">
                 {t('profile.guestNote')}
               </Text>
             )}
           </View>
         </View>
-        {!session && isSupabaseConfigured() && (
+        {!signedIn && isSupabaseConfigured() && (
           <Button title={t('profile.createAccount')} variant="secondary" onPress={() => router.push('/sign-in')} />
         )}
       </Card>

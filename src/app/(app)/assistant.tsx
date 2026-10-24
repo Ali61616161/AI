@@ -14,7 +14,7 @@ import { useIsOnline } from '@/features/offline/use-online';
 import { PlaceMeta } from '@/features/places/place-row';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { ReplanError, useCrisisReplan, useRestoreVersion, type CrisisResult } from '@/features/plan/replan';
-import { useTrips } from '@/features/trips/queries';
+import { currentTripFor, useTrips } from '@/features/trips/queries';
 import { formatMoney, todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
@@ -97,7 +97,10 @@ export default function AssistantScreen() {
   const session = useSessionStore((s) => s.session);
   const { data: trips } = useTrips();
   const today = todayIsoDate();
-  const currentTrip = trips?.find((trip) => trip.start_date && trip.end_date && trip.start_date <= today && trip.end_date >= today) ?? null;
+  const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
+  // Yalnızca kendi seyahatin düzenlenir (paylaşılan seyahati görüntüleyen planı değiştiremez).
+  const current = currentTripFor(trips, today, userId);
+  const currentTrip = current && current.owner_id === userId ? current : null;
   const replan = useCrisisReplan();
   const restore = useRestoreVersion(currentTrip?.id ?? '');
   const { prefill } = useLocalSearchParams<{ prefill?: string }>();

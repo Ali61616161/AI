@@ -125,17 +125,17 @@ Deno.test('buildCrisisPrompt: mesaj, konum, saat ve kurallar', () => {
 Deno.test('buildCrisisPrompt: gerçek yakın yerler varsa sadece onlardan seçtirir, yoksa eski kural', () => {
   const base = {
     language: 'tr', message: 'Yağmur başladı, 1 km içinde kapalı yer', localNow: '2026-11-13T02:30', timezone: 'Europe/Istanbul',
-    location: { lat: 41.0214, lng: 28.5778 }, city: null, budget: 'mid' as const, companion: 'solo' as const, interests: [], currency: 'TRY',
+    location: { lat: 41.0370, lng: 28.9850 }, city: null, budget: 'mid' as const, companion: 'solo' as const, interests: [], currency: 'TRY',
     remaining: [], fixedLater: [],
   };
   const withNearby = buildCrisisPrompt({
     ...base,
     nearby: [
-      { name: 'Çorba Evi', type: 'restaurant', rating: 4.4, distanceM: 180, address: 'Atatürk Cd., Büyükçekmece' },
+      { name: 'Çorba Evi', type: 'restaurant', rating: 4.4, distanceM: 180, address: 'İstiklal Cd., Beyoğlu' },
       { name: 'Kahve Durağı', type: 'cafe', rating: null, distanceM: 420, address: null },
     ],
   });
-  assertStringIncludes(withNearby, '- Çorba Evi [restaurant], rating 4.4, 180 m away, Atatürk Cd., Büyükçekmece');
+  assertStringIncludes(withNearby, '- Çorba Evi [restaurant], rating 4.4, 180 m away, İstiklal Cd., Beyoğlu');
   assertStringIncludes(withNearby, '- Kahve Durağı [cafe], 420 m away');
   assertStringIncludes(withNearby, 'Suggest ONLY places from this list');
   const without = buildCrisisPrompt(base);

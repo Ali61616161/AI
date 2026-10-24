@@ -52,8 +52,10 @@ Deno.serve(async (req) => {
     if (text.length > MAX_TEXT_LENGTH) return error('bad_request', 400, 'text too long');
 
     const voice = body.mode === 'voice';
-    // Konuşma süresi saniye olarak sayılır (en az 1, tek seferde en fazla 60).
-    const seconds = voice ? Math.min(Math.max(Math.ceil(Number(body.seconds) || 1), 1), 60) : 1;
+    // Konuşma süresi saniye olarak sayılır. Uygulamanın bildirdiği süre metin uzunluğuyla da sınanır
+    // (~15 karakter/sn): "1 saniye" deyip uzun metin çevirtmek kotayı aşamaz.
+    const claimed = Math.min(Math.max(Math.ceil(Number(body.seconds) || 1), 1), 60);
+    const seconds = voice ? Math.max(claimed, Math.ceil(text.length / 15)) : 1;
     const quota = await consumeQuota(supabase, voice ? 'voice_translation' : 'text_translation', null, seconds);
     if (!quota.allowed) return json({ error: { code: 'quota_exceeded', message: 'quota_exceeded' }, quota: { plan: quota.plan, remaining: quota.remaining } }, 402);
 

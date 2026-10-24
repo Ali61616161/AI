@@ -89,7 +89,7 @@
     "db:types": "supabase gen types typescript --linked --schema public > src/types/database.ts && prettier --single-quote --print-width 110 --write src/types/database.ts",
     "preview:web": "EXPO_WEB_OUTPUT=single expo export --clear --platform web --output-dir dist-preview && node scripts/build-web-preview.mjs dist-preview dist-preview/yola-preview.html",
     "functions:check": "cd supabase/functions && deno check */index.ts && deno lint && cd ../.. && deno check --config supabase/functions/deno.json scripts/local-stack/functions-router.ts",
-    "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features",
+    "functions:test": "deno test --config supabase/functions/deno.json supabase/functions src/features src/lib",
     "db:types:local": "scripts/gen-db-types-local.sh",
     "e2e:local": "node tests/e2e/replan.e2e.mjs && node tests/e2e/places.e2e.mjs && node tests/e2e/translate.e2e.mjs && node tests/e2e/tools.e2e.mjs && node tests/e2e/report.e2e.mjs && node tests/e2e/subscription.e2e.mjs && node tests/e2e/social.e2e.mjs && node tests/e2e/account.e2e.mjs && node tests/e2e/ads.e2e.mjs && node tests/e2e/city.e2e.mjs",
     "legal:export": "node --experimental-strip-types --no-warnings scripts/export-legal.ts"

@@ -61,10 +61,10 @@ jobs:
           check "Google Weather" places '{"action":"weather","lat":41.0369,"lng":28.985}' '"\(.days | length) gün tahmin"'
           check "Google Routes (Nasıl giderim: Interlaken → Grindelwald)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"origin_name":"Interlaken","destination_name":"Grindelwald","country_code":"CH"}' '"\(.routes | length) güzergah; ilk: \([.routes[0].steps[] | (.transit.lineShort // .transit.line // .mode)] | join(" → ")) (\(.routes[0].durationMin) dk)"'
           check "Rota çizgisi (uygulama içi harita)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"country_code":"CH"}' '"çizgi \(.routes[0].polyline | length) karakter"'
-          # Sohbet: konumdan en fazla ~3 km uzakta GERÇEK yerler önermeli (Büyükçekmece).
-          code=$(call replan '{"mode":"crisis","message":"Yağmur başladı, 1 km içinde kapalı bir yer bul","location":{"lat":41.0214,"lng":28.5778},"timezone":"Europe/Istanbul"}')
+          # Sohbet: konumdan en fazla ~3 km uzakta GERÇEK yerler önermeli (Taksim).
+          code=$(call replan '{"mode":"crisis","message":"Yağmur başladı, 1 km içinde kapalı bir yer bul","location":{"lat":41.0370,"lng":28.9850},"timezone":"Europe/Istanbul"}')
           if [ "$code" = 200 ]; then
-            far=$(jq -r '[.suggestions[] | select(.lat != null) | (((.lat - 41.0214) * 111) as $a | ((.lng - 28.5778) * 83.9) as $b | (($a * $a + $b * $b) | sqrt))] | if length == 0 then "yok" else (max * 10 | round / 10 | tostring) end' /tmp/out.json)
+            far=$(jq -r '[.suggestions[] | select(.lat != null) | (((.lat - 41.0370) * 111) as $a | ((.lng - 28.9850) * 83.9) as $b | (($a * $a + $b * $b) | sqrt))] | if length == 0 then "yok" else (max * 10 | round / 10 | tostring) end' /tmp/out.json)
             n=$(jq '.suggestions | length' /tmp/out.json)
             if [ "$far" = "yok" ]; then sum "- ⚠️ Sohbet: $n öneri ama konumlu yer yok"
             elif awk "BEGIN{exit !($far <= 3)}"; then sum "- ✅ Sohbet (yakın yer): $n öneri, en uzağı $far km"

@@ -192,6 +192,9 @@ export function normalizeRoutes(data: any, mode: RouteMode): RouteOption[] {
     }
     // Toplu taşımada çok kısa yürüyüşler gizlenir; araba ve yürüyüşte tüm manevralar gelir (uygulama içi gezinme).
     const visible = mode === 'transit' ? steps.filter((s) => s.mode === 'transit' || s.durationMin >= 1) : steps;
+    // Adım çizgilerinin toplamı da sınırlı: çok uzun rotalarda (kıtalar arası) adım çizgileri atılır.
+    const stepChars = visible.reduce((n, s) => n + s.polylines.reduce((m, p) => m + p.length, 0), 0);
+    if (stepChars > MAX_POLYLINE_CHARS) for (const s of visible) s.polylines = [];
     const transit = visible.filter((s) => s.transit);
     const fare = r.travelAdvisory?.transitFare;
     const units = Number(fare?.units ?? 0) + Number(fare?.nanos ?? 0) / 1e9;

@@ -3,6 +3,7 @@ import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui/text';
+import { isHttpsUrl } from '@/lib/safe-url';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -27,7 +28,7 @@ export function RouteCard({ points }: PlacesMapProps) {
   return (
     <Pressable
       accessibilityRole="link"
-      onPress={() => Linking.openURL(url)}
+      onPress={() => isHttpsUrl(url) && Linking.openURL(url)}
       style={[styles.card, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
       <View style={[styles.icon, { backgroundColor: colors.surface }]}>
         <Ionicons name="map-outline" size={22} color={colors.primary} />

@@ -17,13 +17,13 @@ import { useLiveStore } from './live-store';
 import { airportSearchName, type useLiveGuidance } from './use-live-guidance';
 
 type Guidance = ReturnType<typeof useLiveGuidance>;
-type Props = { tripId: string; guidance: Guidance; timezone: string | null; nowMs: number };
+type Props = { tripId: string; guidance: Guidance; timezone: string | null; nowMs: number; canEdit?: boolean };
 
 /**
  * Canlı görünümde plana uyma kartları: saati geçmiş durağa "gittim / atla / düzenle", yetişemeyeceğin
  * durak uyarısı ve yaklaşan uçuş için havalimanına en geç çıkış zamanı.
  */
-export function GuidancePanel({ tripId, guidance, timezone, nowMs }: Props) {
+export function GuidancePanel({ tripId, guidance, timezone, nowMs, canEdit = true }: Props) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const mark = useLiveStore((s) => s.mark);
@@ -75,7 +75,7 @@ export function GuidancePanel({ tripId, guidance, timezone, nowMs }: Props) {
           <Button title={t('live.guidance.went')} onPress={() => mark(overdue.id, 'done')} style={styles.flex} />
           <Button title={t('live.guidance.skip')} variant="secondary" onPress={() => mark(overdue.id, 'skipped')} style={styles.flex} />
         </View>
-        <Button title={t('live.guidance.rearrange')} variant="ghost" loading={replan.isPending} onPress={() => fix(overdue, 'overdue')} />
+        {canEdit && <Button title={t('live.guidance.rearrange')} variant="ghost" loading={replan.isPending} onPress={() => fix(overdue, 'overdue')} />}
       </Card>,
     );
   } else if (upcoming && late !== null && late >= LATE_WARN_MIN) {
@@ -87,7 +87,7 @@ export function GuidancePanel({ tripId, guidance, timezone, nowMs }: Props) {
             {t('live.guidance.lateTitle', { title: upcoming.title, min: late })}
           </Text>
         </View>
-        <Button title={t('live.guidance.rearrange')} loading={replan.isPending} onPress={() => fix(upcoming, 'late')} />
+        {canEdit && <Button title={t('live.guidance.rearrange')} loading={replan.isPending} onPress={() => fix(upcoming, 'late')} />}
       </Card>,
     );
   }

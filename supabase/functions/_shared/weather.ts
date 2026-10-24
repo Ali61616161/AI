@@ -115,7 +115,13 @@ export function weatherForPrompt(w: CurrentWeather | null): string | null {
 }
 
 async function getJson(url: string, fetchImpl: typeof fetch = fetch, timeoutMs = 8_000): Promise<unknown> {
-  const res = await fetchImpl(url, { signal: AbortSignal.timeout(timeoutMs) });
+  // Ağ hatasında hata mesajı adresi (ve içindeki API anahtarını) içerebilir; günlüğe anahtarsız hata gider.
+  let res: Response;
+  try {
+    res = await fetchImpl(url, { signal: AbortSignal.timeout(timeoutMs) });
+  } catch (e) {
+    throw new Error(`weather network error: ${e instanceof Error ? e.name : 'unknown'}`);
+  }
   if (!res.ok) throw new Error(`weather http ${res.status}: ${(await res.text()).slice(0, 300)}`);
   return res.json();
 }

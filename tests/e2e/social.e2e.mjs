@@ -69,12 +69,19 @@ await step('İki gezgin görünür olur ve birbirini yaklaşık mesafeyle görü
 
 await step('Davet: halka açık yer ve gelecek saat; ücretsiz planda günde 1', async () => {
   const meetAt = new Date(Date.now() + 2 * 3_600_000).toISOString();
-  const past = await ece.call('/rest/v1/rpc/send_invite', { p_to_user: mert.id, p_google_place_id: 'p1', p_place_name: 'Caffè Sant’Eustachio', p_place_lng: 12.4755, p_place_lat: 41.8983, p_meet_at: new Date(Date.now() - 60_000).toISOString() });
+  // Doğrulanmamış mekâna (sahte ad/konum) davet gönderilemez.
+  const fake = await ece.call('/rest/v1/rpc/send_invite', { p_to_user: mert.id, p_google_place_id: 'ChIJ_private_home', p_place_name: 'Starbucks', p_place_lng: 12.4755, p_place_lat: 41.8983, p_meet_at: meetAt });
+  assert.notEqual(fake.status, 200, 'doğrulanmamış mekân reddedilmeli');
+  // "Şu an açık" araması mekânları sunucuda doğrular.
+  const open = await ece.call('/functions/v1/places', { action: 'open_now', lat: 41.9, lng: 12.48, category: 'cafe' });
+  assert.equal(open.status, 200, JSON.stringify(open.data));
+  const [p1, p2] = open.data.places;
+  const past = await ece.call('/rest/v1/rpc/send_invite', { p_to_user: mert.id, p_google_place_id: p1.id, p_place_name: 'Caffè Sant’Eustachio', p_place_lng: 12.4755, p_place_lat: 41.8983, p_meet_at: new Date(Date.now() - 60_000).toISOString() });
   assert.notEqual(past.status, 200, 'geçmiş saat reddedilmeli');
-  const r = await ece.call('/rest/v1/rpc/send_invite', { p_to_user: mert.id, p_google_place_id: 'p1', p_place_name: 'Caffè Sant’Eustachio', p_place_lng: 12.4755, p_place_lat: 41.8983, p_meet_at: meetAt, p_message: 'Kahve?' });
+  const r = await ece.call('/rest/v1/rpc/send_invite', { p_to_user: mert.id, p_google_place_id: p1.id, p_place_name: 'Caffè Sant’Eustachio', p_place_lng: 12.4755, p_place_lat: 41.8983, p_meet_at: meetAt, p_message: 'Kahve?' });
   assert.equal(r.status, 200, JSON.stringify(r.data));
   inviteId = r.data;
-  const second = await ece.call('/rest/v1/rpc/send_invite', { p_to_user: mert.id, p_google_place_id: 'p2', p_place_name: 'Museo', p_place_lng: 12.47, p_place_lat: 41.9, p_meet_at: meetAt });
+  const second = await ece.call('/rest/v1/rpc/send_invite', { p_to_user: mert.id, p_google_place_id: (p2 ?? p1).id, p_place_name: 'Museo', p_place_lng: 12.47, p_place_lat: 41.9, p_meet_at: meetAt });
   assert.equal(second.data.hint, 'upgrade', 'ikinci davet kotaya takılmalı');
 });
 

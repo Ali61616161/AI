@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { Linking } from 'react-native';
 
+import { isGoogleMapsUrl } from '@/lib/safe-url';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
@@ -121,7 +122,8 @@ export function openDirections(place: { name: string; lat?: number | null; lng?:
 
 /** Google Haritalar uygulamasını/sayfasını açar (uygulama dışına çıkar). Sadece açıkça istenince kullanılır. */
 export function openInGoogleMaps(place: { name: string; mapsUrl?: string | null; placeId?: string | null; lat?: number | null; lng?: number | null }) {
-  if (place.mapsUrl && isHttps(place.mapsUrl)) return Linking.openURL(place.mapsUrl);
+  // Bağlantıyla gelen adres yalnızca Google Haritalar'sa açılır (oltalama sayfasına gidilmesin).
+  if (isGoogleMapsUrl(place.mapsUrl)) return Linking.openURL(place.mapsUrl);
   const params = new URLSearchParams({ api: '1', query: place.lat != null && place.lng != null && !place.placeId ? `${place.lat},${place.lng}` : place.name });
   if (place.placeId) params.set('query_place_id', place.placeId);
   return Linking.openURL(`https://www.google.com/maps/search/?${params}`);

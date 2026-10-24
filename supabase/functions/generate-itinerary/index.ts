@@ -6,6 +6,7 @@
 // Ücretsiz planda sadece ilk FREE_MAX_DAYS gün planlanır (truncated: true).
 // Gerekli sunucu sırları: GEMINI_API_KEY, isteğe bağlı GEMINI_MODEL.
 // İsteğe bağlı: GOOGLE_MAPS_API_KEY (mekan doğrulama), AFFILIATE_* (bilet bağlantıları).
+import { adminClient } from '../_shared/admin.ts';
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { airportTransferMinutes } from '../_shared/airport.ts';
 import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.ts';
@@ -60,7 +61,8 @@ Deno.serve(async (req) => {
   try {
     quota = await consumeQuota(supabase, 'itinerary_generation', tripId);
   } catch (e) {
-    return error('bad_request', 400, String(e));
+    console.error('generate-itinerary: quota failed', e instanceof Error ? e.message : String(e));
+    return error('bad_request', 400, 'quota_failed');
   }
   if (!quota.allowed) return error('quota_exceeded', 402);
 
@@ -93,7 +95,7 @@ Deno.serve(async (req) => {
   } catch (e) {
     const message = e instanceof GeminiError ? e.message : String(e);
     console.error('generate-itinerary: AI failed', message);
-    return error('ai_failed', 502, message);
+    return error('ai_failed', 502);
   }
 
   const { summary, days } = normalizeItinerary(raw, { dates, fixed, timezones, currency: trip.ctx.currency });
@@ -107,8 +109,13 @@ Deno.serve(async (req) => {
   });
   if (saveError) {
     console.error('generate-itinerary: save failed', saveError.message);
-    return error('bad_request', 400, saveError.message);
+    return error('bad_request', 400, 'save_failed');
   }
+  // Davet ödülü: arkadaşı davet eden, davet edilen gerçekten ilk planını üretince 7 gün Pro kazanır.
+  // Yalnızca sunucu verebilir (istemci kota kaydı ya da plan satırı ekleyerek ödül alamaz).
+  await adminClient()
+    ?.rpc('reward_referrer', { p_user: user.id })
+    .then(({ error: rewardError }) => rewardError && console.warn('generate-itinerary: referral reward failed', rewardError.message));
 
   return json({
     plan_version_id: planVersionId,
