@@ -2,7 +2,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as Location from 'expo-location';
 import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import * as Speech from 'expo-speech';
 import { Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +15,8 @@ import { Colors, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { VEHICLE_ICONS, type RouteChoice } from './api';
+import { speakNatural, stopSpeaking } from '@/features/translate/speak';
+import { translateLanguage } from '@/features/translate/languages';
 import { currentStepIndex, distanceToPathM, formatDistance, isArrived, isOffRoute, nearestIndex, REROUTE_M, remainingMeters, turnIcon, type TurnIcon } from './navigation-logic';
 import { decodePolyline, thin } from './polyline';
 
@@ -39,7 +40,7 @@ type Props = { visible: boolean; route: RouteChoice; googleUrl: string; destinat
  * Başlangıç noktasından uzaksan canlı takip yerine rotanın tamamı önizlenir.
  */
 export function NavigationView({ visible, route, googleUrl, destinationName, onClose, onReroute, rerouting = false }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isDark } = useTheme();
   const insets = useSafeAreaInsets();
   const map = useRef<MapView>(null);
@@ -139,13 +140,13 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     if (!visible || !live || !auto || !current?.instruction) return;
     if (spokenStep.current === idx) return;
     spokenStep.current = idx;
-    Speech.stop();
-    Speech.speak(current.instruction, { rate: 0.95 });
-  }, [visible, live, auto, idx, current]);
+    // Yola'nın doğal sesiyle (yoksa telefonun sesiyle), uygulama dilinde.
+    speakNatural(current.instruction, translateLanguage(i18n.language).speech);
+  }, [visible, live, auto, idx, current, i18n.language]);
   useEffect(() => {
     if (!visible) {
       spokenStep.current = -1;
-      Speech.stop();
+      stopSpeaking();
       return;
     }
     // Gezinirken ekran kararmasın (navigasyon uygulamalarındaki gibi); pencere kapanınca normale döner.

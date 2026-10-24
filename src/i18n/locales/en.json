@@ -616,7 +616,12 @@
       "title": "Voice",
       "enhanced": "Enhanced",
       "none": "No voices found for this language.",
-      "hint": "For a more natural voice, download an “Enhanced” one: iPhone Settings → Accessibility → Spoken Content → Voices; Android Settings → Text-to-speech."
+      "hint": "To make phone voices more natural: on iPhone, Settings → Accessibility → Spoken Content → Voices → language → download an \"Enhanced/Premium\" voice. On Android, Settings → Text-to-speech.",
+      "cloudFemale": "Yola natural voice · female",
+      "cloudMale": "Yola natural voice · male",
+      "recommended": "Recommended",
+      "cloudNote": "No setup needed. Needs internet; a sentence played once is saved and then works offline.",
+      "deviceTitle": "Phone voices (offline)"
     }
   },
   "tools": {

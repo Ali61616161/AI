@@ -71,5 +71,6 @@ jobs:
             else sum "- ❌ Sohbet (yakın yer): en uzak öneri $far km (3 km'den fazla)"; fi
           else sum "- ❌ Sohbet (replan) — HTTP $code $(jq -r '"\(.error.code // "")"' /tmp/out.json | head -c 100)"; fi
           check "Google Translation" translate '{"mode":"text","text":"Good morning","target":"tr"}' '.translation // .text // "çeviri geldi"'
+          check "Google doğal ses (Text-to-Speech)" translate '{"mode":"speak","text":"Hallo, wie geht es dir?","target":"de","voice_lang":"de-DE"}' '"ses: \(.voice), \(.audio | length) karakter"'
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
           check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'

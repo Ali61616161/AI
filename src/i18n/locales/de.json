@@ -616,7 +616,12 @@
       "title": "Stimme",
       "enhanced": "Erweitert",
       "none": "Keine Stimmen für diese Sprache gefunden.",
-      "hint": "Für eine natürlichere Stimme lade eine „erweiterte“ herunter: iPhone Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen; Android Einstellungen → Text-in-Sprache."
+      "hint": "Für natürlichere Telefonstimmen: iPhone: Einstellungen → Bedienungshilfen → Gesprochene Inhalte → Stimmen → Sprache → „Erweitert/Premium\" laden. Android: Einstellungen → Text-in-Sprache.",
+      "cloudFemale": "Yola natürliche Stimme · weiblich",
+      "cloudMale": "Yola natürliche Stimme · männlich",
+      "recommended": "Empfohlen",
+      "cloudNote": "Keine Einrichtung nötig. Braucht Internet; einmal abgespielte Sätze werden gespeichert und laufen danach offline.",
+      "deviceTitle": "Stimmen des Telefons (offline)"
     }
   },
   "tools": {

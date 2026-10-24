@@ -1,7 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tap } from '@/components/ui/tap';
 import { LinearGradient } from 'expo-linear-gradient';
-import * as Speech from 'expo-speech';
 import { ExpoSpeechRecognitionModule, useSpeechRecognitionEvent } from 'expo-speech-recognition';
 import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -17,7 +16,7 @@ import { translateErrorKey } from './error-text';
 import { LanguagePicker } from './language-picker';
 import { RTL_LANGUAGES, translateLanguage } from './languages';
 import { QuotaNote } from './quota-note';
-import { speakNatural } from './speak';
+import { speakNatural, stopSpeaking } from './speak';
 
 type Side = 'me' | 'them';
 type Turn = { id: number; side: Side; original: string; translated: string | null; error: string | null };
@@ -90,7 +89,7 @@ export function Conversation({ myLanguage, theirLanguage, onLanguages }: { myLan
       setProblem(t('translate.micDenied'));
       return;
     }
-    Speech.stop();
+    stopSpeaking();
     side.current = who;
     finalText.current = '';
     startedAt.current = now();

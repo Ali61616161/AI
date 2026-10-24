@@ -64,3 +64,12 @@ export const PREVIEW_TEXT: Record<string, string> = {
 export function previewText(speechTag: string): string {
   return PREVIEW_TEXT[norm(speechTag).split('-')[0]] ?? PREVIEW_TEXT.en;
 }
+
+/** Yola'nın doğal (bulut) sesleri: seçim mağazasında bu kimliklerle tutulur. */
+export const CLOUD_VOICES = ['yola:female', 'yola:male'] as const;
+export type CloudVoice = (typeof CLOUD_VOICES)[number];
+
+export const isCloudVoice = (id: string | null | undefined): id is CloudVoice => id === 'yola:female' || id === 'yola:male';
+
+/** Seçim yoksa kadın sesi. */
+export const cloudGender = (id: string | null | undefined): 'female' | 'male' => (id === 'yola:male' ? 'male' : 'female');

@@ -616,7 +616,12 @@
       "title": "Voix",
       "enhanced": "Améliorée",
       "none": "Aucune voix pour cette langue.",
-      "hint": "Pour une voix plus naturelle, télécharge une voix « améliorée » : iPhone Réglages → Accessibilité → Contenu énoncé → Voix ; Android Paramètres → Synthèse vocale."
+      "hint": "Pour des voix plus naturelles : sur iPhone, Réglages → Accessibilité → Contenu énoncé → Voix → langue → télécharge une voix « Améliorée/Premium ». Sur Android, Paramètres → Synthèse vocale.",
+      "cloudFemale": "Voix naturelle Yola · féminine",
+      "cloudMale": "Voix naturelle Yola · masculine",
+      "recommended": "Recommandée",
+      "cloudNote": "Aucun réglage. Nécessite Internet ; une phrase lue une fois est enregistrée et fonctionne ensuite hors ligne.",
+      "deviceTitle": "Voix du téléphone (hors ligne)"
     }
   },
   "tools": {

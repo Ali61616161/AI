@@ -12,8 +12,8 @@ import { persistOptions, queryClient } from '@/lib/query-client';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
-/** Seçilen bilet/fotoğrafların kopyalandığı geçici klasörler (belge seçici, kamera). */
-const PICKER_CACHE_DIRS = ['DocumentPicker', 'ImagePicker', 'Camera'];
+/** Seçilen bilet/fotoğrafların kopyaları (belge seçici, kamera) ve okunan çeviri cümlelerinin ses dosyaları. */
+const PICKER_CACHE_DIRS = ['DocumentPicker', 'ImagePicker', 'Camera', 'tts'];
 
 /**
  * Çıkış, hesap silme ya da başka hesaba geçişte telefondaki tüm kişisel kayıtları siler: oturum

@@ -11,7 +11,7 @@ import { useTheme } from '@/theme/use-theme';
 
 import { loadVoices, speakNatural } from './speak';
 import { useTranslateStore } from './translate-store';
-import { pickVoice, previewText, qualityScore, rankVoices, type VoiceLike } from './voices';
+import { CLOUD_VOICES, isCloudVoice, pickVoice, previewText, qualityScore, rankVoices, type VoiceLike } from './voices';
 
 const MAX_VOICES = 6;
 
@@ -36,42 +36,53 @@ export function VoicePicker({ languages }: { languages: { name: string; speech: 
       <View style={styles.gap}>
         {languages.map((lang) => {
           const ranked = voices ? rankVoices(voices, lang.speech).slice(0, MAX_VOICES) : [];
-          const active = voices ? pickVoice(voices, lang.speech, chosen[lang.speech])?.identifier : null;
+          const choice = chosen[lang.speech];
+          // Seçim yoksa Yola'nın doğal kadın sesi kullanılır.
+          const cloud = !choice || isCloudVoice(choice) ? (choice ?? 'yola:female') : null;
+          const active = cloud ?? (voices ? pickVoice(voices, lang.speech, choice)?.identifier : null);
           const hasBetter = ranked.some((v) => qualityScore(v) >= 4);
+          const radio = (id: string, label: string, badge?: string) => (
+            <Tap
+              key={id}
+              accessibilityRole="radio"
+              accessibilityState={{ selected: id === active }}
+              onPress={() => {
+                setVoice(lang.speech, id);
+                speakNatural(previewText(lang.speech), lang.speech);
+              }}
+              feedback="select">
+              <View style={styles.row}>
+                <Ionicons name={id === active ? 'radio-button-on' : 'radio-button-off'} size={20} color={id === active ? colors.primary : colors.textMuted} />
+                <Text variant="body" style={styles.flex} numberOfLines={1}>
+                  {label}
+                </Text>
+                {badge && (
+                  <Text variant="caption" color="primary">
+                    {badge}
+                  </Text>
+                )}
+                <Ionicons name="volume-medium-outline" size={18} color={colors.textMuted} />
+              </View>
+            </Tap>
+          );
           return (
             <View key={lang.speech} style={styles.gap}>
               <Text variant="overline" color="textMuted">
                 {lang.name}
+              </Text>
+              {CLOUD_VOICES.map((id) => radio(id, t(id === 'yola:female' ? 'translate.voice.cloudFemale' : 'translate.voice.cloudMale'), t('translate.voice.recommended')))}
+              <Text variant="caption" color="textMuted">
+                {t('translate.voice.cloudNote')}
+              </Text>
+              <Text variant="caption" color="textSecondary">
+                {t('translate.voice.deviceTitle')}
               </Text>
               {ranked.length === 0 ? (
                 <Text variant="caption" color="textSecondary">
                   {voices ? t('translate.voice.none') : '…'}
                 </Text>
               ) : (
-                ranked.map((v) => (
-                  <Tap
-                    key={v.identifier}
-                    accessibilityRole="radio"
-                    accessibilityState={{ selected: v.identifier === active }}
-                    onPress={() => {
-                      setVoice(lang.speech, v.identifier);
-                      speakNatural(previewText(lang.speech), lang.speech);
-                    }}
-                    feedback="select">
-                    <View style={styles.row}>
-                      <Ionicons name={v.identifier === active ? 'radio-button-on' : 'radio-button-off'} size={20} color={v.identifier === active ? colors.primary : colors.textMuted} />
-                      <Text variant="body" style={styles.flex} numberOfLines={1}>
-                        {v.name}
-                      </Text>
-                      {qualityScore(v) >= 4 && (
-                        <Text variant="caption" color="primary">
-                          {t('translate.voice.enhanced')}
-                        </Text>
-                      )}
-                      <Ionicons name="volume-medium-outline" size={18} color={colors.textMuted} />
-                    </View>
-                  </Tap>
-                ))
+                ranked.map((v) => radio(v.identifier, v.name, qualityScore(v) >= 4 ? t('translate.voice.enhanced') : undefined))
               )}
               {voices && !hasBetter && (
                 <Text variant="caption" color="textMuted">

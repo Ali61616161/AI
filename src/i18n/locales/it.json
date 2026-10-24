@@ -616,7 +616,12 @@
       "title": "Voce",
       "enhanced": "Avanzata",
       "none": "Nessuna voce per questa lingua.",
-      "hint": "Per una voce più naturale scarica una voce «avanzata»: iPhone Impostazioni → Accessibilità → Contenuto letto → Voci; Android Impostazioni → Sintesi vocale."
+      "hint": "Per voci più naturali: su iPhone, Impostazioni → Accessibilità → Contenuto letto → Voci → lingua → scarica una voce \"Avanzata/Premium\". Su Android, Impostazioni → Sintesi vocale.",
+      "cloudFemale": "Voce naturale Yola · femminile",
+      "cloudMale": "Voce naturale Yola · maschile",
+      "recommended": "Consigliata",
+      "cloudNote": "Nessuna impostazione. Serve internet; una frase riprodotta viene salvata e poi funziona offline.",
+      "deviceTitle": "Voci del telefono (offline)"
     }
   },
   "tools": {

@@ -5,6 +5,9 @@
 //   POST { "mode": "voice", "text", "target", "source", "seconds" }
 //     → { text, detected_source, quota }                    (kota: voice_translation, saniye)
 //     Konuşma telefonda yazıya çevrilir; sunucuya sadece metin ve süre gelir.
+//   POST { "mode": "speak", "text", "target", "voice_lang"?, "gender"? }
+//     → { audio: base64 mp3, voice }                        (kota: voice_translation, ~15 karakter = 1 sn)
+//     Google'ın doğal (Chirp 3 HD / Neural2) sesleriyle okur; hata olursa uygulama cihaz sesine döner.
 //   POST { "mode": "image", "image": base64, "mime_type", "target" }
 //     → { kind, source_language, summary, items[], quota }  (kota: menu_scan, 1)
 //
@@ -12,6 +15,7 @@
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
+import { listTtsVoices, MAX_TTS_CHARS, pickTtsVoice, synthesize } from '../_shared/tts.ts';
 import {
   buildImagePrompt,
   IMAGE_RESPONSE_SCHEMA,
@@ -74,6 +78,31 @@ Deno.serve(async (req) => {
     }
   }
 
+  if (body.mode === 'speak') {
+    // Ayrı anahtar verilmediyse çeviri/haritalar anahtarı kullanılır (Cloud Text-to-Speech API açık olmalı).
+    const apiKey = Deno.env.get('GOOGLE_TTS_API_KEY') ?? Deno.env.get('GOOGLE_TRANSLATE_API_KEY') ?? Deno.env.get('GOOGLE_MAPS_API_KEY');
+    if (!apiKey) return error('not_configured', 503);
+    const text = typeof body.text === 'string' ? body.text.trim() : '';
+    if (!text) return error('bad_request', 400, 'text is required');
+    if (text.length > MAX_TTS_CHARS) return error('bad_request', 400, 'text too long');
+    const languageCode = typeof body.voice_lang === 'string' && /^[a-z]{2,3}(-[A-Za-z0-9]{2,4})?$/.test(body.voice_lang) ? body.voice_lang : body.target;
+    const gender = body.gender === 'male' ? 'male' : 'female';
+
+    const quota = await consumeQuota(supabase, 'voice_translation', null, Math.max(1, Math.ceil(text.length / 15)));
+    if (!quota.allowed) return json({ error: { code: 'quota_exceeded', message: 'quota_exceeded' }, quota: { plan: quota.plan, remaining: quota.remaining } }, 402);
+    try {
+      const apiBase = Deno.env.get('GOOGLE_TTS_API_BASE') || undefined;
+      const voice = pickTtsVoice(await listTtsVoices(apiKey, apiBase), languageCode, gender);
+      if (!voice) return error('not_found', 404, 'no voice for language');
+      const rate = Math.min(Math.max(Number(body.rate) || 1, 0.5), 1.5);
+      const audio = await synthesize({ apiKey, apiBase, text, voice, rate });
+      return json({ audio, voice: voice.name });
+    } catch (e) {
+      console.error('speak failed', e instanceof Error ? e.message : String(e));
+      return error('upstream_failed', 502);
+    }
+  }
+
   if (body.mode === 'image') {
     const apiKey = Deno.env.get('GEMINI_API_KEY');
     if (!apiKey) return error('not_configured', 503, 'GEMINI_API_KEY is not set');
@@ -111,5 +140,5 @@ Deno.serve(async (req) => {
     }
   }
 
-  return error('bad_request', 400, 'mode must be text, voice or image');
+  return error('bad_request', 400, 'mode must be text, voice, speak or image');
 });
