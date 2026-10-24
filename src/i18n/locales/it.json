@@ -1493,6 +1493,8 @@
     "subtitle": "{{city}} · {{count}} tappe",
     "emptyTitle": "Nessuna tappa da mostrare sulla mappa",
     "emptyBody": "I luoghi di questo giorno non hanno ancora una posizione. Prova un altro giorno.",
+    "emptyNoPlanTitle": "Niente in programma per questo giorno",
+    "emptyNoPlanBody": "Il programma di questo giorno è vuoto. Aggiungi attività dalla schermata del viaggio o scegli un altro giorno.",
     "now": "Ora",
     "next": "Prossima",
     "hopWalk": "~{{min}} min a piedi dalla tappa precedente · {{km}} km",

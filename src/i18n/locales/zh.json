@@ -1455,6 +1455,8 @@
     "subtitle": "{{city}} · {{count}} 站",
     "emptyTitle": "没有可在地图上显示的站点",
     "emptyBody": "这一天的地点暂时没有位置信息，请试试其他日期。",
+    "emptyNoPlanTitle": "这一天还没有安排",
+    "emptyNoPlanBody": "这一天的计划是空的。可在行程页面添加安排，或选择其他日期。",
     "now": "现在",
     "next": "下一站",
     "hopWalk": "距上一站步行约 {{min}} 分钟 · {{km}} 公里",

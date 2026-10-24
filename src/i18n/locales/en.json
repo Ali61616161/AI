@@ -1493,6 +1493,8 @@
     "subtitle": "{{city}} · {{count}} stops",
     "emptyTitle": "No stops to show on the map",
     "emptyBody": "The places for this day have no location yet. Try another day.",
+    "emptyNoPlanTitle": "Nothing planned for this day",
+    "emptyNoPlanBody": "This day's plan is empty. Add plans from the trip screen or pick another day.",
     "now": "Now",
     "next": "Up next",
     "hopWalk": "~{{min}} min walk from the previous stop · {{km}} km",

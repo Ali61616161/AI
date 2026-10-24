@@ -1493,6 +1493,8 @@
     "subtitle": "{{city}} · {{count}} durak",
     "emptyTitle": "Haritada gösterilecek durak yok",
     "emptyBody": "Bu günün duraklarının konumu henüz bulunamadı. Başka bir gün seçmeyi dene.",
+    "emptyNoPlanTitle": "Bu güne henüz bir şey planlanmamış",
+    "emptyNoPlanBody": "Bu gün için plan boş. Seyahat ekranından plan ekleyebilir ya da başka bir gün seçebilirsin.",
     "now": "Şimdi",
     "next": "Sıradaki",
     "hopWalk": "Öncekinden ~{{min}} dk yürüyüş · {{km}} km",

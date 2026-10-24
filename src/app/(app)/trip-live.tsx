@@ -71,6 +71,8 @@ export default function TripLiveScreen() {
     () => (activeDay?.plan_items ?? []).filter((i): i is Stop => i.lat !== null && i.lng !== null && i.kind !== 'transport'),
     [activeDay],
   );
+  // Gün tamamen boşsa ("plan yok") ile planı var ama konumu bulunamıyorsa ("konum yok") farklı anlatılır.
+  const hasPlans = (activeDay?.plan_items ?? []).some((i) => i.kind !== 'transport');
   const current = isToday ? currentStop(stops, nowMs) : null;
 
   // Canlı rehberlik: konum, sıradaki durağa yol süresi, gecikmiş durak, havalimanı, varış algılama.
@@ -243,11 +245,13 @@ export default function TripLiveScreen() {
               </View>
             </Tap>
           )}
-          <Tap accessibilityRole="button" accessibilityLabel={t('live.fitAll')} onPress={() => map.current?.fit()} feedback="select">
-            <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Ionicons name="scan-outline" size={20} color={colors.text} />
-            </View>
-          </Tap>
+          {stops.length > 1 && (
+            <Tap accessibilityRole="button" accessibilityLabel={t('live.fitAll')} onPress={() => map.current?.fit()} feedback="select">
+              <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <Ionicons name="scan-outline" size={20} color={colors.text} />
+              </View>
+            </Tap>
+          )}
           <Tap
             accessibilityRole="button"
             accessibilityLabel={fullMap ? t('live.exitFullMap') : t('live.fullMap')}
@@ -270,7 +274,7 @@ export default function TripLiveScreen() {
         </View>
       ) : stops.length === 0 ? (
         <View style={[styles.center, styles.pad]}>
-          <EmptyState icon="map-outline" title={t('live.emptyTitle')} description={t('live.emptyBody')} />
+          <EmptyState icon="map-outline" title={hasPlans ? t('live.emptyTitle') : t('live.emptyNoPlanTitle')} description={hasPlans ? t('live.emptyBody') : t('live.emptyNoPlanBody')} />
         </View>
       ) : (
         <View style={[styles.bottom, { paddingBottom: insets.bottom + Spacing.md }, fullMap && styles.hidden]} pointerEvents={fullMap ? 'none' : 'box-none'} onLayout={(e) => setBottomHeight(e.nativeEvent.layout.height)}>

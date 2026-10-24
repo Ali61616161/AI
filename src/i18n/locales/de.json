@@ -1493,6 +1493,8 @@
     "subtitle": "{{city}} · {{count}} Stopps",
     "emptyTitle": "Keine Stopps für die Karte",
     "emptyBody": "Für die Orte dieses Tages gibt es noch keinen Standort. Probiere einen anderen Tag.",
+    "emptyNoPlanTitle": "Für diesen Tag ist nichts geplant",
+    "emptyNoPlanBody": "Der Plan für diesen Tag ist leer. Füge im Reisebildschirm Pläne hinzu oder wähle einen anderen Tag.",
     "now": "Jetzt",
     "next": "Als Nächstes",
     "hopWalk": "~{{min}} Min. zu Fuß vom letzten Stopp · {{km}} km",

@@ -1493,6 +1493,8 @@
     "subtitle": "{{city}} · {{count}} étapes",
     "emptyTitle": "Aucune étape à afficher sur la carte",
     "emptyBody": "Les lieux de ce jour n’ont pas encore de position. Essaie un autre jour.",
+    "emptyNoPlanTitle": "Rien de prévu ce jour-là",
+    "emptyNoPlanBody": "Le programme de ce jour est vide. Ajoute des activités depuis l'écran du voyage ou choisis un autre jour.",
     "now": "Maintenant",
     "next": "Ensuite",
     "hopWalk": "~{{min}} min à pied depuis l’étape précédente · {{km}} km",

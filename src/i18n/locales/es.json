@@ -1493,6 +1493,8 @@
     "subtitle": "{{city}} · {{count}} paradas",
     "emptyTitle": "No hay paradas que mostrar en el mapa",
     "emptyBody": "Los lugares de este día aún no tienen ubicación. Prueba con otro día.",
+    "emptyNoPlanTitle": "Nada planeado para este día",
+    "emptyNoPlanBody": "El plan de este día está vacío. Añade planes desde la pantalla del viaje o elige otro día.",
     "now": "Ahora",
     "next": "A continuación",
     "hopWalk": "~{{min}} min a pie desde la parada anterior · {{km}} km",
