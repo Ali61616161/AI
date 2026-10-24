@@ -15,7 +15,7 @@
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
-import { listTtsVoices, MAX_TTS_CHARS, pickTtsVoice, synthesize } from '../_shared/tts.ts';
+import { listTtsVoices, MAX_TTS_CHARS, pickTtsVoice, synthesize, TtsError } from '../_shared/tts.ts';
 import {
   buildImagePrompt,
   IMAGE_RESPONSE_SCHEMA,
@@ -99,7 +99,8 @@ Deno.serve(async (req) => {
       return json({ audio, voice: voice.name });
     } catch (e) {
       console.error('speak failed', e instanceof Error ? e.message : String(e));
-      return error('upstream_failed', 502);
+      // Yalnızca kısa neden kodu döner (ör. SERVICE_DISABLED): kurulum hatası canlı kontrolde görünür.
+      return error('upstream_failed', 502, e instanceof TtsError ? e.reason : 'upstream_failed');
     }
   }
 

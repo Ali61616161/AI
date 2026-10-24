@@ -36,13 +36,32 @@ export function pickTtsVoice(voices: TtsVoice[], languageCode: string, gender: T
   return best ? { name: best.v.name, languageCode: best.code } : null;
 }
 
+/** Google'ın hata gövdesindeki kısa neden kodu (ör. SERVICE_DISABLED, PERMISSION_DENIED); anahtar ya da ayrıntı içermez. */
+export class TtsError extends Error {
+  constructor(readonly httpStatus: number, readonly reason: string) {
+    super(`tts http ${httpStatus} ${reason}`);
+  }
+}
+
+async function ttsError(res: Response): Promise<TtsError> {
+  let reason = 'UNKNOWN';
+  try {
+    const body = await res.json();
+    const detail = body?.error?.details?.find((d: { reason?: string }) => typeof d?.reason === 'string')?.reason;
+    reason = String(detail ?? body?.error?.status ?? 'UNKNOWN').replace(/[^A-Z0-9_]/gi, '').slice(0, 60) || 'UNKNOWN';
+  } catch {
+    // gövde okunamadı
+  }
+  return new TtsError(res.status, reason);
+}
+
 let voiceCache: { at: number; voices: TtsVoice[] } | null = null;
 
 /** Tüm sesler (yaklaşık 1 saat önbellekte; liste ücretsizdir). */
 export async function listTtsVoices(apiKey: string, apiBase = TTS_API_BASE): Promise<TtsVoice[]> {
   if (voiceCache && Date.now() - voiceCache.at < 3_600_000) return voiceCache.voices;
   const res = await fetch(`${apiBase}/voices`, { headers: { 'X-Goog-Api-Key': apiKey }, signal: AbortSignal.timeout(8000) });
-  if (!res.ok) throw new Error(`tts voices http ${res.status}`);
+  if (!res.ok) throw await ttsError(res);
   const body = await res.json();
   const voices: TtsVoice[] = Array.isArray(body?.voices) ? body.voices.filter((v: TtsVoice) => typeof v?.name === 'string' && Array.isArray(v.languageCodes)) : [];
   voiceCache = { at: Date.now(), voices };
@@ -61,7 +80,7 @@ export async function synthesize(input: { apiKey: string; apiBase?: string; text
     }),
     signal: AbortSignal.timeout(15_000),
   });
-  if (!res.ok) throw new Error(`tts http ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  if (!res.ok) throw await ttsError(res);
   const body = await res.json();
   if (typeof body?.audioContent !== 'string' || !body.audioContent) throw new Error('tts empty audio');
   return body.audioContent;
