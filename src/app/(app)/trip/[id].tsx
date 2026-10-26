@@ -37,6 +37,7 @@ import { useTheme } from '@/theme/use-theme';
 import { ShareSection } from '@/features/sharing/share-section';
 import { useSessionStore } from '@/stores/session-store';
 import { NativeAdCard } from '@/features/ads/native-ad-card';
+import { FlightStatusCard } from '@/features/travel/flight-status-card';
 
 function ReservationRow({ reservation: r }: { reservation: TripReservation }) {
   const { t } = useTranslation();
@@ -285,6 +286,8 @@ export default function TripScreen() {
           </View>
         </Card>
       )}
+
+      <FlightStatusCard tripId={trip.id} reservations={trip.reservations} />
 
       <TripTools tripId={trip.id} />
 

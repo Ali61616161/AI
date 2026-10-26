@@ -1685,5 +1685,20 @@
     "leave": "Quitter le voyage",
     "leaveBody": "Le voyage disparaît de ta liste. Le propriétaire peut te réinviter.",
     "noPlan": "Le propriétaire n'a pas encore créé de plan."
+  },
+  "flightStatus": {
+    "delayed": "{{number}} · {{min}} min de retard",
+    "canceled": "{{number}} annulé",
+    "onTime": "{{number}} · à l'heure",
+    "departed": "{{number}} a décollé",
+    "arrived": "{{number}} a atterri",
+    "newDeparture": "Nouveau départ {{time}}",
+    "terminal": "Terminal {{terminal}}",
+    "gate": "Porte {{gate}}",
+    "baggage": "Tapis bagages {{belt}}",
+    "alertDelayTitle": "Ton vol est retardé",
+    "alertDelayBody": "{{number}} : nouveau départ {{time}} ({{min}} min de retard).",
+    "alertCanceledTitle": "Ton vol est annulé",
+    "alertCanceledBody": "{{number}} est annulé. Contacte ta compagnie aérienne."
   }
 }

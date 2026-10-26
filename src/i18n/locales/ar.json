@@ -1837,5 +1837,20 @@
     "leave": "مغادرة الرحلة",
     "leaveBody": "ستختفي الرحلة من قائمتك. يمكن للمالك دعوتك مجددًا.",
     "noPlan": "لم ينشئ المالك خطة بعد."
+  },
+  "flightStatus": {
+    "delayed": "{{number}} · تأخير {{min}} دقيقة",
+    "canceled": "تم إلغاء {{number}}",
+    "onTime": "{{number}} · في الموعد",
+    "departed": "أقلعت الرحلة {{number}}",
+    "arrived": "هبطت الرحلة {{number}}",
+    "newDeparture": "موعد الإقلاع الجديد {{time}}",
+    "terminal": "المبنى {{terminal}}",
+    "gate": "البوابة {{gate}}",
+    "baggage": "سير الأمتعة {{belt}}",
+    "alertDelayTitle": "رحلتك متأخرة",
+    "alertDelayBody": "{{number}}: موعد الإقلاع الجديد {{time}} (تأخير {{min}} دقيقة).",
+    "alertCanceledTitle": "تم إلغاء رحلتك",
+    "alertCanceledBody": "تم إلغاء {{number}}. تواصل مع شركة الطيران."
   }
 }

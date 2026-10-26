@@ -1647,5 +1647,20 @@
     "leave": "退出行程",
     "leaveBody": "行程将从你的列表中消失，所有者可再次邀请你。",
     "noPlan": "所有者尚未创建计划。"
+  },
+  "flightStatus": {
+    "delayed": "{{number}} · 延误 {{min}} 分钟",
+    "canceled": "{{number}} 已取消",
+    "onTime": "{{number}} · 准点",
+    "departed": "{{number}} 已起飞",
+    "arrived": "{{number}} 已降落",
+    "newDeparture": "新起飞时间 {{time}}",
+    "terminal": "航站楼 {{terminal}}",
+    "gate": "登机口 {{gate}}",
+    "baggage": "行李转盘 {{belt}}",
+    "alertDelayTitle": "你的航班延误了",
+    "alertDelayBody": "{{number}}：新起飞时间 {{time}}（延误 {{min}} 分钟）。",
+    "alertCanceledTitle": "你的航班已取消",
+    "alertCanceledBody": "{{number}} 已取消。请联系航空公司。"
   }
 }

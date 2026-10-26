@@ -908,6 +908,18 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18c. Uçuş durumu önbelleği istemciye kapalı'
+reset role;
+insert into public.flight_status_cache (flight_number, flight_date, origin_code, data) values ('TK1865', '2026-10-26', 'ZRH', '{"state":"delayed"}');
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d1');
+do $$ begin
+  assert tests.throws($q$ select * from public.flight_status_cache $q$), 'istemci uçuş önbelleğini okuyamamalı';
+  assert tests.throws($q$ insert into public.flight_status_cache (flight_number, flight_date) values ('XX1', '2026-10-26') $q$), 'istemci yazamamalı';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

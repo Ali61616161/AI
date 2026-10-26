@@ -1685,5 +1685,20 @@
     "leave": "Reise verlassen",
     "leaveBody": "Die Reise verschwindet aus deiner Liste. Der Besitzer kann dich erneut einladen.",
     "noPlan": "Der Besitzer hat noch keinen Plan erstellt."
+  },
+  "flightStatus": {
+    "delayed": "{{number}} · {{min}} Min. Verspätung",
+    "canceled": "{{number}} wurde annulliert",
+    "onTime": "{{number}} · pünktlich",
+    "departed": "{{number}} ist gestartet",
+    "arrived": "{{number}} ist gelandet",
+    "newDeparture": "Neuer Abflug {{time}}",
+    "terminal": "Terminal {{terminal}}",
+    "gate": "Gate {{gate}}",
+    "baggage": "Gepäckband {{belt}}",
+    "alertDelayTitle": "Dein Flug hat Verspätung",
+    "alertDelayBody": "{{number}}: neuer Abflug {{time}} ({{min}} Min. Verspätung).",
+    "alertCanceledTitle": "Dein Flug wurde annulliert",
+    "alertCanceledBody": "{{number}} wurde annulliert. Wende dich an die Fluggesellschaft."
   }
 }

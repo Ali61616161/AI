@@ -1761,5 +1761,20 @@
     "leave": "Покинуть поездку",
     "leaveBody": "Поездка исчезнет из списка. Владелец сможет пригласить снова.",
     "noPlan": "Владелец ещё не составил план."
+  },
+  "flightStatus": {
+    "delayed": "{{number}} · задержка {{min}} мин",
+    "canceled": "{{number}} отменён",
+    "onTime": "{{number}} · вовремя",
+    "departed": "{{number}} вылетел",
+    "arrived": "{{number}} приземлился",
+    "newDeparture": "Новое время вылета {{time}}",
+    "terminal": "Терминал {{terminal}}",
+    "gate": "Выход {{gate}}",
+    "baggage": "Лента выдачи багажа {{belt}}",
+    "alertDelayTitle": "Твой рейс задерживается",
+    "alertDelayBody": "{{number}}: новое время вылета {{time}} (задержка {{min}} мин).",
+    "alertCanceledTitle": "Твой рейс отменён",
+    "alertCanceledBody": "{{number}} отменён. Свяжись с авиакомпанией."
   }
 }

@@ -1685,5 +1685,20 @@
     "leave": "Leave trip",
     "leaveBody": "The trip disappears from your list. The owner can invite you again.",
     "noPlan": "The trip owner hasn't created a plan yet."
+  },
+  "flightStatus": {
+    "delayed": "{{number}} · {{min}} min delay",
+    "canceled": "{{number}} was canceled",
+    "onTime": "{{number}} · on time",
+    "departed": "{{number}} has departed",
+    "arrived": "{{number}} has landed",
+    "newDeparture": "New departure {{time}}",
+    "terminal": "Terminal {{terminal}}",
+    "gate": "Gate {{gate}}",
+    "baggage": "Baggage belt {{belt}}",
+    "alertDelayTitle": "Your flight is delayed",
+    "alertDelayBody": "{{number}}: new departure {{time}} ({{min}} min delay).",
+    "alertCanceledTitle": "Your flight was canceled",
+    "alertCanceledBody": "{{number}} was canceled. Contact your airline."
   }
 }

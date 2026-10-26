@@ -1685,5 +1685,20 @@
     "leave": "Seyahatten ayrıl",
     "leaveBody": "Bu seyahat listenden kalkar. Sahibi tekrar davet edebilir.",
     "noPlan": "Seyahat sahibi henüz plan oluşturmadı."
+  },
+  "flightStatus": {
+    "delayed": "{{number}} · {{min}} dk gecikme",
+    "canceled": "{{number}} iptal edildi",
+    "onTime": "{{number}} · zamanında",
+    "departed": "{{number}} havalandı",
+    "arrived": "{{number}} indi",
+    "newDeparture": "Yeni kalkış {{time}}",
+    "terminal": "Terminal {{terminal}}",
+    "gate": "Kapı {{gate}}",
+    "baggage": "Bagaj bandı {{belt}}",
+    "alertDelayTitle": "Uçuşun gecikti",
+    "alertDelayBody": "{{number}}: yeni kalkış {{time}} ({{min}} dk gecikme).",
+    "alertCanceledTitle": "Uçuşun iptal edildi",
+    "alertCanceledBody": "{{number}} iptal edildi. Havayoluyla iletişime geç."
   }
 }
