@@ -920,6 +920,35 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18d. Push token kaydı: yalnızca işlevle, başkasının token''ı alınamaz, iç tablolar kapalı'
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d1');
+select public.register_push_token('ExponentPushToken[aaaaaaaaaaaaaaaaaaaaaa]', 'ios');
+do $$ begin
+  assert (select count(*) from public.push_tokens) = 1, 'kendi token''ını görür';
+  assert tests.throws($q$ insert into public.push_tokens (token, platform) values ('ExponentPushToken[bbbbbbbbbbbbbbbbbbbbbb]', 'ios') $q$), 'doğrudan yazılamaz';
+  assert tests.throws($q$ select public.register_push_token('geçersiz', 'ios') $q$), 'biçimi geçersiz token reddedilir';
+  assert tests.throws($q$ select * from public.internal_secrets $q$), 'sırlar istemciye kapalı';
+  assert tests.throws($q$ select * from public.flight_alerts_sent $q$), 'gönderim kayıtları istemciye kapalı';
+end $$;
+-- Aynı cihazda başka hesap girince token ona geçer; eski hesap artık görmez.
+call tests.login('00000000-0000-0000-0000-0000000000d2');
+select public.register_push_token('ExponentPushToken[aaaaaaaaaaaaaaaaaaaaaa]', 'ios');
+do $$ begin
+  assert (select count(*) from public.push_tokens) = 1;
+end $$;
+call tests.login('00000000-0000-0000-0000-0000000000d1');
+do $$ begin
+  assert (select count(*) from public.push_tokens) = 0, 'token yeni hesaba geçti';
+  perform public.unregister_push_token('ExponentPushToken[aaaaaaaaaaaaaaaaaaaaaa]');
+end $$;
+call tests.login('00000000-0000-0000-0000-0000000000d2');
+do $$ begin
+  assert (select count(*) from public.push_tokens) = 1, 'başkasının token''ı silinemez';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

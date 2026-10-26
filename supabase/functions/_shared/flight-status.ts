@@ -96,3 +96,43 @@ export function alertLevel(s: FlightStatus): AlertLevel {
   if (s.departure.delay_min >= 15 && s.state !== 'arrived') return 'delay';
   return 'none';
 }
+
+// ---------------------------------------------------------------------------
+// Anlık bildirim (push) metinleri: sunucu kullanıcının diline göre yazar (uygulama kapalıyken yerel çeviri yok).
+// ---------------------------------------------------------------------------
+
+type Lang = 'tr' | 'en' | 'es' | 'fr' | 'de' | 'it' | 'ru' | 'ar' | 'zh';
+type Texts = { delayTitle: string; delayBody: string; cancelTitle: string; cancelBody: string };
+
+const TEXTS: Record<Lang, Texts> = {
+  tr: { delayTitle: 'Uçuşun gecikti', delayBody: '{number}: yeni kalkış {time} ({min} dk gecikme).', cancelTitle: 'Uçuşun iptal edildi', cancelBody: '{number} iptal edildi. Havayoluyla iletişime geç.' },
+  en: { delayTitle: 'Your flight is delayed', delayBody: '{number}: new departure {time} ({min} min delay).', cancelTitle: 'Your flight was canceled', cancelBody: '{number} was canceled. Contact your airline.' },
+  de: { delayTitle: 'Dein Flug hat Verspätung', delayBody: '{number}: neuer Abflug {time} ({min} Min. Verspätung).', cancelTitle: 'Dein Flug wurde annulliert', cancelBody: '{number} wurde annulliert. Wende dich an die Fluggesellschaft.' },
+  es: { delayTitle: 'Tu vuelo se ha retrasado', delayBody: '{number}: nueva salida {time} ({min} min de retraso).', cancelTitle: 'Tu vuelo ha sido cancelado', cancelBody: '{number} ha sido cancelado. Contacta con tu aerolínea.' },
+  fr: { delayTitle: 'Ton vol est retardé', delayBody: '{number} : nouveau départ {time} ({min} min de retard).', cancelTitle: 'Ton vol est annulé', cancelBody: '{number} est annulé. Contacte ta compagnie aérienne.' },
+  it: { delayTitle: 'Il tuo volo è in ritardo', delayBody: '{number}: nuova partenza {time} ({min} min di ritardo).', cancelTitle: 'Il tuo volo è stato cancellato', cancelBody: '{number} è stato cancellato. Contatta la compagnia aerea.' },
+  ru: { delayTitle: 'Твой рейс задерживается', delayBody: '{number}: новое время вылета {time} (задержка {min} мин).', cancelTitle: 'Твой рейс отменён', cancelBody: '{number} отменён. Свяжись с авиакомпанией.' },
+  ar: { delayTitle: 'رحلتك متأخرة', delayBody: '{number}: موعد الإقلاع الجديد {time} (تأخير {min} دقيقة).', cancelTitle: 'تم إلغاء رحلتك', cancelBody: 'تم إلغاء {number}. تواصل مع شركة الطيران.' },
+  zh: { delayTitle: '你的航班延误了', delayBody: '{number}：新起飞时间 {time}（延误 {min} 分钟）。', cancelTitle: '你的航班已取消', cancelBody: '{number} 已取消。请联系航空公司。' },
+};
+
+/** Bildirim başlığı ve metni (desteklenmeyen dil İngilizceye düşer). */
+export function alertMessage(language: string, level: 'delay' | 'canceled', vars: { number: string; time: string; min: number }): { title: string; body: string } {
+  const t = TEXTS[language as Lang] ?? TEXTS.en;
+  const fill = (s: string) => s.replace('{number}', vars.number).replace('{time}', vars.time).replace('{min}', String(vars.min));
+  return level === 'canceled' ? { title: t.cancelTitle, body: fill(t.cancelBody) } : { title: t.delayTitle, body: fill(t.delayBody) };
+}
+
+/** Gönderilmiş bildirimi tanıyan imza: aynı gecikme (10 dk dilimiyle), iptal ya da kapı değişmedikçe tekrar gönderilmez. */
+export function alertKey(level: 'delay' | 'canceled', s: FlightStatus): string {
+  return `${level}:${Math.round(s.departure.delay_min / 10)}:${s.departure.gate ?? ''}`;
+}
+
+/** Yerel saat (SS:DD) bir anın verilen saat diliminde. */
+export function localTime(iso: string, timeZone: string | null, locale = 'en'): string {
+  try {
+    return new Intl.DateTimeFormat(locale, { timeZone: timeZone ?? 'UTC', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(iso));
+  } catch {
+    return iso.slice(11, 16);
+  }
+}

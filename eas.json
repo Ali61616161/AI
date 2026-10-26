@@ -31,6 +31,12 @@
       "env": {
         "ENABLE_WIDGET": "1"
       }
+    },
+    "production-push": {
+      "extends": "production",
+      "env": {
+        "ENABLE_PUSH": "1"
+      }
     }
   },
   "submit": {

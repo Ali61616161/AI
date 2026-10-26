@@ -420,3 +420,7 @@ verify_jwt = false
 
 [functions.ad-reward]
 verify_jwt = false
+
+# Zamanlayıcı (pg_cron) çağırır; x-cron-secret başlığıyla kendi doğrulamasını yapar.
+[functions.flight-watch]
+verify_jwt = false

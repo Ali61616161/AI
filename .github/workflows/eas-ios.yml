@@ -16,9 +16,9 @@ on:
         type: boolean
         default: false
       profile:
-        description: "production = App Store/TestFlight, production-widget = aynısı + ana ekran widget'ı (Apple ID ile imza kurulumu gerekir), preview = TestFlight'sız doğrudan kurulum"
+        description: "production = App Store/TestFlight, production-widget = aynısı + ana ekran widget'ı (Apple ID ile imza kurulumu gerekir), production-push = aynısı + anlık bildirim (Apple'da Push Notifications açık ve profil yenilenmiş olmalı), preview = TestFlight'sız doğrudan kurulum"
         type: choice
-        options: [production, production-widget, preview]
+        options: [production, production-widget, production-push, preview]
         default: production
       local:
         description: "Expo'nun ücretsiz build hakkı bittiyse: GitHub'ın macOS makinesinde derle (ücretsiz)"
@@ -102,7 +102,7 @@ jobs:
           id=$(npx eas-cli@latest build:list --platform ios --limit 1 --json --non-interactive | jq -r '.[0].id')
           echo "Telefonda aç ve Yükle'ye bas: https://expo.dev/accounts/akturan-group/projects/yola/builds/$id" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: TestFlight'a gönder
-        if: inputs.asc_app_id != '' && (inputs.profile == 'production' || inputs.profile == 'production-widget')
+        if: inputs.asc_app_id != '' && (inputs.profile == 'production' || inputs.profile == 'production-widget' || inputs.profile == 'production-push')
         env:
           ASC_APP_ID: ${{ inputs.asc_app_id }}
         run: |

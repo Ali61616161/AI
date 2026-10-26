@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 
+import { usePushRegistration } from '@/features/push/push';
 import { useAuthListener } from '@/features/auth/use-auth-listener';
 import { OfflineBanner } from '@/features/offline/offline-banner';
 import i18n, { initI18n } from '@/i18n';
@@ -46,6 +47,7 @@ export default function RootLayout() {
   const signedIn = useIsSignedIn();
   const onboarded = useSessionStore((s) => s.onboardingCompleted);
   useAuthListener();
+  usePushRegistration();
 
   useEffect(() => {
     initI18n()

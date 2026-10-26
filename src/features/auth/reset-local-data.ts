@@ -1,3 +1,4 @@
+import { unregisterPushToken } from '@/features/push/push';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Directory, Paths } from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
@@ -23,6 +24,8 @@ const PICKER_CACHE_DIRS = ['DocumentPicker', 'ImagePicker', 'Camera', 'tts'];
  * `signOut: false` yalnızca Supabase zaten "çıkış yapıldı" bildirdiğinde kullanılır (döngü olmasın).
  */
 export async function resetLocalUserData({ signOut = true }: { signOut?: boolean } = {}): Promise<void> {
+  // Oturum hâlâ geçerliyken bu cihazın bildirim kaydı silinir (çıkıştan sonra başkası bildirim almasın).
+  await unregisterPushToken().catch(() => undefined);
   if (signOut && isSupabaseConfigured()) {
     // İnternet yokken de oturum telefonda kalmasın: yerel çıkış + anahtarların elle silinmesi (aşağıda).
     await getSupabase().auth.signOut({ scope: 'local' }).catch(() => undefined);

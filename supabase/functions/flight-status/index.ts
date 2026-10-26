@@ -7,10 +7,10 @@
 // Gerekli sunucu sırrı: AERODATABOX_KEY (RapidAPI anahtarı). Yoksa configured:false döner, hata vermez.
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
-import { alertLevel, cacheTtlMin, type FlightStatus, localDate, normalizeFlightNumber, parseFlights } from '../_shared/flight-status.ts';
+import { cachedFlight } from '../_shared/flight-provider.ts';
+import { alertLevel, cacheTtlMin, type FlightStatus, localDate, normalizeFlightNumber } from '../_shared/flight-status.ts';
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 
-const HOST = 'aerodatabox.p.rapidapi.com';
 const MAX_FLIGHTS = 6;
 
 type Reservation = {
@@ -21,24 +21,6 @@ type Reservation = {
   origin_code: string | null;
   details: Record<string, unknown> | null;
 };
-
-async function fetchStatus(key: string, number: string, date: string, origin: string | null): Promise<FlightStatus | null | 'failed'> {
-  try {
-    const res = await fetch(`https://${HOST}/flights/number/${number}/${date}?withAircraftImage=false&withLocation=false`, {
-      headers: { 'x-rapidapi-key': key, 'x-rapidapi-host': HOST },
-      signal: AbortSignal.timeout(8000),
-    });
-    if (res.status === 404) return null; // uçuş bulunamadı
-    if (!res.ok) {
-      console.error('flight-status: provider', res.status);
-      return 'failed';
-    }
-    return parseFlights(await res.json(), origin);
-  } catch (e) {
-    console.error('flight-status: fetch failed', String(e).slice(0, 120));
-    return 'failed';
-  }
-}
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -86,25 +68,9 @@ Deno.serve(async (req) => {
 
     const date = localDate(r.starts_at, r.start_timezone);
     const origin = (r.origin_code ?? '').toUpperCase().slice(0, 4);
-    const { data: cached } = await admin
-      .from('flight_status_cache')
-      .select('data, fetched_at')
-      .eq('flight_number', number)
-      .eq('flight_date', date)
-      .eq('origin_code', origin)
-      .maybeSingle();
-
-    let status: FlightStatus | null = (cached?.data as FlightStatus | null) ?? null;
-    let checkedAt: string | null = cached?.fetched_at ?? null;
-    const fresh = cached && now - Date.parse(cached.fetched_at) < ttl * 60_000;
-    if (!fresh) {
-      const result = await fetchStatus(key, number, date, origin || null);
-      if (result !== 'failed') {
-        status = result;
-        checkedAt = new Date().toISOString();
-        await admin.from('flight_status_cache').upsert({ flight_number: number, flight_date: date, origin_code: origin, data: status, fetched_at: checkedAt });
-      }
-    }
+    const got = await cachedFlight(admin, key, { number, date, origin, ttlMin: ttl, now });
+    const status = got?.status ?? null;
+    const checkedAt = got?.checkedAt ?? null;
     if (status && checkedAt) out.push({ reservation_id: r.id, flight_number: number, checked_at: checkedAt, status, alert: alertLevel(status) });
   }
   return json({ configured: true, flights: out });

@@ -128,7 +128,7 @@ const config: ExpoConfig = {
     ],
     // Önceki eklentilerin eklediği push yetkisini kaldırır. expo-widgets'tan ÖNCE kalmalı:
     // expo-widgets yetkiyi yeniden ekler ve bu sıra onu da temizler (prebuild ile doğrulandı).
-    './plugins/without-push-entitlement',
+    ...(process.env.ENABLE_PUSH === '1' ? [] : (['./plugins/without-push-entitlement'] as const)),
     // iOS ana ekran widget'ı "Bugünün planı" (src/features/widget). Android'de expo-widgets henüz yok.
     // Widget uzantısının imza profili Apple ID girişi gerektirdiği için (API anahtarı yetmiyor)
     // varsayılan KAPALI; imza hazır olunca ENABLE_WIDGET=1 ile açılır. Kod kapalıyken zararsızdır.
@@ -157,6 +157,7 @@ const config: ExpoConfig = {
   },
   extra: {
     eas: { projectId: brand.easProjectId },
+    pushEnabled: process.env.ENABLE_PUSH === '1',
     // Android'de Google Haritalar anahtarı derlemeye eklendi mi (yoksa harita yerine radar).
     androidMapsKey: Boolean(process.env.GOOGLE_MAPS_ANDROID_API_KEY),
       iosMapsKey: Boolean(process.env.GOOGLE_MAPS_IOS_API_KEY),

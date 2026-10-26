@@ -1703,6 +1703,8 @@ export type Database = {
       valid_extra_visas: { Args: { p_keys: string[] }; Returns: boolean };
       my_referral_code: { Args: { p_device?: string }; Returns: string };
       redeem_referral: { Args: { p_code: string; p_device?: string }; Returns: Json };
+      register_push_token: { Args: { p_token: string; p_platform: string }; Returns: undefined };
+      unregister_push_token: { Args: { p_token: string }; Returns: undefined };
       referral_count: { Args: Record<PropertyKey, never>; Returns: number };
       visited_percentile: { Args: Record<PropertyKey, never>; Returns: number };
     };

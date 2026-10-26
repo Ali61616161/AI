@@ -52,3 +52,19 @@ Deno.test('boş ya da bozuk yanıt', () => {
   assertEquals(s.departure.delay_min, 0);
   assertEquals(alertLevel(s), 'none');
 });
+
+import { alertKey, alertMessage, localTime } from './flight-status.ts';
+
+Deno.test('push metinleri dile göre; bilinmeyen dil İngilizce', () => {
+  const v = { number: 'TK1865', time: '19:15', min: 45 };
+  assertEquals(alertMessage('tr', 'delay', v), { title: 'Uçuşun gecikti', body: 'TK1865: yeni kalkış 19:15 (45 dk gecikme).' });
+  assertEquals(alertMessage('xx', 'canceled', v).title, 'Your flight was canceled');
+  assertEquals(alertMessage('de', 'canceled', v).body.includes('TK1865'), true);
+});
+
+Deno.test('bildirim imzası ve yerel saat', () => {
+  const s = parseFlights(sample, 'ZRH')!;
+  assertEquals(alertKey('delay', s), 'delay:5:A14');
+  assertEquals(localTime('2026-10-26T16:15:00Z', 'Europe/Istanbul'), '19:15');
+  assertEquals(localTime('2026-10-26T16:15:00Z', 'Bad/Zone'), '16:15');
+});

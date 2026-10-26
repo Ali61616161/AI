@@ -1,3 +1,4 @@
+import { registerPushToken } from '@/features/push/push';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 
@@ -43,5 +44,7 @@ export async function requestReminderPermission(): Promise<boolean> {
   const current = await Notifications.getPermissionsAsync();
   if (current.granted) return true;
   if (!current.canAskAgain) return false;
-  return (await Notifications.requestPermissionsAsync()).granted;
+  const granted = (await Notifications.requestPermissionsAsync()).granted;
+  if (granted) registerPushToken().catch(() => undefined);
+  return granted;
 }
