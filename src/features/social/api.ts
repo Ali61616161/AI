@@ -44,7 +44,7 @@ export type GoVisibleInput = {
   until: string | null;
 };
 
-export type SocialErrorCode = 'age_required' | 'name_required' | 'identity_locked' | 'unknown';
+export type SocialErrorCode = 'age_required' | 'name_required' | 'identity_locked' | 'suspended' | 'unknown';
 
 export class SocialError extends Error {
   constructor(readonly code: SocialErrorCode) {
@@ -83,7 +83,7 @@ export function useGoVisible() {
       });
       if (error) {
         const hint = (error as { hint?: string }).hint;
-        throw new SocialError(hint === 'age_required' || hint === 'name_required' ? hint : 'unknown');
+        throw new SocialError(hint === 'age_required' || hint === 'name_required' || hint === 'suspended' ? hint : 'unknown');
       }
     },
     onSuccess: () => {

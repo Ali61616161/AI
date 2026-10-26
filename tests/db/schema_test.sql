@@ -846,6 +846,68 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18b. Gezginler moderasyonu: 3 farklı şikayet askıya alır, hız sınırları'
+reset role;
+insert into auth.users (id, email, raw_user_meta_data) values
+  ('00000000-0000-0000-0000-0000000000d1', 'r1@example.com', '{"display_name": "R1"}'),
+  ('00000000-0000-0000-0000-0000000000d2', 'r2@example.com', '{"display_name": "R2"}'),
+  ('00000000-0000-0000-0000-0000000000d3', 'r3@example.com', '{"display_name": "R3"}'),
+  ('00000000-0000-0000-0000-0000000000d4', 'target@example.com', '{"display_name": "Hedef"}');
+update public.profiles set birth_year = 1990, display_name = coalesce(display_name, 'Test');
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d4');
+insert into public.consents (consent, granted, version) values ('social_matching', true, '1.0'), ('location', true, '1.0');
+insert into public.social_profiles (user_id, is_visible, city, approx_location)
+  values (auth.uid(), true, 'Roma', 'SRID=4326;POINT(12.49 41.89)');
+
+-- Aynı kişinin tekrarlayan şikayetleri sayıyı artırmaz.
+call tests.login('00000000-0000-0000-0000-0000000000d1');
+insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'harassment');
+insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'harassment');
+call tests.login('00000000-0000-0000-0000-0000000000d2');
+insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'unsafe_behavior');
+reset role;
+do $$ begin
+  assert (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), '2 farklı şikayet askıya almamalı';
+end $$;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d3');
+insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'fake_profile');
+reset role;
+do $$ begin
+  assert not (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), '3 farklı şikayet profili gizlemeli';
+  assert exists (select 1 from public.social_suspensions where user_id = '00000000-0000-0000-0000-0000000000d4' and suspended_until > now() + interval '13 days');
+end $$;
+-- Askıdayken tekrar görünür olamaz, askı tablosunu istemci okuyamaz/yazamaz.
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d4');
+do $$ begin
+  assert tests.throws($q$ update public.social_profiles set is_visible = true where user_id = auth.uid() $q$), 'askıdaki kullanıcı görünür olamaz';
+  assert (select count(*) from public.social_suspensions) = 0, 'askı tablosu istemciye kapalı olmalı';
+end $$;
+delete from public.social_suspensions;
+reset role;
+do $$ begin
+  assert exists (select 1 from public.social_suspensions where user_id = '00000000-0000-0000-0000-0000000000d4'), 'askı istemciden silinemez';
+end $$;
+set role authenticated;
+-- Günde en fazla 20 şikayet.
+call tests.login('00000000-0000-0000-0000-0000000000d1');
+do $$
+declare i int;
+begin
+  for i in 1..30 loop
+    begin
+      insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d2', 'spam');
+    exception when others then
+      null;
+    end;
+  end loop;
+  assert (select count(*) from public.user_reports where reporter_id = auth.uid()) <= 20, 'şikayet sayısı günlük 20 ile sınırlı olmalı';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

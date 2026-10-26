@@ -202,7 +202,8 @@
       "age_required": "Devi avere almeno 18 anni per usare la modalità social.",
       "name_required": "Inserisci il nome visibile agli altri.",
       "unknown": "Qualcosa è andato storto. Riprova.",
-      "identity_locked": "L’anno di nascita non può essere modificato. Contatta l’assistenza per correggerlo."
+      "identity_locked": "L’anno di nascita non può essere modificato. Contatta l’assistenza per correggerlo.",
+      "suspended": "Viaggiatori è temporaneamente disattivato sul tuo account per più segnalazioni. Se pensi sia un errore, contatta il supporto."
     },
     "traveler": "Viaggiatore",
     "accept": "Accetta",

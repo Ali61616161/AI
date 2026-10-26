@@ -202,7 +202,8 @@
       "age_required": "Tu dois avoir 18 ans ou plus pour utiliser le mode social.",
       "name_required": "Saisis le nom visible par les autres.",
       "unknown": "Une erreur s’est produite. Réessaie.",
-      "identity_locked": "L’année de naissance ne peut pas être modifiée. Contacte le support pour la corriger."
+      "identity_locked": "L’année de naissance ne peut pas être modifiée. Contacte le support pour la corriger.",
+      "suspended": "Voyageurs est temporairement désactivé sur ton compte à cause de plusieurs signalements. Si tu penses à une erreur, contacte le support."
     },
     "traveler": "Voyageur",
     "accept": "Accepter",

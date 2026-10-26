@@ -200,7 +200,8 @@
       "age_required": "使用社交模式须年满 18 岁。",
       "name_required": "请输入向他人显示的名字。",
       "unknown": "出错了，请重试。",
-      "identity_locked": "出生年份无法更改。如需更正，请联系客服。"
+      "identity_locked": "出生年份无法更改。如需更正，请联系客服。",
+      "suspended": "由于收到多项举报，你的账号已暂时关闭旅伴功能。如果你认为有误，请联系客服。"
     },
     "traveler": "旅行者",
     "accept": "接受",

@@ -202,7 +202,8 @@
       "age_required": "Für den Social-Modus musst du mindestens 18 Jahre alt sein.",
       "name_required": "Bitte gib den für andere sichtbaren Namen ein.",
       "unknown": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
-      "identity_locked": "Das Geburtsjahr kann nicht geändert werden. Wende dich zur Korrektur an den Support."
+      "identity_locked": "Das Geburtsjahr kann nicht geändert werden. Wende dich zur Korrektur an den Support.",
+      "suspended": "Reisende treffen ist für dein Konto vorübergehend gesperrt, weil mehrere Meldungen vorliegen. Wenn du das für einen Fehler hältst, kontaktiere den Support."
     },
     "traveler": "Reisende(r)",
     "accept": "Annehmen",

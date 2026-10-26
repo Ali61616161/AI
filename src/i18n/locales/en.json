@@ -202,7 +202,8 @@
       "age_required": "You must be 18 or older to use social mode.",
       "name_required": "Please enter the name shown to others.",
       "unknown": "Something went wrong. Please try again.",
-      "identity_locked": "Your birth year can't be changed. Contact support to correct it."
+      "identity_locked": "Your birth year can't be changed. Contact support to correct it.",
+      "suspended": "Traveler matching is temporarily off for your account because of multiple reports. If you think this is a mistake, contact support."
     },
     "traveler": "Traveler",
     "accept": "Accept",

@@ -202,7 +202,8 @@
       "age_required": "Sosyal modu kullanmak için 18 yaşından büyük olmalısın.",
       "name_required": "Diğerlerinin göreceği adı yaz.",
       "unknown": "Bir şeyler ters gitti. Tekrar dene.",
-      "identity_locked": "Doğum yılı değiştirilemez. Düzeltme için destekle iletişime geç."
+      "identity_locked": "Doğum yılı değiştirilemez. Düzeltme için destekle iletişime geç.",
+      "suspended": "Hesabın birden fazla şikayet aldığı için Gezginler geçici olarak kapatıldı. Hata olduğunu düşünüyorsan destekle iletişime geç."
     },
     "traveler": "Gezgin",
     "accept": "Kabul et",
