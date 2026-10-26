@@ -49,3 +49,17 @@ export async function cachedFlight(
   }
   return status && checkedAt ? { status, checkedAt } : null;
 }
+
+/** Anahtar çalışıyor mu? Bilinen bir uçuşu sorgular; yalnızca HTTP durumunu döner (404 = anahtar geçerli, uçuş yok). */
+export async function probeProvider(key: string): Promise<number> {
+  try {
+    const res = await fetch(`https://${HOST}/flights/number/LH400/${new Date().toISOString().slice(0, 10)}?withAircraftImage=false&withLocation=false`, {
+      headers: { 'x-rapidapi-key': key, 'x-rapidapi-host': HOST },
+      signal: AbortSignal.timeout(8000),
+    });
+    await res.body?.cancel();
+    return res.status;
+  } catch {
+    return 0;
+  }
+}

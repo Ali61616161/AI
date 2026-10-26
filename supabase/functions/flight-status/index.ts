@@ -7,11 +7,12 @@
 // Gerekli sunucu sırrı: AERODATABOX_KEY (RapidAPI anahtarı). Yoksa configured:false döner, hata vermez.
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
-import { cachedFlight } from '../_shared/flight-provider.ts';
+import { cachedFlight, probeProvider } from '../_shared/flight-provider.ts';
 import { alertLevel, cacheTtlMin, type FlightStatus, localDate, normalizeFlightNumber } from '../_shared/flight-status.ts';
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 
 const MAX_FLIGHTS = 6;
+let probe: { at: number; status: number } | null = null;
 
 type Reservation = {
   id: string;
@@ -37,10 +38,18 @@ Deno.serve(async (req) => {
   } catch {
     return error('bad_request', 400, 'body must be JSON');
   }
-  if (typeof body?.trip_id !== 'string') return error('bad_request', 400, 'trip_id is required');
-
   const key = Deno.env.get('AERODATABOX_KEY');
   const admin = adminClient();
+
+  // Kurulum kontrolü (canlı kontrol iş akışı): anahtar tanımlı mı ve servis kabul ediyor mu. Sonuç 10 dk önbelleklenir,
+  // anahtarın kendisi hiçbir zaman dönmez.
+  if (body?.check === true) {
+    if (!key) return json({ configured: false });
+    if (!probe || Date.now() - probe.at > 600_000) probe = { at: Date.now(), status: await probeProvider(key) };
+    return json({ configured: true, provider_status: probe.status, provider_ok: probe.status === 200 || probe.status === 404 });
+  }
+  if (typeof body?.trip_id !== 'string') return error('bad_request', 400, 'trip_id is required');
+
   if (!key || !admin) return json({ configured: false, flights: [] });
 
   // RLS: yalnızca üyesi olunan seyahatin rezervasyonları gelir.

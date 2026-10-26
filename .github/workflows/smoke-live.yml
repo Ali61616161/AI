@@ -29,7 +29,7 @@ jobs:
 
           sum "### Sunucu sırları"
           names=$(curl -sSf -H "Authorization: Bearer $token" "https://api.supabase.com/v1/projects/$ref/secrets" | jq -r '.[].name')
-          for n in GEMINI_API_KEY GOOGLE_MAPS_API_KEY GOOGLE_TRANSLATE_API_KEY REVENUECAT_SECRET_KEY REVENUECAT_WEBHOOK_AUTH; do
+          for n in GEMINI_API_KEY GOOGLE_MAPS_API_KEY GOOGLE_TRANSLATE_API_KEY REVENUECAT_SECRET_KEY REVENUECAT_WEBHOOK_AUTH AERODATABOX_KEY; do
             if echo "$names" | grep -qx "$n"; then sum "- ✅ $n"; else sum "- ❌ $n eksik"; fi
           done
 
@@ -72,5 +72,8 @@ jobs:
           else sum "- ❌ Sohbet (replan) — HTTP $code $(jq -r '"\(.error.code // "")"' /tmp/out.json | head -c 100)"; fi
           check "Google Translation" translate '{"mode":"text","text":"Good morning","target":"tr"}' '.translation // .text // "çeviri geldi"'
           check "Google doğal ses (Text-to-Speech)" translate '{"mode":"speak","text":"Hallo, wie geht es dir?","target":"de","voice_lang":"de-DE"}' '"ses: \(.voice), \(.audio | length) karakter"'
+          check "Uçuş durumu (AeroDataBox anahtarı)" flight-status '{"check":true}' 'if .configured then "anahtar tanımlı, servis \(.provider_status) (\(if .provider_ok then "çalışıyor" else "reddetti" end))" else "anahtar tanımlı değil" end'
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "$base/functions/v1/flight-watch" -H 'Content-Type: application/json' -d '{}')
+          if [ "$code" = 401 ]; then sum "- ✅ Uçuş zamanlayıcı (flight-watch) yayında, sırsız çağrı reddedildi"; else sum "- ❌ Uçuş zamanlayıcı (flight-watch) — beklenen 401, gelen HTTP $code"; fi
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
           check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'
