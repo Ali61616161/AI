@@ -36,7 +36,7 @@
   "submit": {
     "production": {
       "ios": {
-        "ascAppId": "FILL_IN_STEP_15"
+        "ascAppId": "6821770666"
       },
       "android": {
         "track": "internal",
