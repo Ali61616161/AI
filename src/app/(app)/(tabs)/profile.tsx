@@ -207,6 +207,7 @@ export default function ProfileScreen() {
         <Card padding={Spacing.xs}>
           {Features.social && <ListRow icon="people-outline" label={t('today.quick.travelers')} onPress={() => router.push('/social')} />}
           {Features.referral && <ListRow icon="gift-outline" label={t('referral.title')} onPress={() => router.push('/refer')} />}
+          <ListRow icon="pricetag-outline" label={t('priceWatch.title')} onPress={() => router.push('/price-watch')} />
           <ListRow icon="earth-outline" label={t('visited.title')} onPress={() => router.push('/visited')} />
           <ListRow icon="document-text-outline" label={t('docs.title')} onPress={() => router.push('/my-docs')} />
           <ListRow icon="shield-checkmark-outline" label={t('legal.privacy')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />

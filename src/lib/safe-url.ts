@@ -22,5 +22,5 @@ export function isGoogleMapsUrl(url: unknown): url is string {
 
 /** Bildirimden açılabilecek uygulama yolları (başka ekranlara ya da dış adreslere yönlenmez). */
 export function isAllowedNotificationPath(path: unknown): path is string {
-  return typeof path === 'string' && /^\/(trip\/[0-9a-f-]{36}|trip-live\?tripId=[0-9a-f-]{36}(&day=\d+)?|trip-ended\?tripId=[0-9a-f-]{36})$/i.test(path);
+  return typeof path === 'string' && /^\/(trip\/[0-9a-f-]{36}|trip-live\?tripId=[0-9a-f-]{36}(&day=\d+)?|trip-ended\?tripId=[0-9a-f-]{36}|price-watch)$/i.test(path);
 }

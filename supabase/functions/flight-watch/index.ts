@@ -6,40 +6,9 @@ import { adminClient } from '../_shared/admin.ts';
 import { cachedFlight } from '../_shared/flight-provider.ts';
 import { alertKey, alertLevel, alertMessage, cacheTtlMin, localDate, localTime, normalizeFlightNumber } from '../_shared/flight-status.ts';
 import { error, json } from '../_shared/http.ts';
+import { safeEqual, sendPush, type PushMessage } from '../_shared/push.ts';
 
 const MAX_RESERVATIONS = 200;
-const EXPO_PUSH = 'https://exp.host/--/api/v2/push/send';
-
-function safeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
-type Message = { to: string; title: string; body: string; data: { url: string }; sound: 'default'; priority: 'high' };
-
-async function sendPush(messages: Message[]): Promise<string[]> {
-  const dead: string[] = [];
-  for (let i = 0; i < messages.length; i += 100) {
-    const batch = messages.slice(i, i + 100);
-    try {
-      const res = await fetch(EXPO_PUSH, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json', accept: 'application/json' },
-        body: JSON.stringify(batch),
-        signal: AbortSignal.timeout(10_000),
-      });
-      const tickets = ((await res.json()) as { data?: { status: string; details?: { error?: string } }[] }).data ?? [];
-      tickets.forEach((t, k) => {
-        if (t.status === 'error' && t.details?.error === 'DeviceNotRegistered') dead.push(batch[k].to);
-      });
-    } catch (e) {
-      console.error('flight-watch: push failed', String(e).slice(0, 120));
-    }
-  }
-  return dead;
-}
 
 Deno.serve(async (req) => {
   if (req.method !== 'POST') return error('bad_request', 405, 'POST only');
@@ -97,7 +66,7 @@ Deno.serve(async (req) => {
     ]);
     const lang = new Map((profiles ?? []).map((p) => [p.id as string, p.preferred_language as string]));
     const revised = got.status.departure.revised_utc;
-    const messages: Message[] = (tokens ?? []).map((t) => {
+    const messages: PushMessage[] = (tokens ?? []).map((t) => {
       const language = lang.get(t.user_id as string) ?? 'en';
       const { title, body } = alertMessage(language, level, { number, time: revised ? localTime(revised, r.start_timezone, language) : '', min: got.status.departure.delay_min });
       return { to: t.token as string, title, body, data: { url: `/trip/${r.trip_id}` }, sound: 'default', priority: 'high' };
@@ -105,7 +74,7 @@ Deno.serve(async (req) => {
     // Önce işaretlenir (gönderim yarıda kalsa bile aynı bildirim tekrar tekrar gitmez).
     await admin.from('flight_alerts_sent').upsert({ reservation_id: r.id, alert_key: sig });
     if (messages.length > 0) {
-      dead.push(...(await sendPush(messages)));
+      dead.push(...(await sendPush(messages, 'flight-watch')));
       sent += messages.length;
     }
   }

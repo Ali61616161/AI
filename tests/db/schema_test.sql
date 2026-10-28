@@ -971,6 +971,32 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18f. Fiyat takibi: sistem sütunları yazılamaz, 5 aktif sınırı, başkası görmez'
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000a');
+insert into public.price_watches (origin_code, origin_name, destination_code, destination_name, depart_on, target_price)
+values ('IST', 'Istanbul', 'ROM', 'Rome', current_date + 30, 120);
+do $$ begin
+  assert (select count(*) from public.price_watches) = 1;
+  assert tests.throws($q$ update public.price_watches set last_price = 1 $q$), 'son fiyatı istemci yazamaz';
+  assert tests.throws($q$ insert into public.price_watches (origin_code, origin_name, destination_code, destination_name, depart_on, last_price) values ('IST','Istanbul','PAR','Paris', current_date + 5, 9) $q$), 'sistem sütunuyla eklenemez';
+  assert tests.throws($q$ insert into public.price_watches (origin_code, origin_name, destination_code, destination_name, depart_on) values ('IST','Istanbul','IST','Istanbul', current_date + 5) $q$), 'aynı kalkış ve varış';
+  assert tests.throws($q$ insert into public.price_watches (origin_code, origin_name, destination_code, destination_name, depart_on) values ('IST','Istanbul','PAR','Paris', current_date - 1) $q$), 'geçmiş tarih';
+  assert tests.throws($q$ insert into public.price_watches (origin_code, origin_name, destination_code, destination_name, depart_on, return_on) values ('IST','Istanbul','PAR','Paris', current_date + 5, current_date + 5) $q$), 'dönüş gidişten sonra olmalı';
+end $$;
+insert into public.price_watches (origin_code, origin_name, destination_code, destination_name, depart_on) values
+  ('IST','Istanbul','PAR','Paris', current_date + 5), ('IST','Istanbul','LON','London', current_date + 5),
+  ('IST','Istanbul','BER','Berlin', current_date + 5), ('IST','Istanbul','MAD','Madrid', current_date + 5);
+do $$ begin
+  assert tests.throws($q$ insert into public.price_watches (origin_code, origin_name, destination_code, destination_name, depart_on) values ('IST','Istanbul','VIE','Vienna', current_date + 5) $q$), 'en fazla 5 aktif takip';
+end $$;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$ begin
+  assert (select count(*) from public.price_watches) = 0, 'başkasının takibini görmez';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

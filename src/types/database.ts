@@ -472,6 +472,73 @@ export type Database = {
           },
         ];
       };
+      price_watches: {
+        Row: {
+          active: boolean;
+          created_at: string;
+          currency: string;
+          depart_on: string;
+          destination_code: string;
+          destination_name: string;
+          flexible_month: boolean;
+          id: string;
+          last_airline: string | null;
+          last_alert_price: number | null;
+          last_checked_at: string | null;
+          last_price: number | null;
+          lowest_price: number | null;
+          origin_code: string;
+          origin_name: string;
+          price_points: Json;
+          return_on: string | null;
+          target_price: number | null;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          active?: boolean;
+          created_at?: string;
+          currency?: string;
+          depart_on: string;
+          destination_code: string;
+          destination_name: string;
+          flexible_month?: boolean;
+          id?: string;
+          last_airline?: string | null;
+          last_alert_price?: number | null;
+          last_checked_at?: string | null;
+          last_price?: number | null;
+          lowest_price?: number | null;
+          origin_code: string;
+          origin_name: string;
+          price_points?: Json;
+          return_on?: string | null;
+          target_price?: number | null;
+          user_id?: string;
+        };
+        Update: {
+          active?: boolean;
+          created_at?: string;
+          currency?: string;
+          depart_on?: string;
+          destination_code?: string;
+          destination_name?: string;
+          flexible_month?: boolean;
+          id?: string;
+          last_airline?: string | null;
+          last_alert_price?: number | null;
+          last_checked_at?: string | null;
+          last_price?: number | null;
+          lowest_price?: number | null;
+          origin_code?: string;
+          origin_name?: string;
+          price_points?: Json;
+          return_on?: string | null;
+          target_price?: number | null;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       place_ratings: {
         Row: {
           created_at: string;

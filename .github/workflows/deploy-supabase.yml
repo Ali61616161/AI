@@ -71,7 +71,7 @@ jobs:
           for f in parse-document generate-itinerary replan places translate travel-info trip-report subscription delete-account city flight-status; do
             deploy "$f"
           done
-          for f in revenuecat-webhook ad-reward flight-watch; do
+          for f in revenuecat-webhook ad-reward flight-watch price-watch; do
             deploy "$f" --no-verify-jwt
           done
           if [ -n "$failed" ]; then echo "::error::Yüklenemeyen fonksiyonlar:$failed"; exit 1; fi

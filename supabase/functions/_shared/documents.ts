@@ -145,7 +145,7 @@ export const MAX_TEXT_CHARS = 40_000;
 
 /** Depodan inen düz metin belgeyi çözer ve uzunluğunu sınırlar. */
 export function documentText(bytes: Uint8Array): string {
-  return new TextDecoder('utf-8', { fatal: false }).decode(bytes).replace(/\u0000/g, '').slice(0, MAX_TEXT_CHARS);
+  return new TextDecoder('utf-8', { fatal: false }).decode(bytes).replaceAll('\u0000', '').slice(0, MAX_TEXT_CHARS);
 }
 
 // ---------------------------------------------------------------------------

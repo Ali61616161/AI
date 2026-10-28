@@ -25,6 +25,8 @@ Deno.test('isAllowedNotificationPath: yalnızca seyahat ekranları', () => {
   assertEquals(isAllowedNotificationPath(`/trip/${id}`), true);
   assertEquals(isAllowedNotificationPath(`/trip-live?tripId=${id}`), true);
   assertEquals(isAllowedNotificationPath(`/trip-live?tripId=${id}&day=2`), true);
+  assertEquals(isAllowedNotificationPath('/price-watch'), true);
+  assertEquals(isAllowedNotificationPath('/price-watch?x=1'), false);
   assertEquals(isAllowedNotificationPath('/join?token=abc'), false);
   assertEquals(isAllowedNotificationPath('//evil.example'), false);
   assertEquals(isAllowedNotificationPath('/profile'), false);
