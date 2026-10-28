@@ -77,5 +77,20 @@ jobs:
           if [ "$code" = 401 ]; then sum "- ✅ Uçuş zamanlayıcı (flight-watch) yayında, sırsız çağrı reddedildi"; else sum "- ❌ Uçuş zamanlayıcı (flight-watch) — beklenen 401, gelen HTTP $code"; fi
           code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "$base/functions/v1/price-watch" -H 'Content-Type: application/json' -d '{}')
           if [ "$code" = 401 ]; then sum "- ✅ Fiyat zamanlayıcı (price-watch) yayında, sırsız çağrı reddedildi"; else sum "- ❌ Fiyat zamanlayıcı (price-watch) — beklenen 401, gelen HTTP $code"; fi
+          # Canlı fiyat takibi: geçici hesaba İstanbul → Roma takibi ekler, zamanlayıcıyı çalıştırır, fiyatı okur.
+          depart=$(date -u -d '+45 days' +%F)
+          code=$(curl -sS -o /tmp/watch.json -w '%{http_code}' -X POST "$base/rest/v1/price_watches" -H "apikey: $anon" -H "Authorization: Bearer $jwt" -H 'Content-Type: application/json' -H 'Prefer: return=representation' \
+            -d "$(jq -n --arg d "$depart" '{origin_code:"IST",origin_name:"Istanbul",destination_code:"ROM",destination_name:"Rome",depart_on:$d,currency:"EUR",target_price:5000}')")
+          if [ "$code" = 201 ]; then
+            cron=$(curl -sS "$base/rest/v1/internal_secrets?key=eq.cron&select=value" -H "apikey: $service" -H "Authorization: Bearer $service" | jq -r '.[0].value // empty')
+            echo "::add-mask::$cron"
+            run=$(curl -sS -X POST "$base/functions/v1/price-watch" -H 'Content-Type: application/json' -H "x-cron-secret: $cron" -d '{}')
+            sum "- ℹ️ Fiyat takibi çalıştırma yanıtı: $(echo "$run" | head -c 200)"
+            row=$(curl -sS "$base/rest/v1/price_watches?user_id=eq.$uid&select=last_price,last_airline,last_checked_at,currency" -H "apikey: $service" -H "Authorization: Bearer $service")
+            price=$(echo "$row" | jq -r '.[0].last_price // empty')
+            if [ -n "$price" ]; then sum "- ✅ Fiyat takibi canlı: İstanbul → Roma $depart en ucuz $price $(echo "$row" | jq -r '.[0].currency') ($(echo "$row" | jq -r '.[0].last_airline // "havayolu ?"'))"
+            elif echo "$run" | jq -e '.configured == false' >/dev/null 2>&1; then sum "- ⚠️ Fiyat takibi: TRAVELPAYOUTS_TOKEN tanımlı değil, kontrol atlandı"
+            else sum "- ❌ Fiyat takibi: fiyat okunamadı (sağlayıcı yanıtı boş ya da reddetti; yukarıdaki yanıta bak)"; fi
+          else sum "- ❌ Fiyat takibi kaydı eklenemedi — HTTP $code $(head -c 200 /tmp/watch.json)"; fi
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
           check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'
