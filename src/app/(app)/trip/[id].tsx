@@ -287,6 +287,21 @@ export default function TripScreen() {
         </Card>
       )}
 
+      {trip.start_date && trip.start_date <= todayIsoDate() && (
+        <Card onPress={() => router.push({ pathname: '/trip-journal', params: { tripId: trip.id } })} accessibilityLabel={t('journal.cardBody')}>
+          <View style={styles.reportRow}>
+            <IconBadge icon="book" />
+            <View style={styles.flex}>
+              <Text variant="bodyStrong">{t('journal.card')}</Text>
+              <Text variant="caption" color="textSecondary">
+                {t('journal.cardBody')}
+              </Text>
+            </View>
+            <DirIcon name="chevron-forward" size={18} color={colors.textSecondary} />
+          </View>
+        </Card>
+      )}
+
       <FlightStatusCard tripId={trip.id} reservations={trip.reservations} />
 
       <TripTools tripId={trip.id} />

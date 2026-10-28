@@ -1709,5 +1709,30 @@
     "alertDelayBody": "{{number}}: yeni kalkış {{time}} ({{min}} dk gecikme).",
     "alertCanceledTitle": "Uçuşun iptal edildi",
     "alertCanceledBody": "{{number}} iptal edildi. Havayoluyla iletişime geç."
+  },
+  "journal": {
+    "title": "Seyahat günlüğü",
+    "card": "Seyahat günlüğü",
+    "cardBody": "Her gün için not yaz, fotoğraf ekle",
+    "placeholder": "Günün nasıldı? Bir not yaz…",
+    "photo": "Günlük fotoğrafı",
+    "addPhoto": "Fotoğraf ekle",
+    "removePhoto": "Fotoğrafı kaldır",
+    "save": "Kaydet",
+    "saved": "Kaydedildi",
+    "summaryTitle": "Anılar",
+    "stats": "Gün: {{days}} · Fotoğraf: {{photos}}",
+    "empty": "Henüz anı yok. Seyahatinin günleri için not veya fotoğraf ekle.",
+    "start": "Günlüğe başla",
+    "edit": "Günlüğü düzenle",
+    "private": "Günlüğün özeldir. Ortak seyahatlerde bile yalnızca sen görürsün.",
+    "notStarted": "Günlük, seyahat başlayınca açılır.",
+    "moods": {
+      "amazing": "Harika",
+      "good": "İyi",
+      "ok": "Fena değil",
+      "tired": "Yorgun",
+      "bad": "Kötü"
+    }
   }
 }

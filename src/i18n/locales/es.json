@@ -1709,5 +1709,30 @@
     "alertDelayBody": "{{number}}: nueva salida {{time}} ({{min}} min de retraso).",
     "alertCanceledTitle": "Tu vuelo ha sido cancelado",
     "alertCanceledBody": "{{number}} ha sido cancelado. Contacta con tu aerolínea."
+  },
+  "journal": {
+    "title": "Diario de viaje",
+    "card": "Diario de viaje",
+    "cardBody": "Escribe notas y añade fotos de cada día",
+    "placeholder": "¿Cómo fue tu día? Escribe una nota…",
+    "photo": "Foto del diario",
+    "addPhoto": "Añadir foto",
+    "removePhoto": "Quitar foto",
+    "save": "Guardar",
+    "saved": "Guardado",
+    "summaryTitle": "Recuerdos",
+    "stats": "Días: {{days}} · Fotos: {{photos}}",
+    "empty": "Aún no hay recuerdos. Añade notas o fotos de los días de tu viaje.",
+    "start": "Empezar el diario",
+    "edit": "Editar diario",
+    "private": "Tu diario es privado. Solo tú puedes verlo, incluso en viajes compartidos.",
+    "notStarted": "El diario se abre cuando empieza el viaje.",
+    "moods": {
+      "amazing": "Genial",
+      "good": "Bien",
+      "ok": "Normal",
+      "tired": "Cansado",
+      "bad": "Mal"
+    }
   }
 }

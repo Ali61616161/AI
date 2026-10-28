@@ -1709,5 +1709,30 @@
     "alertDelayBody": "{{number}}: neuer Abflug {{time}} ({{min}} Min. Verspätung).",
     "alertCanceledTitle": "Dein Flug wurde annulliert",
     "alertCanceledBody": "{{number}} wurde annulliert. Wende dich an die Fluggesellschaft."
+  },
+  "journal": {
+    "title": "Reisetagebuch",
+    "card": "Reisetagebuch",
+    "cardBody": "Schreibe Notizen und füge Fotos für jeden Tag hinzu",
+    "placeholder": "Wie war dein Tag? Schreibe eine Notiz…",
+    "photo": "Tagebuchfoto",
+    "addPhoto": "Foto hinzufügen",
+    "removePhoto": "Foto entfernen",
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "summaryTitle": "Erinnerungen",
+    "stats": "Tage: {{days}} · Fotos: {{photos}}",
+    "empty": "Noch keine Erinnerungen. Füge Notizen oder Fotos zu den Tagen deiner Reise hinzu.",
+    "start": "Tagebuch beginnen",
+    "edit": "Tagebuch bearbeiten",
+    "private": "Dein Tagebuch ist privat. Nur du kannst es sehen, auch bei gemeinsamen Reisen.",
+    "notStarted": "Das Tagebuch öffnet sich, sobald die Reise beginnt.",
+    "moods": {
+      "amazing": "Großartig",
+      "good": "Gut",
+      "ok": "Okay",
+      "tired": "Müde",
+      "bad": "Schlecht"
+    }
   }
 }

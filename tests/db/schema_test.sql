@@ -949,6 +949,28 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18e. Günlük: kişisel kayıt, üye olmayan yazamaz, başkasının fotoğrafına bağlanılamaz'
+reset role;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000a');
+insert into public.journal_entries (trip_id, entry_date, note, mood)
+values ('10000000-0000-0000-0000-000000000001', current_date, 'Harika bir gün', 'amazing');
+do $$ begin
+  assert (select count(*) from public.journal_entries) = 1, 'kendi kaydını görür';
+  assert tests.throws($q$ insert into public.journal_entries (trip_id, entry_date, note) values ('10000000-0000-0000-0000-000000000001', current_date, 'aynı gün ikinci') $q$), 'günde tek kayıt';
+  assert tests.throws($q$ insert into public.journal_entries (trip_id, entry_date, note, photos) values ('10000000-0000-0000-0000-000000000001', current_date + 1, 'x', array['00000000-0000-0000-0000-00000000000b/10000000-0000-0000-0000-000000000001/a.jpg']) $q$), 'başkasının klasörüne bağlanamaz';
+  assert tests.throws($q$ insert into public.journal_entries (trip_id, entry_date) values ('10000000-0000-0000-0000-000000000001', current_date + 2) $q$), 'boş kayıt olmaz';
+end $$;
+insert into public.journal_entries (trip_id, entry_date, photos)
+values ('10000000-0000-0000-0000-000000000001', current_date + 1, array['00000000-0000-0000-0000-00000000000a/10000000-0000-0000-0000-000000000001/a.jpg']);
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$ begin
+  assert (select count(*) from public.journal_entries) = 0, 'başkası günlüğü görmez';
+  assert tests.throws($q$ insert into public.journal_entries (trip_id, entry_date, note) values ('10000000-0000-0000-0000-000000000001', current_date + 5, 'üye değilim') $q$), 'üye olmayan yazamaz';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

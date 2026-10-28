@@ -1671,5 +1671,30 @@
     "alertDelayBody": "{{number}}：新起飞时间 {{time}}（延误 {{min}} 分钟）。",
     "alertCanceledTitle": "你的航班已取消",
     "alertCanceledBody": "{{number}} 已取消。请联系航空公司。"
+  },
+  "journal": {
+    "title": "旅行日记",
+    "card": "旅行日记",
+    "cardBody": "为每一天写笔记、添加照片",
+    "placeholder": "今天过得怎么样？写点什么…",
+    "photo": "日记照片",
+    "addPhoto": "添加照片",
+    "removePhoto": "移除照片",
+    "save": "保存",
+    "saved": "已保存",
+    "summaryTitle": "回忆",
+    "stats": "天数：{{days}} · 照片：{{photos}}",
+    "empty": "还没有回忆。为旅行的每一天添加笔记或照片。",
+    "start": "开始写日记",
+    "edit": "编辑日记",
+    "private": "日记是私密的。即使是共享行程，也只有你能看到。",
+    "notStarted": "旅行开始后即可使用日记。",
+    "moods": {
+      "amazing": "太棒了",
+      "good": "不错",
+      "ok": "一般",
+      "tired": "疲惫",
+      "bad": "糟糕"
+    }
   }
 }

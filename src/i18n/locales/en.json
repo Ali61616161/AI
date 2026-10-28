@@ -1709,5 +1709,30 @@
     "alertDelayBody": "{{number}}: new departure {{time}} ({{min}} min delay).",
     "alertCanceledTitle": "Your flight was canceled",
     "alertCanceledBody": "{{number}} was canceled. Contact your airline."
+  },
+  "journal": {
+    "title": "Trip journal",
+    "card": "Trip journal",
+    "cardBody": "Write notes and add photos for each day",
+    "placeholder": "How was your day? Write a note…",
+    "photo": "Journal photo",
+    "addPhoto": "Add photo",
+    "removePhoto": "Remove photo",
+    "save": "Save",
+    "saved": "Saved",
+    "summaryTitle": "Memories",
+    "stats": "Days: {{days}} · Photos: {{photos}}",
+    "empty": "No memories yet. Add a note or photos for the days of your trip.",
+    "start": "Start your journal",
+    "edit": "Edit journal",
+    "private": "Your journal is private. Only you can see it, even on shared trips.",
+    "notStarted": "Your journal opens when the trip starts.",
+    "moods": {
+      "amazing": "Amazing",
+      "good": "Good",
+      "ok": "Okay",
+      "tired": "Tired",
+      "bad": "Bad"
+    }
   }
 }

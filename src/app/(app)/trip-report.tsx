@@ -12,6 +12,7 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { useGenerateReport, usePlaceRatings, useRatePlace, useTripReport } from '@/features/report/api';
+import { JournalSummary } from '@/features/journal/journal-summary';
 import { ShareCard } from '@/features/report/share-card';
 import { Stars } from '@/features/report/stars';
 import { useActivePlan, useTrip } from '@/features/trips/queries';
@@ -109,6 +110,8 @@ export default function TripReportScreen() {
           </>
         )
       )}
+
+      {trip && <JournalSummary tripId={trip.id} />}
 
       {places.length > 0 && (
         <View style={styles.section}>

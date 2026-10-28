@@ -1709,5 +1709,30 @@
     "alertDelayBody": "{{number}} : nouveau départ {{time}} ({{min}} min de retard).",
     "alertCanceledTitle": "Ton vol est annulé",
     "alertCanceledBody": "{{number}} est annulé. Contacte ta compagnie aérienne."
+  },
+  "journal": {
+    "title": "Journal de voyage",
+    "card": "Journal de voyage",
+    "cardBody": "Écris des notes et ajoute des photos pour chaque jour",
+    "placeholder": "Comment était ta journée ? Écris une note…",
+    "photo": "Photo du journal",
+    "addPhoto": "Ajouter une photo",
+    "removePhoto": "Retirer la photo",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "summaryTitle": "Souvenirs",
+    "stats": "Jours : {{days}} · Photos : {{photos}}",
+    "empty": "Pas encore de souvenirs. Ajoute des notes ou des photos pour les jours de ton voyage.",
+    "start": "Commencer le journal",
+    "edit": "Modifier le journal",
+    "private": "Ton journal est privé. Toi seul peux le voir, même sur les voyages partagés.",
+    "notStarted": "Le journal s'ouvre au début du voyage.",
+    "moods": {
+      "amazing": "Super",
+      "good": "Bien",
+      "ok": "Correct",
+      "tired": "Fatigué",
+      "bad": "Mal"
+    }
   }
 }

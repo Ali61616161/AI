@@ -51,7 +51,7 @@ Play Console → App access bölümüne yazın.
 | Ad (görünen ad) | Evet (sosyal mod) | Evet | Hayır | Uygulama işlevi |
 | Hassas konum | Evet (yakında açık yerler, Planı Değiştir) | Evet | Hayır | Uygulama işlevi |
 | Yaklaşık konum | Evet (sosyal mod) | Evet | Hayır | Uygulama işlevi |
-| Fotoğraflar | Evet (bilet, menü) | Evet | Hayır | Uygulama işlevi |
+| Fotoğraflar | Evet (bilet, menü, seyahat günlüğü) | Evet | Hayır | Uygulama işlevi |
 | Ses verisi | Hayır (konuşma telefonda yazıya dökülür; sunucuya sadece metin gider) | — | — | — |
 | Diğer kullanıcı içeriği (mesajlar, seyahatler, notlar, gezilen ülkeler, kaydedilen mekanlar) | Evet | Evet | Hayır | Uygulama işlevi |
 | Diğer veri: vatandaşlık/pasaport ülkesi, ek vize türleri, belge son kullanma tarihleri, Schengen giriş-çıkış tarihleri, yaşanan şehir (belge numarası alınmaz) | Evet | Evet | Hayır | Uygulama işlevi |

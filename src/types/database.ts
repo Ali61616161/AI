@@ -427,6 +427,51 @@ export type Database = {
           },
         ];
       };
+      journal_entries: {
+        Row: {
+          created_at: string;
+          entry_date: string;
+          id: string;
+          mood: string | null;
+          note: string;
+          photos: string[];
+          trip_id: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          entry_date: string;
+          id?: string;
+          mood?: string | null;
+          note?: string;
+          photos?: string[];
+          trip_id: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          entry_date?: string;
+          id?: string;
+          mood?: string | null;
+          note?: string;
+          photos?: string[];
+          trip_id?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'journal_entries_trip_id_fkey';
+            columns: ['trip_id'];
+            isOneToOne: false;
+            referencedRelation: 'trips';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       place_ratings: {
         Row: {
           created_at: string;

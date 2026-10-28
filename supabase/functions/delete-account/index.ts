@@ -12,7 +12,7 @@ import { userClient } from '../_shared/auth.ts';
 import { isFreshLogin } from '../_shared/fresh-login.ts';
 import { corsHeaders, error } from '../_shared/http.ts';
 
-const BUCKETS = ['documents', 'avatars', 'share-cards'];
+const BUCKETS = ['documents', 'avatars', 'share-cards', 'journal'];
 const PAGE = 1000;
 
 /** Kullanıcı klasöründeki tüm dosyalar, alt klasörler dahil (klasörlerin `id`'si boştur). */
