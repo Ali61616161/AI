@@ -34,9 +34,11 @@ for (const [kind, slug] of [['privacy', 'privacy'], ['terms', 'terms'], ['kvkk',
     writeFileSync(new URL('index.html', dir), page(LEGAL[lang][kind], lang, other));
   }
 }
+// Travelpayouts ortaklık doğrulaması: yalnızca ana sayfada (yasal metin sayfalarında izleyici yok).
+const TRAVELPAYOUTS_DRIVE = `<script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1" data-cmp-ab="2">(function () { var script = document.createElement("script"); script.async = 1; script.setAttribute("data-cmp-ab","2"); script.src = 'https://emrldco.com/NTkyNjQ5.js?t=592649'; document.head.appendChild(script); })();</script>`;
 writeFileSync(
   new URL('../docs/index.html', import.meta.url),
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(brand.name)}</title></head>
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(brand.name)}</title>${TRAVELPAYOUTS_DRIVE}</head>
 <body style="font:16px/1.6 system-ui,sans-serif;max-width:720px;margin:0 auto;padding:24px 16px"><h1 style="color:#FF6B4A">${esc(brand.storeName)}</h1>
 <p><a href="privacy/">Privacy Policy</a> · <a href="terms/">Terms of Use</a> · <a href="privacy/tr/">Gizlilik Politikası</a> · <a href="terms/tr/">Kullanım Koşulları</a> · <a href="kvkk/tr/">KVKK Aydınlatma Metni</a></p>
 <p>Support: ${esc(values.supportEmail)}</p></body></html>\n`,
