@@ -997,6 +997,25 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18g. Günlük kovası: yalnızca kendi klasörü, en fazla 300 dosya'
+reset role;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000a');
+insert into storage.objects (bucket_id, name) values ('journal', '00000000-0000-0000-0000-00000000000a/t/1.jpg');
+do $$ begin
+  assert tests.throws($q$ insert into storage.objects (bucket_id, name) values ('journal', '00000000-0000-0000-0000-00000000000b/t/1.jpg') $q$), 'başkasının klasörüne yazılamaz';
+end $$;
+reset role;
+insert into storage.objects (bucket_id, name) select 'journal', '00000000-0000-0000-0000-00000000000a/t/x' || g || '.jpg' from generate_series(1, 299) g;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000a');
+do $$ begin
+  assert tests.throws($q$ insert into storage.objects (bucket_id, name) values ('journal', '00000000-0000-0000-0000-00000000000a/t/over.jpg') $q$), '300 dosya sınırı';
+end $$;
+reset role;
+delete from storage.objects where bucket_id = 'journal';
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';
