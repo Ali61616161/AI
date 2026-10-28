@@ -37,6 +37,7 @@ import { useTheme } from '@/theme/use-theme';
 import { ShareSection } from '@/features/sharing/share-section';
 import { useSessionStore } from '@/stores/session-store';
 import { NativeAdCard } from '@/features/ads/native-ad-card';
+import { EsimCard } from '@/features/esim/esim-card';
 import { FlightStatusCard } from '@/features/travel/flight-status-card';
 
 function ReservationRow({ reservation: r }: { reservation: TripReservation }) {
@@ -303,6 +304,8 @@ export default function TripScreen() {
       )}
 
       <FlightStatusCard tripId={trip.id} reservations={trip.reservations} />
+
+      <EsimCard countryCodes={trip.trip_destinations.map((d) => d.country_code)} />
 
       <TripTools tripId={trip.id} />
 

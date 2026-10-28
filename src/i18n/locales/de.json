@@ -1739,5 +1739,11 @@
       "tired": "Müde",
       "bad": "Schlecht"
     }
+  },
+  "esim": {
+    "title": "Mobile Daten (eSIM)",
+    "body": "Keine Roaming-Gebühren in {{country}}: Kaufe vor dem Flug eine Daten-eSIM und aktiviere sie bei der Ankunft.",
+    "note": "Öffnet die Website des Anbieters. Prüfe, ob dein Handy eSIM unterstützt.",
+    "affiliateNote": "Öffnet die Website des Anbieters. Yola erhält ggf. eine Provision, ohne Mehrkosten für dich."
   }
 }

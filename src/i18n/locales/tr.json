@@ -1739,5 +1739,11 @@
       "tired": "Yorgun",
       "bad": "Kötü"
     }
+  },
+  "esim": {
+    "title": "Mobil veri (eSIM)",
+    "body": "{{country}} için roaming ücreti ödeme: uçmadan önce veri eSIM'i al, varınca etkinleştir.",
+    "note": "Sağlayıcının sitesini açar. Telefonunun eSIM desteklediğinden emin ol.",
+    "affiliateNote": "Sağlayıcının sitesini açar. Yola'ya sana ek maliyeti olmadan komisyon ödenebilir."
   }
 }

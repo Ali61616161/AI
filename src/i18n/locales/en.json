@@ -1739,5 +1739,11 @@
       "tired": "Tired",
       "bad": "Bad"
     }
+  },
+  "esim": {
+    "title": "Mobile data (eSIM)",
+    "body": "Skip roaming fees in {{country}}: buy a data eSIM before you fly and activate it on arrival.",
+    "note": "Opens the provider's website. Check that your phone supports eSIM.",
+    "affiliateNote": "Opens the provider's website. Yola may earn a commission at no extra cost to you."
   }
 }

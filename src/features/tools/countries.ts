@@ -23,6 +23,9 @@ export const COUNTRIES: { code: string; name: string }[] = RAW.split('|').map((x
 
 const ENGLISH = new Map(COUNTRIES.map((c) => [c.code, c.name]));
 
+/** Ülkenin İngilizce adı (bilinmiyorsa kodun kendisi). */
+export const englishCountryName = (code: string): string => ENGLISH.get(code) ?? code;
+
 export function localCountryName(code: string, locale: string): string {
   try {
     const name = new Intl.DisplayNames([locale], { type: 'region' }).of(code);

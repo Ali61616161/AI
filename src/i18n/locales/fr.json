@@ -1739,5 +1739,11 @@
       "tired": "Fatigué",
       "bad": "Mal"
     }
+  },
+  "esim": {
+    "title": "Données mobiles (eSIM)",
+    "body": "Évite le roaming en {{country}} : achète une eSIM de données avant de partir et active-la à l'arrivée.",
+    "note": "Ouvre le site du fournisseur. Vérifie que ton téléphone est compatible eSIM.",
+    "affiliateNote": "Ouvre le site du fournisseur. Yola peut toucher une commission sans frais supplémentaires pour toi."
   }
 }
