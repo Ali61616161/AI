@@ -9,6 +9,7 @@ import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
 import { useTranslateStore } from './translate-store';
+import { filesToDelete, type CachedFile } from './tts-cache-logic';
 import { cloudGender, isCloudVoice, pickVoice } from './voices';
 
 let voicesPromise: Promise<Speech.Voice[]> | null = null;
@@ -45,6 +46,19 @@ export function stopSpeaking() {
 
 const cacheDir = () => new Directory(Paths.cache, 'tts');
 
+/** Ses önbelleği 50 MB'ı aşarsa en eski dosyalar silinir (yeni dosya yazıldıktan sonra arka planda çağrılır). */
+function pruneCache(dir: Directory) {
+  try {
+    const files: CachedFile[] = dir
+      .list()
+      .filter((e): e is File => e instanceof File)
+      .map((f) => ({ uri: f.uri, size: f.size ?? 0, modified: f.modificationTime ?? 0 }));
+    for (const old of filesToDelete(files)) new File(old.uri).delete();
+  } catch {
+    // temizlik başarısız olursa işletim sistemi önbelleği zaten gerektiğinde boşaltır
+  }
+}
+
 /**
  * Google'ın doğal sesiyle (Chirp 3 HD / Neural2) okur. Ses dosyası telefonda saklanır: aynı cümle
  * ikinci kez internetsiz ve anında çalar. Başarısız olursa false (cihaz sesine dönülür).
@@ -64,6 +78,7 @@ async function playCloud(text: string, speechTag: string, gender: 'female' | 'ma
       const audio = (data as { audio?: string } | null)?.audio;
       if (error || !audio) return false;
       file.write(audio, { encoding: 'base64' });
+      pruneCache(dir);
     }
     if (my !== ticket) return true; // bu arada başka bir okuma başladı
     // Konuşma tanıma sonrası ses ahizeden kısık çıkmasın: yalnızca çalma moduna geçilir.

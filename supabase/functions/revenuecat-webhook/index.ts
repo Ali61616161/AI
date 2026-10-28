@@ -49,10 +49,9 @@ Deno.serve(async (req) => {
   if (!result) return json({ ok: true, ignored: true });
 
   if (result.tripPassRefund) {
-    const { error: updateError } = await admin
-      .from('subscriptions')
-      .update({ status: 'refunded' })
-      .eq('original_transaction_id', result.row.original_transaction_id);
+    // Bağlanmış Trip Pass iade edilirse kayıt 'refunded' olur; henüz bağlanmamışsa da iade kaydı oluşturulur
+    // (trip_id boş), böylece iade edilmiş satın alma sonradan bir seyahate bağlanamaz.
+    const { error: updateError } = await admin.from('subscriptions').upsert(result.row, { onConflict: 'original_transaction_id' });
     if (updateError) return dbError('revenuecat-webhook', updateError, 500);
     return json({ ok: true });
   }

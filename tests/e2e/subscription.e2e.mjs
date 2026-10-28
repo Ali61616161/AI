@@ -100,4 +100,15 @@ await step('Trip Pass iadesi webhook ile seyahatten kaldırılır', async () => 
   assert.equal(data[0].status, 'refunded');
 });
 
+await step('Bağlanmadan iade edilen Trip Pass sonradan seyahate bağlanamaz', async () => {
+  const TX2 = `GPA.TP-REFUNDED-${Date.now()}`;
+  const old = { id: 'rc_tp_1', store_transaction_id: TX, purchase_date: new Date(Date.now() - 86_400_000).toISOString(), store: 'play_store' };
+  await setRc(user.id, { non_subscriptions: { yola_trip_pass: [old, { id: 'rc_tp_2', store_transaction_id: TX2, purchase_date: new Date().toISOString(), store: 'play_store' }] } });
+  const refund = await webhook({ type: 'CANCELLATION', cancel_reason: 'CUSTOMER_SUPPORT', app_user_id: user.id, product_id: 'yola_trip_pass', transaction_id: TX2, store: 'PLAY_STORE' });
+  assert.equal(refund.status, 200);
+  const other = (await call('/rest/v1/rpc/create_trip_from_documents', { p_trip: { title: 'Sub2', start_date: isoDate(20), end_date: isoDate(22), budget_tier: 'mid', companion_type: 'solo', interests: [] }, p_destinations: [{ city: 'Paris', country_code: 'FR', arrive_on: isoDate(20), depart_on: isoDate(22) }], p_reservations: [], p_document_ids: [] })).data;
+  const claim = await call('/functions/v1/subscription', { action: 'claim_trip_pass', trip_id: other });
+  assert.equal(claim.status, 404, 'iade edilmiş satın alma bağlanmamalı');
+});
+
 console.log(`\n${steps.length} adım geçti.`);

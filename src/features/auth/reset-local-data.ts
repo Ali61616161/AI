@@ -10,6 +10,7 @@ import { useEndedTripStore } from '@/features/report/ended-trip-store';
 import { identifyPurchaser } from '@/features/subscription/purchases';
 import { useContactsStore } from '@/features/tools/contacts-store';
 import { persistOptions, queryClient } from '@/lib/query-client';
+import { clearSecureSession } from '@/lib/secure-session-storage';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 
@@ -44,6 +45,7 @@ export async function resetLocalUserData({ signOut = true }: { signOut?: boolean
   await identifyPurchaser(null);
   await Notifications.cancelAllScheduledNotificationsAsync().catch(() => undefined);
 
+  await clearSecureSession();
   const keys = await AsyncStorage.getAllKeys().catch(() => [] as readonly string[]);
   // sb-…: Supabase oturumu ve PKCE doğrulayıcısı; yola.liveNudges.…: durak hatırlatmaları.
   const mine = keys.filter((k) => k.startsWith('sb-') || k.startsWith('yola.liveNudges.'));
