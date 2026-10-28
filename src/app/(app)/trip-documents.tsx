@@ -27,7 +27,7 @@ export default function TripDocumentsScreen() {
   function show(file: OfflineFile) {
     if (file.mimeType.startsWith('image/')) setOpen(open?.documentId === file.documentId ? null : file);
     // PDF'ler telefonun kendi görüntüleyicisinde açılır (internetsiz de çalışır).
-    else Sharing.shareAsync(file.uri, { mimeType: file.mimeType, UTI: 'com.adobe.pdf' }).catch(() => undefined);
+    else Sharing.shareAsync(file.uri, { mimeType: file.mimeType, UTI: file.mimeType === 'text/plain' ? 'public.plain-text' : 'com.adobe.pdf' }).catch(() => undefined);
   }
 
   return (

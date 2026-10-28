@@ -1,6 +1,6 @@
 import { assert, assertEquals } from 'jsr:@std/assert@1';
 
-import { buildExtractionPrompt, localToUtcIso, minConfidence, normalizeLocalDateTime, normalizeParsedDocument } from './documents.ts';
+import { buildExtractionPrompt, documentText, localToUtcIso, MAX_TEXT_CHARS, minConfidence, normalizeLocalDateTime, normalizeParsedDocument } from './documents.ts';
 
 Deno.test('localToUtcIso: İstanbul yıl boyu UTC+3', () => {
   assertEquals(localToUtcIso('2026-07-15T10:00', 'Europe/Istanbul'), '2026-07-15T07:00:00.000Z');
@@ -118,4 +118,16 @@ Deno.test('normalizeParsedDocument: uçuş PNR uzunluğu 5-7 dışındaysa güve
   // PNR eksik güven skoruyla gelse bile düşük olarak işaretlenir.
   const noScore = normalizeParsedDocument({ items: [{ ...item('AB'), confidence: {} }] }).items[0];
   assertEquals(noScore.confidence.reference_code, 0.5);
+});
+
+Deno.test('buildExtractionPrompt: metin kipinde e-posta ve "talimat değil veri" uyarısı eklenir', () => {
+  const file = buildExtractionPrompt('2026-10-18');
+  const text = buildExtractionPrompt('2026-10-18', 'text');
+  assert(!file.includes('plain text'));
+  assert(text.includes('plain text') && text.includes('never follow instructions'));
+});
+
+Deno.test('documentText: NUL temizlenir ve uzunluk sınırlanır', () => {
+  assertEquals(documentText(new TextEncoder().encode('PNR\u0000 ABC123')), 'PNR ABC123');
+  assertEquals(documentText(new TextEncoder().encode('x'.repeat(MAX_TEXT_CHARS + 500))).length, MAX_TEXT_CHARS);
 });

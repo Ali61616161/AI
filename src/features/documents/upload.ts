@@ -1,6 +1,6 @@
 import * as Crypto from 'expo-crypto';
 import * as DocumentPicker from 'expo-document-picker';
-import { File } from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { Platform } from 'react-native';
@@ -16,6 +16,8 @@ export type LocalFile = {
 };
 
 export const MAX_FILE_BYTES = 10 * 1024 * 1024;
+/** Yapıştırılan metin en fazla bu kadar karakter olabilir (sunucu 40 bin karakteri okur). */
+export const MAX_PASTED_CHARS = 40_000;
 
 export const SUPPORTED_MIME_TYPES = [
   'application/pdf',
@@ -24,6 +26,7 @@ export const SUPPORTED_MIME_TYPES = [
   'image/webp',
   'image/heic',
   'image/heif',
+  'text/plain',
 ] as const;
 
 /** Sunucunun döndürdüğü veya istemcide oluşan, arayüzün mesajını bildiği hata kodları. */
@@ -51,6 +54,7 @@ const EXTENSIONS: Record<string, string> = {
   'image/webp': 'webp',
   'image/heic': 'heic',
   'image/heif': 'heif',
+  'text/plain': 'txt',
 };
 
 function guessMimeType(name: string, given?: string | null): string {
@@ -83,6 +87,20 @@ export async function pickFromLibrary(): Promise<LocalFile[]> {
       selectionLimit: 10,
     }),
   );
+}
+
+/** Yapıştırılan e-posta / rezervasyon metnini geçici bir düz metin dosyasına çevirir (diğer belgelerle aynı hattan geçer). */
+export function textToLocalFile(text: string): LocalFile {
+  const body = text.trim().slice(0, MAX_PASTED_CHARS);
+  const name = `pasted-${Date.now()}.txt`;
+  if (Platform.OS === 'web') {
+    const uri = URL.createObjectURL(new Blob([body], { type: 'text/plain' }));
+    return { uri, name, mimeType: 'text/plain', size: body.length };
+  }
+  const file = new File(Paths.cache, name);
+  file.create({ overwrite: true });
+  file.write(body);
+  return { uri: file.uri, name, mimeType: 'text/plain', size: file.size };
 }
 
 export async function pickDocuments(): Promise<LocalFile[]> {

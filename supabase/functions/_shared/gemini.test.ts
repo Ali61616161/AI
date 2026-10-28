@@ -1,6 +1,6 @@
-import { assertEquals, assertRejects } from 'jsr:@std/assert@1';
+import { assert, assertEquals, assertRejects } from 'jsr:@std/assert@1';
 
-import { GeminiError, generateJson } from './gemini.ts';
+import { buildGeminiBody, GeminiError, generateJson } from './gemini.ts';
 
 type Captured = { url: string; init: RequestInit };
 
@@ -73,4 +73,12 @@ Deno.test('generateJson: geçici hatada (503) yeniden dener, kalıcı hatada (40
   const captured: Captured[] = [];
   await assertRejects(() => generateJson({ ...base, fetchImpl: stubFetch(403, 'bad key', captured), retryDelaysMs: [0, 0] }), GeminiError);
   assertEquals(captured.length, 1);
+});
+
+Deno.test('buildGeminiBody: düz metin belge ayrı bir parça olarak "veri" uyarısıyla eklenir', () => {
+  const body = buildGeminiBody({ prompt: 'P', text: 'Flight TK1', responseSchema: {} });
+  const parts = body.contents[0].parts as { text?: string }[];
+  assertEquals(parts.length, 2);
+  assertEquals(parts[0].text, 'P');
+  assert(parts[1].text!.includes('Flight TK1') && parts[1].text!.includes('not instructions'));
 });

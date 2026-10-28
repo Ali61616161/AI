@@ -10,6 +10,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 
 import {
   buildExtractionPrompt,
+  documentText,
   EXTRACTION_RESPONSE_SCHEMA,
   minConfidence,
   normalizeParsedDocument,
@@ -24,8 +25,11 @@ const SUPPORTED_MIME_TYPES = new Set([
   'image/webp',
   'image/heic',
   'image/heif',
+  'text/plain',
 ]);
 const MAX_BYTES = 10 * 1024 * 1024;
+/** Yapıştırılan metin (e-posta) için dosya boyutu sınırı. */
+const MAX_TEXT_BYTES = 200 * 1024;
 const DEFAULT_MODEL = DEFAULT_GEMINI_MODEL;
 
 Deno.serve(async (req) => {
@@ -81,7 +85,8 @@ Deno.serve(async (req) => {
 
   const { data: file, error: downloadError } = await supabase.storage.from('documents').download(doc.storage_path);
   if (downloadError || !file) return fail('not_found', 404, downloadError?.message ?? 'file missing');
-  if (file.size > MAX_BYTES) return fail('file_too_large', 413, `file is ${file.size} bytes`);
+  const isText = doc.mime_type === 'text/plain';
+  if (file.size > (isText ? MAX_TEXT_BYTES : MAX_BYTES)) return fail('file_too_large', 413, `file is ${file.size} bytes`);
 
   let raw: unknown;
   try {
@@ -89,8 +94,10 @@ Deno.serve(async (req) => {
       apiBase: Deno.env.get('GEMINI_API_BASE'),
       apiKey,
       model: Deno.env.get('GEMINI_MODEL') ?? DEFAULT_MODEL,
-      prompt: buildExtractionPrompt(new Date().toISOString().slice(0, 10)),
-      file: { mimeType: doc.mime_type, base64: encodeBase64(new Uint8Array(await file.arrayBuffer())) },
+      prompt: buildExtractionPrompt(new Date().toISOString().slice(0, 10), isText ? 'text' : 'file'),
+      ...(isText
+        ? { text: documentText(new Uint8Array(await file.arrayBuffer())) }
+        : { file: { mimeType: doc.mime_type, base64: encodeBase64(new Uint8Array(await file.arrayBuffer())) } }),
       responseSchema: EXTRACTION_RESPONSE_SCHEMA,
     });
   } catch (e) {

@@ -41,7 +41,7 @@ export default function WalletScreen() {
   function openFile(file: OfflineFile) {
     if (file.mimeType.startsWith('image/')) setImage(file);
     // PDF'ler telefonun kendi görüntüleyicisinde açılır (internetsiz de çalışır).
-    else Sharing.shareAsync(file.uri, { mimeType: file.mimeType, UTI: 'com.adobe.pdf' }).catch(() => undefined);
+    else Sharing.shareAsync(file.uri, { mimeType: file.mimeType, UTI: file.mimeType === 'text/plain' ? 'public.plain-text' : 'com.adobe.pdf' }).catch(() => undefined);
   }
 
   async function copy(code: string) {
