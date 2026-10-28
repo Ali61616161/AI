@@ -1788,5 +1788,11 @@
       "return": "Il ritorno deve essere dopo la partenza",
       "target": "Inserisci un numero positivo"
     }
+  },
+  "liveActivity": {
+    "next": "Prossima tappa",
+    "now": "Adesso",
+    "later_one": "{{count}} tappa in più",
+    "later_other": "{{count}} tappe in più"
   }
 }

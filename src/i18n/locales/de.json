@@ -1788,5 +1788,11 @@
       "return": "Das Rückflugdatum muss nach dem Abflug liegen",
       "target": "Gib eine positive Zahl ein"
     }
+  },
+  "liveActivity": {
+    "next": "Nächster Halt",
+    "now": "Jetzt",
+    "later_one": "{{count}} weiterer Halt",
+    "later_other": "{{count}} weitere Halte"
   }
 }

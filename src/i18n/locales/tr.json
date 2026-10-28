@@ -1788,5 +1788,11 @@
       "return": "Dönüş tarihi gidişten sonra olmalı",
       "target": "Pozitif bir sayı gir"
     }
+  },
+  "liveActivity": {
+    "next": "Sıradaki durak",
+    "now": "Şu an",
+    "later_one": "{{count}} durak daha",
+    "later_other": "{{count}} durak daha"
   }
 }

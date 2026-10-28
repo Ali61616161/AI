@@ -1788,5 +1788,11 @@
       "return": "The return date must be after departure",
       "target": "Enter a positive number"
     }
+  },
+  "liveActivity": {
+    "next": "Next stop",
+    "now": "Now",
+    "later_one": "{{count}} more stop",
+    "later_other": "{{count}} more stops"
   }
 }

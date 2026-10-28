@@ -1788,5 +1788,11 @@
       "return": "Le retour doit être après le départ",
       "target": "Saisis un nombre positif"
     }
+  },
+  "liveActivity": {
+    "next": "Prochaine étape",
+    "now": "Maintenant",
+    "later_one": "{{count}} étape de plus",
+    "later_other": "{{count}} étapes de plus"
   }
 }

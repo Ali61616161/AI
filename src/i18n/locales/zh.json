@@ -1750,5 +1750,10 @@
       "return": "返程日期必须晚于出发日期",
       "target": "请输入正数"
     }
+  },
+  "liveActivity": {
+    "next": "下一站",
+    "now": "现在",
+    "later_other": "还有 {{count}} 站"
   }
 }

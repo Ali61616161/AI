@@ -6,6 +6,7 @@ import { useSessionStore } from '@/stores/session-store';
 import { useAdsBootstrap } from '@/features/ads/use-ads-bootstrap';
 import { useNotificationLinks } from '@/features/engagement/notification-links';
 import { useEndedTripPrompt } from '@/features/report/use-ended-trip-prompt';
+import { useSyncLiveActivity } from '@/features/widget/use-sync-live-activity';
 import { useSyncWidget } from '@/features/widget/use-sync-widget';
 
 export default function AppLayout() {
@@ -13,6 +14,7 @@ export default function AppLayout() {
   useAdsBootstrap();
   useNotificationLinks();
   useSyncWidget();
+  useSyncLiveActivity();
   useEndedTripPrompt();
   // Satın almalar Supabase kullanıcısına bağlanır (RevenueCat app_user_id).
   useEffect(() => {

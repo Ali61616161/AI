@@ -19,3 +19,14 @@ export type TodaysPlanWidgetProps = {
   /** Dokununca açılacak adres. */
   url: string;
 };
+
+/** Kilit ekranı / Dynamic Island "sıradaki durak" etkinliğine gönderilen, önceden çevrilmiş içerik. */
+export type NextStopActivityProps = {
+  /** Başlık ("Sıradaki durak" ya da "Şu an"). */
+  heading: string;
+  title: string;
+  /** Başlangıç saati (yerel). */
+  time: string;
+  /** Şehir ve kalan durak sayısı gibi ikinci satır ("Roma · 2 durak daha"). */
+  detail: string;
+};

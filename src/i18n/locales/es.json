@@ -1788,5 +1788,11 @@
       "return": "La fecha de vuelta debe ser posterior a la salida",
       "target": "Introduce un número positivo"
     }
+  },
+  "liveActivity": {
+    "next": "Próxima parada",
+    "now": "Ahora",
+    "later_one": "{{count}} parada más",
+    "later_other": "{{count}} paradas más"
   }
 }
