@@ -32,6 +32,13 @@
         "ENABLE_WIDGET": "1"
       }
     },
+    "production-full": {
+      "extends": "production",
+      "env": {
+        "ENABLE_WIDGET": "1",
+        "ENABLE_PUSH": "1"
+      }
+    },
     "production-push": {
       "extends": "production",
       "env": {
