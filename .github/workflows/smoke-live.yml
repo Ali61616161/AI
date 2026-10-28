@@ -72,7 +72,7 @@ jobs:
           else sum "- ❌ Sohbet (replan) — HTTP $code $(jq -r '"\(.error.code // "")"' /tmp/out.json | head -c 100)"; fi
           check "Google Translation" translate '{"mode":"text","text":"Good morning","target":"tr"}' '.translation // .text // "çeviri geldi"'
           check "Google doğal ses (Text-to-Speech)" translate '{"mode":"speak","text":"Hallo, wie geht es dir?","target":"de","voice_lang":"de-DE"}' '"ses: \(.voice), \(.audio | length) karakter"'
-          check "Uçuş durumu (AeroDataBox anahtarı)" flight-status '{"check":true}' 'if .configured then "anahtar tanımlı, servis \(.provider_status) (\(if .provider_ok then "çalışıyor" else "reddetti" end))" else "anahtar tanımlı değil" end'
+          check "Uçuş durumu (AeroDataBox anahtarı)" flight-status '{"check":true}' 'if .configured then "anahtar tanımlı, servis \(.provider_status) (\(if .provider_ok then "çalışıyor" else "reddetti: " + (.provider_message // "") end))" else "anahtar tanımlı değil" end'
           code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "$base/functions/v1/flight-watch" -H 'Content-Type: application/json' -d '{}')
           if [ "$code" = 401 ]; then sum "- ✅ Uçuş zamanlayıcı (flight-watch) yayında, sırsız çağrı reddedildi"; else sum "- ❌ Uçuş zamanlayıcı (flight-watch) — beklenen 401, gelen HTTP $code"; fi
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'

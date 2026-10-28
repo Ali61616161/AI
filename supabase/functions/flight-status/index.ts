@@ -12,7 +12,7 @@ import { alertLevel, cacheTtlMin, type FlightStatus, localDate, normalizeFlightN
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 
 const MAX_FLIGHTS = 6;
-let probe: { at: number; status: number } | null = null;
+let probe: { at: number; status: number; message: string } | null = null;
 
 type Reservation = {
   id: string;
@@ -45,8 +45,8 @@ Deno.serve(async (req) => {
   // anahtarın kendisi hiçbir zaman dönmez.
   if (body?.check === true) {
     if (!key) return json({ configured: false });
-    if (!probe || Date.now() - probe.at > 600_000) probe = { at: Date.now(), status: await probeProvider(key) };
-    return json({ configured: true, provider_status: probe.status, provider_ok: probe.status === 200 || probe.status === 404 });
+    if (!probe || Date.now() - probe.at > 600_000) probe = { at: Date.now(), ...(await probeProvider(key)) };
+    return json({ configured: true, provider_status: probe.status, provider_message: probe.message, provider_ok: probe.status === 200 || probe.status === 404 });
   }
   if (typeof body?.trip_id !== 'string') return error('bad_request', 400, 'trip_id is required');
 
