@@ -57,6 +57,17 @@ Google Flights uçuş), ama komisyon kazanılmaz. Ortaklık programına kabul ed
 
 Şablon `https://` ile başlamalı ve en az bir yer tutucu içermelidir; aksi hâlde yok sayılır.
 
+### Uçuş, fiyat takibi, eSIM (isteğe bağlı sırlar)
+
+| Sır / değişken | Ne için | Nereden |
+|---|---|---|
+| `AERODATABOX_KEY` (Supabase sırrı) | Uçuş durumu ve gecikme/iptal bildirimi | RapidAPI → AeroDataBox (BASIC ücretsiz); `x-rapidapi-key` değeri |
+| `TRAVELPAYOUTS_TOKEN` (Supabase sırrı) | Uçak bileti fiyat takibi (6 saatte bir kontrol) | travelpayouts.com (ücretsiz kayıt) → Profil → API token. Yoksa takip kaydedilir ama kontrol yapılmaz |
+| `EXPO_PUBLIC_AFFILIATE_AIRALO`, `EXPO_PUBLIC_AFFILIATE_HOLAFLY`, `EXPO_PUBLIC_AFFILIATE_SAILY` (EAS değişkeni) | eSIM kartındaki bağlantılara komisyon | Ortaklık panelindeki "deep link" şablonu, hedef adres yerine `{url}` yazılmış (ör. `https://airalo.pxf.io/c/123/456/789?u={url}`). Yoksa düz bağlantı açılır |
+
+Bildirimler (uçuş + fiyat) yalnızca `ENABLE_PUSH=1` ile derlenen sürümde çalışır (`production-push` profili).
+Kilit ekranı / Dynamic Island etkinliği ve ana ekran widget'ı yalnızca `ENABLE_WIDGET=1` ile derlenen sürümde çalışır.
+
 ## 3. RevenueCat ve mağaza ürünleri
 
 1. App Store Connect ve Play Console'da ürünler: `yola_trip_pass` (tüketilmeyen / tek seferlik), `yola_pro_monthly`, `yola_pro_yearly` (otomatik yenilenen, aynı abonelik grubunda).
