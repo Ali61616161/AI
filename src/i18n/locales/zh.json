@@ -30,9 +30,13 @@
     "title": "语言",
     "subtitle": "选择应用语言",
     "restartTitle": "需要重新启动",
-    "restartMessage": "应用将重新启动以更改文字方向。",
+    "restartMessage": "文字方向已更改。请完全关闭应用后重新打开。",
     "restartNow": "立即重启",
-    "later": "稍后"
+    "later": "稍后",
+    "confirmTitle": "切换语言",
+    "confirmMessage": "应用将重新加载以切换语言：已打开的页面和对话会被重置。已为行程生成的内容将保持原语言。确认吗？",
+    "confirm": "确认",
+    "cancel": "取消"
   },
   "tabs": {
     "today": "今天",

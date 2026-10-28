@@ -4,7 +4,7 @@ import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 
 import { usePushRegistration } from '@/features/push/push';
@@ -13,6 +13,7 @@ import { OfflineBanner } from '@/features/offline/offline-banner';
 import i18n, { initI18n } from '@/i18n';
 import { persistOptions, queryClient } from '@/lib/query-client';
 import { useAppearanceStore } from '@/stores/appearance-store';
+import { useReloadStore } from '@/stores/reload-store';
 import { useIsSignedIn, useSessionStore } from '@/stores/session-store';
 import { useTheme } from '@/theme/use-theme';
 
@@ -46,6 +47,7 @@ export default function RootLayout() {
   const { colors, isDark } = useTheme();
   const signedIn = useIsSignedIn();
   const onboarded = useSessionStore((s) => s.onboardingCompleted);
+  const reloadNonce = useReloadStore((s) => s.nonce);
   useAuthListener();
   usePushRegistration();
 
@@ -83,6 +85,7 @@ export default function RootLayout() {
         <ThemeProvider value={navigationTheme}>
           <StatusBar style={isDark ? 'light' : 'dark'} />
           <OfflineBanner />
+          <Fragment key={reloadNonce}>
           <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background }, animation: 'fade_from_bottom' }}>
             <Stack.Protected guard={!signedIn}>
               <Stack.Screen name="(auth)" />
@@ -99,6 +102,7 @@ export default function RootLayout() {
             <Stack.Screen name="set-password" options={{ presentation: 'modal', gestureEnabled: false }} />
             <Stack.Screen name="legal" options={{ presentation: 'modal' }} />
           </Stack>
+          </Fragment>
         </ThemeProvider>
       </PersistQueryClientProvider>
     </I18nextProvider>

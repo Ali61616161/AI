@@ -30,9 +30,13 @@
     "title": "Langue",
     "subtitle": "Choisis la langue de l’app",
     "restartTitle": "Redémarrage nécessaire",
-    "restartMessage": "L’app va redémarrer pour changer le sens du texte.",
+    "restartMessage": "Le sens d'écriture a changé. Ferme complètement l'app et rouvre-la.",
     "restartNow": "Redémarrer",
-    "later": "Plus tard"
+    "later": "Plus tard",
+    "confirmTitle": "Changer de langue",
+    "confirmMessage": "L'app va se recharger pour changer la langue : les écrans ouverts et les discussions seront réinitialisés. Le contenu déjà généré pour tes voyages reste dans sa langue. Tu confirmes ?",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
   },
   "tabs": {
     "today": "Aujourd’hui",

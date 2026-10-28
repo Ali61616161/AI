@@ -30,9 +30,13 @@
     "title": "Dil",
     "subtitle": "Uygulama dilini seç",
     "restartTitle": "Yeniden başlatma gerekli",
-    "restartMessage": "Yazı yönünün değişmesi için uygulama yeniden başlatılacak.",
+    "restartMessage": "Yazı yönü değişti. Tam geçiş için uygulamayı tamamen kapatıp yeniden aç.",
     "restartNow": "Şimdi başlat",
-    "later": "Sonra"
+    "later": "Sonra",
+    "confirmTitle": "Dili değiştir",
+    "confirmMessage": "Dili değiştirmek için uygulama yeniden yüklenecek: açık ekranlar ve sohbetler sıfırlanır. Daha önce oluşturulan seyahat içerikleri kendi dilinde kalır. Onaylıyor musun?",
+    "confirm": "Onayla",
+    "cancel": "Vazgeç"
   },
   "tabs": {
     "today": "Bugün",

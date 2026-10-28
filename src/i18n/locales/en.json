@@ -30,9 +30,13 @@
     "title": "Language",
     "subtitle": "Choose the app language",
     "restartTitle": "Restart required",
-    "restartMessage": "The app will restart to change the text direction.",
+    "restartMessage": "The text direction changed. Close the app completely and open it again to finish.",
     "restartNow": "Restart now",
-    "later": "Later"
+    "later": "Later",
+    "confirmTitle": "Change language",
+    "confirmMessage": "The app will reload to change the language: open screens and chats will be reset. Content already generated for your trips stays in its original language. Do you confirm?",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   },
   "tabs": {
     "today": "Today",

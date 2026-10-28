@@ -30,9 +30,13 @@
     "title": "Sprache",
     "subtitle": "App-Sprache auswählen",
     "restartTitle": "Neustart erforderlich",
-    "restartMessage": "Die App wird neu gestartet, um die Schreibrichtung zu ändern.",
+    "restartMessage": "Die Textrichtung hat sich geändert. Schließe die App vollständig und öffne sie erneut.",
     "restartNow": "Jetzt neu starten",
-    "later": "Später"
+    "later": "Später",
+    "confirmTitle": "Sprache ändern",
+    "confirmMessage": "Die App wird neu geladen, um die Sprache zu ändern: geöffnete Bildschirme und Chats werden zurückgesetzt. Bereits erstellte Reiseinhalte bleiben in ihrer Sprache. Bestätigst du?",
+    "confirm": "Bestätigen",
+    "cancel": "Abbrechen"
   },
   "tabs": {
     "today": "Heute",

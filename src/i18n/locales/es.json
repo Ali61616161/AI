@@ -30,9 +30,13 @@
     "title": "Idioma",
     "subtitle": "Elige el idioma de la app",
     "restartTitle": "Reinicio necesario",
-    "restartMessage": "La app se reiniciará para cambiar la dirección del texto.",
+    "restartMessage": "La dirección del texto ha cambiado. Cierra la app por completo y ábrela de nuevo.",
     "restartNow": "Reiniciar ahora",
-    "later": "Más tarde"
+    "later": "Más tarde",
+    "confirmTitle": "Cambiar idioma",
+    "confirmMessage": "La app se recargará para cambiar el idioma: las pantallas abiertas y los chats se reiniciarán. El contenido ya generado de tus viajes conserva su idioma. ¿Confirmas?",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
   },
   "tabs": {
     "today": "Hoy",
