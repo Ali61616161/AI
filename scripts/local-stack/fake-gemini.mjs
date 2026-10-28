@@ -48,6 +48,16 @@ function getaways(prompt) {
   return { getaways: all.filter((x) => !excluded.includes(x.city)) };
 }
 
+function assistant(prompt) {
+  const message = /The traveler says: "([^"]*)"/.exec(prompt)?.[1] ?? '';
+  const dates = (/not in the past\): ([^\n]*)\./.exec(prompt)?.[1] ?? '').split(',').map((d) => d.trim()).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d));
+  if (message.includes('SORU')) return { intent: 'question', reply: `TEST answer about: ${/Trip: ([^\n(]+)/.exec(prompt)?.[1]?.trim() ?? '?'}` };
+  if (message.includes('AYAR')) return { intent: 'update_settings', reply: 'TEST settings changed', settings: { budget_tier: 'lux', interests: ['food', 'art'] } };
+  if (message.includes('GUN')) return { intent: 'replan_day', reply: 'TEST on it', date: dates[dates.length - 1] ?? null, instruction: 'TEST make it relaxed' };
+  if (message.includes('GECMIS')) return { intent: 'replan_day', reply: 'TEST past', date: '2020-01-01', instruction: 'TEST' };
+  return { intent: 'other', reply: 'TEST other' };
+}
+
 function crisis(prompt) {
   const now = /Local time: \S+ (\d{2}):(\d{2})/.exec(prompt);
   const minutes = now ? Number(now[1]) * 60 + Number(now[2]) + 30 : 12 * 60;
@@ -74,7 +84,9 @@ http
     const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
     const prompt = body.contents?.[0]?.parts?.[0]?.text ?? '';
     prompts.push(prompt);
-    const kind = prompt.includes('The traveler says')
+    const kind = prompt.includes("Yola's trip assistant")
+      ? 'assistant'
+      : prompt.includes('The traveler says')
       ? 'crisis'
       : prompt.includes('Days to plan')
         ? 'itinerary'
@@ -91,7 +103,9 @@ http
                   : 'other';
     calls.push(kind);
     const payload =
-      kind === 'evening'
+      kind === 'assistant'
+        ? assistant(prompt)
+        : kind === 'evening'
         ? evening(prompt)
         : kind === 'getaways'
           ? getaways(prompt)

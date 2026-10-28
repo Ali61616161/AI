@@ -173,6 +173,8 @@ export type CrisisContext = {
   companion: Companion;
   interests: string[];
   currency: string;
+  /** Bugünden sonraki bir gün planlanıyorsa o günün tarihi (gün sabah 08:00'den başlar). */
+  plannedDate?: string | null;
   /** Günün henüz yapılmamış, değiştirilebilir durakları. */
   remaining: { time: string; title: string; place: string | null }[];
   /** Günün kalanındaki kilitli duraklar (uçuş, otel girişi...). */
@@ -229,7 +231,7 @@ The traveler says: "${ctx.message.replace(/"/g, "'")}"
 
 Situation:
 - Local time: ${ctx.localNow.replace('T', ' ')} (${ctx.timezone})
-- Location: ${where}
+${ctx.plannedDate ? `- This is a FUTURE day (${ctx.plannedDate}), not today: plan the WHOLE day from 08:30, spread over the day with meals, and ignore the "right now" wording below.\n` : ''}- Location: ${where}
 - Weather now: ${ctx.weather ?? 'unknown'}
 - Remaining plan today: ${remaining}
 - Fixed bookings later today (must keep, leave time to reach them): ${fixed}

@@ -1724,6 +1724,7 @@ export type Database = {
         | 'replan'
         | 'menu_scan'
         | 'social_invite'
+        | 'trip_chat'
         | 'nearby_search'
         | 'text_translation'
         | 'voice_translation'
@@ -1869,6 +1870,7 @@ export const Constants = {
         'replan',
         'menu_scan',
         'social_invite',
+        'trip_chat',
         'nearby_search',
         'text_translation',
         'voice_translation',

@@ -106,7 +106,15 @@ await step('Bağlanmadan iade edilen Trip Pass sonradan seyahate bağlanamaz', a
   await setRc(user.id, { non_subscriptions: { yola_trip_pass: [old, { id: 'rc_tp_2', store_transaction_id: TX2, purchase_date: new Date().toISOString(), store: 'play_store' }] } });
   const refund = await webhook({ type: 'CANCELLATION', cancel_reason: 'CUSTOMER_SUPPORT', app_user_id: user.id, product_id: 'yola_trip_pass', transaction_id: TX2, store: 'PLAY_STORE' });
   assert.equal(refund.status, 200);
-  const other = (await call('/rest/v1/rpc/create_trip_from_documents', { p_trip: { title: 'Sub2', start_date: isoDate(20), end_date: isoDate(22), budget_tier: 'mid', companion_type: 'solo', interests: [] }, p_destinations: [{ city: 'Paris', country_code: 'FR', arrive_on: isoDate(20), depart_on: isoDate(22) }], p_reservations: [], p_document_ids: [] })).data;
+  const doc2 = await call('/rest/v1/documents', { storage_path: `${user.id}/s2.pdf`, mime_type: 'application/pdf', status: 'parsed' }, 'POST', { prefer: 'return=representation' });
+  const created = await call('/rest/v1/rpc/create_trip_from_documents', {
+    p_trip: { title: 'Sub2', start_date: isoDate(20), end_date: isoDate(22), budget_tier: 'mid', companion_type: 'solo', interests: [] },
+    p_destinations: [{ city: 'Paris', country_code: 'FR', arrive_on: isoDate(20), depart_on: isoDate(22) }],
+    p_reservations: [{ document_id: doc2.data[0].id, type: 'hotel', title: 'H2', starts_at: `${isoDate(20)}T13:00:00Z`, ends_at: `${isoDate(22)}T09:00:00Z`, start_timezone: 'Europe/Paris', end_timezone: 'Europe/Paris' }],
+    p_document_ids: [doc2.data[0].id],
+  });
+  assert.equal(created.status, 200, JSON.stringify(created.data));
+  const other = created.data;
   const claim = await call('/functions/v1/subscription', { action: 'claim_trip_pass', trip_id: other });
   assert.equal(claim.status, 404, 'iade edilmiş satın alma bağlanmamalı');
 });

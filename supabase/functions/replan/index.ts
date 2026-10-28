@@ -7,6 +7,11 @@
 //   → { reply, suggestions[], plan_version_id, previous_version_id, date }
 //   Seyahat yoksa veya bugün planı yoksa sadece cevap ve öneriler döner.
 //
+// Seyahat asistanı (soru, ayar değişikliği, herhangi bir günü yeniden planlama):
+//   POST { "mode": "assistant", "trip_id": uuid, "message": "...", "location"?, "timezone"? }
+//   → { intent, reply, suggestions[], plan_version_id, previous_version_id, date, settings_updated? }
+//   crisis modu "date" (YYYY-MM-DD) alırsa o günün tamamını yeniden planlar (geçmiş gün reddedilir).
+//
 // Tarih değişikliği:
 //   POST { "mode": "dates", "trip_id": uuid, "new_start": "YYYY-MM-DD", "new_end": "YYYY-MM-DD" }
 //   → { plan_version_id, previous_version_id, analysis, removed[] }
@@ -19,7 +24,8 @@ import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { destinationCoords, enrichDays, googleConfig } from '../_shared/enrich.ts';
 import { openNowRequest, type Place, searchText } from '../_shared/places.ts';
 import { fetchCurrent, weatherForPrompt } from '../_shared/weather.ts';
-import { isValidTimeZone, utcToLocal } from '../_shared/documents.ts';
+import { isValidTimeZone, localToUtcIso, utcToLocal } from '../_shared/documents.ts';
+import { ASSISTANT_RESPONSE_SCHEMA, buildAssistantPrompt, normalizeAssistant, tripSummaryForPrompt } from '../_shared/assistant.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import {
@@ -109,7 +115,8 @@ Deno.serve(async (req) => {
 
   if (body?.mode === 'crisis') return crisis(body, trip, profile);
   if (body?.mode === 'dates') return dates(body, trip);
-  return error('bad_request', 400, 'mode must be crisis or dates');
+  if (body?.mode === 'assistant') return assistant(body, trip, profile);
+  return error('bad_request', 400, 'mode must be crisis, dates or assistant');
 
   // -------------------------------------------------------------------------
   async function crisis(
@@ -120,22 +127,39 @@ Deno.serve(async (req) => {
   ) {
     const message = typeof input.message === 'string' ? input.message.trim().slice(0, 500) : '';
     if (!message) return error('bad_request', 400, 'message is required');
-    const location =
+    const rawLocation =
       input.location && Number.isFinite(input.location.lat) && Number.isFinite(input.location.lng)
         ? { lat: Number(input.location.lat), lng: Number(input.location.lng) }
         : null;
 
+    const realNowIso = new Date().toISOString();
+    // Seyahat varsa saat dilimi rezervasyonlardan, yoksa telefondan gelir.
+    const clientTz = typeof input.timezone === 'string' && isValidTimeZone(input.timezone) ? input.timezone : 'UTC';
+    const guessDate = utcToLocal(realNowIso, clientTz).slice(0, 10);
+    const tz = trip ? timezonesByDate([guessDate], trip.reservations)[guessDate] : clientTz;
+    let timezone = tz === 'UTC' ? clientTz : tz;
+    const realToday = utcToLocal(realNowIso, timezone).slice(0, 10);
+
+    // İsteğe bağlı "date": bugünden sonraki bir günün tamamı yeniden planlanır (sabah 08:00'den başlar).
+    const wantedDate = typeof input.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(input.date) ? input.date : null;
+    let nowIso = realNowIso;
+    let localNow = utcToLocal(nowIso, timezone);
+    let today = realToday;
+    const plannedDate = wantedDate && wantedDate !== realToday ? wantedDate : null;
+    if (plannedDate) {
+      if (plannedDate < realToday) return error('bad_request', 400, 'past date');
+      const dayTz = trip ? timezonesByDate([plannedDate], trip.reservations)[plannedDate] : clientTz;
+      timezone = dayTz === 'UTC' ? clientTz : dayTz;
+      localNow = `${plannedDate}T08:00`;
+      nowIso = localToUtcIso(localNow, timezone);
+      today = plannedDate;
+    }
+    // Gelecek günde kullanıcının konumu ve şu anki hava o günle ilgisizdir.
+    const location = plannedDate ? null : rawLocation;
+
     const quota = await consumeQuota(supabase, 'replan', trip?.id ?? null);
     if (!quota.allowed) return error('quota_exceeded', 402);
 
-    const nowIso = new Date().toISOString();
-    // Seyahat varsa saat dilimi rezervasyonlardan, yoksa telefondan gelir.
-    const clientTz = typeof input.timezone === 'string' && isValidTimeZone(input.timezone) ? input.timezone : 'UTC';
-    const guessDate = utcToLocal(nowIso, clientTz).slice(0, 10);
-    const tz = trip ? timezonesByDate([guessDate], trip.reservations)[guessDate] : clientTz;
-    const timezone = tz === 'UTC' ? clientTz : tz;
-    const localNow = utcToLocal(nowIso, timezone);
-    const today = localNow.slice(0, 10);
     const day = trip?.activePlan?.days.find((d) => d.date === today) ?? null;
 
     const later = (day?.plan_items ?? []).filter((i) => i.starts_at && i.starts_at >= nowIso);
@@ -144,7 +168,7 @@ Deno.serve(async (req) => {
     const city = day?.city ?? trip?.ctx.destinations[0]?.city ?? null;
     const here = location ?? (city ? nearByCity[city.toLowerCase()] : null) ?? null;
     let weather: string | null = null;
-    if (google.apiKey && here) {
+    if (google.apiKey && here && !plannedDate) {
       weather = await fetchCurrent({ ...here, language: profile.language, apiKey: google.apiKey, apiBase: google.weatherBase })
         .then(weatherForPrompt)
         .catch((e) => {
@@ -178,6 +202,7 @@ Deno.serve(async (req) => {
           remaining: later.filter((i) => !i.is_locked).map((i) => ({ time: localTime(i.starts_at!, i.timezone), title: i.title, place: i.place_name })),
           fixedLater: later.filter((i) => i.is_locked).map((i) => ({ time: localTime(i.starts_at!, i.timezone), title: i.title })),
           nearby,
+          plannedDate,
         }),
         responseSchema: CRISIS_RESPONSE_SCHEMA,
         timeoutMs: 60_000,
@@ -223,6 +248,59 @@ Deno.serve(async (req) => {
       date: today,
       quota: { plan: quota.plan, remaining: quota.remaining },
     });
+  }
+
+  // -------------------------------------------------------------------------
+  // Seyahat asistanı: niyet (soru / gün planı / ayar / diğer) çıkarılır ve uygun işe yönlendirilir.
+  async function assistant(
+    // deno-lint-ignore no-explicit-any
+    input: any,
+    trip: LoadedTrip | null,
+    profile: { language: string; currency: string },
+  ) {
+    if (!trip) return error('bad_request', 400, 'trip_id is required');
+    const message = typeof input.message === 'string' ? input.message.trim().slice(0, 500) : '';
+    if (!message) return error('bad_request', 400, 'message is required');
+
+    const quota = await consumeQuota(supabase, 'trip_chat', trip.id);
+    if (!quota.allowed) return error('quota_exceeded', 402);
+
+    const clientTz = typeof input.timezone === 'string' && isValidTimeZone(input.timezone) ? input.timezone : 'UTC';
+    const today = utcToLocal(new Date().toISOString(), clientTz).slice(0, 10);
+    const planDates = (trip.activePlan?.days ?? []).map((d) => d.date).filter((d) => d >= today);
+
+    let raw: unknown;
+    try {
+      raw = await generateJson({
+        apiBase: Deno.env.get('GEMINI_API_BASE'),
+        apiKey: apiKey!,
+        model,
+        prompt: buildAssistantPrompt({ language: profile.language, today, message, summary: tripSummaryForPrompt(trip), planDates }),
+        responseSchema: ASSISTANT_RESPONSE_SCHEMA,
+        timeoutMs: 45_000,
+      });
+    } catch (e) {
+      console.error('replan assistant: AI failed', e instanceof GeminiError ? e.message : String(e));
+      return error('ai_failed', 502);
+    }
+    const parsed = normalizeAssistant(raw, { planDates, today });
+    const plain = { intent: parsed.intent, reply: parsed.reply, suggestions: [], weather: null, plan_version_id: null, previous_version_id: null, date: today, quota: { plan: quota.plan, remaining: quota.remaining } };
+
+    if (parsed.intent === 'replan_day' && parsed.date && parsed.instruction) {
+      const res = await crisis({ message: parsed.instruction, date: parsed.date, timezone: clientTz, location: input.location }, trip, profile);
+      if (!res.ok) return res;
+      return json({ ...(await res.json()), intent: 'replan_day' });
+    }
+
+    if (parsed.intent === 'update_settings' && parsed.settings) {
+      const { data: canEdit } = await supabase.rpc('can_edit_trip', { p_trip_id: trip.id });
+      if (!canEdit) return json({ ...plain, intent: 'other', reply: parsed.reply });
+      const { error: updateError } = await supabase.from('trips').update(parsed.settings).eq('id', trip.id);
+      if (updateError) return dbError('replan assistant', updateError, 400);
+      return json({ ...plain, settings_updated: true });
+    }
+
+    return json(plain);
   }
 
   // -------------------------------------------------------------------------

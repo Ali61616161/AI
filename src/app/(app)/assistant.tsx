@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState, type ComponentProps } from 'react';
+import { useMemo, useState, type ComponentProps } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -13,8 +13,9 @@ import { openBookingLink, openInMaps } from '@/features/places/api';
 import { useIsOnline } from '@/features/offline/use-online';
 import { PlaceMeta } from '@/features/places/place-row';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
-import { ReplanError, useCrisisReplan, useRestoreVersion, type CrisisResult } from '@/features/plan/replan';
+import { ReplanError, useRestoreVersion, useTripAssistant, type AssistantResult, type CrisisResult } from '@/features/plan/replan';
 import { currentTripFor, useTrips } from '@/features/trips/queries';
+import { SelectSheet } from '@/components/ui/select-sheet';
 import { formatMoney, todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
@@ -23,9 +24,9 @@ import { useTheme } from '@/theme/use-theme';
 
 type Message =
   | { id: number; from: 'user'; text: string }
-  | { id: number; from: 'assistant'; text: string; result?: CrisisResult; tripId?: string | null; undone?: boolean; upgrade?: boolean };
+  | { id: number; from: 'assistant'; text: string; result?: AssistantResult; tripId?: string | null; undone?: boolean; upgrade?: boolean };
 
-const SUGGESTIONS = ['suggestionRain', 'suggestionDelay', 'suggestionTired', 'suggestionBudget'] as const;
+const SUGGESTIONS = ['suggestionAsk', 'suggestionChange', 'suggestionRain', 'suggestionTired', 'suggestionBudget'] as const;
 
 const QUICK_ACTIONS: {
   key: 'addTicket' | 'translate' | 'sos';
@@ -99,9 +100,12 @@ export default function AssistantScreen() {
   const today = todayIsoDate();
   const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
   // Yalnızca kendi seyahatin düzenlenir (paylaşılan seyahati görüntüleyen planı değiştiremez).
+  const ownTrips = useMemo(() => (trips ?? []).filter((x) => x.owner_id === userId), [trips, userId]);
   const current = currentTripFor(trips, today, userId);
-  const currentTrip = current && current.owner_id === userId ? current : null;
-  const replan = useCrisisReplan();
+  const defaultTripId = (current && current.owner_id === userId ? current.id : null) ?? ownTrips.find((x) => (x.end_date ?? '') >= today)?.id ?? ownTrips[ownTrips.length - 1]?.id ?? null;
+  const [pickedTripId, setPickedTripId] = useState<string | null>(null);
+  const currentTrip = ownTrips.find((x) => x.id === (pickedTripId ?? defaultTripId)) ?? null;
+  const replan = useTripAssistant();
   const restore = useRestoreVersion(currentTrip?.id ?? '');
   const { prefill } = useLocalSearchParams<{ prefill?: string }>();
   const [input, setInput] = useState(prefill ?? '');
@@ -111,11 +115,12 @@ export default function AssistantScreen() {
 
   async function send(text: string) {
     const message = text.trim();
-    if (!message || replan.isPending) return;
+    if (!message || replan.isPending || !currentTrip) return;
     setInput('');
     setMessages((prev) => [...prev, { id: prev.length, from: 'user', text: message }]);
     try {
-      const result = await replan.mutateAsync({ message, tripId: currentTrip?.id ?? null });
+      if (!currentTrip) return;
+      const result = await replan.mutateAsync({ message, tripId: currentTrip.id });
       setMessages((prev) => [...prev, { id: prev.length, from: 'assistant', text: result.reply, result, tripId: currentTrip?.id ?? null }]);
     } catch (e) {
       const code = e instanceof ReplanError ? e.code : 'network';
@@ -153,6 +158,19 @@ export default function AssistantScreen() {
         </View>
       }>
       <ModalHeader title={t('assistant.title')} subtitle={t('assistant.subtitle')} />
+
+      {ownTrips.length > 0 && (
+        <SelectSheet
+          label={t('assistant.tripLabel')}
+          value={currentTrip?.id ?? null}
+          placeholder={t('assistant.tripPlaceholder')}
+          options={ownTrips.map((x) => ({ value: x.id, label: x.title }))}
+          onChange={(id) => {
+            setPickedTripId(id);
+            setMessages([]);
+          }}
+        />
+      )}
 
       <View style={styles.quick}>
         {QUICK_ACTIONS.map((a) => (
@@ -221,6 +239,19 @@ export default function AssistantScreen() {
                     {m.result.suggestions.map((s, i) => (
                       <SuggestionCard key={i} item={s} />
                     ))}
+                  </View>
+                )}
+                {m.result?.settings_updated && m.tripId && (
+                  <View style={[styles.updated, { backgroundColor: colors.surfaceMuted }]}>
+                    <View style={styles.updatedRow}>
+                      <Ionicons name="checkmark-circle" size={18} color={colors.success} />
+                      <Text variant="bodyStrong" style={styles.flex}>
+                        {t('assistant.settingsUpdated')}
+                      </Text>
+                    </View>
+                    <View style={styles.updatedActions}>
+                      <Chip icon="map-outline" label={t('assistant.viewPlan')} onPress={() => router.replace({ pathname: '/trip/[id]', params: { id: m.tripId! } })} />
+                    </View>
                   </View>
                 )}
                 {m.result?.plan_version_id && m.tripId && (

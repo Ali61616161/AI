@@ -46,6 +46,18 @@ export async function getCurrentLocation(): Promise<{ lat: number; lng: number }
   }
 }
 
+/** İzin zaten verilmişse (soru sormadan) son bilinen konumu verir; asistan her mesajda izin penceresi açmasın. */
+async function getLocationIfAlreadyGranted(): Promise<{ lat: number; lng: number } | null> {
+  try {
+    const permission = await Location.getForegroundPermissionsAsync();
+    if (!permission.granted) return null;
+    const last = await Location.getLastKnownPositionAsync({ maxAge: 10 * 60_000 });
+    return last ? { lat: last.coords.latitude, lng: last.coords.longitude } : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Google Places ile doğrulanmışsa mekan bilgileri de gelir. */
 export type CrisisSuggestion = PlanItem & {
   google_place_id?: string | null;
@@ -81,6 +93,33 @@ export function useCrisisReplan() {
         queryClient.invalidateQueries({ queryKey: ['plan', input.tripId] });
         queryClient.invalidateQueries({ queryKey: ['plan-versions', input.tripId] });
       }
+    },
+  });
+}
+
+export type AssistantResult = CrisisResult & { intent: 'question' | 'replan_day' | 'update_settings' | 'other'; settings_updated?: boolean };
+
+/**
+ * Seyahat asistanı: seçilen seyahat hakkında soru sorulur, ayarları (bütçe, yol arkadaşı, ilgi alanları) değiştirilir ya da
+ * herhangi bir günün planı yeniden yapılır. Plan değişirse yeni sürüm kaydedilir ve geri alınabilir.
+ */
+export function useTripAssistant() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { message: string; tripId: string }) =>
+      invokeReplan<AssistantResult>({
+        mode: 'assistant',
+        message: input.message,
+        trip_id: input.tripId,
+        location: await getLocationIfAlreadyGranted(),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }),
+    onSuccess: (result, input) => {
+      if (result.plan_version_id) {
+        queryClient.invalidateQueries({ queryKey: ['plan', input.tripId] });
+        queryClient.invalidateQueries({ queryKey: ['plan-versions', input.tripId] });
+      }
+      if (result.settings_updated) invalidateTrip(queryClient, input.tripId);
     },
   });
 }
