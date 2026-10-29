@@ -585,8 +585,7 @@
     "title": "Otel önerileri",
     "button": "Oteller",
     "viewOnBooking": "Booking.com'da fiyatları gör",
-    "empty": "Bu bütçeye uygun otel bulunamadı.",
-    "disclosure": "Bu bağlantılardan rezervasyon yaparsan Yola komisyon alabilir. Senin ödediğin fiyat değişmez."
+    "empty": "Bu bütçeye uygun otel bulunamadı."
   },
   "offline": {
     "banner": "Çevrimdışısın. Kayıtlı seyahatin, planın ve belgelerin gösteriliyor.",
@@ -1436,7 +1435,6 @@
     "startNavigation": "Haritada yol tarifini başlat",
     "direct": "Aktarmasız",
     "officialSite": "{{agency}} · resmi site",
-    "affiliateNote": "Bazı bağlantılar ortaklık bağlantısıdır; Yola sana ek ücret yansımadan komisyon kazanabilir.",
     "minutes_one": "{{count}} dk",
     "minutes_other": "{{count}} dk",
     "transfers_one": "{{count}} aktarma",
@@ -1870,8 +1868,7 @@
   "esim": {
     "title": "Mobil veri (eSIM)",
     "body": "{{country}} için roaming ücreti ödeme: uçmadan önce veri eSIM'i al, varınca etkinleştir.",
-    "note": "Sağlayıcının sitesini açar. Telefonunun eSIM desteklediğinden emin ol.",
-    "affiliateNote": "Sağlayıcının sitesini açar. Yola'ya sana ek maliyeti olmadan komisyon ödenebilir."
+    "note": "Sağlayıcının sitesini açar. Telefonunun eSIM desteklediğinden emin ol."
   },
   "priceWatch": {
     "title": "Fiyat takibi",

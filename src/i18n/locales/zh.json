@@ -578,8 +578,7 @@
     "title": "酒店推荐",
     "button": "酒店",
     "viewOnBooking": "在 Booking.com 查看价格",
-    "empty": "未找到符合此预算的酒店。",
-    "disclosure": "通过这些链接预订时，Yola 可能获得佣金，你的价格不变。"
+    "empty": "未找到符合此预算的酒店。"
   },
   "offline": {
     "banner": "当前离线。正在显示已保存的行程、计划和文件。",
@@ -1403,7 +1402,6 @@
     "startNavigation": "在地图中开始导航",
     "direct": "直达",
     "officialSite": "{{agency}} · 官网",
-    "affiliateNote": "部分链接为合作伙伴链接；Yola 可能获得佣金，你无需额外付费。",
     "minutes_other": "{{count}} 分钟",
     "transfers_other": "换乘 {{count}} 次",
     "walk_other": "步行 {{count}} 分钟",
@@ -1832,8 +1830,7 @@
   "esim": {
     "title": "手机流量（eSIM）",
     "body": "在{{country}}免付漫游费：出发前购买流量 eSIM，到达后激活。",
-    "note": "将打开服务商网站。请确认你的手机支持 eSIM。",
-    "affiliateNote": "将打开服务商网站。Yola 可能获得佣金，你无需额外付费。"
+    "note": "将打开服务商网站。请确认你的手机支持 eSIM。"
   },
   "priceWatch": {
     "title": "价格追踪",

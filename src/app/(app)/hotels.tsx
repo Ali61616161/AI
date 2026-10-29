@@ -8,7 +8,6 @@ import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
-import { Text } from '@/components/ui/text';
 import { PlacesMap } from '@/features/map/places-map';
 import { openBookingLink, PlacesError, useHotels } from '@/features/places/api';
 import { PlaceRow } from '@/features/places/place-row';
@@ -70,9 +69,6 @@ export default function HotelsScreen() {
               <Button title={t('hotels.viewOnBooking')} variant="secondary" onPress={() => openBookingLink(p.booking_url)} />
             </PlaceRow>
           ))}
-          <Text variant="caption" color="textMuted">
-            {t('hotels.disclosure')}
-          </Text>
         </>
       )}
     </Screen>

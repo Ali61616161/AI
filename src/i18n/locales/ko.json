@@ -578,8 +578,7 @@
     "title": "호텔 추천",
     "button": "호텔",
     "viewOnBooking": "Booking.com에서 가격 보기",
-    "empty": "이 예산에 맞는 호텔을 찾지 못했어요.",
-    "disclosure": "이 링크로 예약하면 Yola가 수수료를 받을 수 있어요. 가격은 그대로예요."
+    "empty": "이 예산에 맞는 호텔을 찾지 못했어요."
   },
   "offline": {
     "banner": "오프라인 상태예요. 저장된 여행, 계획, 문서를 보여 드려요.",
@@ -1403,7 +1402,6 @@
     "startNavigation": "지도에서 길안내 시작",
     "direct": "직행",
     "officialSite": "{{agency}} · 공식 사이트",
-    "affiliateNote": "일부 링크는 제휴 링크예요. 추가 비용 없이 Yola가 수수료를 받을 수 있어요.",
     "minutes_other": "{{count}}분",
     "transfers_other": "환승 {{count}}회",
     "walk_other": "도보 {{count}}분",
@@ -1832,8 +1830,7 @@
   "esim": {
     "title": "모바일 데이터 (eSIM)",
     "body": "{{country}}에서 로밍 요금을 피하세요. 출발 전에 데이터 eSIM을 구매하고 도착하면 활성화하세요.",
-    "note": "제공업체 웹사이트가 열려요. 휴대폰이 eSIM을 지원하는지 확인하세요.",
-    "affiliateNote": "제공업체 웹사이트가 열려요. 추가 비용 없이 Yola가 수수료를 받을 수 있어요."
+    "note": "제공업체 웹사이트가 열려요. 휴대폰이 eSIM을 지원하는지 확인하세요."
   },
   "priceWatch": {
     "title": "가격 알림",

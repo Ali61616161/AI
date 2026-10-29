@@ -585,8 +585,7 @@
     "title": "Hotelsuggesties",
     "button": "Hotels",
     "viewOnBooking": "Prijzen bekijken op Booking.com",
-    "empty": "Geen hotels gevonden voor dit budget.",
-    "disclosure": "Yola kan een commissie ontvangen als je via deze links boekt. Je prijs blijft hetzelfde."
+    "empty": "Geen hotels gevonden voor dit budget."
   },
   "offline": {
     "banner": "Je bent offline. Je opgeslagen reis, plan en documenten worden getoond.",
@@ -1436,7 +1435,6 @@
     "startNavigation": "Navigatie starten in Kaarten",
     "direct": "Direct",
     "officialSite": "{{agency}} · officiële site",
-    "affiliateNote": "Sommige links zijn partnerlinks; Yola kan een commissie ontvangen zonder extra kosten voor jou.",
     "minutes_one": "{{count}} min",
     "minutes_other": "{{count}} min",
     "transfers_one": "{{count}} overstap",
@@ -1870,8 +1868,7 @@
   "esim": {
     "title": "Mobiele data (eSIM)",
     "body": "Vermijd roamingkosten in {{country}}: koop vóór je vertrek een data-eSIM en activeer die bij aankomst.",
-    "note": "Opent de website van de aanbieder. Controleer of je telefoon eSIM ondersteunt.",
-    "affiliateNote": "Opent de website van de aanbieder. Yola kan een commissie ontvangen zonder extra kosten voor jou."
+    "note": "Opent de website van de aanbieder. Controleer of je telefoon eSIM ondersteunt."
   },
   "priceWatch": {
     "title": "Prijsalert",

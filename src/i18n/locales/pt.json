@@ -592,8 +592,7 @@
     "title": "Sugestões de hotéis",
     "button": "Hotéis",
     "viewOnBooking": "Ver preços no Booking.com",
-    "empty": "Nenhum hotel encontrado para este orçamento.",
-    "disclosure": "O Yola pode receber uma comissão se você reservar por estes links. Seu preço continua o mesmo."
+    "empty": "Nenhum hotel encontrado para este orçamento."
   },
   "offline": {
     "banner": "Você está offline. Mostrando sua viagem, plano e documentos salvos.",
@@ -1469,7 +1468,6 @@
     "startNavigation": "Iniciar o trajeto no Mapas",
     "direct": "Direto",
     "officialSite": "{{agency}} · site oficial",
-    "affiliateNote": "Alguns links são de parceiros; o Yola pode receber uma comissão sem custo extra para você.",
     "minutes_one": "{{count}} min",
     "minutes_other": "{{count}} min",
     "transfers_one": "{{count}} baldeação",
@@ -1908,8 +1906,7 @@
   "esim": {
     "title": "Dados móveis (eSIM)",
     "body": "Evite taxas de roaming em {{country}}: compre um eSIM de dados antes de viajar e ative ao chegar.",
-    "note": "Abre o site do provedor. Confira se o seu celular é compatível com eSIM.",
-    "affiliateNote": "Abre o site do provedor. O Yola pode receber uma comissão sem custo extra para você."
+    "note": "Abre o site do provedor. Confira se o seu celular é compatível com eSIM."
   },
   "priceWatch": {
     "title": "Monitor de preços",

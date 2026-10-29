@@ -578,8 +578,7 @@
     "title": "Saran hotel",
     "button": "Hotel",
     "viewOnBooking": "Lihat harga di Booking.com",
-    "empty": "Tidak ada hotel untuk anggaran ini.",
-    "disclosure": "Yola dapat menerima komisi jika kamu memesan lewat tautan ini. Harga untukmu tetap sama."
+    "empty": "Tidak ada hotel untuk anggaran ini."
   },
   "offline": {
     "banner": "Kamu offline. Menampilkan perjalanan, rencana, dan dokumen yang tersimpan.",
@@ -1403,7 +1402,6 @@
     "startNavigation": "Mulai petunjuk arah di Peta",
     "direct": "Langsung",
     "officialSite": "{{agency}} · situs resmi",
-    "affiliateNote": "Beberapa tautan adalah tautan mitra; Yola dapat menerima komisi tanpa biaya tambahan untukmu.",
     "minutes_other": "{{count}} mnt",
     "transfers_other": "{{count}} transit",
     "walk_other": "Jalan kaki {{count}} mnt",
@@ -1832,8 +1830,7 @@
   "esim": {
     "title": "Data seluler (eSIM)",
     "body": "Hindari biaya roaming di {{country}}: beli eSIM data sebelum terbang dan aktifkan saat tiba.",
-    "note": "Membuka situs web penyedia. Pastikan ponselmu mendukung eSIM.",
-    "affiliateNote": "Membuka situs web penyedia. Yola dapat menerima komisi tanpa biaya tambahan untukmu."
+    "note": "Membuka situs web penyedia. Pastikan ponselmu mendukung eSIM."
   },
   "priceWatch": {
     "title": "Pantau harga",
