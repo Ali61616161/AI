@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -13,9 +13,7 @@ import { IconBadge } from '@/components/ui/icon-badge';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
-import { RESERVATION_ICONS, TRANSPORT_TYPES } from '@/features/documents/reservation-icons';
 import { PlacesMap } from '@/features/map/places-map';
-import { OfflineCard } from '@/features/offline/offline-card';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { TripTools } from '@/features/tools/trip-tools';
 import { TripHero } from '@/features/trips/trip-hero';
@@ -27,53 +25,14 @@ import {
   GenerateError,
   useActivePlan,
   useGenerateItinerary,
-  useDeleteTrip,
-  useLeaveTrip,
   useTrip,
-  type TripReservation,
 } from '@/features/trips/queries';
-import { daysUntil, formatDateRange, formatDayShort, formatLocalDateTime, todayIsoDate } from '@/lib/format';
+import { daysUntil, formatDateRange, formatDayShort, todayIsoDate } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
-import { ShareSection } from '@/features/sharing/share-section';
 import { useSessionStore } from '@/stores/session-store';
 import { NativeAdCard } from '@/features/ads/native-ad-card';
-import { EsimCard } from '@/features/esim/esim-card';
 import { FlightStatusCard } from '@/features/travel/flight-status-card';
-
-function ReservationRow({ reservation: r }: { reservation: TripReservation }) {
-  const { t } = useTranslation();
-  const { colors } = useTheme();
-  const transport = TRANSPORT_TYPES.includes(r.type);
-  const route = transport
-    ? [r.origin_code ?? r.origin_name, r.destination_code ?? r.destination_name].filter(Boolean).join(' → ')
-    : r.address;
-
-  return (
-    <View style={[styles.row, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-      <View style={[styles.icon, { backgroundColor: colors.surfaceMuted }]}>
-        <Ionicons name={RESERVATION_ICONS[r.type]} size={20} color={colors.primary} />
-      </View>
-      <View style={styles.rowText}>
-        <Text variant="caption" color="textMuted">
-          {formatLocalDateTime(r.starts_at, r.start_timezone)}
-          {r.ends_at ? ` – ${formatLocalDateTime(r.ends_at, r.end_timezone ?? r.start_timezone)}` : ''}
-        </Text>
-        <Text variant="bodyStrong">{r.title}</Text>
-        {route ? (
-          <Text variant="caption" color="textSecondary">
-            {route}
-          </Text>
-        ) : null}
-        {r.reference_code && (
-          <Text variant="caption" color="textSecondary">
-            {t('trip.reference', { code: r.reference_code })}
-          </Text>
-        )}
-      </View>
-    </View>
-  );
-}
 
 /** Seyahatin bugüne denk gelen gününü (yoksa ilk günü) seçer. */
 function initialDayIndex(dates: string[]): number {
@@ -89,11 +48,8 @@ export default function TripScreen() {
   const { data: trip, isLoading, isError } = useTrip(id);
   const { data: plan, isLoading: planLoading } = useActivePlan(id);
   const generate = useGenerateItinerary(id);
-  const deleteTrip = useDeleteTrip();
-  const leaveTrip = useLeaveTrip();
   const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [showReservations, setShowReservations] = useState(false);
   const [showMap, setShowMap] = useState(true);
   const weather = useTripWeather(id);
 
@@ -150,15 +106,7 @@ export default function TripScreen() {
         city={trip.trip_destinations[0]?.city ?? trip.title}
         title={trip.title}
         subtitle={formatDateRange(trip.start_date, trip.end_date)}
-        actions={
-          readOnly
-            ? []
-            : [
-                { icon: 'calendar-outline', label: t('trip.changeDates'), onPress: () => router.push({ pathname: '/trip-dates', params: { tripId: trip.id } }) },
-                ...(plan ? [{ icon: 'git-branch-outline' as const, label: t('trip.versions'), onPress: () => router.push({ pathname: '/trip-versions', params: { tripId: trip.id } }) }] : []),
-                { icon: 'bed-outline', label: t('hotels.button'), onPress: () => router.push({ pathname: '/hotels', params: { tripId: trip.id } }) },
-              ]
-        }
+        onMore={() => router.push({ pathname: '/trip-more', params: { tripId: trip.id } })}
       />
 
       {readOnly && (
@@ -174,6 +122,7 @@ export default function TripScreen() {
       <View style={styles.hub}>
         {[
           ...(plan && (day?.plan_items ?? []).some((i) => i.lat !== null) ? [{ key: 'live', icon: 'navigate-circle' as const, label: t('live.open'), onPress: () => router.push({ pathname: '/trip-live', params: { tripId: trip.id, day: String(dayIndex) } }) }] : []),
+          ...(readOnly ? [] : [{ key: 'assistant', icon: 'sparkles' as const, label: t('trip.assistant'), onPress: () => router.push({ pathname: '/assistant', params: { tripId: trip.id } }) }]),
           { key: 'wallet', icon: 'wallet' as const, label: t('wallet.title'), onPress: () => router.push({ pathname: '/wallet', params: { tripId: trip.id } }) },
           { key: 'sos', icon: 'medkit' as const, label: t('today.quick.sos'), onPress: () => router.push({ pathname: '/sos', params: { tripId: trip.id } }) },
         ].map((x) => (
@@ -313,55 +262,9 @@ export default function TripScreen() {
 
       <FlightStatusCard tripId={trip.id} reservations={trip.reservations} />
 
-      <EsimCard countryCodes={trip.trip_destinations.map((d) => d.country_code)} />
-
       <TripTools tripId={trip.id} />
 
       <NativeAdCard />
-
-      <OfflineCard tripId={trip.id} countryCode={trip.trip_destinations[0]?.country_code ?? null} />
-
-      {trip.reservations.length > 0 && (
-        <View style={styles.section}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityState={{ expanded: showReservations }}
-            onPress={() => setShowReservations((v) => !v)}
-            style={styles.sectionHeader}>
-            <Text variant="subtitle">
-              {t('plan.showReservations')} · {trip.reservations.length}
-            </Text>
-            <Ionicons name={showReservations ? 'chevron-up' : 'chevron-down'} size={20} color={colors.textSecondary} />
-          </Pressable>
-          {showReservations && trip.reservations.map((r) => <ReservationRow key={r.id} reservation={r} />)}
-        </View>
-      )}
-      {!readOnly && <ShareSection tripId={trip.id} tripTitle={trip.title} />}
-      {readOnly ? (
-        <Button
-          title={t('share.leave')}
-          variant="ghost"
-          loading={leaveTrip.isPending}
-          onPress={() =>
-            Alert.alert(t('share.leave'), t('share.leaveBody'), [
-              { text: t('common.cancel'), style: 'cancel' },
-              { text: t('share.leave'), style: 'destructive', onPress: () => leaveTrip.mutate(trip.id, { onSuccess: () => router.replace('/trips') }) },
-            ])
-          }
-        />
-      ) : (
-      <Button
-        title={t('trip.delete')}
-        variant="ghost"
-        loading={deleteTrip.isPending}
-        onPress={() =>
-          Alert.alert(t('trip.deleteTitle', { title: trip.title }), t('trip.deleteBody'), [
-            { text: t('common.cancel'), style: 'cancel' },
-            { text: t('trip.delete'), style: 'destructive', onPress: () => deleteTrip.mutate(trip.id, { onSuccess: () => router.replace('/trips') }) },
-          ])
-        }
-      />
-      )}
     </Screen>
   );
 }

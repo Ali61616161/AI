@@ -1460,6 +1460,7 @@ export type Database = {
           id: string;
           interests: string[];
           arrival_airport: string | null;
+          travel_modes: string[];
           arrival_time: string | null;
           departure_airport: string | null;
           departure_time: string | null;
@@ -1486,6 +1487,7 @@ export type Database = {
           id?: string;
           interests?: string[];
           arrival_airport?: string | null;
+          travel_modes?: string[];
           arrival_time?: string | null;
           departure_airport?: string | null;
           departure_time?: string | null;
@@ -1511,6 +1513,7 @@ export type Database = {
           id?: string;
           interests?: string[];
           arrival_airport?: string | null;
+          travel_modes?: string[];
           arrival_time?: string | null;
           departure_airport?: string | null;
           departure_time?: string | null;
@@ -1851,7 +1854,7 @@ export type Database = {
         | 'spin'
         | 'city_search';
       report_reason: 'harassment' | 'fake_profile' | 'unsafe_behavior' | 'spam' | 'other';
-      reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
+      reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'ferry' | 'car_rental' | 'event' | 'other';
       subscription_plan: 'free' | 'trip_pass' | 'pro_monthly' | 'pro_yearly';
       subscription_status: 'active' | 'in_grace' | 'cancelled' | 'expired' | 'refunded';
       trip_member_role: 'owner' | 'editor' | 'viewer';
@@ -1999,7 +2002,7 @@ export const Constants = {
         'city_search',
       ],
       report_reason: ['harassment', 'fake_profile', 'unsafe_behavior', 'spam', 'other'],
-      reservation_type: ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'],
+      reservation_type: ['flight', 'hotel', 'train', 'bus', 'ferry', 'car_rental', 'event', 'other'],
       subscription_plan: ['free', 'trip_pass', 'pro_monthly', 'pro_yearly'],
       subscription_status: ['active', 'in_grace', 'cancelled', 'expired', 'refunded'],
       trip_member_role: ['owner', 'editor', 'viewer'],

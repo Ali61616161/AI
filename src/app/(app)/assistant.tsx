@@ -103,12 +103,14 @@ export default function AssistantScreen() {
   // Yalnızca kendi seyahatin düzenlenir (paylaşılan seyahati görüntüleyen planı değiştiremez); bitmiş seyahatler listelenmez.
   const ownTrips = useMemo(() => (trips ?? []).filter((x) => x.owner_id === userId && isCurrentOrFuture(x, today)), [trips, userId, today]);
   const current = currentTripFor(trips, today, userId);
-  const defaultTripId = (current && current.owner_id === userId ? current.id : null) ?? ownTrips[0]?.id ?? null;
+  const { prefill, tripId: tripParam } = useLocalSearchParams<{ prefill?: string; tripId?: string }>();
+  // Canlı görünüm ya da seyahat ekranından açılınca o seyahat seçili gelir.
+  const paramTripId = ownTrips.find((x) => x.id === tripParam)?.id ?? null;
+  const defaultTripId = paramTripId ?? (current && current.owner_id === userId ? current.id : null) ?? ownTrips[0]?.id ?? null;
   const [pickedTripId, setPickedTripId] = useState<string | null>(null);
   const currentTrip = ownTrips.find((x) => x.id === (pickedTripId ?? defaultTripId)) ?? null;
   const replan = useTripAssistant();
   const restore = useRestoreVersion(currentTrip?.id ?? '');
-  const { prefill } = useLocalSearchParams<{ prefill?: string }>();
   const [input, setInput] = useState(prefill ?? '');
   const [messages, setMessages] = useState<Message[]>([]);
   const online = useIsOnline();

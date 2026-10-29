@@ -10,6 +10,9 @@ import { useEndedTripPrompt } from '@/features/report/use-ended-trip-prompt';
 import { useSyncLiveActivity } from '@/features/widget/use-sync-live-activity';
 import { useSyncWidget } from '@/features/widget/use-sync-widget';
 
+/** Widget, Dynamic Island ya da bildirimle doğrudan bir ekrana inildiğinde altında hep ana sekmeler olur (geri/çıkış çalışır). */
+export const unstable_settings = { anchor: '(tabs)' };
+
 export default function AppLayout() {
   const userId = useSessionStore((s) => s.session?.user.id ?? null);
   useAdsBootstrap();
@@ -31,6 +34,8 @@ export default function AppLayout() {
       <Stack.Screen name="ticket-review" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip/[id]" />
       <Stack.Screen name="trip-live" options={{ presentation: 'fullScreenModal' }} />
+      <Stack.Screen name="trip-more" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="home-city" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-dates" options={{ presentation: 'modal' }} />
       <Stack.Screen name="trip-versions" options={{ presentation: 'modal' }} />
       <Stack.Screen name="preferences" options={{ presentation: 'modal' }} />

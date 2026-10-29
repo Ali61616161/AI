@@ -13,7 +13,7 @@ import { flag } from '@/features/tools/emergency-numbers';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-export type Destination = { city: string; country: string | null };
+export type Destination = { city: string; country: string | null; /** Seçilen şehrin merkezi (öneriden seçildiyse). */ lat?: number | null; lng?: number | null };
 
 /**
  * Tek alandan şehir seçimi: yazdıkça Google şehir önerir, seçince ülke de otomatik gelir. Öneri çıkmazsa
@@ -50,7 +50,7 @@ export function DestinationField({ value, onChange }: { value: Destination; onCh
     setPicking(true);
     try {
       const city = await pickCityById(s.place_id, session.current);
-      onChange({ city: city.name, country: city.country_code });
+      onChange({ city: city.name, country: city.country_code, lat: city.lat, lng: city.lng });
       setTerm('');
       setResult(null);
       session.current = Crypto.randomUUID().replace(/-/g, '');

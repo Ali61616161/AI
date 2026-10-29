@@ -20,7 +20,7 @@ export type LoadedTrip = {
 };
 
 const TRIP_SELECT =
-  'id, title, start_date, end_date, companion_type, budget_tier, interests, adults, children, budget_currency, budget_amount, local_transport, notes, arrival_time, departure_time, arrival_airport, departure_airport, ' +
+  'id, title, start_date, end_date, companion_type, budget_tier, interests, adults, children, budget_currency, budget_amount, local_transport, travel_modes, notes, arrival_time, departure_time, arrival_airport, departure_airport, ' +
   'trip_destinations(id, city, country_code, arrive_on, depart_on, position, lat, lng), ' +
   'reservations(id, type, title, starts_at, ends_at, start_timezone, end_timezone, origin_name, destination_name, address, is_cancelled)';
 
@@ -80,6 +80,7 @@ export async function loadTrip(supabase: SupabaseClient, tripId: string, profile
       children: t.children,
       currency: t.budget_currency ?? profile.currency,
       local_transport: t.local_transport ?? 'mixed',
+      travel_modes: Array.isArray(t.travel_modes) ? t.travel_modes.filter((m: unknown): m is string => typeof m === 'string') : [],
       notes: typeof t.notes === 'string' ? t.notes : null,
       arrival_time: typeof t.arrival_time === 'string' ? t.arrival_time.slice(0, 5) : null,
       departure_time: typeof t.departure_time === 'string' ? t.departure_time.slice(0, 5) : null,

@@ -10,6 +10,7 @@ import {
   planOptionRules,
   sanitizePlanOptions,
   tripAnswerRules,
+  tripTimingRules,
   timezonesByDate,
   toPlanPayload,
   type TripContext,
@@ -260,4 +261,22 @@ Deno.test('tripTimingRules: otelden havalimanına gerçek yol süresi kullanıl�
   assertEquals(tripTimingRules({ ...ctx, airport_transfer_min: 15 }, ['2027-01-20'])[0].includes('by 14:30'), true);
   assertEquals(tripTimingRules({ ...ctx, airport_transfer_min: 90 }, ['2027-01-20'])[0].includes('by 13:15'), true);
   assertEquals(tripTimingRules(ctx, ['2027-01-20'])[0].includes('by 13:45'), true);
+});
+
+Deno.test('ulaşım türü: araba park uyarısı, tren/otobüs/gemide havalimanı payı yok; uçakta eskisi gibi', () => {
+  const car = tripAnswerRules({ local_transport: 'mixed', notes: null, daily_budget: null, currency: 'EUR', travel_modes: ['car'] });
+  assertEquals(car.length, 1);
+  assertEquals(car[0].includes('own car'), true);
+  const train = tripAnswerRules({ local_transport: 'mixed', notes: null, daily_budget: null, currency: 'EUR', travel_modes: ['train', 'ferry'] });
+  assertEquals(train[0].includes('no airport formalities'), true);
+  // uçak da varsa tren kuralı eklenmez
+  assertEquals(tripAnswerRules({ local_transport: 'mixed', notes: null, daily_budget: null, currency: 'EUR', travel_modes: ['flight', 'train'] }), []);
+
+  const timing = { start_date: '2026-12-13', end_date: '2026-12-17', arrival_time: '10:20', departure_time: '18:00', arrival_airport: null, departure_airport: null, airport_transfer_min: null };
+  const dates = ['2026-12-13', '2026-12-17'];
+  assertEquals(tripTimingRules({ ...timing, travel_modes: ['car'] }, dates), []);
+  assertEquals(tripTimingRules({ ...timing, travel_modes: ['train'] }, dates), []);
+  assertEquals(tripTimingRules({ ...timing, travel_modes: ['flight'] }, dates).length, 2);
+  assertEquals(tripTimingRules({ ...timing, travel_modes: ['undecided'] }, dates).length, 2);
+  assertEquals(tripTimingRules({ ...timing }, dates).length, 2);
 });

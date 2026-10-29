@@ -1035,6 +1035,21 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18i. Ulaşım türleri (travel_modes) ve gemi/feribot rezervasyonu'
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+insert into public.trips (id, title) values ('10000000-0000-0000-0000-0000000000e2', 'Bari-Dubrovnik');
+do $$ begin
+  assert (select travel_modes from public.trips where id = '10000000-0000-0000-0000-0000000000e2') = '{}', 'varsayılan boş';
+  update public.trips set travel_modes = array['flight', 'car'] where id = '10000000-0000-0000-0000-0000000000e2';
+  assert (select travel_modes from public.trips where id = '10000000-0000-0000-0000-0000000000e2') = array['flight', 'car'], 'geçerli türler kaydedilir';
+  assert tests.throws($q$ update public.trips set travel_modes = array['teleport'] where id = '10000000-0000-0000-0000-0000000000e2' $q$), 'bilinmeyen tür reddedilir';
+  assert tests.throws($q$ update public.trips set travel_modes = array['flight','car','train','bus','ferry','undecided','flight'] where id = '10000000-0000-0000-0000-0000000000e2' $q$), '6 türden fazlası reddedilir';
+  assert not tests.throws($q$ insert into public.reservations (trip_id, type, title, starts_at, start_timezone) values ('10000000-0000-0000-0000-0000000000e2', 'ferry', 'Jadrolinija Bari-Dubrovnik', now(), 'Europe/Rome') $q$), 'ferry rezervasyonu eklenir';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

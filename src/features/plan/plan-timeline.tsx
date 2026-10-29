@@ -194,7 +194,7 @@ const isRoutable = (i: PlanItemRow) => i.kind !== 'transport' && Boolean(i.lat !
 const placeLabel = (i: PlanItemRow, city: string | null) => [i.place_name ?? i.title, i.lat === null ? city : null].filter(Boolean).join(', ');
 
 /** "Nasıl giderim?": bir önceki duraktan (yoksa kullanıcının konumundan) bu durağa. */
-export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: string | null, tripId?: string) {
+export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: string | null, tripId?: string, extra: Record<string, string> = {}) {
   const coords = (i: PlanItemRow, prefix: 'to' | 'from') => (i.lat !== null && i.lng !== null ? { [`${prefix}Lat`]: String(i.lat), [`${prefix}Lng`]: String(i.lng) } : {});
   router.push({
     pathname: '/route',
@@ -204,6 +204,7 @@ export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: str
       toName: placeLabel(item, city),
       ...(from && from.lat !== null ? { ...coords(from, 'from'), fromName: placeLabel(from, city) } : {}),
       ...(from?.ends_at ? { departAt: from.ends_at } : {}),
+      ...extra,
     },
   });
 }

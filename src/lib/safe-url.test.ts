@@ -1,6 +1,6 @@
 import { assertEquals } from 'jsr:@std/assert@1';
 
-import { isAllowedNotificationPath, isGoogleMapsUrl, isHttpsUrl } from './safe-url.ts';
+import { isAllowedNotificationPath, isDealUrl, isGoogleMapsUrl, isHttpsUrl } from './safe-url.ts';
 
 Deno.test('isHttpsUrl: yalnızca https', () => {
   assertEquals(isHttpsUrl('https://example.com/a'), true);
@@ -30,4 +30,12 @@ Deno.test('isAllowedNotificationPath: yalnızca seyahat ekranları', () => {
   assertEquals(isAllowedNotificationPath('/join?token=abc'), false);
   assertEquals(isAllowedNotificationPath('//evil.example'), false);
   assertEquals(isAllowedNotificationPath('/profile'), false);
+});
+
+Deno.test('isDealUrl: yalnızca Aviasales', () => {
+  assertEquals(isDealUrl('https://www.aviasales.com/search/IST1312ROM1?marker=1'), true);
+  assertEquals(isDealUrl('https://aviasales.com/x'), true);
+  assertEquals(isDealUrl('http://www.aviasales.com/x'), false);
+  assertEquals(isDealUrl('https://aviasales.com.evil.example/x'), false);
+  assertEquals(isDealUrl('https://evilaviasales.com/x'), false);
 });

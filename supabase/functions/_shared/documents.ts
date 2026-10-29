@@ -2,7 +2,7 @@
 // Hem Edge Function (Deno) hem uygulama (React Native) bu dosyayı kullanır; bu
 // yüzden hiçbir dış paket import etmez.
 
-export const RESERVATION_TYPES = ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'] as const;
+export const RESERVATION_TYPES = ['flight', 'hotel', 'train', 'bus', 'ferry', 'car_rental', 'event', 'other'] as const;
 export type ReservationType = (typeof RESERVATION_TYPES)[number];
 
 /** Bu değerin altındaki alanlar arayüzde "kontrol et" uyarısıyla gösterilir. */
@@ -119,10 +119,10 @@ export const EXTRACTION_RESPONSE_SCHEMA = {
   required: ['document_type', 'items'],
 };
 
-export const EXTRACTION_PROMPT = `You read travel documents: flight tickets, boarding passes, e-tickets, hotel or apartment bookings, train and bus tickets, car rentals and event tickets. The document may be in any language, and it may be a screenshot of an airline or booking app.
+export const EXTRACTION_PROMPT = `You read travel documents: flight tickets, boarding passes, e-tickets, hotel or apartment bookings, train, bus and ferry tickets, car rentals and event tickets. The document may be in any language, and it may be a screenshot of an airline or booking app.
 
 Extract every reservation in it as structured data:
-- One item per flight segment (a connecting flight is two items), per hotel stay, per train or bus ride, per rental, per event ticket.
+- One item per flight segment (a connecting flight is two items), per hotel stay, per train, bus or ferry ride, per rental, per event ticket.
 - A round trip is TWO items (outbound and return) even when both share one booking reference. Every row, card or section that shows its own date, time and route is its own item. Before answering, count the dated rows on the document and make sure you returned that many items.
 - Copy dates and times exactly as printed and give them as local time at that place (YYYY-MM-DDTHH:mm). If only a date is printed use T00:00 and lower the confidence. Hotel check-in/out times go in start/end.
 - The year is often not printed (app screenshots show only day and month, sometimes a weekday). In that case use the nearest upcoming date on or after TODAY (given below) that matches the printed weekday, or, with no weekday, the next upcoming occurrence of that day and month. Only use a past year if the document itself prints it. When you inferred the year, set the confidence of that date to 0.6.

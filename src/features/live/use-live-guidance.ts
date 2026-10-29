@@ -78,7 +78,8 @@ export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: s
     countryCode: null,
     departAt: null,
   });
-  const etaRoute = etaQuery.data?.routes[0] ?? null;
+  const etaRoutes = etaQuery.data?.routes ?? [];
+  const etaRoute = etaRoutes[0] ?? null;
   const etaMin = etaRoute?.durationMin ?? null;
   const leaveIn = dest ? leaveInMin(nowMs, etaMin, dest.starts_at) : null;
   const arrived = isToday ? arrivedStop(stops, here, nowMs, marks) : null;
@@ -106,5 +107,5 @@ export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: s
   const airportTravelMin = airportQuery.data?.routes[0]?.durationMin ?? null;
   const leaveAt = flight && airportTravelMin !== null ? leaveByMs(Date.parse(flight.starts_at), airportTravelMin) : null;
 
-  return { marks, freeDay, here, overdue, upcoming, etaMin, etaRoute, etaMode: mode, leaveIn, arrived, late, flight, airportName, airportTravelMin, leaveAt };
+  return { marks, freeDay, here, overdue, upcoming, etaMin, etaRoute, etaRoutes, etaMode: mode, leaveIn, arrived, late, flight, airportName, airportTravelMin, leaveAt };
 }

@@ -47,7 +47,8 @@
     "assistant": "Assistant",
     "social": "Social",
     "profile": "Profile",
-    "explore": "Explore"
+    "explore": "Explore",
+    "live": "Live"
   },
   "auth": {
     "signInTitle": "Sign in to your account",
@@ -322,7 +323,8 @@
     "tripPlaceholder": "Choose a trip",
     "settingsUpdated": "Your trip settings were updated.",
     "suggestionAsk": "What are we doing tomorrow?",
-    "suggestionChange": "Make the next day cheaper and more relaxed"
+    "suggestionChange": "Make the next day cheaper and more relaxed",
+    "askBar": "Ask Yola…"
   },
   "ticket": {
     "title": "Upload ticket or hotel",
@@ -390,7 +392,8 @@
     "bus": "Bus",
     "car_rental": "Car rental",
     "event": "Event",
-    "other": "Other"
+    "other": "Other",
+    "ferry": "Ferry / ship"
   },
   "trip": {
     "destinations": "Stops",
@@ -403,7 +406,9 @@
     "versions": "Plan history",
     "delete": "Delete trip",
     "deleteTitle": "Delete “{{title}}”?",
-    "deleteBody": "The trip is permanently deleted with its bookings, plan and expenses."
+    "deleteBody": "The trip is permanently deleted with its bookings, plan and expenses.",
+    "more": "Trip settings",
+    "assistant": "Assistant"
   },
   "plan": {
     "title": "Route",
@@ -1628,7 +1633,13 @@
     },
     "timelineTitle": "Route",
     "expand": "Show more",
-    "collapse": "Show less"
+    "collapse": "Show less",
+    "route": {
+      "title": "Ways to get there",
+      "departed": "Left",
+      "now": "Now",
+      "leavesIn": "until it leaves"
+    }
   },
   "tripQuestions": {
     "title": "For this trip",
@@ -1669,7 +1680,18 @@
     "arrivalAirport": "Arrival airport",
     "departureAirport": "Departure airport",
     "airportPlaceholder": "e.g. Zurich Airport",
-    "timeInvalid": "Enter the time like 14:30."
+    "timeInvalid": "Enter the time like 14:30.",
+    "travelMode": "How are you getting there?",
+    "travelModes": {
+      "flight": "Plane",
+      "car": "Car",
+      "train": "Train",
+      "bus": "Bus",
+      "ferry": "Ship",
+      "undecided": "Not decided"
+    },
+    "moreDetails": "More details (hotels, times, notes)",
+    "lessDetails": "Fewer details"
   },
   "flex": {
     "other": "Other",
@@ -1881,5 +1903,20 @@
     "step4": "Fitting everything around your bookings…",
     "step5": "Adding the final touches…",
     "hint": "Your trip opens automatically when it is ready."
+  },
+  "deals": {
+    "title": "Deals from {{city}}",
+    "subtitle": "Lowest fares found for the coming months",
+    "from": "from {{price}}",
+    "viewFlight": "See flight",
+    "plan": "Plan trip",
+    "change": "Change",
+    "setCity": "Choose where you live",
+    "setCityBody": "We'll show the cheapest flights from your city.",
+    "priceNote": "Prices are samples from booking sites and can change."
+  },
+  "homeCity": {
+    "title": "Where do you live?",
+    "current": "Now: {{city}}"
   }
 }

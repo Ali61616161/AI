@@ -97,5 +97,11 @@ jobs:
             elif echo "$run" | jq -e '.configured == false' >/dev/null 2>&1; then sum "- ⚠️ Fiyat takibi: TRAVELPAYOUTS_TOKEN tanımlı değil, kontrol atlandı"
             else sum "- ❌ Fiyat takibi: fiyat okunamadı (sağlayıcı yanıtı boş ya da reddetti; yukarıdaki yanıta bak)"; fi
           else sum "- ❌ Fiyat takibi kaydı eklenemedi — HTTP $code $(head -c 200 /tmp/watch.json)"; fi
+          # Fırsatlar: yaşanılan şehirden en ucuz biletler (yalnızca kalkış şehri verilir).
+          code=$(call deals '{"city":"Istanbul","currency":"EUR","language":"tr"}')
+          n=$(jq -r '(.deals | length) // 0' /tmp/out.json 2>/dev/null || echo 0)
+          if [ "$code" = 200 ] && [ "${n:-0}" -gt 0 ]; then sum "- ✅ Fırsatlar (İstanbul'dan en ucuz uçuşlar) — $n yer, ilki: $(jq -r '"\(.deals[0].city) \(.deals[0].price) \(.currency)"' /tmp/out.json | head -c 80)"
+          elif [ "$code" = 200 ]; then sum "- ❌ Fırsatlar: istek geçti ama liste boş (kalkış şehri tek başına sorgu sonuç vermiyor olabilir) $(head -c 200 /tmp/out.json)"
+          else sum "- ❌ Fırsatlar — HTTP $code $(head -c 200 /tmp/out.json)"; fi
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
           check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'

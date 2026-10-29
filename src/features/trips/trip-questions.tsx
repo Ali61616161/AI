@@ -1,10 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getLocales } from 'expo-localization';
+import { useState, type ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
+import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { DateField, TimeField } from '@/components/ui/date-field';
 import { TextField } from '@/components/ui/text-field';
@@ -13,12 +15,21 @@ import { useSessionStore } from '@/stores/session-store';
 import { Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-import { emptyHotel, isBlankOrClock, MAX_HOTELS, NOTES_MAX, type LocalTransport, type NormalizedAnswers, type TripAnswers } from './trip-answers';
+import { asksFlightTimes, emptyHotel, isBlankOrClock, MAX_HOTELS, NOTES_MAX, toggleTravelMode, type LocalTransport, type NormalizedAnswers, type TravelMode, type TripAnswers } from './trip-answers';
 
 const TRANSPORTS: { value: LocalTransport; icon: 'train-outline' | 'car-outline' | 'swap-horizontal-outline' }[] = [
   { value: 'transit', icon: 'train-outline' },
   { value: 'car', icon: 'car-outline' },
   { value: 'mixed', icon: 'swap-horizontal-outline' },
+];
+
+const TRAVEL_MODE_CHIPS: { value: TravelMode; icon: ComponentProps<typeof Ionicons>['name'] }[] = [
+  { value: 'flight', icon: 'airplane-outline' },
+  { value: 'car', icon: 'car-outline' },
+  { value: 'train', icon: 'train-outline' },
+  { value: 'bus', icon: 'bus-outline' },
+  { value: 'ferry', icon: 'boat-outline' },
+  { value: 'undecided', icon: 'help-circle-outline' },
 ];
 
 /** Varsayılan cevaplar: profildeki tercihler; para birimi cihazın yerel para birimi. */
@@ -53,6 +64,7 @@ export function useDefaultTripAnswers(): TripAnswers {
     currency: getLocales()[0]?.currencyCode ?? 'USD',
     interests: preferences.interests,
     transport: 'mixed',
+    travelModes: [],
     notes: '',
     hotels: [],
     arrivalTime: '',
@@ -80,6 +92,10 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
   const { t } = useTranslation();
   const { colors } = useTheme();
   const set = (patch: Partial<TripAnswers>) => onChange({ ...value, ...patch });
+  // Ayrıntılar (şehir içi ulaşım, oteller, uçuş saatleri, not) kapalı başlar; doldurulmuşsa ya da hatalıysa açık görünür.
+  const [showMore, setShowMore] = useState(false);
+  const hasDetails = value.hotels.length > 0 || value.notes.trim() !== '' || value.arrivalTime !== '' || value.departureTime !== '' || value.arrivalAirport !== '' || value.departureAirport !== '' || value.transport !== 'mixed';
+  const open = showMore || hasDetails || Boolean(errors?.hotelError) || Boolean(errors?.timeError);
   const toggleInterest = (i: string) => set({ interests: value.interests.includes(i) ? value.interests.filter((x) => x !== i) : [...value.interests, i] });
   const setHotel = (index: number, patch: Partial<TripAnswers['hotels'][number]>) => set({ hotels: value.hotels.map((h, i) => (i === index ? { ...h, ...patch } : h)) });
 
@@ -91,6 +107,12 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
           {t('tripQuestions.subtitle')}
         </Text>
       </View>
+
+      <Group label={t('tripQuestions.travelMode')}>
+        {TRAVEL_MODE_CHIPS.map((m) => (
+          <Chip key={m.value} icon={m.icon} label={t(`tripQuestions.travelModes.${m.value}`)} selected={value.travelModes.includes(m.value)} onPress={() => set({ travelModes: toggleTravelMode(value.travelModes, m.value) })} />
+        ))}
+      </Group>
 
       <Group label={t('tripQuestions.companion')}>
         {COMPANIONS.map((c) => (
@@ -123,15 +145,25 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
         </View>
       )}
 
-      <Group label={t('tripQuestions.transport')}>
-        {TRANSPORTS.map((x) => (
-          <Chip key={x.value} icon={x.icon} label={t(`tripQuestions.transports.${x.value}`)} selected={value.transport === x.value} onPress={() => set({ transport: x.value })} />
-        ))}
-      </Group>
-
       <Group label={t('tripQuestions.interests')}>
         {INTERESTS.map((i) => (
           <Chip key={i.value} icon={i.icon} label={t(`interest.${i.value}` as 'interest.art')} selected={value.interests.includes(i.value)} onPress={() => toggleInterest(i.value)} />
+        ))}
+      </Group>
+
+      <Tap accessibilityRole="button" accessibilityState={{ expanded: open }} onPress={() => setShowMore((v) => !v)} feedback="select">
+        <View style={styles.moreRow}>
+          <Text variant="bodyStrong" color="primary" style={styles.flex}>
+            {open ? t('tripQuestions.lessDetails') : t('tripQuestions.moreDetails')}
+          </Text>
+          <Ionicons name={open ? 'chevron-up' : 'chevron-down'} size={20} color={colors.primary} />
+        </View>
+      </Tap>
+      {open && (
+        <View style={styles.wrap}>
+      <Group label={t('tripQuestions.transport')}>
+        {TRANSPORTS.map((x) => (
+          <Chip key={x.value} icon={x.icon} label={t(`tripQuestions.transports.${x.value}`)} selected={value.transport === x.value} onPress={() => set({ transport: x.value })} />
         ))}
       </Group>
 
@@ -169,6 +201,7 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
         {value.hotels.length < MAX_HOTELS && <Button title={t('tripQuestions.addHotel')} variant="secondary" icon="add" onPress={() => set({ hotels: [...value.hotels, emptyHotel()] })} />}
       </View>
 
+      {asksFlightTimes(value.travelModes) && (
       <View style={styles.section}>
         <Text variant="subtitle">{t('tripQuestions.flightTimesTitle')}</Text>
         <Text variant="caption" color="textSecondary">
@@ -176,6 +209,7 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
         </Text>
         <TripTimeFields value={value} onChange={set} timeError={errors?.timeError ?? false} />
       </View>
+      )}
 
       <TextField
         label={t('tripQuestions.notes')}
@@ -187,6 +221,8 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
         maxLength={NOTES_MAX}
         style={styles.notes}
       />
+        </View>
+      )}
     </View>
   );
 }
@@ -213,4 +249,5 @@ const styles = StyleSheet.create({
   notes: { minHeight: 140, textAlignVertical: 'top' },
   timeRow: { flexDirection: 'row', gap: Spacing.md },
   timeCol: { flex: 1 },
+  moreRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.sm },
 });

@@ -4,6 +4,9 @@ import { localToUtcIso } from '../../../supabase/functions/_shared/documents.ts'
 export type Companion = 'solo' | 'couple' | 'family' | 'friends';
 export type BudgetChoice = 'low' | 'mid' | 'lux' | 'custom';
 export type LocalTransport = 'transit' | 'car' | 'mixed';
+/** Gidilen yere ulaşım türü; 'undecided' = henüz karar verilmedi. */
+export type TravelMode = 'flight' | 'car' | 'train' | 'bus' | 'ferry' | 'undecided';
+export const TRAVEL_MODES: readonly TravelMode[] = ['flight', 'car', 'train', 'bus', 'ferry', 'undecided'];
 export type BudgetTier = 'low' | 'mid' | 'lux';
 
 export const NOTES_MAX = 1000;
@@ -20,6 +23,8 @@ export type TripAnswers = {
   currency: string;
   interests: string[];
   transport: LocalTransport;
+  /** Gidilen yere nasıl ulaşılacak (birden fazla olabilir). */
+  travelModes: TravelMode[];
   notes: string;
   hotels: HotelInput[];
   /** Gidilen ülkeye iniş / dönüş uçuşu kalkış saati (yerel, HH:MM) ve havalimanları; hepsi isteğe bağlı. */
@@ -85,6 +90,18 @@ export function hotelIssue(h: HotelInput): HotelIssue | 'empty' {
   return null;
 }
 
+/**
+ * Ulaşım seçimi: "karar vermedim" diğerleriyle birlikte tutulmaz (seçilince diğerleri kalkar, bir tür seçilince o kalkar).
+ */
+export function toggleTravelMode(current: readonly TravelMode[], mode: TravelMode): TravelMode[] {
+  if (mode === 'undecided') return current.includes('undecided') ? [] : ['undecided'];
+  const rest = current.filter((m) => m !== 'undecided');
+  return rest.includes(mode) ? rest.filter((m) => m !== mode) : [...rest, mode];
+}
+
+/** Uçuş saati/havalimanı soruları yalnızca uçakla gidiliyorsa (ya da hiçbir şey seçilmediyse) anlamlıdır. */
+export const asksFlightTimes = (modes: readonly TravelMode[]): boolean => modes.length === 0 || modes.includes('flight');
+
 export type NormalizedAnswers = {
   budgetTier: BudgetTier;
   /** Kişi başı günlük tutar ve para birimi; yalnızca "Diğer" bütçe seçilip geçerli tutar girildiyse. */
@@ -94,6 +111,7 @@ export type NormalizedAnswers = {
   /** İlk hatalı otel satırının sırası ve nedeni; yoksa null. */
   hotelError: { index: number; issue: Exclude<HotelIssue, null> } | null;
   budgetError: boolean;
+  travelModes: TravelMode[];
   arrivalTime: string | null;
   departureTime: string | null;
   arrivalAirport: string | null;
@@ -120,6 +138,7 @@ export function normalizeAnswers(a: TripAnswers): NormalizedAnswers {
     hotels,
     hotelError,
     budgetError: custom && (amount === null || !isCurrencyCode(a.currency)),
+    travelModes: TRAVEL_MODES.filter((m) => a.travelModes.includes(m)),
     arrivalTime: parseClock(a.arrivalTime),
     departureTime: parseClock(a.departureTime),
     arrivalAirport: a.arrivalAirport.trim().slice(0, 120) || null,

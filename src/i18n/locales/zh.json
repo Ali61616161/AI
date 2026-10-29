@@ -47,7 +47,8 @@
     "assistant": "助手",
     "social": "社交",
     "profile": "我的",
-    "explore": "探索"
+    "explore": "探索",
+    "live": "实时"
   },
   "auth": {
     "signInTitle": "登录你的账户",
@@ -320,7 +321,8 @@
     "tripPlaceholder": "选择行程",
     "settingsUpdated": "行程设置已更新。",
     "suggestionAsk": "明天做什么？",
-    "suggestionChange": "把第二天安排得更省钱、更轻松"
+    "suggestionChange": "把第二天安排得更省钱、更轻松",
+    "askBar": "问问 Yola…"
   },
   "ticket": {
     "title": "上传机票或酒店",
@@ -387,7 +389,8 @@
     "bus": "巴士",
     "car_rental": "租车",
     "event": "活动",
-    "other": "其他"
+    "other": "其他",
+    "ferry": "渡轮 / 轮船"
   },
   "trip": {
     "destinations": "站点",
@@ -400,7 +403,9 @@
     "versions": "计划历史",
     "delete": "删除行程",
     "deleteTitle": "删除“{{title}}”？",
-    "deleteBody": "行程将连同预订、计划和开销一并永久删除。"
+    "deleteBody": "行程将连同预订、计划和开销一并永久删除。",
+    "more": "行程设置",
+    "assistant": "助手"
   },
   "plan": {
     "title": "路线",
@@ -1590,7 +1595,13 @@
     },
     "timelineTitle": "路线",
     "expand": "显示更多",
-    "collapse": "收起"
+    "collapse": "收起",
+    "route": {
+      "title": "前往方式",
+      "departed": "已出发",
+      "now": "现在",
+      "leavesIn": "后出发"
+    }
   },
   "tripQuestions": {
     "title": "关于这次旅行",
@@ -1631,7 +1642,18 @@
     "arrivalAirport": "抵达机场",
     "departureAirport": "出发机场",
     "airportPlaceholder": "例如 苏黎世机场",
-    "timeInvalid": "请按 14:30 的格式填写时间。"
+    "timeInvalid": "请按 14:30 的格式填写时间。",
+    "travelMode": "你怎么去？",
+    "travelModes": {
+      "flight": "飞机",
+      "car": "汽车",
+      "train": "火车",
+      "bus": "大巴",
+      "ferry": "轮船",
+      "undecided": "还没决定"
+    },
+    "moreDetails": "更多细节（酒店、时间、备注）",
+    "lessDetails": "收起细节"
   },
   "flex": {
     "other": "其他",
@@ -1842,5 +1864,20 @@
     "step4": "正在围绕你的预订安排行程…",
     "step5": "最后润色…",
     "hint": "准备好后行程会自动打开。"
+  },
+  "deals": {
+    "title": "从{{city}}出发的优惠",
+    "subtitle": "未来几个月找到的最低票价",
+    "from": "{{price}}起",
+    "viewFlight": "查看航班",
+    "plan": "规划行程",
+    "change": "更改",
+    "setCity": "选择你居住的城市",
+    "setCityBody": "我们会显示从你所在城市出发的最低票价。",
+    "priceNote": "价格为预订网站的示例，可能会变动。"
+  },
+  "homeCity": {
+    "title": "你住在哪里？",
+    "current": "当前：{{city}}"
   }
 }

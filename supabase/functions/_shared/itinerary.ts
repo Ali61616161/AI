@@ -13,7 +13,7 @@ const AI_KINDS: ItemKind[] = ['activity', 'meal', 'transport', 'free_time'];
 
 export type TripReservation = {
   id: string;
-  type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
+  type: 'flight' | 'hotel' | 'train' | 'bus' | 'ferry' | 'car_rental' | 'event' | 'other';
   title: string;
   starts_at: string;
   ends_at: string | null;
@@ -38,6 +38,8 @@ export type TripContext = {
   currency: string;
   /** Şehir içi ulaşım: toplu taşıma, araba veya karışık (varsayılan). */
   local_transport?: 'transit' | 'car' | 'mixed';
+  /** Gidilen yere ulaşım türleri (flight, car, train, bus, ferry, undecided); boşsa bilinmiyor. */
+  travel_modes?: string[];
   /** Kullanıcının seyahati anlattığı serbest not (en fazla 1000 karakter). */
   notes?: string | null;
   /** Kişi başı günlük bütçe (currency cinsinden); doluysa bütçe düzeyi yerine bu kullanılır. */
@@ -196,6 +198,7 @@ export function fixedItemsByDate(dates: string[], reservations: TripReservation[
       case 'flight':
       case 'train':
       case 'bus':
+      case 'ferry':
         add(start, fixedItem({ kind: 'transport', title: r.title, start_time: start.slice(11), end_time: sameDayEnd, place_name: r.origin_name, reservation_id: r.id, timezone: startTz }));
         break;
       default:
@@ -271,8 +274,15 @@ export function cleanNote(value: unknown, max = 1000): string | null {
  * Seyahat kurulurken verilen cevapların plan kuralları: şehir içi ulaşım türü, kişi başı günlük
  * bütçe (tutar verilmişse bütçe düzeyinin yerine geçer) ve kullanıcının serbest notu.
  */
-export function tripAnswerRules(ctx: Pick<TripContext, 'local_transport' | 'notes' | 'daily_budget' | 'currency'>): string[] {
+export function tripAnswerRules(ctx: Pick<TripContext, 'local_transport' | 'notes' | 'daily_budget' | 'currency' | 'travel_modes'>): string[] {
   const rules: string[] = [];
+  const modes = ctx.travel_modes ?? [];
+  if (modes.includes('car')) {
+    rules.push('The traveler reaches the destination by their own car: mention parking near the hotel and at sights where it matters, and keep the first and last day free of long detours so the drive does not run into the plans.');
+  }
+  if (modes.some((m) => m === 'train' || m === 'bus' || m === 'ferry') && !modes.includes('flight')) {
+    rules.push('The traveler arrives and leaves by train, bus or ferry (station or port, usually near the centre): there are no airport formalities, so the first day can start soon after arrival and the last day can run until shortly before departure.');
+  }
   if (ctx.local_transport === 'car') {
     rules.push('The traveler gets around by car: group places by area to limit driving, mention parking where it matters, and day trips or sights outside the centre are fine when worth it.');
   } else if (ctx.local_transport === 'transit') {
@@ -303,8 +313,11 @@ const airportText = (name: string | null | undefined) => (name?.trim() ? ` (${cl
  *  - İlk gün: inişten sonra 2 saat (pasaport, bagaj, şehre geçiş) hiçbir şey planlanmaz.
  *  - Son gün: kalkıştan 4 saat önce (havalimanında 3 saat + yol 1 saat) her şey biter.
  */
-export function tripTimingRules(ctx: Pick<TripContext, 'start_date' | 'end_date' | 'arrival_time' | 'departure_time' | 'arrival_airport' | 'departure_airport' | 'airport_transfer_min'>, dates: string[]): string[] {
+export function tripTimingRules(ctx: Pick<TripContext, 'start_date' | 'end_date' | 'arrival_time' | 'departure_time' | 'arrival_airport' | 'departure_airport' | 'airport_transfer_min' | 'travel_modes'>, dates: string[]): string[] {
   const rules: string[] = [];
+  // Uçakla gidilmiyorsa (araba, tren, otobüs, gemi) havalimanı payları uygulanmaz.
+  const modes = ctx.travel_modes ?? [];
+  if (modes.length > 0 && !modes.includes('flight') && !modes.includes('undecided')) return rules;
   const arrival = clockMinutes(ctx.arrival_time);
   if (arrival !== null && dates.includes(ctx.start_date)) {
     rules.push(

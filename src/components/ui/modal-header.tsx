@@ -1,8 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { goBack } from '@/lib/go-back';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -26,7 +26,7 @@ export function ModalHeader({ title, subtitle, overline }: { title: string; subt
         <Tap
           accessibilityRole="button"
           accessibilityLabel={t('common.close')}
-          onPress={() => router.back()}
+          onPress={goBack}
           hitSlop={12}
           feedback="select"
           style={[styles.close, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>

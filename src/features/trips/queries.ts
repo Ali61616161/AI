@@ -105,7 +105,7 @@ export function useTrip(tripId: string | undefined) {
 
 export type TripReservation = {
   id: string;
-  type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
+  type: 'flight' | 'hotel' | 'train' | 'bus' | 'ferry' | 'car_rental' | 'event' | 'other';
   title: string;
   provider_name: string | null;
   reference_code: string | null;
@@ -165,6 +165,7 @@ export async function applyTripAnswers(tripId: string, answers: TripAnswers, tri
       .from('trips')
       .update({
         local_transport: answers.transport,
+        travel_modes: n.travelModes,
         notes: n.notes,
         arrival_time: n.arrivalTime,
         departure_time: n.departureTime,

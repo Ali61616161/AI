@@ -1,5 +1,4 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { router } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -8,22 +7,31 @@ import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { Radius, Spacing } from '@/theme/tokens';
 
+import { goBack } from '@/lib/go-back';
+
 import { CityArt } from './city-art';
 
 type Action = { icon: ComponentProps<typeof Ionicons>['name']; label: string; onPress: () => void };
 
 /** Seyahat detayının üstü: şehir görseli, başlık, tarihler ve yuvarlak eylem düğmeleri. */
-export function TripHero({ id, city, title, subtitle, actions }: { id: string; city: string; title: string; subtitle: string; actions: Action[] }) {
+export function TripHero({ id, city, title, subtitle, actions = [], onMore }: { id: string; city: string; title: string; subtitle: string; actions?: Action[]; onMore?: () => void }) {
   const { t } = useTranslation();
   return (
     <View style={styles.hero}>
       <CityArt seed={city} id={`hero${id}`} />
       <View style={styles.top}>
-        <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={() => router.back()} feedback="select" hitSlop={10}>
+        <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={goBack} feedback="select" hitSlop={10}>
           <View style={styles.glassBtn}>
             <Ionicons name="chevron-down" size={20} color="#FFFFFF" />
           </View>
         </Tap>
+        {onMore && (
+          <Tap accessibilityRole="button" accessibilityLabel={t('trip.more')} onPress={onMore} feedback="select" hitSlop={10}>
+            <View style={styles.glassBtn}>
+              <Ionicons name="ellipsis-horizontal" size={20} color="#FFFFFF" />
+            </View>
+          </Tap>
+        )}
       </View>
       <View style={styles.bottom}>
         <Text variant="hero" numberOfLines={2} style={styles.white}>
@@ -51,7 +59,7 @@ export function TripHero({ id, city, title, subtitle, actions }: { id: string; c
 
 const styles = StyleSheet.create({
   hero: { minHeight: 250, borderRadius: Radius.xl, overflow: 'hidden', padding: Spacing.lg, justifyContent: 'space-between', gap: Spacing.lg },
-  top: { flexDirection: 'row', justifyContent: 'flex-start' },
+  top: { flexDirection: 'row', justifyContent: 'space-between' },
   glassBtn: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.25)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.3)' },
   bottom: { gap: Spacing.xs },
   white: { color: '#FFFFFF' },

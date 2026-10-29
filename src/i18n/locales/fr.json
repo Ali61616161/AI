@@ -47,7 +47,8 @@
     "assistant": "Assistant",
     "social": "Social",
     "profile": "Profil",
-    "explore": "Explorer"
+    "explore": "Explorer",
+    "live": "En direct"
   },
   "auth": {
     "signInTitle": "Connecte-toi à ton compte",
@@ -322,7 +323,8 @@
     "tripPlaceholder": "Choisir un voyage",
     "settingsUpdated": "Les réglages de ton voyage ont été mis à jour.",
     "suggestionAsk": "Que fait-on demain ?",
-    "suggestionChange": "Rends le jour suivant moins cher et plus tranquille"
+    "suggestionChange": "Rends le jour suivant moins cher et plus tranquille",
+    "askBar": "Demander à Yola…"
   },
   "ticket": {
     "title": "Importer un billet ou un hôtel",
@@ -390,7 +392,8 @@
     "bus": "Bus",
     "car_rental": "Location de voiture",
     "event": "Événement",
-    "other": "Autre"
+    "other": "Autre",
+    "ferry": "Ferry / bateau"
   },
   "trip": {
     "destinations": "Étapes",
@@ -403,7 +406,9 @@
     "versions": "Historique du plan",
     "delete": "Supprimer le voyage",
     "deleteTitle": "Supprimer « {{title}} » ?",
-    "deleteBody": "Le voyage est supprimé définitivement avec ses réservations, son programme et ses dépenses."
+    "deleteBody": "Le voyage est supprimé définitivement avec ses réservations, son programme et ses dépenses.",
+    "more": "Réglages du voyage",
+    "assistant": "Assistant"
   },
   "plan": {
     "title": "Itinéraire",
@@ -1628,7 +1633,13 @@
     },
     "timelineTitle": "Itinéraire",
     "expand": "Voir plus",
-    "collapse": "Voir moins"
+    "collapse": "Voir moins",
+    "route": {
+      "title": "Comment y aller",
+      "departed": "Parti",
+      "now": "Maintenant",
+      "leavesIn": "avant le départ"
+    }
   },
   "tripQuestions": {
     "title": "Pour ce voyage",
@@ -1669,7 +1680,18 @@
     "arrivalAirport": "Aéroport d'arrivée",
     "departureAirport": "Aéroport de départ",
     "airportPlaceholder": "p. ex. Aéroport de Zurich",
-    "timeInvalid": "Écris l'heure comme 14:30."
+    "timeInvalid": "Écris l'heure comme 14:30.",
+    "travelMode": "Comment y allez-vous ?",
+    "travelModes": {
+      "flight": "Avion",
+      "car": "Voiture",
+      "train": "Train",
+      "bus": "Bus",
+      "ferry": "Bateau",
+      "undecided": "Pas décidé"
+    },
+    "moreDetails": "Plus de détails (hôtels, horaires, notes)",
+    "lessDetails": "Moins de détails"
   },
   "flex": {
     "other": "Autre",
@@ -1881,5 +1903,20 @@
     "step4": "Organisation autour de tes réservations…",
     "step5": "Dernières retouches…",
     "hint": "Ton voyage s'ouvre automatiquement quand il est prêt."
+  },
+  "deals": {
+    "title": "Bons plans depuis {{city}}",
+    "subtitle": "Les vols les moins chers des prochains mois",
+    "from": "dès {{price}}",
+    "viewFlight": "Voir le vol",
+    "plan": "Planifier",
+    "change": "Modifier",
+    "setCity": "Choisissez où vous habitez",
+    "setCityBody": "Nous afficherons les vols les moins chers depuis votre ville.",
+    "priceNote": "Les prix sont des exemples issus de sites de réservation et peuvent changer."
+  },
+  "homeCity": {
+    "title": "Où habitez-vous ?",
+    "current": "Actuel : {{city}}"
   }
 }

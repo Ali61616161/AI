@@ -47,6 +47,10 @@ type Params = {
   departAt?: string;
   /** Seyahat: kullanıcı hedeften çok uzaktaysa rota otelden/varış noktasından başlatılır. */
   tripId?: string;
+  /** Canlı görünümde seçilen seçeneğin sırası; rota listesi ona göre açılır. */
+  option?: string;
+  /** Canlı görünümdeki ulaşım türü (walk, transit, drive). */
+  mode?: string;
 };
 
 function point(lat?: string, lng?: string, address?: string): RoutePoint | null {
@@ -63,8 +67,8 @@ export default function RouteScreen() {
   const destination = point(p.toLat, p.toLng, p.toAddress ?? p.toName);
   const given = point(p.fromLat, p.fromLng, p.fromAddress);
   const [here, setHere] = useState<RoutePoint | null | 'denied'>(null);
-  const [modeChoice, setModeChoice] = useState<RouteMode | null>(null);
-  const [selected, setSelected] = useState(0);
+  const [modeChoice, setModeChoice] = useState<RouteMode | null>(() => (p.mode === 'walk' || p.mode === 'transit' || p.mode === 'drive' ? p.mode : null));
+  const [selected, setSelected] = useState(() => (Number.isInteger(Number(p.option)) && Number(p.option) >= 0 ? Number(p.option) : 0));
   const [fromChoice, setFromChoice] = useState<FromChoice | null>(null);
   const [navigating, setNavigating] = useState(false);
   // Gezinirken rotadan çıkılınca rota bu noktadan yeniden hesaplanır.

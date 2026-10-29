@@ -75,7 +75,7 @@ export default function TripDatesScreen() {
     setSaving(true);
     try {
       if (timesChanged) {
-        const n = normalizeAnswers({ companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'USD', interests: [], transport: 'mixed', notes: '', hotels: [], ...timeValues });
+        const n = normalizeAnswers({ companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'USD', interests: [], transport: 'mixed', travelModes: [], notes: '', hotels: [], ...timeValues });
         const { error } = await getSupabase().from('trips').update({ arrival_time: n.arrivalTime, departure_time: n.departureTime, arrival_airport: n.arrivalAirport, departure_airport: n.departureAirport }).eq('id', tripId);
         if (error) throw error;
       }

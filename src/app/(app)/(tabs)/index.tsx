@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
+import { AskYolaBar } from '@/features/assistant/ask-bar';
 import { Button } from '@/components/ui/button';
 import { DirIcon } from '@/components/ui/dir-icon';
 import { Card } from '@/components/ui/card';
@@ -26,6 +27,7 @@ import { Gradients, Motion, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 import { NativeAdCard } from '@/features/ads/native-ad-card';
 import { MyCitySection } from '@/features/city/my-city-section';
+import { DealsSection } from '@/features/deals/deals-section';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -79,6 +81,12 @@ export default function TodayScreen() {
 
       <PendingTripInvites />
 
+      {nextTrip && (
+        <Animated.View entering={enter(1)}>
+          <AskYolaBar tripId={nextTrip.id} />
+        </Animated.View>
+      )}
+
       {/* Seyahat yoksa ya da çok uzaktaysa: iki ana özellik. 15 günden az kalınca özet, sürerken "Bugün". */}
       {nextTrip ? (
         <Animated.View entering={enter(1)}>
@@ -128,6 +136,13 @@ export default function TodayScreen() {
               </View>
             </Tap>
           ))}
+        </Animated.View>
+      )}
+
+      {/* Seyahat yokken ya da çok uzaktayken: yaşanılan şehirden en ucuz uçuş fırsatları. */}
+      {(!nextTrip || phase === 'far') && (
+        <Animated.View entering={enter(2)}>
+          <DealsSection />
         </Animated.View>
       )}
 

@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -42,13 +43,15 @@ type Props = {
   onSkip: () => void;
   onDirections: () => void;
   onDetails?: () => void;
+  /** Başlık altında gösterilecek ek içerik (ör. güzergah seçenekleri). */
+  extra?: ReactNode;
 };
 
 /**
  * Canlı görünümün tek odağı: şu an ya da sıradaki durak. Büyük tek düğme günü ilerletir:
  * yola çık → vardım → bitirdim; sıradaki durak otomatik odak olur.
  */
-export function LiveHero({ stop, index, total, status, nowMs, timezone, etaMin, etaMode, leaveIn, following, actions, onGo, onArrive, onDone, onUndo, onSkip, onDirections, onDetails }: Props) {
+export function LiveHero({ stop, index, total, status, nowMs, timezone, etaMin, etaMode, leaveIn, following, actions, onGo, onArrive, onDone, onUndo, onSkip, onDirections, onDetails, extra }: Props) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const tone = status === 'here' || status === 'now' ? colors.success : status === 'done' || status === 'skipped' || status === 'past' ? colors.textMuted : colors.primary;
@@ -123,6 +126,8 @@ export function LiveHero({ stop, index, total, status, nowMs, timezone, etaMin, 
           )}
         </View>
       )}
+
+      {extra}
 
       {actions && <Button title={primary.title} icon={primary.icon} onPress={primary.onPress} style={styles.primary} />}
       <View style={styles.row}>

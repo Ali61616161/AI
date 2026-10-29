@@ -9,6 +9,9 @@ import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withSequence, w
 import { useTranslation } from 'react-i18next';
 
 import { Tap } from '@/components/ui/tap';
+import { useTrips } from '@/features/trips/queries';
+import { pickWidgetTrip } from '@/features/widget/build-widget-timeline';
+import { todayIsoDate } from '@/lib/format';
 import { Text } from '@/components/ui/text';
 import { Gradients, Motion, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -27,13 +30,15 @@ const ORB = 58;
 
 /**
  * Yüzen cam alt menü. Seçili sekmenin arkasında yayla kayan bir ışık vardır; ortadaki
- * parlayan düğme her ekrandan "Planı Değiştir" asistanını açar.
+ * parlayan düğme "Canlı": sürmekte olan seyahatin günü yöneten ekranını açar (seyahat yaklaşıyorsa seyahat
+ * ekranını, hiç seyahat yoksa Seyahatler sekmesini).
  */
 export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
   const { colors, isDark } = useTheme();
   const { t } = useTranslation();
   const middle = Math.ceil(state.routes.length / 2);
   const [tabWidth, setTabWidth] = useState(0);
+  const { data: trips } = useTrips();
   const slot = state.index < middle ? state.index : state.index + 1; // ortadaki düğme bir yuva kaplar
   const x = useSharedValue(0);
   const glow = useSharedValue(0.4);
@@ -44,6 +49,16 @@ export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarP
   useEffect(() => {
     glow.set(withRepeat(withSequence(withTiming(0.75, { duration: 1600 }), withTiming(0.4, { duration: 1600 })), -1));
   }, [glow]);
+
+  const openLive = () => {
+    const trip = pickWidgetTrip(trips);
+    if (!trip) {
+      navigation.navigate('trips');
+      return;
+    }
+    if (trip.start_date && trip.start_date <= todayIsoDate()) router.push({ pathname: '/trip-live', params: { tripId: trip.id } });
+    else router.push({ pathname: '/trip/[id]', params: { id: trip.id } });
+  };
 
   const indicator = useAnimatedStyle(() => ({ transform: [{ translateX: x.get() }] }));
   const orbGlow = useAnimatedStyle(() => ({ shadowOpacity: glow.get() }));
@@ -99,10 +114,10 @@ export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarP
           {tabs.slice(0, middle)}
           <View style={styles.tab}>
             <Animated.View style={[styles.orbShadow, orbGlow]}>
-              <Tap accessibilityRole="button" accessibilityLabel={t('assistant.openAssistant')} onPress={() => router.push('/assistant')} feedback="press" scaleTo={0.9}>
+              <Tap accessibilityRole="button" accessibilityLabel={t('tabs.live')} onPress={openLive} feedback="press" scaleTo={0.9}>
                 <LinearGradient colors={Gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.orb}>
                   <View pointerEvents="none" style={styles.orbShine} />
-                  <Ionicons name="sparkles" size={24} color="#FFFFFF" />
+                  <Ionicons name="navigate" size={24} color="#FFFFFF" />
                 </LinearGradient>
               </Tap>
             </Animated.View>

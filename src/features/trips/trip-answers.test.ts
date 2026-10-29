@@ -1,8 +1,8 @@
 import { assertEquals } from 'jsr:@std/assert@1';
 
-import { emptyHotel, hotelReservationRow, normalizeAnswers, parseAmount, parseClock, type TripAnswers } from './trip-answers.ts';
+import { asksFlightTimes, emptyHotel, hotelReservationRow, normalizeAnswers, parseAmount, parseClock, toggleTravelMode, type TripAnswers } from './trip-answers.ts';
 
-const base: TripAnswers = { companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'TRY', interests: ['art'], transport: 'mixed', notes: '', hotels: [], arrivalTime: '', arrivalAirport: '', departureTime: '', departureAirport: '' };
+const base: TripAnswers = { companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'TRY', interests: ['art'], transport: 'mixed', travelModes: [], notes: '', hotels: [], arrivalTime: '', arrivalAirport: '', departureTime: '', departureAirport: '' };
 
 Deno.test('parseAmount: farklı yazım biçimleri', () => {
   assertEquals(parseAmount('120'), 120);
@@ -63,4 +63,22 @@ Deno.test('saat: yaygın yazımlar HH:MM olur, geçersizler hata verir', () => {
   assertEquals(normalizeAnswers({ ...base, arrivalTime: '99' }).timeError, true);
   assertEquals(normalizeAnswers({ ...base }).timeError, false);
   assertEquals(normalizeAnswers({ ...base, arrivalAirport: '  Zürich Airport ' }).arrivalAirport, 'Zürich Airport');
+});
+
+Deno.test('ulaşım seçimi: "karar vermedim" tek başına, bir tür seçilince kalkar; tekrar basınca kalkar', () => {
+  assertEquals(toggleTravelMode([], 'flight'), ['flight']);
+  assertEquals(toggleTravelMode(['flight'], 'train'), ['flight', 'train']);
+  assertEquals(toggleTravelMode(['flight', 'train'], 'flight'), ['train']);
+  assertEquals(toggleTravelMode(['flight', 'train'], 'undecided'), ['undecided']);
+  assertEquals(toggleTravelMode(['undecided'], 'car'), ['car']);
+  assertEquals(toggleTravelMode(['undecided'], 'undecided'), []);
+  // uçuş saati soruları yalnızca uçakla (ya da seçimsiz) sorulur
+  assertEquals(asksFlightTimes([]), true);
+  assertEquals(asksFlightTimes(['flight', 'car']), true);
+  assertEquals(asksFlightTimes(['car']), false);
+  assertEquals(asksFlightTimes(['train', 'ferry']), false);
+});
+
+Deno.test('normalizeAnswers: ulaşım türleri sıralı ve yalnızca bilinenler', () => {
+  assertEquals(normalizeAnswers({ ...base, travelModes: ['ferry', 'flight'] }).travelModes, ['flight', 'ferry']);
 });

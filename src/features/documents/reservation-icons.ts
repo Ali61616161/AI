@@ -8,9 +8,10 @@ export const RESERVATION_ICONS: Record<ReservationType, ComponentProps<typeof Io
   hotel: 'bed',
   train: 'train',
   bus: 'bus',
+  ferry: 'boat',
   car_rental: 'car',
   event: 'ticket',
   other: 'document-text',
 };
 
-export const TRANSPORT_TYPES: ReservationType[] = ['flight', 'train', 'bus'];
+export const TRANSPORT_TYPES: ReservationType[] = ['flight', 'train', 'bus', 'ferry'];

@@ -6,6 +6,7 @@ import { ActivityIndicator, ScrollView, StyleSheet, useWindowDimensions, View } 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
+import { AskYolaBar } from '@/features/assistant/ask-bar';
 import { Card } from '@/components/ui/card';
 import { Chip } from '@/components/ui/chip';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -16,7 +17,9 @@ import { freeDayKey } from '@/features/live/drift-logic';
 import { GuidancePanel } from '@/features/live/guidance-panel';
 import { activeStopIndex, daySummary, flowStatuses, remainingIds } from '@/features/live/live-flow';
 import { LiveHero, type LiveStopRow } from '@/features/live/live-hero';
-import { hopBetween } from '@/features/live/live-logic';
+import { hopBetween, leaveInMin } from '@/features/live/live-logic';
+import { clampOption, pickOptions } from '@/features/live/route-options';
+import { RouteOptions } from '@/features/live/route-options-view';
 import { useLiveStore } from '@/features/live/live-store';
 import { LiveMap } from '@/features/live/live-map';
 import { LiveTimeline } from '@/features/live/live-timeline';
@@ -30,6 +33,7 @@ import { DaySelector, openRoute } from '@/features/plan/plan-timeline';
 import { decodePolyline, thin } from '@/features/transport/polyline';
 import { useActivePlan, useTrip } from '@/features/trips/queries';
 import { todayIsoDate } from '@/lib/format';
+import { goBack } from '@/lib/go-back';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -138,12 +142,16 @@ export default function TripLiveScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [arrivedId]);
 
-  // Konumundan odak durağa gerçek güzergah çizgisi (rota zaten süre için isteniyor; ek istek yok).
+  // Konumundan odak durağa güzergah seçenekleri (Moovit tarzı); seçilen seçeneğin çizgisi haritada, süresi kartta.
+  const [routePick, setRoutePick] = useState<{ id: string; index: number } | null>(null);
+  const options = useMemo(() => pickOptions(guidance.etaRoutes, nowMs), [guidance.etaRoutes, nowMs]);
+  const routeIndex = clampOption(routePick && routePick.id === activeId ? routePick.index : 0, options.length);
+  const chosen = options[routeIndex] ?? guidance.etaRoute;
   const guide = useMemo(() => {
-    const polyline = guidance.etaRoute?.polyline;
+    const polyline = chosen?.polyline;
     if (!isToday || !polyline) return null;
     return { coords: thin(decodePolyline(polyline), 400), mode: guidance.etaMode };
-  }, [isToday, guidance.etaRoute?.polyline, guidance.etaMode]);
+  }, [isToday, chosen?.polyline, guidance.etaMode]);
 
   // Tam ekran harita: paneller gizlenir, yalnızca harita ve küçük düğmeler kalır.
   const [fullMap, setFullMap] = useState(false);
@@ -172,7 +180,7 @@ export default function TripLiveScreen() {
     setStep(item.id, 'enroute');
     Haptics.selectionAsync().catch(() => undefined);
     // Başlangıç verilmez: rota ekranı konumundan başlar.
-    openRoute(item, null, city, tripId);
+    openRoute(item, null, city, tripId, { option: String(routeIndex), mode: guidance.etaMode });
   };
   const arrive = (item: LiveStopRow) => {
     setStep(item.id, 'here');
@@ -247,7 +255,7 @@ export default function TripLiveScreen() {
 
       {fullMap && (
         <View style={[styles.fullTop, { top }]} pointerEvents="box-none">
-          <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={() => router.back()} hitSlop={12} feedback="press">
+          <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={goBack} hitSlop={12} feedback="press">
             <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Ionicons name="close" size={20} color={colors.text} />
             </View>
@@ -256,7 +264,7 @@ export default function TripLiveScreen() {
       )}
       <View style={[styles.top, { paddingTop: top }, fullMap && styles.hidden]} pointerEvents={fullMap ? 'none' : 'box-none'} onLayout={(e) => setTopHeight(e.nativeEvent.layout.height)}>
         <View style={styles.titleRow}>
-          <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={() => router.back()} hitSlop={12} feedback="press">
+          <Tap accessibilityRole="button" accessibilityLabel={t('common.close')} onPress={goBack} hitSlop={12} feedback="press">
             <View style={[styles.round, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Ionicons name="close" size={20} color={colors.text} />
             </View>
@@ -374,9 +382,14 @@ export default function TripLiveScreen() {
                   status={selectedStatus}
                   nowMs={nowMs}
                   timezone={selected.timezone ?? timezone}
-                  etaMin={selected.id === activeId ? guidance.etaMin : null}
+                  etaMin={selected.id === activeId ? (chosen?.durationMin ?? guidance.etaMin) : null}
                   etaMode={guidance.etaMode}
-                  leaveIn={selected.id === activeId ? guidance.leaveIn : null}
+                  leaveIn={selected.id === activeId ? (chosen ? leaveInMin(nowMs, chosen.durationMin, selected.starts_at) : guidance.leaveIn) : null}
+                  extra={
+                    isToday && selected.id === activeId && selectedStatus !== 'here' && selectedStatus !== 'done' && selectedStatus !== 'skipped' && options.length > 0 ? (
+                      <RouteOptions routes={options} selected={routeIndex} nowMs={nowMs} onSelect={(index) => activeId && setRoutePick({ id: activeId, index })} />
+                    ) : undefined
+                  }
                   following={stops[selectedIndex + 1] ?? null}
                   actions={readOnlyActions}
                   onGo={() => go(selected)}
@@ -417,6 +430,8 @@ export default function TripLiveScreen() {
                 {rearranged === 'ok' ? t('live.guidance.rearranged') : t('live.guidance.rearrangeFailed')}
               </Text>
             )}
+
+            {canEdit && <AskYolaBar tripId={tripId} />}
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.quick}>
               {isToday && <Chip icon="cafe-outline" label={t('live.nearby')} onPress={() => router.dismissTo('/explore')} />}

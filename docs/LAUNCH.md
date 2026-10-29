@@ -63,6 +63,8 @@ Google Flights uçuş), ama komisyon kazanılmaz. Ortaklık programına kabul ed
 |---|---|---|
 | `AERODATABOX_KEY` (Supabase sırrı) | Uçuş durumu ve gecikme/iptal bildirimi | RapidAPI → AeroDataBox (BASIC ücretsiz); `x-rapidapi-key` değeri |
 | `TRAVELPAYOUTS_TOKEN` (Supabase sırrı) | Uçak bileti fiyat takibi (6 saatte bir kontrol) | travelpayouts.com (ücretsiz kayıt) → Profil → API token. Yoksa takip kaydedilir ama kontrol yapılmaz |
+| `TRAVELPAYOUTS_MARKER` (Supabase sırrı) | Bugün sekmesindeki "fırsatlar" bilet bağlantılarına ortak numarası eklenir (komisyon) | Travelpayouts paneli → Profil → "Marker" (herkese açık bir sayı). Yoksa bağlantı düz açılır |
+| `AFFILIATE_BOOKING_URL` (Supabase sırrı) | Otel bağlantılarına ortaklık kimliği | Booking.com ortaklık paneli (ya da Awin/Travelpayouts) → arama bağlantısı şablonu; `{query} {checkin} {checkout} {adults} {children} {lang}` yer tutucuları. Yoksa düz arama bağlantısı |
 | `EXPO_PUBLIC_AFFILIATE_AIRALO`, `EXPO_PUBLIC_AFFILIATE_HOLAFLY`, `EXPO_PUBLIC_AFFILIATE_SAILY` (EAS değişkeni) | eSIM kartındaki bağlantılara komisyon | Ortaklık panelindeki "deep link" şablonu, hedef adres yerine `{url}` yazılmış (ör. `https://airalo.pxf.io/c/123/456/789?u={url}`). Yoksa düz bağlantı açılır |
 
 Bildirimler (uçuş + fiyat) yalnızca `ENABLE_PUSH=1` ile derlenen sürümde çalışır (`production-push` profili).

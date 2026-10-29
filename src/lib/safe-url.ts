@@ -24,3 +24,10 @@ export function isGoogleMapsUrl(url: unknown): url is string {
 export function isAllowedNotificationPath(path: unknown): path is string {
   return typeof path === 'string' && /^\/(trip\/[0-9a-f-]{36}|trip-live\?tripId=[0-9a-f-]{36}(&day=\d+)?|trip-ended\?tripId=[0-9a-f-]{36}|price-watch)$/i.test(path);
 }
+
+/** Fırsat bağlantısı: yalnızca bilet sitesi (Aviasales); sunucudan gelen adres başka siteye gitmesin. */
+export function isDealUrl(url: unknown): url is string {
+  if (!isHttpsUrl(url)) return false;
+  const host = new URL(url).hostname.toLowerCase();
+  return host === 'aviasales.com' || host.endsWith('.aviasales.com');
+}

@@ -47,7 +47,8 @@
     "assistant": "Asistan",
     "social": "Sosyal",
     "profile": "Profil",
-    "explore": "Keşfet"
+    "explore": "Keşfet",
+    "live": "Canlı"
   },
   "auth": {
     "signInTitle": "Hesabına giriş yap",
@@ -322,7 +323,8 @@
     "tripPlaceholder": "Seyahat seç",
     "settingsUpdated": "Seyahat ayarların güncellendi.",
     "suggestionAsk": "Yarın ne yapıyoruz?",
-    "suggestionChange": "Bir sonraki günü daha ucuz ve rahat yap"
+    "suggestionChange": "Bir sonraki günü daha ucuz ve rahat yap",
+    "askBar": "Yola'ya sor…"
   },
   "ticket": {
     "title": "Bilet veya otel yükle",
@@ -390,7 +392,8 @@
     "bus": "Otobüs",
     "car_rental": "Araç kiralama",
     "event": "Etkinlik",
-    "other": "Diğer"
+    "other": "Diğer",
+    "ferry": "Feribot / gemi"
   },
   "trip": {
     "destinations": "Duraklar",
@@ -403,7 +406,9 @@
     "versions": "Plan geçmişi",
     "delete": "Seyahati sil",
     "deleteTitle": "“{{title}}” silinsin mi?",
-    "deleteBody": "Seyahat, rezervasyonları, planı ve harcamaları ile birlikte kalıcı olarak silinir."
+    "deleteBody": "Seyahat, rezervasyonları, planı ve harcamaları ile birlikte kalıcı olarak silinir.",
+    "more": "Seyahat ayarları",
+    "assistant": "Asistan"
   },
   "plan": {
     "title": "Rota",
@@ -1628,7 +1633,13 @@
     },
     "timelineTitle": "Rota",
     "expand": "Daha fazla",
-    "collapse": "Daha az"
+    "collapse": "Daha az",
+    "route": {
+      "title": "Nasıl gidilir",
+      "departed": "Kalktı",
+      "now": "Şimdi",
+      "leavesIn": "sonra kalkıyor"
+    }
   },
   "tripQuestions": {
     "title": "Bu seyahat için",
@@ -1669,7 +1680,18 @@
     "arrivalAirport": "Varış havalimanı",
     "departureAirport": "Dönüş havalimanı",
     "airportPlaceholder": "Örn. Zürih Havalimanı",
-    "timeInvalid": "Saati 14:30 gibi yaz."
+    "timeInvalid": "Saati 14:30 gibi yaz.",
+    "travelMode": "Nasıl gidiyorsun?",
+    "travelModes": {
+      "flight": "Uçak",
+      "car": "Araba",
+      "train": "Tren",
+      "bus": "Otobüs",
+      "ferry": "Gemi",
+      "undecided": "Karar vermedim"
+    },
+    "moreDetails": "Daha fazla ayrıntı (otel, saat, not)",
+    "lessDetails": "Daha az ayrıntı"
   },
   "flex": {
     "other": "Diğer",
@@ -1881,5 +1903,20 @@
     "step4": "Her şey rezervasyonlarının etrafına yerleştiriliyor…",
     "step5": "Son dokunuşlar yapılıyor…",
     "hint": "Hazır olunca seyahatin kendiliğinden açılır."
+  },
+  "deals": {
+    "title": "{{city}}'dan fırsatlar",
+    "subtitle": "Önümüzdeki aylar için bulunan en ucuz biletler",
+    "from": "{{price}}'den",
+    "viewFlight": "Uçuşu gör",
+    "plan": "Planla",
+    "change": "Değiştir",
+    "setCity": "Yaşadığın şehri seç",
+    "setCityBody": "Şehrinden kalkan en ucuz uçuşları gösterelim.",
+    "priceNote": "Fiyatlar bilet sitelerinden alınan örneklerdir, değişebilir."
+  },
+  "homeCity": {
+    "title": "Nerede yaşıyorsun?",
+    "current": "Şu an: {{city}}"
   }
 }
