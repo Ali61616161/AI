@@ -1566,7 +1566,10 @@
       "next": "Siguiente",
       "done": "Visitado",
       "skipped": "Omitido",
-      "past": "Pasado"
+      "past": "Pasado",
+      "enroute": "En camino",
+      "here": "Ya estás aquí",
+      "later": "Más tarde"
     },
     "viewList": "Vista de lista",
     "viewCards": "Vista de tarjetas",
@@ -1579,7 +1582,53 @@
     "freeDayThis": "Este día es libre",
     "freeDayNote": "Día libre: preguntas y recordatorios desactivados. El plan sigue visible.",
     "fullMap": "Mapa a pantalla completa",
-    "exitFullMap": "Salir de pantalla completa"
+    "exitFullMap": "Salir de pantalla completa",
+    "dur": {
+      "min": "{{count}} min",
+      "hm": "{{h}} h {{m}} min"
+    },
+    "hero": {
+      "startsIn": "Empieza en {{dur}}",
+      "startedAgo": "Empezó hace {{dur}}",
+      "endsIn": "Quedan {{dur}}",
+      "after": "Siguiente: {{title}} · {{time}}",
+      "lastStop": "Última parada del día"
+    },
+    "act": {
+      "go": "Ir hacia allí",
+      "arrive": "He llegado",
+      "done": "Hecho: siguiente parada",
+      "undo": "Deshacer",
+      "here": "Ya estoy aquí"
+    },
+    "day": {
+      "startTitle": "¿Listo para hoy?",
+      "startBody": "{{count}} paradas · primera: {{title}} a las {{time}}",
+      "startBodyNoFirst": "{{count}} paradas hoy",
+      "start": "Empezar mi día",
+      "endTitle": "¿Qué tal el día?",
+      "summary": "{{done}} visitadas · {{skipped}} omitidas · {{left}} pendientes",
+      "journal": "Escribir en el diario",
+      "expense": "Añadir gastos",
+      "finish": "Terminar el día",
+      "finishEarly": "Terminar el día",
+      "endedTitle": "Día completado 🎉",
+      "endedBody": "{{done}} visitadas · {{skipped}} omitidas",
+      "reopen": "Reabrir el día"
+    },
+    "quick": {
+      "expense": "Añadir gasto",
+      "journal": "Foto / nota",
+      "rearrange": "Reorganizar mi día"
+    },
+    "rain": {
+      "title": "Se espera lluvia hoy ({{pct}} %)",
+      "body": "{{title}} es al aire libre.",
+      "action": "Buscar alternativas en interior"
+    },
+    "timelineTitle": "Ruta",
+    "expand": "Ver más",
+    "collapse": "Ver menos"
   },
   "tripQuestions": {
     "title": "Para este viaje",
@@ -1820,7 +1869,9 @@
     "next": "Próxima parada",
     "now": "Ahora",
     "later_one": "{{count}} parada más",
-    "later_other": "{{count}} paradas más"
+    "later_other": "{{count}} paradas más",
+    "startsIn": "Empieza en",
+    "endsIn": "Termina en"
   },
   "building": {
     "title": "Creando tu viaje",

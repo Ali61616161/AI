@@ -1566,7 +1566,10 @@
       "next": "Ensuite",
       "done": "Visité",
       "skipped": "Passé",
-      "past": "Passé"
+      "past": "Passé",
+      "enroute": "En route",
+      "here": "Vous y êtes",
+      "later": "Plus tard"
     },
     "viewList": "Vue liste",
     "viewCards": "Vue cartes",
@@ -1579,7 +1582,53 @@
     "freeDayThis": "Ce jour est libre",
     "freeDayNote": "Jour libre : questions et rappels désactivés. Le plan reste visible.",
     "fullMap": "Carte en plein écran",
-    "exitFullMap": "Quitter le plein écran"
+    "exitFullMap": "Quitter le plein écran",
+    "dur": {
+      "min": "{{count}} min",
+      "hm": "{{h}} h {{m}} min"
+    },
+    "hero": {
+      "startsIn": "Commence dans {{dur}}",
+      "startedAgo": "Commencé il y a {{dur}}",
+      "endsIn": "Il reste {{dur}}",
+      "after": "Ensuite : {{title}} · {{time}}",
+      "lastStop": "Dernier arrêt de la journée"
+    },
+    "act": {
+      "go": "Y aller",
+      "arrive": "Je suis arrivé",
+      "done": "Terminé : arrêt suivant",
+      "undo": "Annuler",
+      "here": "J'y suis déjà"
+    },
+    "day": {
+      "startTitle": "Prêt pour aujourd'hui ?",
+      "startBody": "{{count}} arrêts · premier : {{title}} à {{time}}",
+      "startBodyNoFirst": "{{count}} arrêts aujourd'hui",
+      "start": "Démarrer ma journée",
+      "endTitle": "Comment s'est passée la journée ?",
+      "summary": "{{done}} visités · {{skipped}} ignorés · {{left}} restants",
+      "journal": "Écrire dans le journal",
+      "expense": "Ajouter des dépenses",
+      "finish": "Terminer la journée",
+      "finishEarly": "Terminer la journée",
+      "endedTitle": "Journée terminée 🎉",
+      "endedBody": "{{done}} visités · {{skipped}} ignorés",
+      "reopen": "Rouvrir la journée"
+    },
+    "quick": {
+      "expense": "Ajouter une dépense",
+      "journal": "Photo / note",
+      "rearrange": "Réorganiser ma journée"
+    },
+    "rain": {
+      "title": "Pluie prévue aujourd'hui ({{pct}} %)",
+      "body": "{{title}} est en plein air.",
+      "action": "Trouver des alternatives en intérieur"
+    },
+    "timelineTitle": "Itinéraire",
+    "expand": "Voir plus",
+    "collapse": "Voir moins"
   },
   "tripQuestions": {
     "title": "Pour ce voyage",
@@ -1820,7 +1869,9 @@
     "next": "Prochaine étape",
     "now": "Maintenant",
     "later_one": "{{count}} étape de plus",
-    "later_other": "{{count}} étapes de plus"
+    "later_other": "{{count}} étapes de plus",
+    "startsIn": "Commence dans",
+    "endsIn": "Se termine dans"
   },
   "building": {
     "title": "Création de ton voyage",

@@ -39,7 +39,7 @@ export async function resetLocalUserData({ signOut = true }: { signOut?: boolean
   await Promise.resolve(persistOptions.persister.removeClient()).catch(() => undefined);
 
   useSessionStore.getState().signOut();
-  useLiveStore.setState({ marks: {}, freeDays: {} });
+  useLiveStore.setState({ marks: {}, steps: {}, freeDays: {}, dayFlags: {} });
   useContactsStore.setState({ contacts: [] });
   useEndedTripStore.setState({ seen: [] });
   await identifyPurchaser(null);

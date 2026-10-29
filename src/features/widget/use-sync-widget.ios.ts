@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { AppState } from 'react-native';
 
 import brand from '@/config/brand.json';
+import { useLiveStore } from '@/features/live/live-store';
 import { useActivePlan, useTrips } from '@/features/trips/queries';
 
 import { buildWidgetTimeline, pickWidgetTrip } from './build-widget-timeline';
@@ -32,6 +33,7 @@ export function useSyncWidget() {
   const { t, i18n } = useTranslation();
   const { data: trips } = useTrips();
   const [foregroundTick, setForegroundTick] = useState(0);
+  const marks = useLiveStore((s) => s.marks);
   const trip = pickWidgetTrip(trips);
   const { data: plan, isPending: planPending } = useActivePlan(trip?.id);
 
@@ -46,10 +48,10 @@ export function useSyncWidget() {
     if (trips === undefined) return; // Oturum yok ya da liste henüz gelmedi: eski içerik kalsın.
     if (trip && planPending) return;
     try {
-      getWidget()?.updateTimeline(buildWidgetTimeline(t, trip, plan, brand.scheme));
+      getWidget()?.updateTimeline(buildWidgetTimeline(t, trip, plan, brand.scheme, new Date(), marks));
     } catch (e) {
       // Widget uzantısı olmayan derlemeler (ör. Expo Go) uygulamayı bozmasın.
       if (__DEV__) console.warn('[widget] update failed', e);
     }
-  }, [t, i18n.language, trips, trip, plan, planPending, foregroundTick]);
+  }, [t, i18n.language, trips, trip, plan, planPending, foregroundTick, marks]);
 }

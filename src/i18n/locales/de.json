@@ -1566,7 +1566,10 @@
       "next": "Als Nächstes",
       "done": "Besucht",
       "skipped": "Übersprungen",
-      "past": "Vorbei"
+      "past": "Vorbei",
+      "enroute": "Unterwegs",
+      "here": "Du bist da",
+      "later": "Später"
     },
     "viewList": "Listenansicht",
     "viewCards": "Kartenansicht",
@@ -1579,7 +1582,53 @@
     "freeDayThis": "Dieser Tag ist frei",
     "freeDayNote": "Freier Tag: Fragen und Erinnerungen sind aus. Der Plan bleibt sichtbar.",
     "fullMap": "Vollbildkarte",
-    "exitFullMap": "Vollbild beenden"
+    "exitFullMap": "Vollbild beenden",
+    "dur": {
+      "min": "{{count}} Min.",
+      "hm": "{{h}} Std. {{m}} Min."
+    },
+    "hero": {
+      "startsIn": "Beginnt in {{dur}}",
+      "startedAgo": "Vor {{dur}} gestartet",
+      "endsIn": "Noch {{dur}}",
+      "after": "Als Nächstes: {{title}} · {{time}}",
+      "lastStop": "Letzter Halt des Tages"
+    },
+    "act": {
+      "go": "Losgehen",
+      "arrive": "Ich bin angekommen",
+      "done": "Fertig – nächster Halt",
+      "undo": "Rückgängig",
+      "here": "Ich bin schon da"
+    },
+    "day": {
+      "startTitle": "Bereit für heute?",
+      "startBody": "{{count}} Stopps · zuerst: {{title}} um {{time}}",
+      "startBodyNoFirst": "{{count}} Stopps heute",
+      "start": "Tag starten",
+      "endTitle": "Wie war dein Tag?",
+      "summary": "{{done}} besucht · {{skipped}} übersprungen · {{left}} übrig",
+      "journal": "Ins Tagebuch schreiben",
+      "expense": "Ausgaben hinzufügen",
+      "finish": "Tag beenden",
+      "finishEarly": "Tag beenden",
+      "endedTitle": "Tag geschafft 🎉",
+      "endedBody": "{{done}} besucht · {{skipped}} übersprungen",
+      "reopen": "Tag wieder öffnen"
+    },
+    "quick": {
+      "expense": "Ausgabe hinzufügen",
+      "journal": "Foto / Notiz",
+      "rearrange": "Meinen Tag neu ordnen"
+    },
+    "rain": {
+      "title": "Heute Regen erwartet ({{pct}} %)",
+      "body": "{{title}} ist im Freien.",
+      "action": "Indoor-Alternativen finden"
+    },
+    "timelineTitle": "Route",
+    "expand": "Mehr anzeigen",
+    "collapse": "Weniger anzeigen"
   },
   "tripQuestions": {
     "title": "Für diese Reise",
@@ -1820,7 +1869,9 @@
     "next": "Nächster Halt",
     "now": "Jetzt",
     "later_one": "{{count}} weiterer Halt",
-    "later_other": "{{count}} weitere Halte"
+    "later_other": "{{count}} weitere Halte",
+    "startsIn": "Beginnt in",
+    "endsIn": "Endet in"
   },
   "building": {
     "title": "Deine Reise wird erstellt",

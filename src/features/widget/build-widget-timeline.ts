@@ -25,6 +25,7 @@ export function buildWidgetTimeline(
   plan: ActivePlan | null | undefined,
   scheme: string,
   now = new Date(),
+  marks: Record<string, string> = {},
 ): { date: Date; props: TodaysPlanWidgetProps }[] {
   const base = { heading: t('widget.title'), url: `${scheme}://` };
   if (!trip?.start_date) {
@@ -42,9 +43,11 @@ export function buildWidgetTimeline(
       ? t('widget.dayOf', { day: dayNumber, total })
       : t('widget.day', { day: dayNumber })
     : t('widget.startsOn', { date: formatDayShort(trip.start_date) });
-  const url = `${scheme}://trip/${trip.id}`;
+  // Seyahat sürerken dokunuş doğrudan canlı görünüme gider (orada odak durak şu anki/sıradaki duraktır).
+  const url = started ? `${scheme}://trip-live?tripId=${trip.id}` : `${scheme}://trip/${trip.id}`;
 
-  const items = (day?.plan_items ?? []).filter((i) => i.status === 'planned');
+  // "Gittim / atla" denen duraklar listeden düşer.
+  const items = (day?.plan_items ?? []).filter((i) => i.status === 'planned' && !marks[i.id]);
   const emptyText = !plan ? t('widget.noPlan') : started ? t('widget.dayDone') : t('widget.noPlan');
 
   const propsFrom = (from: Date): TodaysPlanWidgetProps => {

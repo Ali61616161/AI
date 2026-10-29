@@ -1566,7 +1566,10 @@
       "next": "Next",
       "done": "Visited",
       "skipped": "Skipped",
-      "past": "Passed"
+      "past": "Passed",
+      "enroute": "On the way",
+      "here": "You're here",
+      "later": "Later"
     },
     "viewList": "List view",
     "viewCards": "Card view",
@@ -1579,7 +1582,53 @@
     "freeDayThis": "This day is free",
     "freeDayNote": "Free day: questions and reminders are off for this day. The plan stays visible.",
     "fullMap": "Full-screen map",
-    "exitFullMap": "Exit full screen"
+    "exitFullMap": "Exit full screen",
+    "dur": {
+      "min": "{{count}} min",
+      "hm": "{{h}} h {{m}} min"
+    },
+    "hero": {
+      "startsIn": "Starts in {{dur}}",
+      "startedAgo": "Started {{dur}} ago",
+      "endsIn": "{{dur}} left",
+      "after": "Next: {{title}} · {{time}}",
+      "lastStop": "Last stop of the day"
+    },
+    "act": {
+      "go": "Start heading there",
+      "arrive": "I've arrived",
+      "done": "Done — next stop",
+      "undo": "Undo",
+      "here": "I'm already here"
+    },
+    "day": {
+      "startTitle": "Ready for today?",
+      "startBody": "{{count}} stops · first: {{title}} at {{time}}",
+      "startBodyNoFirst": "{{count}} stops today",
+      "start": "Start my day",
+      "endTitle": "How was your day?",
+      "summary": "{{done}} visited · {{skipped}} skipped · {{left}} left",
+      "journal": "Write in journal",
+      "expense": "Add expenses",
+      "finish": "Finish the day",
+      "finishEarly": "Finish the day",
+      "endedTitle": "Day complete 🎉",
+      "endedBody": "{{done}} visited · {{skipped}} skipped",
+      "reopen": "Reopen the day"
+    },
+    "quick": {
+      "expense": "Add expense",
+      "journal": "Photo / note",
+      "rearrange": "Rearrange my day"
+    },
+    "rain": {
+      "title": "Rain expected today ({{pct}}%)",
+      "body": "{{title}} is outdoors.",
+      "action": "Find indoor alternatives"
+    },
+    "timelineTitle": "Route",
+    "expand": "Show more",
+    "collapse": "Show less"
   },
   "tripQuestions": {
     "title": "For this trip",
@@ -1820,7 +1869,9 @@
     "next": "Next stop",
     "now": "Now",
     "later_one": "{{count}} more stop",
-    "later_other": "{{count}} more stops"
+    "later_other": "{{count}} more stops",
+    "startsIn": "Starts in",
+    "endsIn": "Ends in"
   },
   "building": {
     "title": "Creating your trip",

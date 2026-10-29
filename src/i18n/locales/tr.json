@@ -1566,7 +1566,10 @@
       "next": "Sıradaki",
       "done": "Gidildi",
       "skipped": "Atlandı",
-      "past": "Geçti"
+      "past": "Geçti",
+      "enroute": "Yoldasın",
+      "here": "Buradasın",
+      "later": "Sonra"
     },
     "viewList": "Liste görünümü",
     "viewCards": "Kart görünümü",
@@ -1579,7 +1582,53 @@
     "freeDayThis": "Bu gün serbest",
     "freeDayNote": "Serbest gün: bu gün için sorular ve hatırlatmalar kapalı. Plan yine de görünür.",
     "fullMap": "Tam ekran harita",
-    "exitFullMap": "Tam ekrandan çık"
+    "exitFullMap": "Tam ekrandan çık",
+    "dur": {
+      "min": "{{count}} dk",
+      "hm": "{{h}} sa {{m}} dk"
+    },
+    "hero": {
+      "startsIn": "Başlamasına {{dur}}",
+      "startedAgo": "{{dur}} önce başladı",
+      "endsIn": "{{dur}} kaldı",
+      "after": "Sonra: {{title}} · {{time}}",
+      "lastStop": "Günün son durağı"
+    },
+    "act": {
+      "go": "Yola çık",
+      "arrive": "Vardım",
+      "done": "Bitirdim — sıradaki",
+      "undo": "Geri al",
+      "here": "Zaten buradayım"
+    },
+    "day": {
+      "startTitle": "Bugüne hazır mısın?",
+      "startBody": "{{count}} durak · ilki: {{title}}, {{time}}",
+      "startBodyNoFirst": "Bugün {{count}} durak",
+      "start": "Günü başlat",
+      "endTitle": "Gün nasıl geçti?",
+      "summary": "{{done}} gidildi · {{skipped}} atlandı · {{left}} kaldı",
+      "journal": "Günlüğe yaz",
+      "expense": "Harcama ekle",
+      "finish": "Günü bitir",
+      "finishEarly": "Günü bitir",
+      "endedTitle": "Gün tamam 🎉",
+      "endedBody": "{{done}} gidildi · {{skipped}} atlandı",
+      "reopen": "Günü yeniden aç"
+    },
+    "quick": {
+      "expense": "Harcama ekle",
+      "journal": "Fotoğraf / not",
+      "rearrange": "Günümü yeniden düzenle"
+    },
+    "rain": {
+      "title": "Bugün yağmur bekleniyor (%{{pct}})",
+      "body": "{{title}} açık havada.",
+      "action": "Kapalı alternatifler bul"
+    },
+    "timelineTitle": "Rota",
+    "expand": "Daha fazla",
+    "collapse": "Daha az"
   },
   "tripQuestions": {
     "title": "Bu seyahat için",
@@ -1820,7 +1869,9 @@
     "next": "Sıradaki durak",
     "now": "Şu an",
     "later_one": "{{count}} durak daha",
-    "later_other": "{{count}} durak daha"
+    "later_other": "{{count}} durak daha",
+    "startsIn": "Başlamasına",
+    "endsIn": "Bitmesine"
   },
   "building": {
     "title": "Seyahatiniz oluşturuluyor",

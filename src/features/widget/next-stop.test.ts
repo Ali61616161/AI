@@ -5,6 +5,7 @@ import { LEAD_MS, pickNextStop, type StopItem } from './next-stop.ts';
 
 const fmt = (iso: string) => iso.slice(11, 16);
 const item = (starts: string | null, ends: string | null, extra: Partial<StopItem> = {}): StopItem => ({
+  id: undefined,
   status: 'planned',
   starts_at: starts,
   ends_at: ends,
@@ -46,4 +47,27 @@ test('süresi belli olmayan durak bir saat sonra geçmiş sayılır', () => {
   const items = [item('2026-11-05T12:00:00Z', null)];
   assert.notEqual(pickNextStop(items, at('12:30'), fmt), null);
   assert.equal(pickNextStop(items, at('13:01'), fmt), null);
+});
+
+test('geri sayım hedefi: başlamadıysa başlangıç, sürüyorsa bitiş', () => {
+  const items = [item('2026-11-05T12:00:00Z', '2026-11-05T13:00:00Z')];
+  assert.equal(pickNextStop(items, at('11:00'), fmt)!.targetMs, at('12:00'));
+  assert.equal(pickNextStop(items, at('12:20'), fmt)!.targetMs, at('13:00'));
+});
+
+test('gittim/atla denen durak atlanır, sıradakine geçilir', () => {
+  const items = [item('2026-11-05T12:00:00Z', '2026-11-05T13:00:00Z', { id: 'a', title: 'A' }), item('2026-11-05T14:00:00Z', null, { id: 'b', title: 'B' })];
+  assert.equal(pickNextStop(items, at('12:20'), fmt, { marks: { a: 'done' } })!.title, 'B');
+  assert.equal(pickNextStop(items, at('12:20'), fmt, { marks: { a: 'skipped', b: 'done' } }), null);
+});
+
+test('"buradayım" denen durak saati geçse de süren sayılır; "yoldayım" öne alınır', () => {
+  const items = [item('2026-11-05T12:00:00Z', '2026-11-05T13:00:00Z', { id: 'a', title: 'A' }), item('2026-11-05T14:00:00Z', '2026-11-05T15:00:00Z', { id: 'b', title: 'B' })];
+  const here = pickNextStop(items, at('13:20'), fmt, { steps: { a: 'here' } })!;
+  assert.equal(here.title, 'A');
+  assert.equal(here.now, true);
+  assert.equal(here.targetMs, at('13:20'));
+  const route = pickNextStop(items, at('10:00'), fmt, { steps: { b: 'enroute' } })!;
+  assert.equal(route.title, 'B');
+  assert.equal(route.now, false);
 });

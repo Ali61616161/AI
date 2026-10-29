@@ -55,8 +55,8 @@ export const airportSearchName = (name: string) => (AIRPORT_WORD.test(name) ? na
  * Canlı seyahat rehberliği: saati geçmiş durak, sıradaki durağa yetişme süresi ve (yaklaşan bir uçuş
  * varsa) havalimanına en geç çıkış zamanı. Hepsi plan ve konumdan hesaplanır.
  */
-export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: string; date: string | null; stops: Stop[]; isToday: boolean; nowMs: number }) {
-  const { trip, tripId, date, stops, isToday, nowMs } = input;
+export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: string; date: string | null; stops: Stop[]; isToday: boolean; nowMs: number; target?: Stop | null }) {
+  const { trip, tripId, date, stops, isToday, nowMs, target } = input;
   const marks = useLiveStore((s) => s.marks) as Record<string, StopMark>;
   const freeDays = useLiveStore((s) => s.freeDays);
   const freeDay = date ? Boolean(freeDays[freeDayKey(tripId, date)]) : false;
@@ -65,22 +65,25 @@ export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: s
 
   const overdue = isToday ? overdueStop(stops, nowMs, marks, freeDay) : null;
   const upcoming = isToday && !freeDay ? nextStop(stops, nowMs, marks) : null;
-  // Sıradaki durak yürüme mesafesindeyse yürüyüş, değilse seyahatin ulaşım türü.
-  const mode: RouteMode = origin && upcoming && distanceKm(origin, upcoming) <= WALK_MODE_KM ? 'walk' : tripMode;
+  // Yol süresi odak durağa (verilmişse) ya da saati gelecek ilk durağa hesaplanır.
+  const dest = isToday && !freeDay ? (target ?? upcoming) : null;
+  // Hedef yürüme mesafesindeyse yürüyüş, değilse seyahatin ulaşım türü.
+  const mode: RouteMode = origin && dest && distanceKm(origin, dest) <= WALK_MODE_KM ? 'walk' : tripMode;
   const etaQuery = useRoute({
     origin,
-    destination: upcoming ? { lat: upcoming.lat, lng: upcoming.lng } : null,
+    destination: dest ? { lat: dest.lat, lng: dest.lng } : null,
     mode,
     originName: null,
-    destinationName: upcoming?.title ?? null,
+    destinationName: dest?.title ?? null,
     countryCode: null,
     departAt: null,
   });
   const etaRoute = etaQuery.data?.routes[0] ?? null;
   const etaMin = etaRoute?.durationMin ?? null;
-  const leaveIn = upcoming ? leaveInMin(nowMs, etaMin, upcoming.starts_at) : null;
+  const leaveIn = dest ? leaveInMin(nowMs, etaMin, dest.starts_at) : null;
   const arrived = isToday ? arrivedStop(stops, here, nowMs, marks) : null;
-  const late = upcoming && etaMin !== null ? minutesLate(nowMs, etaMin, upcoming.starts_at!) : null;
+  // "Geç kalacaksın" yalnızca saati henüz gelmemiş sıradaki durak için söylenir.
+  const late = upcoming && dest?.id === upcoming.id && etaMin !== null ? minutesLate(nowMs, etaMin, upcoming.starts_at!) : null;
 
   // Önümüzdeki 24 saatteki ilk uçuş: kalkış havalimanına gerçek yol süresiyle "en geç çıkış" hesaplanır.
   const nowBucket = Math.floor(nowMs / 600_000);

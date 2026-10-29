@@ -29,4 +29,8 @@ export type NextStopActivityProps = {
   time: string;
   /** Şehir ve kalan durak sayısı gibi ikinci satır ("Roma · 2 durak daha"). */
   detail: string;
+  /** Geri sayımın hedef anı (ms): durağın başlangıcı ya da (süren durakta) bitişi. iOS sayacı kendisi akıtır. */
+  targetMs: number;
+  /** Geri sayımın önündeki kısa yazı ("Başlamasına" / "Bitmesine"). */
+  countLabel: string;
 };

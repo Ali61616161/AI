@@ -1528,7 +1528,10 @@
       "next": "下一站",
       "done": "已去过",
       "skipped": "已跳过",
-      "past": "已过"
+      "past": "已过",
+      "enroute": "在路上",
+      "here": "你已到达",
+      "later": "稍后"
     },
     "viewList": "列表视图",
     "viewCards": "卡片视图",
@@ -1541,7 +1544,53 @@
     "freeDayThis": "这天自由活动",
     "freeDayNote": "自由日：此日的提问和提醒已关闭，计划仍可查看。",
     "fullMap": "全屏地图",
-    "exitFullMap": "退出全屏"
+    "exitFullMap": "退出全屏",
+    "dur": {
+      "min": "{{count}} 分钟",
+      "hm": "{{h}} 小时 {{m}} 分钟"
+    },
+    "hero": {
+      "startsIn": "{{dur}}后开始",
+      "startedAgo": "{{dur}}前已开始",
+      "endsIn": "还剩 {{dur}}",
+      "after": "下一站：{{title}} · {{time}}",
+      "lastStop": "今天的最后一站"
+    },
+    "act": {
+      "go": "出发前往",
+      "arrive": "我到了",
+      "done": "完成，前往下一站",
+      "undo": "撤销",
+      "here": "我已经在这里了"
+    },
+    "day": {
+      "startTitle": "准备好今天的行程了吗？",
+      "startBody": "共 {{count}} 站 · 第一站：{{title}}（{{time}}）",
+      "startBodyNoFirst": "今天共 {{count}} 站",
+      "start": "开始今天",
+      "endTitle": "今天过得怎么样？",
+      "summary": "已去 {{done}} · 已跳过 {{skipped}} · 剩余 {{left}}",
+      "journal": "写日记",
+      "expense": "添加花费",
+      "finish": "结束今天",
+      "finishEarly": "结束今天",
+      "endedTitle": "今天完成 🎉",
+      "endedBody": "已去 {{done}} · 已跳过 {{skipped}}",
+      "reopen": "重新开启今天"
+    },
+    "quick": {
+      "expense": "添加花费",
+      "journal": "照片 / 备注",
+      "rearrange": "重新安排我的一天"
+    },
+    "rain": {
+      "title": "今天预计有雨（{{pct}}%）",
+      "body": "{{title}}在室外。",
+      "action": "查找室内备选"
+    },
+    "timelineTitle": "路线",
+    "expand": "显示更多",
+    "collapse": "收起"
   },
   "tripQuestions": {
     "title": "关于这次旅行",
@@ -1781,7 +1830,9 @@
   "liveActivity": {
     "next": "下一站",
     "now": "现在",
-    "later_other": "还有 {{count}} 站"
+    "later_other": "还有 {{count}} 站",
+    "startsIn": "距开始",
+    "endsIn": "距结束"
   },
   "building": {
     "title": "正在创建你的行程",

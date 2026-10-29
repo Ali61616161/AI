@@ -1566,7 +1566,10 @@
       "next": "Prossima",
       "done": "Visitato",
       "skipped": "Saltato",
-      "past": "Passato"
+      "past": "Passato",
+      "enroute": "In viaggio",
+      "here": "Sei qui",
+      "later": "Più tardi"
     },
     "viewList": "Vista elenco",
     "viewCards": "Vista schede",
@@ -1579,7 +1582,53 @@
     "freeDayThis": "Questo giorno è libero",
     "freeDayNote": "Giorno libero: domande e promemoria disattivati. Il piano resta visibile.",
     "fullMap": "Mappa a schermo intero",
-    "exitFullMap": "Esci dallo schermo intero"
+    "exitFullMap": "Esci dallo schermo intero",
+    "dur": {
+      "min": "{{count}} min",
+      "hm": "{{h}} h {{m}} min"
+    },
+    "hero": {
+      "startsIn": "Inizia tra {{dur}}",
+      "startedAgo": "Iniziato {{dur}} fa",
+      "endsIn": "Mancano {{dur}}",
+      "after": "Prossima: {{title}} · {{time}}",
+      "lastStop": "Ultima tappa della giornata"
+    },
+    "act": {
+      "go": "Vai verso la tappa",
+      "arrive": "Sono arrivato",
+      "done": "Fatto: prossima tappa",
+      "undo": "Annulla",
+      "here": "Sono già qui"
+    },
+    "day": {
+      "startTitle": "Pronto per oggi?",
+      "startBody": "{{count}} tappe · la prima: {{title}} alle {{time}}",
+      "startBodyNoFirst": "{{count}} tappe oggi",
+      "start": "Inizia la giornata",
+      "endTitle": "Com'è andata la giornata?",
+      "summary": "{{done}} visitate · {{skipped}} saltate · {{left}} rimaste",
+      "journal": "Scrivi nel diario",
+      "expense": "Aggiungi spese",
+      "finish": "Termina la giornata",
+      "finishEarly": "Termina la giornata",
+      "endedTitle": "Giornata completata 🎉",
+      "endedBody": "{{done}} visitate · {{skipped}} saltate",
+      "reopen": "Riapri la giornata"
+    },
+    "quick": {
+      "expense": "Aggiungi spesa",
+      "journal": "Foto / nota",
+      "rearrange": "Riorganizza la mia giornata"
+    },
+    "rain": {
+      "title": "Pioggia prevista oggi ({{pct}}%)",
+      "body": "{{title}} è all'aperto.",
+      "action": "Trova alternative al chiuso"
+    },
+    "timelineTitle": "Percorso",
+    "expand": "Mostra di più",
+    "collapse": "Mostra meno"
   },
   "tripQuestions": {
     "title": "Per questo viaggio",
@@ -1820,7 +1869,9 @@
     "next": "Prossima tappa",
     "now": "Adesso",
     "later_one": "{{count}} tappa in più",
-    "later_other": "{{count}} tappe in più"
+    "later_other": "{{count}} tappe in più",
+    "startsIn": "Inizia tra",
+    "endsIn": "Finisce tra"
   },
   "building": {
     "title": "Creazione del tuo viaggio",

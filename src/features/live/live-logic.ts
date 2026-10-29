@@ -62,7 +62,7 @@ export type StopMarkValue = 'done' | 'skipped';
 /** Kartta ve haritada gösterilen durum. `later`: bugün ama henüz sırası gelmedi. */
 export type StopStatus = 'done' | 'skipped' | 'now' | 'next' | 'past' | 'later';
 
-const endOf = (s: LiveStop) => {
+export const endOf = (s: LiveStop) => {
   const start = s.starts_at ? Date.parse(s.starts_at) : NaN;
   const end = s.ends_at ? Date.parse(s.ends_at) : NaN;
   return Number.isFinite(end) ? end : Number.isFinite(start) ? start + DEFAULT_STAY_MIN * 60_000 : NaN;

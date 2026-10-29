@@ -1718,7 +1718,10 @@
       "next": "التالي",
       "done": "تمت الزيارة",
       "skipped": "تم التخطي",
-      "past": "مضى"
+      "past": "مضى",
+      "enroute": "في الطريق",
+      "here": "أنت هنا",
+      "later": "لاحقًا"
     },
     "viewList": "عرض القائمة",
     "viewCards": "عرض البطاقات",
@@ -1731,7 +1734,53 @@
     "freeDayThis": "هذا اليوم حر",
     "freeDayNote": "يوم حر: الأسئلة والتذكيرات متوقفة. تبقى الخطة ظاهرة.",
     "fullMap": "خريطة بملء الشاشة",
-    "exitFullMap": "إنهاء ملء الشاشة"
+    "exitFullMap": "إنهاء ملء الشاشة",
+    "dur": {
+      "min": "{{count}} د",
+      "hm": "{{h}} س {{m}} د"
+    },
+    "hero": {
+      "startsIn": "يبدأ بعد {{dur}}",
+      "startedAgo": "بدأ قبل {{dur}}",
+      "endsIn": "متبقي {{dur}}",
+      "after": "التالي: {{title}} · {{time}}",
+      "lastStop": "آخر محطة اليوم"
+    },
+    "act": {
+      "go": "ابدأ التوجه إليها",
+      "arrive": "وصلت",
+      "done": "انتهيت — المحطة التالية",
+      "undo": "تراجع",
+      "here": "أنا هنا بالفعل"
+    },
+    "day": {
+      "startTitle": "هل أنت جاهز لليوم؟",
+      "startBody": "{{count}} محطات · الأولى: {{title}} الساعة {{time}}",
+      "startBodyNoFirst": "{{count}} محطات اليوم",
+      "start": "ابدأ يومي",
+      "endTitle": "كيف كان يومك؟",
+      "summary": "{{done}} تمت زيارتها · {{skipped}} تم تخطيها · {{left}} متبقية",
+      "journal": "اكتب في اليوميات",
+      "expense": "أضف مصاريف",
+      "finish": "أنهِ اليوم",
+      "finishEarly": "أنهِ اليوم",
+      "endedTitle": "اكتمل اليوم 🎉",
+      "endedBody": "{{done}} تمت زيارتها · {{skipped}} تم تخطيها",
+      "reopen": "أعد فتح اليوم"
+    },
+    "quick": {
+      "expense": "أضف مصروفًا",
+      "journal": "صورة / ملاحظة",
+      "rearrange": "أعد ترتيب يومي"
+    },
+    "rain": {
+      "title": "يُتوقع هطول أمطار اليوم ({{pct}}٪)",
+      "body": "{{title}} في الهواء الطلق.",
+      "action": "ابحث عن بدائل داخلية"
+    },
+    "timelineTitle": "المسار",
+    "expand": "عرض المزيد",
+    "collapse": "عرض أقل"
   },
   "tripQuestions": {
     "title": "لهذه الرحلة",
@@ -1976,7 +2025,9 @@
     "later_two": "محطتان أخريان",
     "later_few": "{{count}} محطات أخرى",
     "later_many": "{{count}} محطة أخرى",
-    "later_other": "{{count}} محطة أخرى"
+    "later_other": "{{count}} محطة أخرى",
+    "startsIn": "يبدأ بعد",
+    "endsIn": "ينتهي بعد"
   },
   "building": {
     "title": "جارٍ إنشاء رحلتك",
