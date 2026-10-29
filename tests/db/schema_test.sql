@@ -860,6 +860,12 @@ insert into public.consents (consent, granted, version) values ('social_matching
 insert into public.social_profiles (user_id, is_visible, city, approx_location)
   values (auth.uid(), true, 'Roma', 'SRID=4326;POINT(12.49 41.89)');
 
+-- Şikayet edilenle gerçek etkileşimi olanlar sayılır: hedef d1 ve d2'yi davet etmiş (spam davet), d3 ile etkileşim yok.
+reset role;
+insert into public.match_invites (from_user, to_user, google_place_id, place_name, meet_at) values
+  ('00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d1', 'ChIJtest0000001', 'Kafe', now() + interval '1 day'),
+  ('00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d2', 'ChIJtest0000001', 'Kafe', now() + interval '1 day');
+set role authenticated;
 -- Aynı kişinin tekrarlayan şikayetleri sayıyı artırmaz.
 call tests.login('00000000-0000-0000-0000-0000000000d1');
 insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'harassment');
@@ -870,6 +876,16 @@ reset role;
 do $$ begin
   assert (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), '2 farklı şikayet askıya almamalı';
 end $$;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d3');
+insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'fake_profile');
+reset role;
+do $$ begin
+  assert (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), 'etkileşimsiz hesabın şikayeti otomatik askıya almamalı (sahte hesap saldırısı)';
+end $$;
+-- d3 ile gerçek etkileşim olunca (hedef onu da davet etti) şikayeti sayılır.
+insert into public.match_invites (from_user, to_user, google_place_id, place_name, meet_at)
+  values ('00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d3', 'ChIJtest0000001', 'Kafe', now() + interval '1 day');
 set role authenticated;
 call tests.login('00000000-0000-0000-0000-0000000000d3');
 insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'fake_profile');
@@ -906,6 +922,28 @@ begin
   assert (select count(*) from public.user_reports where reporter_id = auth.uid()) <= 20, 'şikayet sayısı günlük 20 ile sınırlı olmalı';
 end $$;
 reset role;
+
+-- Engellenenler listesi ve çeviri bütçesi.
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d1');
+insert into public.user_blocks (blocked_id) values ('00000000-0000-0000-0000-0000000000d2') on conflict do nothing;
+do $$ begin
+  assert (select count(*) from public.my_blocks() where blocked_id = '00000000-0000-0000-0000-0000000000d2') = 1, 'engellenenler listesinde görünmeli';
+  assert (select count(*) from public.my_blocks()) = 1, 'yalnızca kendi engelleri listelenmeli';
+end $$;
+delete from public.user_blocks where blocked_id = '00000000-0000-0000-0000-0000000000d2';
+do $$ begin
+  assert (select count(*) from public.my_blocks()) = 0, 'engel kaldırılınca listeden çıkmalı';
+  assert tests.throws($q$ select public.consume_translate_chars(auth.uid(), 10, 100) $q$), 'çeviri bütçesi istemciye kapalı olmalı';
+  assert tests.throws($q$ select * from public.translate_usage $q$), 'çeviri kullanımı istemciye kapalı olmalı';
+end $$;
+reset role;
+do $$ begin
+  assert public.consume_translate_chars('00000000-0000-0000-0000-0000000000d1', 60, 100), 'bütçe içinde izin vermeli';
+  assert not public.consume_translate_chars('00000000-0000-0000-0000-0000000000d1', 60, 100), 'bütçeyi aşınca reddetmeli';
+  assert public.consume_translate_chars('00000000-0000-0000-0000-0000000000d1', 40, 100), 'kalan bütçe kullanılabilmeli';
+end $$;
+delete from public.match_invites;
 
 -- ---------------------------------------------------------------------------
 \echo '18c. Uçuş durumu önbelleği istemciye kapalı'

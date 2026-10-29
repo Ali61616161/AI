@@ -15,3 +15,9 @@ export async function textHash(text: string): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
+
+/** Algılanan kaynak dil hedefle aynı mı (bölge ekleri yok sayılır: zh-CN ≡ zh). Algılanamadıysa false. */
+export function sameLanguage(detected: string | null | undefined, target: string): boolean {
+  const base = (l: string) => l.toLowerCase().split('-')[0];
+  return Boolean(detected) && base(detected!) === base(target);
+}

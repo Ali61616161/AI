@@ -7,13 +7,15 @@
 // Sunucu sırrı: GOOGLE_TRANSLATE_API_KEY (yoksa GOOGLE_MAPS_API_KEY).
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
-import { corsHeaders, error, json } from '../_shared/http.ts';
+import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import { decodeEntities } from '../_shared/plan-translation.ts';
 import { translateBatch, TranslateError } from '../_shared/translate.ts';
 import { textHash, cleanTexts, MAX_TEXTS } from '../_shared/translate-texts.ts';
 
 const LANGUAGES = new Set(['tr', 'en', 'es', 'fr', 'de', 'it', 'ru', 'ar', 'zh']);
 const PER_HOUR = 60;
+/** Kullanıcı başına günde çevrilecek yeni (önbellekte olmayan) en çok karakter; maliyeti sınırlar. */
+const DAILY_CHARS = 60_000;
 const recent = new Map<string, number[]>();
 function allowed(userId: string): boolean {
   const now = Date.now();
@@ -56,6 +58,10 @@ Deno.serve(async (req) => {
   });
   if (missing.size > 0) {
     if (!allowed(auth.user.id)) return error('quota_exceeded', 429);
+    const chars = [...missing.values()].reduce((n, t) => n + t.length, 0);
+    const { data: ok, error: budgetErr } = await admin.rpc('consume_translate_chars', { p_user: auth.user.id, p_chars: chars, p_cap: DAILY_CHARS });
+    if (budgetErr) return dbError('translate-texts: budget', budgetErr);
+    if (!ok) return error('quota_exceeded', 429);
     try {
       const entries = [...missing.entries()];
       const results = await translateBatch({ apiKey, texts: entries.map(([, t]) => t), target: language, apiBase: Deno.env.get('GOOGLE_TRANSLATE_API_BASE') || undefined });

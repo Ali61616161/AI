@@ -266,7 +266,21 @@
     "blockOnly": "Just block",
     "reportNote": "They'll be blocked and won't see you again. Our team reviews every report.",
     "chatSafety": "Meet in public, tell a friend where you are and keep your own plans. You can block or report anyone at any time.",
-    "identityNote": "For your safety, your birth year can't be changed once saved. Contact support if there's a mistake."
+    "identityNote": "For your safety, your birth year can't be changed once saved. Contact support if there's a mistake.",
+    "translate": "Translate",
+    "translating": "Translating…",
+    "showOriginal": "Show original",
+    "alreadyYourLanguage": "Already in your language",
+    "translateFailed": "Couldn't translate, tap to retry",
+    "translateLimit": "You've reached the daily translation limit",
+    "block": "Block",
+    "blockConfirmTitle": "Block {{name}}?",
+    "blockConfirmBody": "They won't see you or be able to send invites or messages, and invites between you are cancelled. You can unblock anytime from the Travelers screen.",
+    "blockedUsers": "Blocked",
+    "blockedSubtitle": "People you've blocked",
+    "blockedEmpty": "You haven't blocked anyone.",
+    "unblock": "Unblock",
+    "unblockNote": "After unblocking, the person may show up in the nearby list again; cancelled invites don't come back."
   },
   "profile": {
     "title": "Profile",

@@ -1742,6 +1742,10 @@ export type Database = {
       is_invite_participant: { Args: { p_invite_id: string; p_require_accepted: boolean }; Returns: boolean };
       is_trip_member: { Args: { p_trip_id: string }; Returns: boolean };
       is_trip_owner: { Args: { p_trip_id: string }; Returns: boolean };
+      my_blocks: {
+        Args: Record<PropertyKey, never>;
+        Returns: { blocked_id: string; display_name: string; avatar_url: string; created_at: string }[];
+      };
       my_invites: {
         Args: Record<PropertyKey, never>;
         Returns: {

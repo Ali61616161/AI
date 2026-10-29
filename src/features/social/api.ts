@@ -293,3 +293,51 @@ export function useBlockAndReport() {
     },
   });
 }
+
+export type BlockedUser = { blocked_id: string; display_name: string | null; avatar_url: string | null; created_at: string };
+
+/** Engellediklerim (görünen ad/fotoğraf sunucu işleviyle gelir; profiller başkalarına kapalıdır). */
+export function useBlockedUsers() {
+  const userId = useUser();
+  return useQuery({
+    queryKey: ['blocked-users', userId],
+    enabled: enabled(userId),
+    queryFn: async () => {
+      const { data, error } = await getSupabase().rpc('my_blocks');
+      if (error) throw error;
+      return (data ?? []) as BlockedUser[];
+    },
+  });
+}
+
+/** Engeli kaldırır. İptal olmuş davetler geri gelmez; kişi yeniden listede görünür ve yeni davet gönderilebilir. */
+export function useUnblock() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (blockedId: string) => {
+      const { error } = await getSupabase().from('user_blocks').delete().eq('blocked_id', blockedId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blocked-users'] });
+      queryClient.invalidateQueries({ queryKey: ['nearby-travelers'] });
+      queryClient.invalidateQueries({ queryKey: ['invites'] });
+    },
+  });
+}
+
+export type MessageTranslation = { text: string; same: boolean };
+export type TranslateErrorCode = 'quota_exceeded' | 'failed';
+
+/** Karşı tarafın mesajını (ya da davet notunu) uygulamanın diline çevirir. Çeviri sunucuda saklanmaz. */
+export async function translateMessage(target: { messageId: number } | { inviteId: string }, language: string): Promise<MessageTranslation> {
+  const body = 'messageId' in target ? { message_id: target.messageId, language } : { invite_id: target.inviteId, language };
+  const { data, error } = await getSupabase().functions.invoke('translate-message', { body });
+  if (error) {
+    const status = (error as { context?: { status?: number } }).context?.status;
+    throw Object.assign(new Error('translate failed'), { code: (status === 429 ? 'quota_exceeded' : 'failed') satisfies TranslateErrorCode });
+  }
+  const result = data as Partial<MessageTranslation> | null;
+  if (typeof result?.text !== 'string') throw Object.assign(new Error('translate failed'), { code: 'failed' satisfies TranslateErrorCode });
+  return { text: result.text, same: Boolean(result.same) };
+}

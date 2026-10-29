@@ -266,7 +266,21 @@
     "blockOnly": "Bloquer seulement",
     "reportNote": "Cette personne sera bloquée et ne te verra plus. Notre équipe examine chaque signalement.",
     "chatSafety": "Donne rendez-vous dans un lieu public, dis à un proche où tu es et garde tes propres projets. Tu peux bloquer ou signaler quelqu’un à tout moment.",
-    "identityNote": "Pour ta sécurité, l’année de naissance ne peut plus être modifiée une fois enregistrée. En cas d’erreur, contacte le support."
+    "identityNote": "Pour ta sécurité, l’année de naissance ne peut plus être modifiée une fois enregistrée. En cas d’erreur, contacte le support.",
+    "translate": "Traduire",
+    "translating": "Traduction…",
+    "showOriginal": "Afficher l'original",
+    "alreadyYourLanguage": "Déjà dans votre langue",
+    "translateFailed": "Traduction impossible, touchez pour réessayer",
+    "translateLimit": "Vous avez atteint la limite quotidienne de traductions",
+    "block": "Bloquer",
+    "blockConfirmTitle": "Bloquer {{name}} ?",
+    "blockConfirmBody": "Cette personne ne pourra plus vous voir ni vous envoyer d'invitations ou de messages, et les invitations entre vous sont annulées. Vous pouvez débloquer à tout moment depuis l'écran Voyageurs.",
+    "blockedUsers": "Bloqués",
+    "blockedSubtitle": "Personnes que vous avez bloquées",
+    "blockedEmpty": "Vous n'avez bloqué personne.",
+    "unblock": "Débloquer",
+    "unblockNote": "Après le déblocage, la personne peut réapparaître dans la liste à proximité ; les invitations annulées ne reviennent pas."
   },
   "profile": {
     "title": "Profil",

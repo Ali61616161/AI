@@ -266,7 +266,21 @@
     "blockOnly": "Nur blockieren",
     "reportNote": "Die Person wird blockiert und sieht dich nicht mehr. Unser Team prüft jede Meldung.",
     "chatSafety": "Triff dich öffentlich, sag jemandem, wo du bist, und behalte deine eigenen Pläne. Du kannst jederzeit jemanden blockieren oder melden.",
-    "identityNote": "Zu deiner Sicherheit kann das Geburtsjahr nach dem Speichern nicht mehr geändert werden. Wende dich bei einem Fehler an den Support."
+    "identityNote": "Zu deiner Sicherheit kann das Geburtsjahr nach dem Speichern nicht mehr geändert werden. Wende dich bei einem Fehler an den Support.",
+    "translate": "Übersetzen",
+    "translating": "Übersetze…",
+    "showOriginal": "Original anzeigen",
+    "alreadyYourLanguage": "Schon in deiner Sprache",
+    "translateFailed": "Übersetzung fehlgeschlagen, zum Wiederholen tippen",
+    "translateLimit": "Du hast das tägliche Übersetzungslimit erreicht",
+    "block": "Blockieren",
+    "blockConfirmTitle": "{{name}} blockieren?",
+    "blockConfirmBody": "Die Person kann dich nicht mehr sehen und dir keine Einladungen oder Nachrichten senden; Einladungen zwischen euch werden storniert. Du kannst jederzeit im Reisende-Bildschirm entsperren.",
+    "blockedUsers": "Blockiert",
+    "blockedSubtitle": "Personen, die du blockiert hast",
+    "blockedEmpty": "Du hast niemanden blockiert.",
+    "unblock": "Entsperren",
+    "unblockNote": "Nach dem Entsperren kann die Person wieder in der Liste in der Nähe erscheinen; stornierte Einladungen kommen nicht zurück."
   },
   "profile": {
     "title": "Profil",

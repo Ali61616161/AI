@@ -264,7 +264,21 @@
     "blockOnly": "仅拉黑",
     "reportNote": "对方将被拉黑且无法再看到你。我们的团队会审核每一条举报。",
     "chatSafety": "在公共场所见面，告诉朋友你在哪里，并保持自己的计划。你可以随时拉黑或举报任何人。",
-    "identityNote": "为了你的安全，出生年份保存后无法更改。如有错误，请联系客服。"
+    "identityNote": "为了你的安全，出生年份保存后无法更改。如有错误，请联系客服。",
+    "translate": "翻译",
+    "translating": "翻译中…",
+    "showOriginal": "显示原文",
+    "alreadyYourLanguage": "已是你的语言",
+    "translateFailed": "翻译失败，点按重试",
+    "translateLimit": "你已达到每日翻译上限",
+    "block": "屏蔽",
+    "blockConfirmTitle": "屏蔽 {{name}}？",
+    "blockConfirmBody": "对方将无法看到你，也无法向你发送邀请或消息，你们之间的邀请会被取消。你可以随时在“旅行者”页面解除屏蔽。",
+    "blockedUsers": "已屏蔽",
+    "blockedSubtitle": "你屏蔽的人",
+    "blockedEmpty": "你还没有屏蔽任何人。",
+    "unblock": "解除屏蔽",
+    "unblockNote": "解除屏蔽后，对方可能重新出现在附近列表中；已取消的邀请不会恢复。"
   },
   "profile": {
     "title": "我的",

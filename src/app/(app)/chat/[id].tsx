@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, Share, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, Pressable, Share, StyleSheet, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { openInMaps } from '@/features/places/api';
 import { REPORT_REASONS, useBlockAndReport, useMessages, useMyInvites, useSendMessage } from '@/features/social/api';
+import { TranslatableText } from '@/features/social/translatable-text';
 import { formatLocalDateTime, formatTime } from '@/lib/format';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing, Typography } from '@/theme/tokens';
@@ -42,6 +43,14 @@ export default function ChatScreen() {
     if (!invite) return;
     await safety.mutateAsync({ userId: invite.other_id, inviteId: invite.id, reason });
     router.back();
+  }
+
+  function confirmBlock() {
+    if (!invite) return;
+    Alert.alert(t('social.blockConfirmTitle', { name: invite.other_name ?? t('social.traveler') }), t('social.blockConfirmBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('social.block'), style: 'destructive', onPress: () => block() },
+    ]);
   }
 
   function shareMeeting() {
@@ -81,6 +90,7 @@ export default function ChatScreen() {
         <View style={styles.actions}>
           <Chip icon="navigate-outline" label={t('map.openInMaps')} onPress={() => openInMaps({ name: invite.place_name, placeId: invite.google_place_id, lat: invite.place_lat, lng: invite.place_lng })} />
           <Chip icon="share-outline" label={t('social.shareMeeting')} onPress={shareMeeting} />
+          <Chip icon="ban-outline" label={t('social.block')} onPress={confirmBlock} />
           <Chip icon="flag-outline" label={t('social.report')} onPress={() => setReporting((v) => !v)} />
         </View>
       )}
@@ -110,18 +120,26 @@ export default function ChatScreen() {
       <View style={styles.messages}>
         {invite?.message && (
           <View style={[styles.bubble, invite.incoming ? styles.theirs : styles.mine, { backgroundColor: invite.incoming ? colors.surface : colors.primary, borderColor: colors.border }]}>
-            <Text variant="body" style={{ color: invite.incoming ? colors.text : colors.onPrimary }}>
-              {invite.message}
-            </Text>
+            {invite.incoming ? (
+              <TranslatableText target={{ inviteId: invite.id }} text={invite.message} color={colors.text} mutedColor={colors.textMuted} />
+            ) : (
+              <Text variant="body" style={{ color: colors.onPrimary }}>
+                {invite.message}
+              </Text>
+            )}
           </View>
         )}
         {messages?.map((m) => {
           const mine = m.sender_id === me;
           return (
             <View key={m.id} style={[styles.bubble, mine ? styles.mine : styles.theirs, { backgroundColor: mine ? colors.primary : colors.surface, borderColor: colors.border }]}>
-              <Text variant="body" style={{ color: mine ? colors.onPrimary : colors.text }}>
-                {m.body}
-              </Text>
+              {mine ? (
+                <Text variant="body" style={{ color: colors.onPrimary }}>
+                  {m.body}
+                </Text>
+              ) : (
+                <TranslatableText target={{ messageId: m.id }} text={m.body} color={colors.text} mutedColor={colors.textMuted} />
+              )}
               <Text variant="caption" style={{ color: mine ? colors.onPrimary : colors.textMuted, opacity: 0.8 }}>
                 {formatTime(m.created_at, null)}
               </Text>

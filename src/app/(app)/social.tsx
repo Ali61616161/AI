@@ -25,6 +25,7 @@ import {
   type Traveler,
 } from '@/features/social/api';
 import { SafetyActions } from '@/features/social/safety-actions';
+import { TranslatableText } from '@/features/social/translatable-text';
 import { useTrips } from '@/features/trips/queries';
 import { formatLocalDateTime, todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
@@ -134,6 +135,9 @@ function InviteRow({ invite }: { invite: Invite }) {
           <Text variant="caption" color="textMuted" numberOfLines={1}>
             {invite.last_message}
           </Text>
+        )}
+        {invite.status === 'pending' && invite.incoming && invite.message && (
+          <TranslatableText target={{ inviteId: invite.id }} text={invite.message} color={colors.text} mutedColor={colors.textMuted} />
         )}
         {invite.status === 'pending' && invite.incoming && (
           <View style={styles.chips}>
@@ -247,6 +251,10 @@ export default function SocialScreen() {
               ))}
             </View>
           )}
+
+          <View style={styles.chips}>
+            <Chip icon="ban-outline" label={t('social.blockedUsers')} onPress={() => router.push('/blocked-users')} />
+          </View>
 
           {!visible ? (
             <Setup me={me} />

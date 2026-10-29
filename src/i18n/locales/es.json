@@ -266,7 +266,21 @@
     "blockOnly": "Solo bloquear",
     "reportNote": "Quedará bloqueado y no volverá a verte. Nuestro equipo revisa cada denuncia.",
     "chatSafety": "Queda en público, avisa a alguien de dónde estás y mantén tus planes. Puedes bloquear o denunciar a cualquiera en cualquier momento.",
-    "identityNote": "Por tu seguridad, el año de nacimiento no se puede cambiar una vez guardado. Si hay un error, contacta con soporte."
+    "identityNote": "Por tu seguridad, el año de nacimiento no se puede cambiar una vez guardado. Si hay un error, contacta con soporte.",
+    "translate": "Traducir",
+    "translating": "Traduciendo…",
+    "showOriginal": "Mostrar original",
+    "alreadyYourLanguage": "Ya está en tu idioma",
+    "translateFailed": "No se pudo traducir, toca para reintentar",
+    "translateLimit": "Has alcanzado el límite diario de traducciones",
+    "block": "Bloquear",
+    "blockConfirmTitle": "¿Bloquear a {{name}}?",
+    "blockConfirmBody": "No podrá verte ni enviarte invitaciones o mensajes, y las invitaciones entre vosotros se cancelan. Puedes desbloquear cuando quieras desde la pantalla de Viajeros.",
+    "blockedUsers": "Bloqueados",
+    "blockedSubtitle": "Personas que has bloqueado",
+    "blockedEmpty": "No has bloqueado a nadie.",
+    "unblock": "Desbloquear",
+    "unblockNote": "Al desbloquear, la persona puede volver a aparecer en la lista cercana; las invitaciones canceladas no vuelven."
   },
   "profile": {
     "title": "Perfil",

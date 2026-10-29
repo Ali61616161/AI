@@ -266,7 +266,21 @@
     "blockOnly": "Sadece engelle",
     "reportNote": "Engellenecek ve seni bir daha göremeyecek. Ekibimiz her şikayeti inceler.",
     "chatSafety": "Halka açık yerde buluş, bir arkadaşına nerede olduğunu söyle ve kendi planına sadık kal. Herkesi istediğin an engelleyebilir veya şikayet edebilirsin.",
-    "identityNote": "Güvenliğin için doğum yılı kaydedildikten sonra değiştirilemez. Hata varsa destekle iletişime geç."
+    "identityNote": "Güvenliğin için doğum yılı kaydedildikten sonra değiştirilemez. Hata varsa destekle iletişime geç.",
+    "translate": "Çevir",
+    "translating": "Çevriliyor…",
+    "showOriginal": "Özgününü göster",
+    "alreadyYourLanguage": "Zaten senin dilinde",
+    "translateFailed": "Çevrilemedi, tekrar dokun",
+    "translateLimit": "Günlük çeviri sınırına ulaştın",
+    "block": "Engelle",
+    "blockConfirmTitle": "{{name}} engellensin mi?",
+    "blockConfirmBody": "Seni göremez, davet ya da mesaj gönderemez; aranızdaki davetler iptal olur. Engeli istediğin zaman Gezgin ekranından kaldırabilirsin.",
+    "blockedUsers": "Engellenenler",
+    "blockedSubtitle": "Engellediğin kişiler",
+    "blockedEmpty": "Kimseyi engellemedin.",
+    "unblock": "Engeli kaldır",
+    "unblockNote": "Engeli kaldırınca kişi yeniden yakındaki listede görünebilir; iptal olan davetler geri gelmez."
   },
   "profile": {
     "title": "Profil",
