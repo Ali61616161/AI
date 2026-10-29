@@ -67,3 +67,25 @@ Deno.test('normalizeVisa: bilinmeyen değerleri "unknown" yapar, güvensiz bağl
   const bad = normalizeVisa({ requirement: 'maybe', max_stay_days: -1, official_url: 'javascript:alert(1)' });
   assertEquals([bad.requirement, bad.maxStayDays, bad.officialUrl], ['unknown', null, null]);
 });
+
+import { translateBatch } from './translate.ts';
+
+Deno.test('translateBatch: sıra korunur, algılanan dil döner; hata ve beklenmedik yanıt fırlatır', async () => {
+  let sent: { q?: string[]; target?: string; format?: string } = {};
+  const ok = ((_u: unknown, init?: RequestInit) => {
+    sent = JSON.parse(String(init?.body));
+    return Promise.resolve(new Response(JSON.stringify({ data: { translations: [{ translatedText: 'Hello', detectedSourceLanguage: 'tr' }, { translatedText: 'World' }] } })));
+  }) as typeof fetch;
+  const out = await translateBatch({ apiKey: 'k', texts: ['Merhaba', 'Dünya'], target: 'en', fetchImpl: ok });
+  assertEquals(out, [{ text: 'Hello', detectedSource: 'tr' }, { text: 'World', detectedSource: null }]);
+  assertEquals(sent, { q: ['Merhaba', 'Dünya'], target: 'en', format: 'text' });
+  assertEquals(await translateBatch({ apiKey: 'k', texts: [], target: 'en', fetchImpl: ok }), []);
+  const bad = (() => Promise.resolve(new Response('no', { status: 403 }))) as typeof fetch;
+  let failed = false;
+  await translateBatch({ apiKey: 'k', texts: ['a'], target: 'en', fetchImpl: bad }).catch(() => (failed = true));
+  assertEquals(failed, true);
+  const short = (() => Promise.resolve(new Response(JSON.stringify({ data: { translations: [] } })))) as typeof fetch;
+  failed = false;
+  await translateBatch({ apiKey: 'k', texts: ['a'], target: 'en', fetchImpl: short }).catch(() => (failed = true));
+  assertEquals(failed, true);
+});

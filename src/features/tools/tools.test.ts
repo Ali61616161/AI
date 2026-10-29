@@ -76,3 +76,12 @@ Deno.test('jetLagPlan: yön, fark ve uyum süresi', () => {
   assertEquals(nz.hours, 10);
   assertEquals(jetLagPlan('America/Los_Angeles', 'Asia/Kolkata', at).hours, -11.5);
 });
+
+Deno.test('bavul etiket dizini: hangi dilde kaydedilmiş olursa olsun anahtara çözülür', async () => {
+  const { buildPackingLabelIndex, normalizePackingLabel } = await import('./packing.ts');
+  const index = buildPackingLabelIndex([{ passport: 'Pasaport', cards: 'Kartlar' }, { passport: 'Passport', cards: 'Cards' }]);
+  assertEquals(index.get(normalizePackingLabel('PASSPORT ')), 'passport');
+  assertEquals(index.get(normalizePackingLabel('pasaport')), 'passport');
+  assertEquals(index.get(normalizePackingLabel('Kartlar')), 'cards');
+  assertEquals(index.get(normalizePackingLabel('Bilinmeyen')), undefined);
+});

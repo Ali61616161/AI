@@ -1,7 +1,7 @@
 // AeroDataBox çağrısı + paylaşımlı önbellek (flight-status ve flight-watch ortak kullanır).
 import type { SupabaseClient } from 'npm:@supabase/supabase-js@2';
 
-import { type FlightStatus, parseFlights } from './flight-status.ts';
+import { type FlightInfo, type FlightStatus, parseFlightInfo, parseFlights } from './flight-status.ts';
 
 const HOST = 'aerodatabox.p.rapidapi.com';
 
@@ -19,6 +19,25 @@ export async function fetchFlight(key: string, number: string, date: string, ori
     return parseFlights(await res.json(), origin);
   } catch (e) {
     console.error('flight provider fetch failed', String(e).slice(0, 120));
+    return 'failed';
+  }
+}
+
+/** Uçuş numarası + tarihle uçuşun havalimanları ve saatleri. Bulunamazsa null, servis hatasında 'failed'. */
+export async function fetchFlightInfo(key: string, number: string, date: string): Promise<FlightInfo | null | 'failed'> {
+  try {
+    const res = await fetch(`https://${HOST}/flights/number/${number}/${date}?withAircraftImage=false&withLocation=false`, {
+      headers: { 'x-rapidapi-key': key, 'x-rapidapi-host': HOST },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (res.status === 404) return null;
+    if (!res.ok) {
+      console.error('flight provider lookup', res.status);
+      return 'failed';
+    }
+    return parseFlightInfo(await res.json(), number);
+  } catch (e) {
+    console.error('flight provider lookup failed', String(e).slice(0, 120));
     return 'failed';
   }
 }

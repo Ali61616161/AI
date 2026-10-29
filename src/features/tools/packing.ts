@@ -85,3 +85,23 @@ export function suggestPacking(input: PackingInput): PackingSuggestion[] {
   }
   return list;
 }
+
+/** Etiket karşılaştırması: büyük/küçük harf ve baştaki/sondaki boşluk fark etmez. */
+export const normalizePackingLabel = (label: string): string => label.trim().toLocaleLowerCase();
+
+/**
+ * Önerilerle eklenen eşyalar listeye o anki dildeki adıyla kaydediliyordu; dil değişince eski dilde kalıyordu.
+ * Her dilin eşya adlarından "ad → anahtar" dizini kurulur; böylece kayıtlı ad hangi dilde olursa olsun anahtara,
+ * oradan da güncel dildeki adına çevrilir.
+ */
+export function buildPackingLabelIndex(bundles: Iterable<Record<string, string>>): Map<string, string> {
+  const index = new Map<string, string>();
+  for (const bundle of bundles) {
+    for (const [key, label] of Object.entries(bundle)) {
+      if (typeof label !== 'string') continue;
+      const norm = normalizePackingLabel(label);
+      if (norm && !index.has(norm)) index.set(norm, key);
+    }
+  }
+  return index;
+}

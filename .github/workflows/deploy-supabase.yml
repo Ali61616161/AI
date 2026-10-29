@@ -68,7 +68,7 @@ jobs:
               || npx supabase functions deploy "$@" --project-ref "$SUPABASE_PROJECT_REF" \
               || failed="$failed $1"
           }
-          for f in parse-document generate-itinerary replan places translate travel-info trip-report subscription delete-account city flight-status deals; do
+          for f in parse-document generate-itinerary replan places translate travel-info trip-report subscription delete-account city flight-status deals translate-plan affiliate-config; do
             deploy "$f"
           done
           for f in revenuecat-webhook ad-reward flight-watch price-watch; do

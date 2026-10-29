@@ -755,7 +755,8 @@
       "kidsSnacks": "儿童零食",
       "kidsEntertainment": "儿童玩具 / 书",
       "kidsMedicine": "儿童药品"
-    }
+    },
+    "shop": "在线查找{{item}}"
   },
   "visa": {
     "title": "签证与入境",
@@ -1422,7 +1423,7 @@
       "locating": "正在定位…",
       "prev": "上一步",
       "next": "下一步",
-      "stepOf": "第 {{current}}/{{total}} 步",
+      "stepOf": "第 {{n}} 步，共 {{total}} 步",
       "done": "完成",
       "stop": "结束导航",
       "openGoogle": "在谷歌地图中打开",
@@ -1653,7 +1654,14 @@
       "undecided": "还没决定"
     },
     "moreDetails": "更多细节（酒店、时间、备注）",
-    "lessDetails": "收起细节"
+    "lessDetails": "收起细节",
+    "flightHint": "输入航班号，我们会自动填写机场和时间，并跟踪登机口和延误。",
+    "outboundFlight": "去程航班号（可选）",
+    "returnFlight": "返程航班号（可选）",
+    "flightInvalid": "格式如 TK 1861",
+    "flightChecking": "正在查询航班…",
+    "flightFound": "{{from}} → {{to}} · {{dep}} – {{arr}}",
+    "flightNotFound": "未找到该航班。你可以继续，稍后再添加机票。"
   },
   "flex": {
     "other": "其他",

@@ -68,3 +68,30 @@ Deno.test('bildirim imzası ve yerel saat', () => {
   assertEquals(localTime('2026-10-26T16:15:00Z', 'Europe/Istanbul'), '19:15');
   assertEquals(localTime('2026-10-26T16:15:00Z', 'Bad/Zone'), '16:15');
 });
+
+import { parseFlightInfo } from './flight-status.ts';
+
+const lookupSample = [
+  { number: 'TK 1861', airline: { name: 'Turkish Airlines', iata: 'TK' }, departure: { airport: { iata: 'IST', municipalityName: 'Istanbul', timeZone: 'Europe/Istanbul' }, scheduledTime: { utc: '2026-12-13 05:40Z' } }, arrival: { airport: { iata: 'FCO', municipalityName: 'Rome', shortName: 'Fiumicino', timeZone: 'Europe/Rome' }, scheduledTime: { utc: '2026-12-13 08:20Z' } } },
+];
+
+Deno.test('uçuş araması: havalimanları, saat dilimleri ve planlanan saatler', () => {
+  const info = parseFlightInfo(lookupSample, 'TK1861')!;
+  assertEquals(info.number, 'TK1861');
+  assertEquals(info.airline, 'Turkish Airlines');
+  assertEquals(info.origin, { code: 'IST', name: 'Istanbul', timezone: 'Europe/Istanbul' });
+  assertEquals(info.destination, { code: 'FCO', name: 'Rome', timezone: 'Europe/Rome' });
+  assertEquals(info.departs_utc, '2026-12-13T05:40:00.000Z');
+  assertEquals(info.arrives_utc, '2026-12-13T08:20:00.000Z');
+});
+
+Deno.test('uçuş araması: eksik havalimanı ya da saat, boş ve beklenmedik yanıt null; ikinci bacak denenir', () => {
+  assertEquals(parseFlightInfo([], 'TK1'), null);
+  assertEquals(parseFlightInfo(null, 'TK1'), null);
+  assertEquals(parseFlightInfo([{ departure: { airport: { iata: 'IST' } }, arrival: {} }], 'TK1'), null);
+  const second = [{ departure: { airport: { iata: 'XX' } }, arrival: {} }, ...lookupSample];
+  assertEquals(parseFlightInfo(second, 'TK1861')?.origin.code, 'IST');
+  // geçersiz saat dilimi atılır ama uçuş kalır
+  const bad = [{ ...lookupSample[0], departure: { ...lookupSample[0].departure, airport: { iata: 'IST', timeZone: 'nope' } } }];
+  assertEquals(parseFlightInfo(bad, 'TK1861')?.origin.timezone, null);
+});

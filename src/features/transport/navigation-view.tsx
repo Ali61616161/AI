@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, Linking, Modal, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ import { isHttpsUrl } from '@/lib/safe-url';
 import { Colors, Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
-import { VEHICLE_ICONS, type RouteChoice } from './api';
+import { VEHICLE_ICONS, type RouteChoice, type RouteStepWithTickets } from './api';
 import { speakNatural, stopSpeaking } from '@/features/translate/speak';
 import { translateLanguage } from '@/features/translate/languages';
 import { blendHeading, currentStepIndex, destinationPoint, distanceToPathM, formatDistance, isArrived, isOffRoute, predictPosition, REROUTE_M, remainingAlongPath, remainingMeters, splitAtNearest, turnIcon, zoomForSpeed, type Fix, type TurnIcon } from './navigation-logic';
@@ -23,8 +23,17 @@ import { decodePolyline, thin } from './polyline';
 
 const LINE = '#FF5A36';
 const PASSED = '#8C97B2';
-/** Kamera bu aralıkla (ms) güncellenir; konum 1-2 sn'de bir gelse de harita kesintisiz akar. */
-const TICK_MS = 200;
+/**
+ * Kamera bu aralıkla (ms) güncellenir ve her güncelleme aynı sürede kayar (konum 1-2 sn'de bir gelse de harita akıcı).
+ * Daha sık (200 ms) güncelleme, animasyonları üst üste bindirip haritayı kastırıyordu.
+ */
+const TICK_MS = 500;
+/** Kamera bu kadar (m / derece / yakınlaştırma) değişmediyse güncelleme atlanır. */
+const CAM_MIN_MOVE_M = 0.8;
+const CAM_MIN_HEADING = 1.5;
+const CAM_MIN_ZOOM = 0.03;
+/** Ekran durumu (yazılar, adım) en çok bu aralıkta (ms) yenilenir; kamera ve çizgi konumu ayrı çalışır. */
+const UI_REFRESH_MS = 800;
 /** Kamera merkezi, konumun bu kadar (m) önüne konur; böylece ok ekranın alt yarısında kalır (Google Haritalar gibi). */
 const AHEAD_M = 35;
 /** Rota çizgisi (geçilen/kalan ayrımı) konum bu kadar (m) değişince yeniden çizilir; her saniye çizmek uzun rotalarda haritayı kastırıyordu. */
@@ -57,8 +66,16 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const coords = useMemo(() => path.map((p) => ({ latitude: p.lat, longitude: p.lng })), [path]);
   const [here, setHere] = useState<{ lat: number; lng: number; heading: number | null } | null>(null);
   const fix = useRef<Fix | null>(null);
-  const [step, setStep] = useState(0);
+  const lastUi = useRef(0);
+  const { width } = useWindowDimensions();
+  const CARD_GAP = Spacing.sm;
+  const cardWidth = width - Spacing.md * 2;
+  const cardStride = cardWidth + CARD_GAP;
+  const [step] = useState(0);
   const [following, setFollowing] = useState(true);
+  // Üstteki adım kartlarında kaydırarak önizlenen adım (null: şu anki adım gösterilir).
+  const [preview, setPreview] = useState<number | null>(null);
+  const list = useRef<FlatList<RouteStepWithTickets>>(null);
   const [theme, setTheme] = useState<MapTheme>('auto');
   const [satellite, setSatellite] = useState(false);
   // Sesli yönlendirme açık/kapalı (telefonda hatırlanır).
@@ -93,7 +110,11 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
       if (!permission.granted || !alive) return;
       sub = await Location.watchPositionAsync({ accuracy: Location.Accuracy.BestForNavigation, distanceInterval: 1, timeInterval: 1000 }, (p) => {
         const heading = p.coords.heading !== null && p.coords.heading >= 0 ? p.coords.heading : null;
-        fix.current = { lat: p.coords.latitude, lng: p.coords.longitude, heading, speed: p.coords.speed !== null && p.coords.speed >= 0 ? p.coords.speed : null, at: Date.now() };
+        const at = Date.now();
+        fix.current = { lat: p.coords.latitude, lng: p.coords.longitude, heading, speed: p.coords.speed !== null && p.coords.speed >= 0 ? p.coords.speed : null, at };
+        // Kamera ve konum işareti her güncellemeyi kullanır; yazılar ve adım hesabı saniyeden sık yenilenmez (her render tüm rotayı tarıyordu).
+        if (at - lastUi.current < UI_REFRESH_MS) return;
+        lastUi.current = at;
         setHere({ lat: p.coords.latitude, lng: p.coords.longitude, heading });
         const now = { lat: p.coords.latitude, lng: p.coords.longitude };
         setLineHere((prev) => (prev && (remainingMeters(prev, [now]) ?? 0) < LINE_REFRESH_M ? prev : now));
@@ -113,9 +134,11 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   // Canlı takip: kamera konum, yön ve hıza göre akar. Her 200 ms'de tahmini konuma kısa bir kayma
   // verilir (konum güncellemeleri arasında da); yön yumuşatılır, hızlandıkça uzaklaşır, ok altta kalır.
   const camera = useRef({ heading: 0, zoom: 18, init: false });
+  const lastCamera = useRef<{ lat: number; lng: number; heading: number; zoom: number } | null>(null);
   useEffect(() => {
     if (!visible || !live) return;
     fitted.current = false;
+    lastCamera.current = null;
     const id = setInterval(() => {
       const f = fix.current;
       if (!f) return;
@@ -124,7 +147,14 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
       c.zoom = c.init ? c.zoom + (zoomForSpeed(f.speed) - c.zoom) * 0.08 : zoomForSpeed(f.speed);
       c.init = true;
       const at = destinationPoint(predictPosition(f, Date.now()), c.heading, AHEAD_M);
-      map.current?.animateCamera({ center: { latitude: at.lat, longitude: at.lng }, heading: c.heading, zoom: c.zoom, pitch: 50 }, { duration: TICK_MS + 60 });
+      const last = lastCamera.current;
+      if (last) {
+        const metersMoved = Math.hypot((at.lat - last.lat) * 111_320, (at.lng - last.lng) * 111_320 * Math.cos((at.lat * Math.PI) / 180));
+        const headingMoved = Math.abs(((c.heading - last.heading + 540) % 360) - 180);
+        if (metersMoved < CAM_MIN_MOVE_M && headingMoved < CAM_MIN_HEADING && Math.abs(c.zoom - last.zoom) < CAM_MIN_ZOOM) return;
+      }
+      lastCamera.current = { lat: at.lat, lng: at.lng, heading: c.heading, zoom: c.zoom };
+      map.current?.animateCamera({ center: { latitude: at.lat, longitude: at.lng }, heading: c.heading, zoom: c.zoom, pitch: 45 }, { duration: TICK_MS });
     }, TICK_MS);
     return () => clearInterval(id);
   }, [visible, live]);
@@ -171,11 +201,32 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const stepEnd = stepPaths[idx]?.flat().at(-1);
   const stepLeft = stepEnd ? remainingMeters(here, [stepEnd]) : null;
 
-  const instruction = tr
-    ? [tr.lineShort ?? tr.line ?? tr.vehicleName, tr.headsign ? `→ ${tr.headsign}` : null].filter(Boolean).join(' ')
-    : current
-      ? (current.instruction ?? t('route.walk', { count: current.durationMin }))
-      : destinationName;
+  const stepLabel = (st: RouteStepWithTickets) =>
+    st.transit ? [st.transit.lineShort ?? st.transit.line ?? st.transit.vehicleName, st.transit.headsign ? `→ ${st.transit.headsign}` : null].filter(Boolean).join(' ') : (st.instruction ?? t('route.walk', { count: st.durationMin }));
+  const stepIcon = (st: RouteStepWithTickets) => (st.transit ? VEHICLE_ICONS[st.transit.vehicle] : st.mode !== 'transit' && st.maneuver ? TURN_ICON[turnIcon(st.maneuver)] : 'walk');
+  const thenText = next ? t('route.nav.then', { next: next.transit ? (next.transit.lineShort ?? next.transit.line ?? next.transit.vehicleName ?? '') : (next.instruction ?? t('route.walk', { count: next.durationMin })) }) : t('route.nav.lastStep');
+
+  // Şu anki adım değişince (canlı takip) kart listesi ona kayar; önizleme sırasında kullanıcının seçimi korunur.
+  useEffect(() => {
+    if (preview === null && steps.length > 1) list.current?.scrollToOffset({ offset: idx * cardStride, animated: true });
+  }, [idx, preview, steps.length, cardStride]);
+  // Kart kaydırılınca: şu anki adım dışındaysa harita o adımın başına gider (önizleme); şu anki adıma dönülürse takip sürer.
+  function onCardSettled(offsetX: number) {
+    const i = Math.max(0, Math.min(Math.round(offsetX / cardStride), steps.length - 1));
+    if (i === idx) {
+      setPreview(null);
+      return;
+    }
+    setPreview(i);
+    setFollowing(false);
+    const first = stepFlat[i]?.[0];
+    if (first) map.current?.animateCamera({ center: { latitude: first.lat, longitude: first.lng }, heading: 0, zoom: 17, pitch: 0 }, { duration: 500 });
+  }
+  function recenter() {
+    setPreview(null);
+    setFollowing(true);
+  }
+
   // Yürürken/sürerken rotadan 80 m'den fazla ve 8 sn'den uzun süre ayrılırsan rota bulunduğun yerden yeniden hesaplanır
   // (toplu taşıtta çizgiden sapma normal olduğundan yalnızca yürüme/sürüş adımlarında).
   const offSince = useRef<number | null>(null);
@@ -222,7 +273,22 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     };
   }, [visible]);
 
-  const detail = tr?.from && tr?.to ? `${tr.from} → ${tr.to}` : null;
+  // Harita içeriği konum her yenilendiğinde yeniden kurulmasın: yalnızca çizgiler, tema ya da varış değişince.
+  const mapContent = useMemo(
+    () => (
+      <>
+        {/* Yol: koyu kenarlıklı düz çizgi (her haritada okunur). Toplu taşıma hat renginde; geçilen kısım gri. */}
+        {routeLines.map((l) => (
+          <Fragment key={l.key}>
+            <Polyline coordinates={l.coords} strokeColor={mapDark ? 'rgba(5,8,18,0.85)' : 'rgba(255,255,255,0.95)'} strokeWidth={l.width + 4} lineJoin="round" lineCap="round" zIndex={l.z} />
+            <Polyline coordinates={l.coords} strokeColor={l.color} strokeWidth={l.width} lineJoin="round" lineCap="round" zIndex={l.z + 1} />
+          </Fragment>
+        ))}
+        {end && <Marker coordinate={end} title={destinationName} />}
+      </>
+    ),
+    [routeLines, mapDark, end, destinationName],
+  );
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="fullScreen" onRequestClose={onClose}>
@@ -240,17 +306,10 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
             showsUserLocation
             showsMyLocationButton={false}
             showsCompass={false}
-            showsBuildings
+            showsBuildings={false}
             toolbarEnabled={false}
             onPanDrag={() => setFollowing(false)}>
-            {/* Yol: koyu kenarlıklı düz çizgi (her haritada okunur). Toplu taşıma hat renginde; geçilen kısım gri. */}
-            {routeLines.map((l) => (
-              <Fragment key={l.key}>
-                <Polyline coordinates={l.coords} strokeColor={mapDark ? 'rgba(5,8,18,0.85)' : 'rgba(255,255,255,0.95)'} strokeWidth={l.width + 4} lineJoin="round" lineCap="round" zIndex={l.z} />
-                <Polyline coordinates={l.coords} strokeColor={l.color} strokeWidth={l.width} lineJoin="round" lineCap="round" zIndex={l.z + 1} />
-              </Fragment>
-            ))}
-            {end && <Marker coordinate={end} title={destinationName} />}
+            {mapContent}
           </MapView>
         ) : (
           <View style={styles.center}>
@@ -260,57 +319,78 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
           </View>
         )}
 
-        <View style={[styles.top, { top: insets.top + Spacing.sm, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
-          {rerouting && (
-            <Txt variant="caption" style={{ color: ui.warning }}>
-              {t('route.nav.rerouting')}
-            </Txt>
-          )}
-          {arrived ? (
-            <Txt variant="title">{t('route.nav.arrived')}</Txt>
-          ) : off ? (
-            <View style={styles.row}>
-              <Ionicons name="information-circle" size={26} color={ui.warning} />
-              <Txt variant="bodyStrong" style={styles.flex}>
-                {here && remaining !== null ? t('route.nav.farFromStart', { distance: formatDistance(distanceToStart(here, path)) }) : t('route.nav.locating')}
+        {arrived || off || steps.length === 0 ? (
+          <View style={[styles.top, { top: insets.top + Spacing.sm, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
+            {rerouting && (
+              <Txt variant="caption" style={{ color: ui.warning }}>
+                {t('route.nav.rerouting')}
               </Txt>
-            </View>
-          ) : (
-            <>
+            )}
+            {arrived ? (
+              <Txt variant="title">{t('route.nav.arrived')}</Txt>
+            ) : (
               <View style={styles.row}>
-                <Ionicons name={tr ? VEHICLE_ICONS[tr.vehicle] : current && current.mode !== 'transit' && current.maneuver ? TURN_ICON[turnIcon(current.maneuver)] : 'walk'} size={30} color={ui.primary} />
-                <View style={styles.flex}>
-                  {auto && stepLeft !== null && stepLeft > 15 && (
-                    <Txt variant="caption" color="textSecondary">
-                      {formatDistance(stepLeft)}
-                    </Txt>
-                  )}
-                  <Txt variant="title" numberOfLines={3} adjustsFontSizeToFit minimumFontScale={0.8}>
-                    {instruction}
-                  </Txt>
-                  {detail && (
-                    <Txt variant="caption" color="textSecondary" numberOfLines={1}>
-                      {detail}
-                    </Txt>
-                  )}
-                </View>
+                <Ionicons name="information-circle" size={26} color={ui.warning} />
+                <Txt variant="bodyStrong" style={styles.flex}>
+                  {here && remaining !== null ? t('route.nav.farFromStart', { distance: formatDistance(distanceToStart(here, path)) }) : t('route.nav.locating')}
+                </Txt>
               </View>
-              {steps.length > 1 && !auto && (
-                <View style={styles.stepNav}>
-                  <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.prev')} disabled={idx === 0} onPress={() => setStep(Math.max(idx - 1, 0))} hitSlop={10} style={{ opacity: idx === 0 ? 0.3 : 1 }}>
-                    <Ionicons name="chevron-back-circle" size={32} color={ui.textSecondary} />
-                  </Pressable>
-                  <Txt variant="caption" color="textMuted" style={styles.flex}>
-                    {next ? t('route.nav.then', { next: next.transit ? (next.transit.lineShort ?? next.transit.line ?? next.transit.vehicleName ?? '') : t('route.walk', { count: next.durationMin }) }) : t('route.nav.lastStep')}
-                  </Txt>
-                  <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.next')} disabled={idx >= steps.length - 1} onPress={() => setStep(Math.min(idx + 1, steps.length - 1))} hitSlop={10} style={{ opacity: idx >= steps.length - 1 ? 0.3 : 1 }}>
-                    <Ionicons name="chevron-forward-circle" size={32} color={ui.primary} />
-                  </Pressable>
-                </View>
-              )}
-            </>
-          )}
-        </View>
+            )}
+          </View>
+        ) : (
+          <View style={[styles.stepList, { top: insets.top + Spacing.sm }]}>
+            {rerouting && (
+              <View style={[styles.reroute, { backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
+                <Txt variant="caption" style={{ color: ui.warning }}>
+                  {t('route.nav.rerouting')}
+                </Txt>
+              </View>
+            )}
+            <FlatList
+              ref={list}
+              horizontal
+              data={steps}
+              keyExtractor={(_, i) => String(i)}
+              showsHorizontalScrollIndicator={false}
+              snapToInterval={cardStride}
+              decelerationRate="fast"
+              contentContainerStyle={{ paddingHorizontal: Spacing.md, gap: CARD_GAP }}
+              getItemLayout={(_, i) => ({ length: cardStride, offset: cardStride * i, index: i })}
+              onMomentumScrollEnd={(e) => onCardSettled(e.nativeEvent.contentOffset.x)}
+              initialScrollIndex={Math.min(idx, steps.length - 1)}
+              renderItem={({ item: st, index }) => {
+                const isCurrent = index === idx;
+                const dist = isCurrent && auto && stepLeft !== null ? stepLeft : st.distanceM;
+                const place = st.transit?.from && st.transit?.to ? `${st.transit.from} → ${st.transit.to}` : null;
+                return (
+                  <View style={[styles.stepCard, { width: cardWidth, backgroundColor: ui.backgroundElevated, borderColor: isCurrent ? ui.primary : ui.border }]}>
+                    <View style={styles.row}>
+                      <Ionicons name={stepIcon(st)} size={30} color={isCurrent ? ui.primary : ui.textSecondary} />
+                      <View style={styles.flex}>
+                        <Txt variant="caption" color="textSecondary">
+                          {[dist > 15 ? formatDistance(dist) : null, isCurrent ? null : t('route.nav.stepOf', { n: index + 1, total: steps.length })].filter(Boolean).join(' · ')}
+                        </Txt>
+                        <Txt variant="title" numberOfLines={3} adjustsFontSizeToFit minimumFontScale={0.8}>
+                          {stepLabel(st)}
+                        </Txt>
+                        {place && (
+                          <Txt variant="caption" color="textSecondary" numberOfLines={1}>
+                            {place}
+                          </Txt>
+                        )}
+                      </View>
+                    </View>
+                    {isCurrent && (
+                      <Txt variant="caption" color="textMuted" numberOfLines={1}>
+                        {thenText}
+                      </Txt>
+                    )}
+                  </View>
+                );
+              }}
+            />
+          </View>
+        )}
 
         <View style={[styles.controls, { top: insets.top + 130 }]}>
           <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.theme')} onPress={() => setTheme((v) => (v === 'auto' ? 'light' : v === 'light' ? 'dark' : 'auto'))} style={[styles.control, { backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
@@ -325,7 +405,7 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
         </View>
 
         {!following && !off && (
-          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.recenter')} onPress={() => setFollowing(true)} style={[styles.recenter, { bottom: insets.bottom + 150, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.recenter')} onPress={recenter} style={[styles.recenter, { bottom: insets.bottom + 150, backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
             <Ionicons name="locate" size={24} color={ui.primary} />
           </Pressable>
         )}
@@ -360,7 +440,9 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: Spacing.lg },
   top: { position: 'absolute', left: Spacing.md, right: Spacing.md, gap: Spacing.sm, padding: Spacing.lg, borderRadius: Radius.xl, borderWidth: 1 },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
-  stepNav: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
+  stepList: { position: 'absolute', left: 0, right: 0 },
+  stepCard: { gap: Spacing.xs, padding: Spacing.lg, borderRadius: Radius.xl, borderWidth: 1.5 },
+  reroute: { alignSelf: 'center', paddingHorizontal: Spacing.md, paddingVertical: 4, borderRadius: Radius.pill, borderWidth: 1, marginBottom: Spacing.xs },
   flex: { flex: 1 },
   controls: { position: 'absolute', right: Spacing.md, gap: Spacing.sm },
   control: { width: 48, height: 48, borderRadius: 24, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },

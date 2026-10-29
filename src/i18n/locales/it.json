@@ -765,7 +765,8 @@
       "kidsSnacks": "Snack per bambini",
       "kidsEntertainment": "Giochi / libri per bambini",
       "kidsMedicine": "Farmaci per bambini"
-    }
+    },
+    "shop": "Cerca {{item}} online"
   },
   "visa": {
     "title": "Visto e ingresso",
@@ -1459,7 +1460,7 @@
       "locating": "Ricerca della tua posizione…",
       "prev": "Indietro",
       "next": "Avanti",
-      "stepOf": "Passo {{current}}/{{total}}",
+      "stepOf": "Passo {{n}} di {{total}}",
       "done": "Fine",
       "stop": "Termina indicazioni",
       "openGoogle": "Apri in Google Maps",
@@ -1691,7 +1692,14 @@
       "undecided": "Non ho deciso"
     },
     "moreDetails": "Più dettagli (hotel, orari, note)",
-    "lessDetails": "Meno dettagli"
+    "lessDetails": "Meno dettagli",
+    "flightHint": "Inserisci i numeri di volo: compileremo aeroporti e orari e seguiremo gate e ritardi.",
+    "outboundFlight": "Numero del volo di andata (facoltativo)",
+    "returnFlight": "Numero del volo di ritorno (facoltativo)",
+    "flightInvalid": "Usa il formato TK 1861",
+    "flightChecking": "Ricerca del volo…",
+    "flightFound": "{{from}} → {{to}} · {{dep}} – {{arr}}",
+    "flightNotFound": "Volo non trovato. Puoi continuare e aggiungere il biglietto dopo."
   },
   "flex": {
     "other": "Altro",

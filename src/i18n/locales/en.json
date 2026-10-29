@@ -765,7 +765,8 @@
       "kidsSnacks": "Snacks for kids",
       "kidsEntertainment": "Games / books for kids",
       "kidsMedicine": "Children's medicine"
-    }
+    },
+    "shop": "Find {{item}} online"
   },
   "visa": {
     "title": "Visa and entry",
@@ -1459,7 +1460,7 @@
       "locating": "Finding your location…",
       "prev": "Back",
       "next": "Next",
-      "stepOf": "Step {{current}}/{{total}}",
+      "stepOf": "Step {{n}} of {{total}}",
       "done": "Finish",
       "stop": "End directions",
       "openGoogle": "Open in Google Maps",
@@ -1691,7 +1692,14 @@
       "undecided": "Not decided"
     },
     "moreDetails": "More details (hotels, times, notes)",
-    "lessDetails": "Fewer details"
+    "lessDetails": "Fewer details",
+    "flightHint": "Enter your flight numbers and we'll fill in airports and times, then track gate and delays.",
+    "outboundFlight": "Outbound flight number (optional)",
+    "returnFlight": "Return flight number (optional)",
+    "flightInvalid": "Use the format TK 1861",
+    "flightChecking": "Looking up the flight…",
+    "flightFound": "{{from}} → {{to}} · {{dep}} – {{arr}}",
+    "flightNotFound": "Flight not found. You can continue and add your ticket later."
   },
   "flex": {
     "other": "Other",

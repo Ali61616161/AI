@@ -765,7 +765,8 @@
       "kidsSnacks": "Snacks für Kinder",
       "kidsEntertainment": "Spiele / Bücher für Kinder",
       "kidsMedicine": "Kindermedikamente"
-    }
+    },
+    "shop": "{{item}} online finden"
   },
   "visa": {
     "title": "Visum und Einreise",
@@ -1459,7 +1460,7 @@
       "locating": "Standort wird gesucht…",
       "prev": "Zurück",
       "next": "Weiter",
-      "stepOf": "Schritt {{current}}/{{total}}",
+      "stepOf": "Schritt {{n}} von {{total}}",
       "done": "Fertig",
       "stop": "Navigation beenden",
       "openGoogle": "In Google Maps öffnen",
@@ -1691,7 +1692,14 @@
       "undecided": "Noch nicht entschieden"
     },
     "moreDetails": "Mehr Details (Hotels, Zeiten, Notizen)",
-    "lessDetails": "Weniger Details"
+    "lessDetails": "Weniger Details",
+    "flightHint": "Gib deine Flugnummern ein, wir füllen Flughäfen und Zeiten aus und verfolgen Gate und Verspätungen.",
+    "outboundFlight": "Hinflugnummer (optional)",
+    "returnFlight": "Rückflugnummer (optional)",
+    "flightInvalid": "Format wie TK 1861",
+    "flightChecking": "Flug wird gesucht …",
+    "flightFound": "{{from}} → {{to}} · {{dep}} – {{arr}}",
+    "flightNotFound": "Flug nicht gefunden. Du kannst weitermachen und dein Ticket später hinzufügen."
   },
   "flex": {
     "other": "Andere",

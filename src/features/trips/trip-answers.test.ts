@@ -2,7 +2,7 @@ import { assertEquals } from 'jsr:@std/assert@1';
 
 import { asksFlightTimes, emptyHotel, hotelReservationRow, normalizeAnswers, parseAmount, parseClock, toggleTravelMode, type TripAnswers } from './trip-answers.ts';
 
-const base: TripAnswers = { companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'TRY', interests: ['art'], transport: 'mixed', travelModes: [], notes: '', hotels: [], arrivalTime: '', arrivalAirport: '', departureTime: '', departureAirport: '' };
+const base: TripAnswers = { companion: 'solo', budget: 'mid', dailyBudget: '', currency: 'TRY', interests: ['art'], transport: 'mixed', travelModes: [], outboundFlight: '', returnFlight: '', notes: '', hotels: [], arrivalTime: '', arrivalAirport: '', departureTime: '', departureAirport: '' };
 
 Deno.test('parseAmount: farklı yazım biçimleri', () => {
   assertEquals(parseAmount('120'), 120);

@@ -11,6 +11,8 @@ import { useProfileCountries } from '@/features/tools/api';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
+import { useAffiliateConfig } from '@/features/affiliate/use-affiliate-config';
+
 import { ESIM_NAMES, esimOptions, templatesFromPublicEnv } from './links';
 
 // Expo yalnızca doğrudan `process.env.EXPO_PUBLIC_…` yazımını pakete gömer.
@@ -25,13 +27,14 @@ export function EsimCard({ countryCodes }: { countryCodes: (string | null)[] }) 
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const { data: profile } = useProfileCountries();
+  const affiliate = useAffiliateConfig();
   const home = profile?.home_country ?? null;
   const countries = [...new Set(countryCodes.filter((c): c is string => Boolean(c)).map((c) => c.toUpperCase()))].filter((c) => c !== home).slice(0, 4);
   const [picked, setPicked] = useState<string | null>(null);
   if (countries.length === 0) return null;
 
   const country = picked && countries.includes(picked) ? picked : countries[0];
-  const options = esimOptions(country, TEMPLATES);
+  const options = esimOptions(country, { ...TEMPLATES, ...affiliate.data?.esim });
   const name = localCountryName(country, i18n.language);
 
   return (
@@ -58,7 +61,7 @@ export function EsimCard({ countryCodes }: { countryCodes: (string | null)[] }) 
         ))}
       </View>
       <Text variant="caption" color="textMuted">
-        {options.some((o) => o.affiliate) ? t('esim.affiliateNote') : t('esim.note')}
+        {t('esim.note')}
       </Text>
     </View>
   );

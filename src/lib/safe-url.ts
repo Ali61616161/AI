@@ -31,3 +31,10 @@ export function isDealUrl(url: unknown): url is string {
   const host = new URL(url).hostname.toLowerCase();
   return host === 'aviasales.com' || host.endsWith('.aviasales.com');
 }
+
+const SHOP_HOST = /^(www\.)?amazon\.(com|com\.tr|de|co\.uk|fr|it|es|nl|se|pl|com\.be|ie|ca|com\.au|co\.jp|in|ae|sa|eg|com\.br|com\.mx|sg)$/i;
+
+/** Alışveriş bağlantısı: yalnızca Amazon mağazaları. */
+export function isShopUrl(url: unknown): url is string {
+  return isHttpsUrl(url) && SHOP_HOST.test(new URL(url).hostname);
+}

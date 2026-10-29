@@ -3,13 +3,15 @@ import { FunctionsHttpError } from '@supabase/supabase-js';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import type { TripDraft } from '@/features/documents/build-trip';
-import { hotelReservationRow, normalizeAnswers, type TripAnswers } from './trip-answers';
+import { flightReservationRow, hotelReservationRow, normalizeAnswers, type TripAnswers } from './trip-answers';
+import { lookupFlight } from '@/features/travel/flight-lookup';
+import { useTranslatedPlan } from '@/features/plan/plan-translation';
 import { notePositiveMoment } from '@/features/engagement/rating';
 import { scheduleTripReminders } from '@/features/engagement/trip-reminders';
 import { requestReminderPermission } from '@/features/travel/reminders';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
-import type { Json } from '@/types/database';
+import type { Database, Json } from '@/types/database';
 
 const TRIP_LIST_SELECT =
   'id, owner_id, title, status, start_date, end_date, trip_destinations(city, country_code, position), reservations(count)';
@@ -175,7 +177,16 @@ export async function applyTripAnswers(tripId: string, answers: TripAnswers, tri
       })
       .eq('id', tripId);
     if (error) throw error;
-    const rows = n.hotels.map((h) => hotelReservationRow(h, tripId, trip)).filter((r): r is NonNullable<typeof r> => r !== null);
+    const rows: Database['public']['Tables']['reservations']['Insert'][] = n.hotels.map((h) => hotelReservationRow(h, tripId, trip)).filter((r): r is NonNullable<typeof r> => r !== null);
+    // Uçuş numarası verildiyse havalimanları ve saatler bulunur; bulunamazsa sessizce atlanır (bilet yüklenerek eklenebilir).
+    for (const [number, date] of [
+      [n.flights.out, trip.start],
+      [n.flights.back, trip.end],
+    ] as const) {
+      if (!number || !date) continue;
+      const info = await lookupFlight(number, date).catch(() => null);
+      if (info) rows.push(flightReservationRow(info, tripId));
+    }
     if (rows.length) {
       const { error: hotelError } = await supabase.from('reservations').insert(rows);
       if (hotelError) throw hotelError;
@@ -308,6 +319,13 @@ const PLAN_SELECT =
 /** Seyahatin aktif plan sürümü; günler tarihe, kalemler sıraya göre dizili. Plan yoksa null. */
 export function useActivePlan(tripId: string | undefined) {
   const userId = useUserId();
+  const query = useActivePlanRaw(tripId, userId);
+  // Plan başka dilde üretilmişse metinler uygulamanın diline çevrilir (yer adları ve adresler aynı kalır).
+  const data = useTranslatedPlan(tripId, query.data);
+  return { ...query, data } as typeof query;
+}
+
+function useActivePlanRaw(tripId: string | undefined, userId: string | null | undefined) {
   return useQuery({
     queryKey: ['plan', tripId],
     enabled: Boolean(userId && tripId) && isSupabaseConfigured(),

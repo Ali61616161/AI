@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getLocales } from 'expo-localization';
 import { useState, type ComponentProps } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,8 @@ import { Text } from '@/components/ui/text';
 import { DateField, TimeField } from '@/components/ui/date-field';
 import { TextField } from '@/components/ui/text-field';
 import { BUDGETS, COMPANIONS, INTERESTS } from '@/features/profile/options';
+import { useFlightLookup } from '@/features/travel/flight-lookup';
+import { formatTime } from '@/lib/format';
 import { useSessionStore } from '@/stores/session-store';
 import { Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -65,6 +67,8 @@ export function useDefaultTripAnswers(): TripAnswers {
     interests: preferences.interests,
     transport: 'mixed',
     travelModes: [],
+    outboundFlight: '',
+    returnFlight: '',
     notes: '',
     hotels: [],
     arrivalTime: '',
@@ -74,6 +78,41 @@ export function useDefaultTripAnswers(): TripAnswers {
   };
 }
 
+/** Uçuş numarası alanı: yazılınca havalimanları ve saatler bulunup gösterilir (bulunamazsa devam edilebilir). */
+function FlightNumberField({ label, value, onChange, date, invalid }: { label: string; value: string; onChange: (v: string) => void; date: string | null; invalid: boolean }) {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const lookup = useFlightLookup(value, date);
+  return (
+    <View style={styles.section}>
+      <TextField label={label} value={value} onChangeText={(v) => onChange(v.toUpperCase().slice(0, 8))} placeholder="TK 1861" autoCapitalize="characters" autoCorrect={false} maxLength={8} error={invalid ? t('tripQuestions.flightInvalid') : null} />
+      {lookup.number && !invalid && (
+        <View style={styles.row}>
+          {lookup.loading ? (
+            <ActivityIndicator size="small" color={colors.primary} />
+          ) : lookup.info ? (
+            <Ionicons name="checkmark-circle" size={18} color={colors.success} />
+          ) : (
+            <Ionicons name="information-circle-outline" size={18} color={colors.textMuted} />
+          )}
+          <Text variant="caption" color={lookup.info ? 'textSecondary' : 'textMuted'} style={styles.flex}>
+            {lookup.loading
+              ? t('tripQuestions.flightChecking')
+              : lookup.info
+                ? t('tripQuestions.flightFound', {
+                    from: lookup.info.origin.name,
+                    to: lookup.info.destination.name,
+                    dep: formatTime(lookup.info.departs_utc, lookup.info.origin.timezone),
+                    arr: lookup.info.arrives_utc ? formatTime(lookup.info.arrives_utc, lookup.info.destination.timezone) : '–',
+                  })
+                : t('tripQuestions.flightNotFound')}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+}
+
 type Props = {
   value: TripAnswers;
   onChange: (next: TripAnswers) => void;
@@ -81,14 +120,16 @@ type Props = {
   tripStart?: string | null;
   tripEnd?: string | null;
   /** normalizeAnswers çıktısındaki hatalar (gönder'e basılınca gösterilir). */
-  errors?: Pick<NormalizedAnswers, 'hotelError' | 'budgetError' | 'timeError'> | null;
+  errors?: Pick<NormalizedAnswers, 'hotelError' | 'budgetError' | 'timeError' | 'flightError'> | null;
+  /** Uçuş numarası soruları (bilet yüklenerek kurulan seyahatte uçuş zaten biletten gelir). */
+  askFlights?: boolean;
 };
 
 /**
  * Seyahate özel isteğe bağlı sorular: kiminle, bütçe ("Diğer" ile rakam), ilgi alanları, şehir içi
  * ulaşım, oteller ve serbest not. Doldurulmayanlar profildeki tercihlerle devam eder.
  */
-export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: Props) {
+export function TripQuestions({ value, onChange, tripStart, tripEnd, errors, askFlights = true }: Props) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const set = (patch: Partial<TripAnswers>) => onChange({ ...value, ...patch });
@@ -113,6 +154,16 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
           <Chip key={m.value} icon={m.icon} label={t(`tripQuestions.travelModes.${m.value}`)} selected={value.travelModes.includes(m.value)} onPress={() => set({ travelModes: toggleTravelMode(value.travelModes, m.value) })} />
         ))}
       </Group>
+
+      {askFlights && value.travelModes.includes('flight') && (
+        <View style={styles.section}>
+          <Text variant="caption" color="textSecondary">
+            {t('tripQuestions.flightHint')}
+          </Text>
+          <FlightNumberField label={t('tripQuestions.outboundFlight')} value={value.outboundFlight} onChange={(outboundFlight) => set({ outboundFlight })} date={tripStart ?? null} invalid={Boolean(errors?.flightError) && value.outboundFlight.trim() !== '' && !/^[A-Za-z0-9]{2}[\s-]?\d{1,4}[A-Za-z]?$/.test(value.outboundFlight.trim())} />
+          <FlightNumberField label={t('tripQuestions.returnFlight')} value={value.returnFlight} onChange={(returnFlight) => set({ returnFlight })} date={tripEnd ?? null} invalid={Boolean(errors?.flightError) && value.returnFlight.trim() !== '' && !/^[A-Za-z0-9]{2}[\s-]?\d{1,4}[A-Za-z]?$/.test(value.returnFlight.trim())} />
+        </View>
+      )}
 
       <Group label={t('tripQuestions.companion')}>
         {COMPANIONS.map((c) => (

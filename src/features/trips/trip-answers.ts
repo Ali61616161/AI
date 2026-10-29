@@ -1,5 +1,6 @@
 // Seyahat kurulurken sorulan cevapların saf mantığı (arayüz bağımlılığı yok; Deno testleri bunu içe aktarır).
 import { localToUtcIso } from '../../../supabase/functions/_shared/documents.ts';
+import { normalizeFlightNumber, type FlightInfo } from '../../../supabase/functions/_shared/flight-status.ts';
 
 export type Companion = 'solo' | 'couple' | 'family' | 'friends';
 export type BudgetChoice = 'low' | 'mid' | 'lux' | 'custom';
@@ -25,6 +26,9 @@ export type TripAnswers = {
   transport: LocalTransport;
   /** Gidilen yere nasıl ulaşılacak (birden fazla olabilir). */
   travelModes: TravelMode[];
+  /** Gidiş ve dönüş uçuş numaraları (isteğe bağlı); doluysa havalimanları ve saatler otomatik bulunur. */
+  outboundFlight: string;
+  returnFlight: string;
   notes: string;
   hotels: HotelInput[];
   /** Gidilen ülkeye iniş / dönüş uçuşu kalkış saati (yerel, HH:MM) ve havalimanları; hepsi isteğe bağlı. */
@@ -112,6 +116,9 @@ export type NormalizedAnswers = {
   hotelError: { index: number; issue: Exclude<HotelIssue, null> } | null;
   budgetError: boolean;
   travelModes: TravelMode[];
+  flights: { out: string | null; back: string | null };
+  /** Dolu ama uçuş numarası biçiminde olmayan alan. */
+  flightError: boolean;
   arrivalTime: string | null;
   departureTime: string | null;
   arrivalAirport: string | null;
@@ -139,6 +146,8 @@ export function normalizeAnswers(a: TripAnswers): NormalizedAnswers {
     hotelError,
     budgetError: custom && (amount === null || !isCurrencyCode(a.currency)),
     travelModes: TRAVEL_MODES.filter((m) => a.travelModes.includes(m)),
+    flights: { out: normalizeFlightNumber(a.outboundFlight), back: normalizeFlightNumber(a.returnFlight) },
+    flightError: (a.outboundFlight.trim() !== '' && !normalizeFlightNumber(a.outboundFlight)) || (a.returnFlight.trim() !== '' && !normalizeFlightNumber(a.returnFlight)),
     arrivalTime: parseClock(a.arrivalTime),
     departureTime: parseClock(a.departureTime),
     arrivalAirport: a.arrivalAirport.trim().slice(0, 120) || null,
@@ -159,5 +168,24 @@ export function hotelReservationRow(h: HotelInput, tripId: string, trip: { start
     address: h.address.trim().slice(0, 300) || null,
     starts_at: localToUtcIso(`${checkIn}T15:00`, null),
     ends_at: localToUtcIso(`${checkOut > checkIn ? checkOut : checkIn}T11:00`, null),
+  };
+}
+
+/** Bulunan uçuştan rezervasyon satırı (canlı takip ve plan bunu kullanır). */
+export function flightReservationRow(info: FlightInfo, tripId: string) {
+  return {
+    trip_id: tripId,
+    type: 'flight' as const,
+    title: `${info.number} ${info.origin.code} → ${info.destination.code}`,
+    provider_name: info.airline,
+    starts_at: info.departs_utc,
+    ends_at: info.arrives_utc && info.arrives_utc >= info.departs_utc ? info.arrives_utc : null,
+    start_timezone: info.origin.timezone,
+    end_timezone: info.destination.timezone,
+    origin_code: info.origin.code,
+    origin_name: info.origin.name,
+    destination_code: info.destination.code,
+    destination_name: info.destination.name,
+    details: { flight_number: info.number },
   };
 }

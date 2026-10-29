@@ -266,7 +266,7 @@ export default function TicketReviewScreen() {
           onDateText={(field, text) => onDateText(item, field, text)}
         />
       ))}
-      {!tripId && <TripQuestions value={answers} onChange={setAnswers} tripStart={draft?.start_date ?? null} tripEnd={draft?.end_date ?? null} errors={showErrors ? normalized : null} />}
+      {!tripId && <TripQuestions value={answers} onChange={setAnswers} tripStart={draft?.start_date ?? null} tripEnd={draft?.end_date ?? null} errors={showErrors ? normalized : null} askFlights={false} />}
     </Screen>
   );
 }

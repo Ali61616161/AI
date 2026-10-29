@@ -916,6 +916,9 @@ call tests.login('00000000-0000-0000-0000-0000000000d1');
 do $$ begin
   assert tests.throws($q$ select * from public.flight_status_cache $q$), 'istemci uçuş önbelleğini okuyamamalı';
   assert tests.throws($q$ insert into public.flight_status_cache (flight_number, flight_date) values ('XX1', '2026-10-26') $q$), 'istemci yazamamalı';
+  assert tests.throws($q$ select * from public.flight_lookup_cache $q$), 'istemci uçuş arama önbelleğini okuyamamalı';
+  assert tests.throws($q$ insert into public.flight_lookup_cache (flight_number, flight_date) values ('XX1', '2026-10-26') $q$), 'istemci arama önbelleğine yazamamalı';
+  assert tests.throws($q$ select * from public.plan_translations $q$), 'istemci plan çevirilerini okuyamamalı';
 end $$;
 reset role;
 

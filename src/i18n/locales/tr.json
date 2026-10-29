@@ -765,7 +765,8 @@
       "kidsSnacks": "Çocuklar için atıştırmalık",
       "kidsEntertainment": "Çocuklar için oyun / kitap",
       "kidsMedicine": "Çocuk ilaçları"
-    }
+    },
+    "shop": "{{item}} için çevrimiçi ara"
   },
   "visa": {
     "title": "Vize ve giriş",
@@ -1459,7 +1460,7 @@
       "locating": "Konumun aranıyor…",
       "prev": "Önceki",
       "next": "Sonraki",
-      "stepOf": "Adım {{current}}/{{total}}",
+      "stepOf": "Adım {{n}}/{{total}}",
       "done": "Bitir",
       "stop": "Yol tarifini bitir",
       "openGoogle": "Google Haritalar'da aç",
@@ -1691,7 +1692,14 @@
       "undecided": "Karar vermedim"
     },
     "moreDetails": "Daha fazla ayrıntı (otel, saat, not)",
-    "lessDetails": "Daha az ayrıntı"
+    "lessDetails": "Daha az ayrıntı",
+    "flightHint": "Uçuş numaralarını yaz; havalimanlarını ve saatleri biz dolduralım, kapı ve gecikmeyi takip edelim.",
+    "outboundFlight": "Gidiş uçuş numarası (isteğe bağlı)",
+    "returnFlight": "Dönüş uçuş numarası (isteğe bağlı)",
+    "flightInvalid": "TK 1861 biçiminde yaz",
+    "flightChecking": "Uçuş aranıyor…",
+    "flightFound": "{{from}} → {{to}} · {{dep}} – {{arr}}",
+    "flightNotFound": "Uçuş bulunamadı. Devam edip biletini sonra ekleyebilirsin."
   },
   "flex": {
     "other": "Diğer",

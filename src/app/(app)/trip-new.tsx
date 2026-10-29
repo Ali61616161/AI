@@ -33,7 +33,7 @@ export default function NewTripScreen() {
   const [answers, setAnswers] = useState(defaults);
   const [showErrors, setShowErrors] = useState(false);
   const normalized = useMemo(() => normalizeAnswers(answers), [answers]);
-  const answerErrors = normalized.budgetError || normalized.hotelError !== null || normalized.timeError;
+  const answerErrors = normalized.budgetError || normalized.hotelError !== null || normalized.timeError || normalized.flightError;
   const city = destination.city.trim();
   const country = destination.country;
   const datesValid = DATE.test(start) && DATE.test(end) && end >= start;

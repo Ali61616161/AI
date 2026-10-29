@@ -88,6 +88,48 @@ export function parseFlights(data: unknown, originCode: string | null): FlightSt
   return { state, departure: dep, arrival: { ...arr, baggage_belt: text(arrival?.baggageBelt) } };
 }
 
+export type FlightInfo = {
+  number: string;
+  airline: string | null;
+  origin: { code: string; name: string; timezone: string | null };
+  destination: { code: string; name: string; timezone: string | null };
+  departs_utc: string;
+  arrives_utc: string | null;
+};
+
+const airportOf = (leg: unknown): { code: string; name: string; timezone: string | null } | null => {
+  const a = (leg as { airport?: Record<string, unknown> } | undefined)?.airport;
+  const code = typeof a?.iata === 'string' ? a.iata.toUpperCase() : '';
+  if (!/^[A-Z]{3}$/.test(code)) return null;
+  const pick = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim().slice(0, 80) : null);
+  const tz = typeof a?.timeZone === 'string' && /^[A-Za-z_]+(\/[A-Za-z_+-]+){1,2}$/.test(a.timeZone) ? a.timeZone : null;
+  return { code, name: pick(a?.municipalityName) ?? pick(a?.shortName) ?? pick(a?.name) ?? code, timezone: tz };
+};
+
+/**
+ * "Uçuş numarası + tarih" yanıtından uçuşun kendisi: havalimanları (kod, şehir, saat dilimi) ve planlanan saatler.
+ * Birden çok bacak varsa ilk geçerli olan alınır; saat ya da havalimanı eksikse null.
+ */
+export function parseFlightInfo(data: unknown, number: string): FlightInfo | null {
+  if (!Array.isArray(data)) return null;
+  for (const f of data as Record<string, unknown>[]) {
+    const origin = airportOf(f.departure);
+    const destination = airportOf(f.arrival);
+    const departs = utc((f.departure as { scheduledTime?: unknown } | undefined)?.scheduledTime);
+    if (!origin || !destination || !departs) continue;
+    const airline = (f.airline as { name?: unknown } | undefined)?.name;
+    return {
+      number,
+      airline: typeof airline === 'string' && airline.trim() ? airline.trim().slice(0, 60) : null,
+      origin,
+      destination,
+      departs_utc: departs,
+      arrives_utc: utc((f.arrival as { scheduledTime?: unknown } | undefined)?.scheduledTime),
+    };
+  }
+  return null;
+}
+
 export type AlertLevel = 'none' | 'delay' | 'canceled';
 
 /** Kullanıcıya bildirim gerektiren durum: iptal ya da en az 15 dakikalık kalkış gecikmesi. */

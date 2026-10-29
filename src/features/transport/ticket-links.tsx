@@ -2,7 +2,6 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Chip } from '@/components/ui/chip';
-import { Text } from '@/components/ui/text';
 import { openBookingLink } from '@/features/places/api';
 import { Spacing } from '@/theme/tokens';
 
@@ -24,11 +23,6 @@ export function TicketLinks({ options, showModes = false }: { options: TicketOpt
           />
         ))}
       </View>
-      {options.some((o) => o.affiliate) && (
-        <Text variant="caption" color="textMuted">
-          {t('route.affiliateNote')}
-        </Text>
-      )}
     </View>
   );
 }

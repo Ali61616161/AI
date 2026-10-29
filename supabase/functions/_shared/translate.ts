@@ -57,6 +57,34 @@ export async function translateText(options: {
   return { text: t.translatedText, detectedSource: typeof t.detectedSourceLanguage === 'string' ? t.detectedSourceLanguage : null };
 }
 
+/** Birden çok metni tek istekte çevirir (en çok 128 metin). Sıra korunur; algılanan kaynak dil her metin için döner. */
+export async function translateBatch(options: {
+  apiKey: string;
+  texts: string[];
+  target: string;
+  fetchImpl?: typeof fetch;
+  apiBase?: string;
+}): Promise<{ text: string; detectedSource: string | null }[]> {
+  if (options.texts.length === 0) return [];
+  const doFetch = options.fetchImpl ?? fetch;
+  const res = await doFetch(`${options.apiBase ?? TRANSLATE_API_BASE}/${TRANSLATE_PATH}`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'X-Goog-Api-Key': options.apiKey },
+    body: JSON.stringify({ q: options.texts.slice(0, 128), target: options.target, format: 'text' }),
+    signal: AbortSignal.timeout(20_000),
+  }).catch((e) => {
+    throw new TranslateError(`translate request failed: ${e instanceof Error ? e.message : String(e)}`, null);
+  });
+  if (!res.ok) throw new TranslateError(`translate http ${res.status}: ${(await res.text()).slice(0, 300)}`, res.status);
+  const data = await res.json();
+  const list = data?.data?.translations ?? data?.translations;
+  if (!Array.isArray(list) || list.length !== Math.min(options.texts.length, 128)) throw new TranslateError('translate: unexpected response', res.status);
+  return list.map((t: { translatedText?: unknown; detectedSourceLanguage?: unknown }) => ({
+    text: typeof t.translatedText === 'string' ? t.translatedText : '',
+    detectedSource: typeof t.detectedSourceLanguage === 'string' ? t.detectedSourceLanguage : null,
+  }));
+}
+
 // ---------------------------------------------------------------------------
 // Fotoğraftan çeviri (Gemini)
 // ---------------------------------------------------------------------------
