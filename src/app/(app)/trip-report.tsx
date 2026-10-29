@@ -11,7 +11,7 @@ import { Chip } from '@/components/ui/chip';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
-import { useGenerateReport, usePlaceRatings, useRatePlace, useTripReport } from '@/features/report/api';
+import { useGenerateReport, usePlaceRatings, useRatePlace, useTranslatedReport, useTripReport } from '@/features/report/api';
 import { JournalSummary } from '@/features/journal/journal-summary';
 import { ShareCard } from '@/features/report/share-card';
 import { Stars } from '@/features/report/stars';
@@ -27,7 +27,8 @@ export default function TripReportScreen() {
   const { tripId, overall: overallParam } = useLocalSearchParams<{ tripId: string; overall?: string }>();
   const { data: trip } = useTrip(tripId);
   const { data: plan } = useActivePlan(tripId);
-  const { data: report, isLoading } = useTripReport(tripId);
+  const { data: rawReport, isLoading } = useTripReport(tripId);
+  const report = useTranslatedReport(rawReport);
   const { data: ratings } = usePlaceRatings(tripId);
   const rate = useRatePlace(tripId);
   const generate = useGenerateReport(tripId);

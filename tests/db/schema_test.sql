@@ -919,6 +919,7 @@ do $$ begin
   assert tests.throws($q$ select * from public.flight_lookup_cache $q$), 'istemci uçuş arama önbelleğini okuyamamalı';
   assert tests.throws($q$ insert into public.flight_lookup_cache (flight_number, flight_date) values ('XX1', '2026-10-26') $q$), 'istemci arama önbelleğine yazamamalı';
   assert tests.throws($q$ select * from public.plan_translations $q$), 'istemci plan çevirilerini okuyamamalı';
+  assert tests.throws($q$ select * from public.text_translations $q$), 'istemci metin çevirilerini okuyamamalı';
 end $$;
 reset role;
 

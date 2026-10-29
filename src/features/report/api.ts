@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { notePositiveMoment } from '@/features/engagement/rating';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
+import { useTranslatedTexts } from '@/features/translate/use-translated-texts';
 import { useSessionStore } from '@/stores/session-store';
 
 import type { ReportInsights, TripStats } from '../../../supabase/functions/_shared/report.ts';
@@ -97,4 +98,21 @@ export function useRatePlace(tripId: string) {
       queryClient.invalidateQueries({ queryKey: ['plan', tripId] });
     },
   });
+}
+
+/** Raporun yapay zekâ metinlerini (özet, öne çıkanlar, sonraki seyahat ipucu) uygulamanın diline çevirir; rapor başka dilde üretilmiş olabilir. */
+export function useTranslatedReport(report: TripReportRow | null | undefined): TripReportRow | null | undefined {
+  const insights = report?.ai_insights;
+  const highlights = insights?.highlights ?? [];
+  const out = useTranslatedTexts([insights?.summary, insights?.nextTripTip, ...highlights]);
+  if (!report || !insights) return report;
+  return {
+    ...report,
+    ai_insights: {
+      ...insights,
+      summary: out[0] ?? insights.summary,
+      nextTripTip: out[1] ?? insights.nextTripTip,
+      highlights: highlights.map((h, i) => out[2 + i] ?? h),
+    },
+  };
 }

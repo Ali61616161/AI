@@ -21,7 +21,7 @@ export const queryClient = new QueryClient({
 });
 
 /** Çevrimdışı kullanım için telefonda saklanan sorgular. */
-const PERSISTED_KEYS = new Set(['trips', 'trip', 'plan', 'weather', 'hotels', 'expenses', 'packing', 'trip-report', 'profile', 'plan-translation']);
+const PERSISTED_KEYS = new Set(['trips', 'trip', 'plan', 'weather', 'hotels', 'expenses', 'packing', 'trip-report', 'profile', 'plan-translation', 'text-translation']);
 
 export const persistOptions = {
   persister: createAsyncStoragePersister({ storage: AsyncStorage, key: 'yola-query-cache', throttleTime: 2000 }),

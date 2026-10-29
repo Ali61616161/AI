@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
+import { useTranslatedTexts } from '@/features/translate/use-translated-texts';
 import { formatDayShort } from '@/lib/format';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -20,6 +21,8 @@ export function JournalSummary({ tripId }: { tripId: string }) {
   const { data: entries } = useJournal(tripId);
   const { data: urls } = usePhotoUrls((entries ?? []).flatMap((e) => e.photos));
   const stats = journalStats(entries ?? []);
+  // Notlar kullanıcının kendi yazdığı dilde saklanır; özette uygulamanın diline çevrilir (düzenleme ekranında özgünü görünür).
+  const notes = useTranslatedTexts((entries ?? []).map((e) => e.note));
 
   return (
     <View style={[styles.box, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -34,13 +37,13 @@ export function JournalSummary({ tripId }: { tripId: string }) {
           </Text>
         )}
       </View>
-      {(entries ?? []).map((e) => (
+      {(entries ?? []).map((e, i) => (
         <View key={e.id} style={styles.entry}>
           <View style={styles.row}>
             {e.mood && <Ionicons name={MOOD_ICONS[e.mood]} size={18} color={colors.primary} />}
             <Text variant="bodyStrong">{formatDayShort(e.entry_date)}</Text>
           </View>
-          {e.note ? <Text variant="body">{e.note}</Text> : null}
+          {e.note ? <Text variant="body">{notes[i] ?? e.note}</Text> : null}
           {e.places.length > 0 && (
             <Text variant="caption" color="textSecondary">
               {e.places.join(' · ')}
