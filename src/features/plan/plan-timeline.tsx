@@ -208,7 +208,7 @@ export function openRoute(item: PlanItemRow, from: PlanItemRow | null, city: str
   });
 }
 
-export function DayTimeline({ day, weather, tripId, budget }: { day: PlanDayRow; weather?: DayForecast | null; tripId?: string; budget?: TripBudget | null }) {
+export function DayTimeline({ day, weather, tripId, budget, readOnly = false }: { day: PlanDayRow; weather?: DayForecast | null; tripId?: string; budget?: TripBudget | null; readOnly?: boolean }) {
   const { t } = useTranslation();
   return (
     <View style={styles.timeline}>
@@ -223,7 +223,7 @@ export function DayTimeline({ day, weather, tripId, budget }: { day: PlanDayRow;
         </View>
       )}
       {weather && <WeatherBadge forecast={weather} />}
-      {budget && <BudgetBar date={day.date} items={day.plan_items} budget={budget} />}
+      {budget && <BudgetBar tripId={tripId} readOnly={readOnly} date={day.date} items={day.plan_items} budget={budget} />}
       {day.notes && (
         <Text variant="body" color="textSecondary">
           {day.notes}

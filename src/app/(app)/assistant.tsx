@@ -15,6 +15,7 @@ import { PlaceMeta } from '@/features/places/place-row';
 import { UpgradeButton } from '@/features/subscription/upgrade-button';
 import { ReplanError, useRestoreVersion, useTripAssistant, type AssistantResult, type CrisisResult } from '@/features/plan/replan';
 import { currentTripFor, useTrips } from '@/features/trips/queries';
+import { isCurrentOrFuture } from '@/features/trips/trip-name';
 import { SelectSheet } from '@/components/ui/select-sheet';
 import { formatMoney, todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
@@ -99,10 +100,10 @@ export default function AssistantScreen() {
   const { data: trips } = useTrips();
   const today = todayIsoDate();
   const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
-  // Yalnızca kendi seyahatin düzenlenir (paylaşılan seyahati görüntüleyen planı değiştiremez).
-  const ownTrips = useMemo(() => (trips ?? []).filter((x) => x.owner_id === userId), [trips, userId]);
+  // Yalnızca kendi seyahatin düzenlenir (paylaşılan seyahati görüntüleyen planı değiştiremez); bitmiş seyahatler listelenmez.
+  const ownTrips = useMemo(() => (trips ?? []).filter((x) => x.owner_id === userId && isCurrentOrFuture(x, today)), [trips, userId, today]);
   const current = currentTripFor(trips, today, userId);
-  const defaultTripId = (current && current.owner_id === userId ? current.id : null) ?? ownTrips.find((x) => (x.end_date ?? '') >= today)?.id ?? ownTrips[ownTrips.length - 1]?.id ?? null;
+  const defaultTripId = (current && current.owner_id === userId ? current.id : null) ?? ownTrips[0]?.id ?? null;
   const [pickedTripId, setPickedTripId] = useState<string | null>(null);
   const currentTrip = ownTrips.find((x) => x.id === (pickedTripId ?? defaultTripId)) ?? null;
   const replan = useTripAssistant();

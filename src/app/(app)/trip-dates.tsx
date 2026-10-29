@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
-import { TextField } from '@/components/ui/text-field';
+import { DateField } from '@/components/ui/date-field';
 import { ReplanError, useChangeDates, useCrisisReplan, useRestoreVersion, type DatesResult } from '@/features/plan/replan';
 import { isBlankOrClock, normalizeAnswers, type TripAnswers } from '@/features/trips/trip-answers';
 import { TripTimeFields } from '@/features/trips/trip-questions';
@@ -172,10 +172,10 @@ export default function TripDatesScreen() {
       <ModalHeader title={t('dates.title')} subtitle={t('dates.subtitle')} />
       <View style={styles.row}>
         <View style={styles.flex}>
-          <TextField label={t('dates.start')} value={startValue} onChangeText={setStart} hint={t('dates.hint')} keyboardType="numbers-and-punctuation" maxLength={10} />
+          <DateField label={t('dates.start')} value={startValue} onChange={setStart} />
         </View>
         <View style={styles.flex}>
-          <TextField label={t('dates.end')} value={endValue} onChangeText={setEnd} keyboardType="numbers-and-punctuation" maxLength={10} />
+          <DateField label={t('dates.end')} value={endValue} min={startValue || null} onChange={setEnd} />
         </View>
       </View>
       {!valid && (startValue.length === 10 && endValue.length === 10) && (

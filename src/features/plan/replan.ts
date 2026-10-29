@@ -97,6 +97,30 @@ export function useCrisisReplan() {
   });
 }
 
+/**
+ * "Daha ucuz öner": seçilen günün planı bütçeye uyacak şekilde doğrudan arka planda yeniden yapılır (sohbete gitmeden).
+ * Bugünse günün kalanı, ileri bir günse tüm gün yeniden düzenlenir. Yeni sürüm geri alınabilir.
+ */
+export function useCheaperDay(tripId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { message: string; date: string; today: string }) =>
+      invokeReplan<CrisisResult>({
+        mode: 'crisis',
+        message: input.message,
+        trip_id: tripId,
+        ...(input.date !== input.today ? { date: input.date } : { location: await getLocationIfAlreadyGranted() }),
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }),
+    onSuccess: (result) => {
+      if (result.plan_version_id) {
+        queryClient.invalidateQueries({ queryKey: ['plan', tripId] });
+        queryClient.invalidateQueries({ queryKey: ['plan-versions', tripId] });
+      }
+    },
+  });
+}
+
 export type AssistantResult = CrisisResult & { intent: 'question' | 'replan_day' | 'update_settings' | 'other'; settings_updated?: boolean };
 
 /**

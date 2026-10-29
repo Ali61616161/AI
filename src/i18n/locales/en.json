@@ -16,7 +16,10 @@
     "done": "Done",
     "close": "Close",
     "search": "Search",
-    "stepOf": "Step {{step}} of {{total}}"
+    "stepOf": "Step {{step}} of {{total}}",
+    "clear": "Clear",
+    "pickDate": "Pick a date",
+    "pickTime": "Pick a time"
   },
   "welcome": {
     "title": "Your next journey starts here",
@@ -34,7 +37,7 @@
     "restartNow": "Restart now",
     "later": "Later",
     "confirmTitle": "Change language",
-    "confirmMessage": "The app will reload to change the language: open screens and chats will be reset. Content already generated for your trips stays in its original language. Do you confirm?",
+    "confirmMessage": "The app will reload to change the language: open screens and chats will be reset. Content already generated for your trips stays in its original language. To get a trip's route in the new language, use “Rebuild the route”. Do you confirm?",
     "confirm": "Confirm",
     "cancel": "Cancel"
   },
@@ -120,7 +123,10 @@
     "mostExpensive": "Most expensive: {{items}}",
     "askCheaper": "Suggest cheaper",
     "askMessage": "My daily budget is {{budget}} but today's estimate is {{total}}. Swap the rest of today for cheaper places that fit my budget.",
-    "skipped": "{{count}} item(s) have no exchange rate and were left out."
+    "skipped": "{{count}} item(s) have no exchange rate and were left out.",
+    "working": "Rebuilding this day to fit your budget…",
+    "failed": "Could not update the plan. Try again.",
+    "done": "Plan updated to fit your budget."
   },
   "interest": {
     "art": "Art",
@@ -374,7 +380,8 @@
     "createFailed": "Couldn't create the trip: {{message}}",
     "nothingSelected": "Select at least one reservation.",
     "fixDates": "Fix the invalid dates.",
-    "summary": "{{dates}} · {{cities}}"
+    "summary": "{{dates}} · {{cities}}",
+    "fieldTime": "Time"
   },
   "reservationType": {
     "flight": "Flight",
@@ -931,7 +938,15 @@
     "namePlaceholder": "e.g. Summer in Rome",
     "endBeforeStart": "The end date must be after the start date.",
     "hint": "You can add tickets and hotel bookings later; Yola will fit the plan around them.",
-    "countryWhy": "Needed for emergency numbers, visa info and local phrases."
+    "countryWhy": "Needed for emergency numbers, visa info and local phrases.",
+    "destination": "Destination",
+    "searchPlaceholder": "Search a city, e.g. Rome",
+    "searchFailed": "Search is unavailable. Use manual entry below.",
+    "noResults": "No match. Try another spelling or enter it manually.",
+    "enterManually": "Not in the list? Enter city and country manually",
+    "useSearch": "Search for the city instead",
+    "changeDestination": "Change {{place}}",
+    "duplicateName": "You already have a trip with this name. Choose a different name."
   },
   "legal": {
     "effective": "Effective {{date}}",
@@ -1450,7 +1465,9 @@
       "arrivedShort": "Arrived",
       "theme": "Map look: auto, light, dark",
       "satellite": "Satellite view",
-      "rerouting": "Recalculating route…"
+      "rerouting": "Recalculating route…",
+      "voiceOn": "Turn voice guidance on",
+      "voiceOff": "Turn voice guidance off"
     }
   },
   "widget": {
@@ -1738,7 +1755,17 @@
       "ok": "Okay",
       "tired": "Tired",
       "bad": "Bad"
-    }
+    },
+    "prompts": {
+      "0": "What surprised you most today?",
+      "1": "Which moment would you like to remember forever?",
+      "2": "Describe the best thing you ate today.",
+      "3": "Who or what made you smile today?",
+      "4": "What would you do differently tomorrow?",
+      "5": "Write one sentence about how today felt."
+    },
+    "placesTitle": "Places you went today",
+    "statsPlaces": "places: {{places}}"
   },
   "esim": {
     "title": "Mobile data (eSIM)",
@@ -1762,8 +1789,8 @@
     "flexibleShort": "any day in month",
     "depart": "Departure date",
     "return": "Return date (optional)",
-    "monthHint": "Format: 2026-12 (the cheapest day of that month)",
-    "returnHint": "Leave empty for one-way. Format: 2026-12-12",
+    "monthHint": "The cheapest day of that whole month is searched",
+    "returnHint": "Leave empty for one-way",
     "targetLabel": "Target price (optional)",
     "targetHint": "You are notified when the price reaches it. Empty: notified on a 10% drop.",
     "oneWay": "one-way",
@@ -1794,5 +1821,14 @@
     "now": "Now",
     "later_one": "{{count}} more stop",
     "later_other": "{{count}} more stops"
+  },
+  "building": {
+    "title": "Creating your trip",
+    "step1": "Reading your dates and preferences…",
+    "step2": "Choosing places that fit your budget…",
+    "step3": "Checking opening hours and travel times…",
+    "step4": "Fitting everything around your bookings…",
+    "step5": "Adding the final touches…",
+    "hint": "Your trip opens automatically when it is ready."
   }
 }

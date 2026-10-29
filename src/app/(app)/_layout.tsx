@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router';
 import { useEffect } from 'react';
 
+import { usePreferredLanguageSync } from '@/features/auth/sync-language';
 import { identifyPurchaser } from '@/features/subscription/purchases';
 import { useSessionStore } from '@/stores/session-store';
 import { useAdsBootstrap } from '@/features/ads/use-ads-bootstrap';
@@ -12,6 +13,7 @@ import { useSyncWidget } from '@/features/widget/use-sync-widget';
 export default function AppLayout() {
   const userId = useSessionStore((s) => s.session?.user.id ?? null);
   useAdsBootstrap();
+  usePreferredLanguageSync();
   useNotificationLinks();
   useSyncWidget();
   useSyncLiveActivity();
@@ -51,6 +53,7 @@ export default function AppLayout() {
       <Stack.Screen name="join" options={{ presentation: 'modal' }} />
       <Stack.Screen name="chat/[id]" />
       <Stack.Screen name="trip-new" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="trip-building" options={{ presentation: 'fullScreenModal', gestureEnabled: false, animation: 'fade' }} />
       <Stack.Screen name="trip-documents" options={{ presentation: 'modal' }} />
       <Stack.Screen name="decide" options={{ presentation: 'modal' }} />
       <Stack.Screen name="route" options={{ presentation: 'modal' }} />

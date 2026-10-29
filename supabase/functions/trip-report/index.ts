@@ -10,7 +10,7 @@ import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { DEFAULT_GEMINI_MODEL, GeminiError, generateJson } from '../_shared/gemini.ts';
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import { LANGUAGE_NAMES } from '../_shared/itinerary.ts';
-import { buildReportPrompt, computeTripStats, isPlace, normalizeInsights, REPORT_RESPONSE_SCHEMA, type ReportDay, type ReportInsights } from '../_shared/report.ts';
+import { buildReportPrompt, computeTripStats, isPlace, journalDigest, normalizeInsights, REPORT_RESPONSE_SCHEMA, type ReportDay, type ReportInsights } from '../_shared/report.ts';
 import { loadProfile, loadTrip } from '../_shared/trip-context.ts';
 
 const rating = (v: unknown) => (Number.isInteger(v) && (v as number) >= 1 && (v as number) <= 5 ? (v as number) : null);
@@ -38,9 +38,11 @@ Deno.serve(async (req) => {
   const today = new Date().toISOString().slice(0, 10);
   if (trip.startDate && trip.startDate > today) return error('bad_request', 400, 'trip has not started');
 
-  const [{ data: expenses }, { data: ratings }] = await Promise.all([
+  const [{ data: expenses }, { data: ratings }, { data: journal }] = await Promise.all([
     supabase.from('expenses').select('amount, amount_in_budget_currency, category').eq('trip_id', trip.id),
     supabase.from('place_ratings').select('place_name, rating').eq('trip_id', trip.id).eq('user_id', user.id),
+    // Yolcunun kendi günlüğü (RLS: yalnızca kendi kayıtları).
+    supabase.from('journal_entries').select('entry_date, note, mood').eq('trip_id', trip.id).eq('user_id', user.id).order('entry_date').limit(30),
   ]);
 
   const days: ReportDay[] = (trip.activePlan?.days ?? []).map((d) => ({
@@ -86,6 +88,7 @@ Deno.serve(async (req) => {
           skipped: days.flatMap((d) => d.items.filter((i) => isPlace(i) && i.status === 'skipped').map((i) => i.place_name!)),
           overallRating: overall,
           feedback,
+          journal: journalDigest((journal ?? []).map((j) => ({ date: j.entry_date as string, note: j.note as string, mood: j.mood as string | null }))),
         }),
         responseSchema: REPORT_RESPONSE_SCHEMA,
         timeoutMs: 45_000,

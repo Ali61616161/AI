@@ -135,7 +135,8 @@ export function hotelRequest(input: { city: string; budget: string; language: st
 export function verifyRequest(input: { placeName: string; city: string | null; language: string; near?: { lat: number; lng: number } | null }): SearchTextRequest {
   return {
     textQuery: input.city && !input.placeName.toLowerCase().includes(input.city.toLowerCase()) ? `${input.placeName}, ${input.city}` : input.placeName,
-    pageSize: 1,
+    // Birkaç aday istenir; zincir işletmelerde (ör. başka ilçedeki şube) şehir merkezine en yakını seçilir.
+    pageSize: 5,
     languageCode: input.language,
     ...(input.near ? { locationBias: circle(input.near.lat, input.near.lng, 20000) } : {}),
   };
@@ -284,7 +285,15 @@ export function needsVerification(item: VerifiableItem): boolean {
 }
 
 /** Bulunan mekan, kalemin önerildiği bölgeden çok uzaksa (başka şehirdeki aynı isim) kabul edilmez. */
-const MAX_DISTANCE_M = 60_000;
+export const MAX_DISTANCE_M = 30_000;
+
+/** Adaylar arasında verilen noktaya en yakın olan; nokta yoksa ilk aday. Konumsuz adaylar sona kalır. */
+export function pickNearest(places: Place[], near: { lat: number; lng: number } | null | undefined): Place | undefined {
+  if (!near) return places[0];
+  const withDistance = places.map((p, i) => ({ p, i, d: p.lat !== null && p.lng !== null ? distanceMeters(near, { lat: p.lat, lng: p.lng }) : Infinity }));
+  withDistance.sort((a, b) => a.d - b.d || a.i - b.i);
+  return withDistance[0]?.p;
+}
 
 /**
  * Google fiyat aralığı varsa plan kaleminin fiyatını ondan alır: estimated_cost aralığın ortası,
@@ -357,13 +366,16 @@ export async function verifyPlanDays<T extends VerifiableItem, D extends { city:
     while (next < entries.length) {
       const [key, q] = entries[next++];
       try {
-        const [place] = await searchText({
-          apiKey: options.apiKey,
-          body: verifyRequest({ ...q, language: options.language }),
-          fields: VERIFY_FIELDS,
-          fetchImpl: options.fetchImpl,
-          apiBase: options.apiBase,
-        });
+        const place = pickNearest(
+          await searchText({
+            apiKey: options.apiKey,
+            body: verifyRequest({ ...q, language: options.language }),
+            fields: VERIFY_FIELDS,
+            fetchImpl: options.fetchImpl,
+            apiBase: options.apiBase,
+          }),
+          q.near,
+        );
         const tooFar = place && q.near && place.lat !== null && place.lng !== null && distanceMeters(q.near, { lat: place.lat, lng: place.lng }) > MAX_DISTANCE_M;
         results.set(key, place && !tooFar ? place : null);
       } catch (e) {

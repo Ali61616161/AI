@@ -16,7 +16,10 @@
     "done": "Fatto",
     "close": "Chiudi",
     "search": "Cerca",
-    "stepOf": "Passo {{step}} di {{total}}"
+    "stepOf": "Passo {{step}} di {{total}}",
+    "clear": "Cancella",
+    "pickDate": "Scegli una data",
+    "pickTime": "Scegli un'ora"
   },
   "welcome": {
     "title": "Il tuo prossimo viaggio inizia qui",
@@ -34,7 +37,7 @@
     "restartNow": "Riavvia ora",
     "later": "Più tardi",
     "confirmTitle": "Cambia lingua",
-    "confirmMessage": "L'app si ricaricherà per cambiare lingua: le schermate aperte e le chat verranno azzerate. I contenuti già generati per i tuoi viaggi restano nella loro lingua. Confermi?",
+    "confirmMessage": "L'app si ricaricherà per cambiare lingua: le schermate aperte e le chat verranno azzerate. I contenuti già generati per i tuoi viaggi restano nella loro lingua. Per avere l'itinerario di un viaggio nella nuova lingua, usa «Ricrea l'itinerario». Confermi?",
     "confirm": "Conferma",
     "cancel": "Annulla"
   },
@@ -120,7 +123,10 @@
     "mostExpensive": "I più cari: {{items}}",
     "askCheaper": "Suggerisci più economico",
     "askMessage": "Il mio budget giornaliero è {{budget}} ma oggi si stima {{total}}. Sostituisci il resto con posti più economici.",
-    "skipped": "{{count}} voci senza cambio sono state escluse."
+    "skipped": "{{count}} voci senza cambio sono state escluse.",
+    "working": "Riorganizzo questa giornata in base al tuo budget…",
+    "failed": "Impossibile aggiornare il piano. Riprova.",
+    "done": "Piano aggiornato al tuo budget."
   },
   "interest": {
     "art": "Arte",
@@ -374,7 +380,8 @@
     "createFailed": "Impossibile creare il viaggio: {{message}}",
     "nothingSelected": "Seleziona almeno una prenotazione.",
     "fixDates": "Correggi le date non valide.",
-    "summary": "{{dates}} · {{cities}}"
+    "summary": "{{dates}} · {{cities}}",
+    "fieldTime": "Ora"
   },
   "reservationType": {
     "flight": "Volo",
@@ -931,7 +938,15 @@
     "namePlaceholder": "es. Estate a Roma",
     "endBeforeStart": "La data di fine deve essere successiva a quella di inizio.",
     "hint": "Puoi aggiungere biglietti e prenotazioni più tardi; Yola adatterà il piano.",
-    "countryWhy": "Serve per numeri di emergenza, visti e frasi locali."
+    "countryWhy": "Serve per numeri di emergenza, visti e frasi locali.",
+    "destination": "Destinazione",
+    "searchPlaceholder": "Cerca una città, es. Roma",
+    "searchFailed": "Ricerca non disponibile. Inseriscila manualmente qui sotto.",
+    "noResults": "Nessun risultato. Prova un'altra grafia o inseriscila manualmente.",
+    "enterManually": "Non è nell'elenco? Inserisci città e paese manualmente",
+    "useSearch": "Cerca la città",
+    "changeDestination": "Cambia {{place}}",
+    "duplicateName": "Hai già un viaggio con questo nome. Scegli un altro nome."
   },
   "legal": {
     "effective": "In vigore dal {{date}}",
@@ -1450,7 +1465,9 @@
       "arrivedShort": "Arrivato",
       "theme": "Aspetto mappa: auto, chiaro, scuro",
       "satellite": "Vista satellite",
-      "rerouting": "Ricalcolo del percorso…"
+      "rerouting": "Ricalcolo del percorso…",
+      "voiceOn": "Attiva le indicazioni vocali",
+      "voiceOff": "Disattiva le indicazioni vocali"
     }
   },
   "widget": {
@@ -1738,7 +1755,17 @@
       "ok": "Così così",
       "tired": "Stanco",
       "bad": "Male"
-    }
+    },
+    "prompts": {
+      "0": "Cosa ti ha sorpreso di più oggi?",
+      "1": "Quale momento vorresti ricordare per sempre?",
+      "2": "Descrivi la cosa più buona che hai mangiato oggi.",
+      "3": "Chi o cosa ti ha fatto sorridere oggi?",
+      "4": "Cosa faresti diversamente domani?",
+      "5": "Scrivi una frase su come è stata la giornata."
+    },
+    "placesTitle": "Luoghi visitati oggi",
+    "statsPlaces": "luoghi: {{places}}"
   },
   "esim": {
     "title": "Dati mobili (eSIM)",
@@ -1762,8 +1789,8 @@
     "flexibleShort": "qualsiasi giorno del mese",
     "depart": "Data di partenza",
     "return": "Data di ritorno (facoltativa)",
-    "monthHint": "Formato: 2026-12 (il giorno più economico del mese)",
-    "returnHint": "Lascia vuoto per sola andata. Formato: 2026-12-12",
+    "monthHint": "Si cerca il giorno più economico dell'intero mese",
+    "returnHint": "Lascia vuoto per sola andata",
     "targetLabel": "Prezzo obiettivo (facoltativo)",
     "targetHint": "Ti avvisiamo quando il prezzo lo raggiunge. Vuoto: avviso con un calo del 10%.",
     "oneWay": "sola andata",
@@ -1794,5 +1821,14 @@
     "now": "Adesso",
     "later_one": "{{count}} tappa in più",
     "later_other": "{{count}} tappe in più"
+  },
+  "building": {
+    "title": "Creazione del tuo viaggio",
+    "step1": "Lettura di date e preferenze…",
+    "step2": "Scelta di luoghi adatti al tuo budget…",
+    "step3": "Controllo di orari e tempi di percorrenza…",
+    "step4": "Organizzazione attorno alle tue prenotazioni…",
+    "step5": "Ultimi ritocchi…",
+    "hint": "Il viaggio si apre da solo quando è pronto."
   }
 }

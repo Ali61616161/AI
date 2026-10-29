@@ -8,7 +8,7 @@ import { Text } from '@/components/ui/text';
 import { useJournal } from '@/features/journal/api';
 import { JournalDay } from '@/features/journal/journal-day';
 import { journalDays } from '@/features/journal/logic';
-import { useTrip } from '@/features/trips/queries';
+import { useActivePlan, useTrip } from '@/features/trips/queries';
 import { todayIsoDate } from '@/lib/format';
 import { Spacing } from '@/theme/tokens';
 
@@ -18,6 +18,7 @@ export default function TripJournalScreen() {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const { data: trip } = useTrip(tripId);
   const { data: entries, isLoading } = useJournal(tripId);
+  const { data: plan } = useActivePlan(tripId);
   const days = trip ? journalDays(trip.start_date, trip.end_date, todayIsoDate()).reverse() : [];
 
   return (
@@ -35,7 +36,13 @@ export default function TripJournalScreen() {
       ) : (
         <View style={styles.list}>
           {days.map((date) => (
-            <JournalDay key={date} tripId={tripId} date={date} entry={entries?.find((e) => e.entry_date === date)} />
+            <JournalDay
+              key={date}
+              tripId={tripId}
+              date={date}
+              entry={entries?.find((e) => e.entry_date === date)}
+              placeOptions={[...new Set((plan?.day_plans.find((d) => d.date === date)?.plan_items ?? []).filter((i) => i.kind !== 'transport' && i.kind !== 'free_time' && i.place_name).map((i) => i.place_name!))].slice(0, 12)}
+            />
           ))}
         </View>
       )}

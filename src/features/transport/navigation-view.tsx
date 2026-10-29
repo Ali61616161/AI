@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { createContext, Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
@@ -17,7 +18,7 @@ import { useTheme } from '@/theme/use-theme';
 import { VEHICLE_ICONS, type RouteChoice } from './api';
 import { speakNatural, stopSpeaking } from '@/features/translate/speak';
 import { translateLanguage } from '@/features/translate/languages';
-import { blendHeading, currentStepIndex, destinationPoint, distanceToPathM, formatDistance, isArrived, isOffRoute, predictPosition, REROUTE_M, remainingMeters, splitAtNearest, turnIcon, zoomForSpeed, type Fix, type TurnIcon } from './navigation-logic';
+import { blendHeading, currentStepIndex, destinationPoint, distanceToPathM, formatDistance, isArrived, isOffRoute, predictPosition, REROUTE_M, remainingAlongPath, remainingMeters, splitAtNearest, turnIcon, zoomForSpeed, type Fix, type TurnIcon } from './navigation-logic';
 import { decodePolyline, thin } from './polyline';
 
 const LINE = '#FF5A36';
@@ -26,6 +27,9 @@ const PASSED = '#8C97B2';
 const TICK_MS = 200;
 /** Kamera merkezi, konumun bu kadar (m) önüne konur; böylece ok ekranın alt yarısında kalır (Google Haritalar gibi). */
 const AHEAD_M = 35;
+/** Rota çizgisi (geçilen/kalan ayrımı) konum bu kadar (m) değişince yeniden çizilir; her saniye çizmek uzun rotalarda haritayı kastırıyordu. */
+const LINE_REFRESH_M = 15;
+const VOICE_KEY = 'yola.navVoice';
 
 /** Harita temasına göre panel renkleri (açık haritada koyu yazı, koyu haritada açık yazı). */
 const UiColors = createContext<(typeof Colors)[keyof typeof Colors]>(Colors.dark);
@@ -57,11 +61,28 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   const [following, setFollowing] = useState(true);
   const [theme, setTheme] = useState<MapTheme>('auto');
   const [satellite, setSatellite] = useState(false);
+  // Sesli yönlendirme açık/kapalı (telefonda hatırlanır).
+  const [voice, setVoice] = useState(true);
+  useEffect(() => {
+    AsyncStorage.getItem(VOICE_KEY)
+      .then((v) => v === 'off' && setVoice(false))
+      .catch(() => undefined);
+  }, []);
+  function toggleVoice() {
+    setVoice((on) => {
+      if (on) stopSpeaking();
+      AsyncStorage.setItem(VOICE_KEY, on ? 'off' : 'on').catch(() => undefined);
+      return !on;
+    });
+  }
   const mapDark = theme === 'auto' ? isDark : theme === 'dark';
   // Üstteki ve alttaki paneller harita temasına uyar (açık haritada koyu yazı, koyu haritada açık yazı).
   const ui = Colors[mapDark ? 'dark' : 'light'];
   // Adım çizgileri: yürüyüş noktalı, toplu taşıma hat renginde, araba düz çizilir.
   const stepPaths = useMemo(() => route.steps.map((st) => st.polylines.map((pl) => thin(decodePolyline(pl)))), [route.steps]);
+  const stepFlat = useMemo(() => stepPaths.map((parts) => parts.flat()), [stepPaths]);
+  // Çizgi konumu: yalnızca 15 m'den fazla ilerlenince güncellenir (konum geri çağrısında).
+  const [lineHere, setLineHere] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     if (!visible) return;
@@ -74,6 +95,8 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
         const heading = p.coords.heading !== null && p.coords.heading >= 0 ? p.coords.heading : null;
         fix.current = { lat: p.coords.latitude, lng: p.coords.longitude, heading, speed: p.coords.speed !== null && p.coords.speed >= 0 ? p.coords.speed : null, at: Date.now() };
         setHere({ lat: p.coords.latitude, lng: p.coords.longitude, heading });
+        const now = { lat: p.coords.latitude, lng: p.coords.longitude };
+        setLineHere((prev) => (prev && (remainingMeters(prev, [now]) ?? 0) < LINE_REFRESH_M ? prev : now));
       });
       if (!alive) sub.remove();
     })();
@@ -112,12 +135,13 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
     map.current?.fitToCoordinates(coords, { edgePadding: { top: insets.top + 180, right: 48, bottom: 260, left: 48 }, animated: true });
   }, [visible, live, following, coords, insets.top]);
 
-  const remaining = remainingMeters(here, path);
-  const arrived = !off && isArrived(remaining);
+  // Varış kuş uçuşu yakınlıkla, gösterilen kalan mesafe ise rota boyunca hesaplanır (kuş uçuşu ile rota arasındaki tutarsızlık olmasın).
+  const arrived = !off && isArrived(remainingMeters(here, path));
+  const remaining = remainingAlongPath(here, path);
   const steps = route.steps;
   // Canlı takipte güncel adım konumdan bulunur; önizlemede (ya da konum yokken) ok düğmeleriyle gezilir.
   const auto = Boolean(here) && !off;
-  const idx = Math.max(0, Math.min(auto ? currentStepIndex(here, stepPaths.map((parts) => parts.flat()), step) : step, steps.length - 1));
+  const idx = Math.max(0, Math.min(auto ? currentStepIndex(here, stepFlat, step) : step, steps.length - 1));
   const current = steps[idx];
   // Çizilecek çizgiler: önceki adımlar ve bu adımın geçilen kısmı gri, kalanı rengiyle.
   const routeLines = useMemo(() => {
@@ -132,14 +156,14 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
       const color = route.steps[i].transit?.color ?? LINE;
       if (!auto || i > idx) parts.forEach((pts, j) => add(`s${i}-${j}`, pts, color, 2));
       else if (i < idx) parts.forEach((pts, j) => add(`s${i}-${j}`, pts, PASSED, 2));
-      else if (here) {
-        const { passed, rest } = splitAtNearest(parts, here);
+      else if (lineHere) {
+        const { passed, rest } = splitAtNearest(parts, lineHere);
         passed.forEach((pts, j) => add(`p${i}-${j}`, pts, PASSED, 2));
         rest.forEach((pts, j) => add(`r${i}-${j}`, pts, color, 2));
       } else parts.forEach((pts, j) => add(`s${i}-${j}`, pts, color, 2));
     });
     return lines;
-  }, [stepPaths, route.steps, path, auto, idx, here]);
+  }, [stepPaths, route.steps, path, auto, idx, lineHere]);
   const tr = current?.transit;
   const next = steps[idx + 1];
   const end = coords[coords.length - 1];
@@ -179,12 +203,12 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
   // Sesli yönlendirme: canlı takipte adım değişince talimat okunur.
   const spokenStep = useRef(-1);
   useEffect(() => {
-    if (!visible || !live || !auto || !current?.instruction) return;
+    if (!visible || !live || !auto || !voice || !current?.instruction) return;
     if (spokenStep.current === idx) return;
     spokenStep.current = idx;
     // Yola'nın doğal sesiyle (yoksa telefonun sesiyle), uygulama dilinde.
     speakNatural(current.instruction, translateLanguage(i18n.language).speech);
-  }, [visible, live, auto, idx, current, i18n.language]);
+  }, [visible, live, auto, voice, idx, current, i18n.language]);
   useEffect(() => {
     if (!visible) {
       spokenStep.current = -1;
@@ -291,6 +315,9 @@ export function NavigationView({ visible, route, googleUrl, destinationName, onC
         <View style={[styles.controls, { top: insets.top + 130 }]}>
           <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.theme')} onPress={() => setTheme((v) => (v === 'auto' ? 'light' : v === 'light' ? 'dark' : 'auto'))} style={[styles.control, { backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
             <Ionicons name={theme === 'auto' ? 'contrast' : theme === 'light' ? 'sunny' : 'moon'} size={22} color={ui.primary} />
+          </Pressable>
+          <Pressable accessibilityRole="button" accessibilityLabel={t(voice ? 'route.nav.voiceOff' : 'route.nav.voiceOn')} accessibilityState={{ selected: voice }} onPress={toggleVoice} style={[styles.control, { backgroundColor: ui.backgroundElevated, borderColor: ui.border }]}>
+            <Ionicons name={voice ? 'volume-high' : 'volume-mute'} size={22} color={voice ? ui.primary : ui.textMuted} />
           </Pressable>
           <Pressable accessibilityRole="button" accessibilityLabel={t('route.nav.satellite')} onPress={() => setSatellite((v) => !v)} style={[styles.control, { backgroundColor: satellite ? ui.primary : ui.backgroundElevated, borderColor: ui.border }]}>
             <Ionicons name="earth" size={22} color={satellite ? ui.onPrimary : ui.primary} />

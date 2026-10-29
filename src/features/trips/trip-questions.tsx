@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
 import { Text } from '@/components/ui/text';
+import { DateField, TimeField } from '@/components/ui/date-field';
 import { TextField } from '@/components/ui/text-field';
 import { BUDGETS, COMPANIONS, INTERESTS } from '@/features/profile/options';
 import { useSessionStore } from '@/stores/session-store';
@@ -31,10 +32,10 @@ export function TripTimeFields({ value, onChange, timeError }: { value: TimeFiel
     <View style={styles.section}>
       <View style={styles.timeRow}>
         <View style={styles.timeCol}>
-          <TextField label={t('tripQuestions.arrivalTime')} value={value.arrivalTime} onChangeText={(arrivalTime) => onChange({ arrivalTime })} placeholder="14:30" keyboardType="numbers-and-punctuation" maxLength={5} error={bad(value.arrivalTime)} />
+          <TimeField label={t('tripQuestions.arrivalTime')} value={value.arrivalTime} onChange={(arrivalTime) => onChange({ arrivalTime })} error={bad(value.arrivalTime)} />
         </View>
         <View style={styles.timeCol}>
-          <TextField label={t('tripQuestions.departureTime')} value={value.departureTime} onChangeText={(departureTime) => onChange({ departureTime })} placeholder="18:45" keyboardType="numbers-and-punctuation" maxLength={5} error={bad(value.departureTime)} />
+          <TimeField label={t('tripQuestions.departureTime')} value={value.departureTime} onChange={(departureTime) => onChange({ departureTime })} error={bad(value.departureTime)} />
         </View>
       </View>
       <TextField label={t('tripQuestions.arrivalAirport')} value={value.arrivalAirport} onChangeText={(arrivalAirport) => onChange({ arrivalAirport })} placeholder={t('tripQuestions.airportPlaceholder')} maxLength={120} />
@@ -156,18 +157,10 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors }: P
               <TextField label={t('tripQuestions.hotelAddress')} value={h.address} onChangeText={(address) => setHotel(index, { address })} />
               <View style={styles.row}>
                 <View style={styles.flex}>
-                  <TextField label={t('tripQuestions.checkIn')} value={h.checkIn} onChangeText={(checkIn) => setHotel(index, { checkIn })} placeholder={tripStart ?? 'YYYY-MM-DD'} keyboardType="numbers-and-punctuation" maxLength={10} />
+                  <DateField label={t('tripQuestions.checkIn')} value={h.checkIn} optional min={tripStart} max={tripEnd} onChange={(checkIn) => setHotel(index, { checkIn })} />
                 </View>
                 <View style={styles.flex}>
-                  <TextField
-                    label={t('tripQuestions.checkOut')}
-                    value={h.checkOut}
-                    onChangeText={(checkOut) => setHotel(index, { checkOut })}
-                    placeholder={tripEnd ?? 'YYYY-MM-DD'}
-                    keyboardType="numbers-and-punctuation"
-                    maxLength={10}
-                    error={error === 'dates' ? t('tripQuestions.hotelDatesInvalid') : null}
-                  />
+                  <DateField label={t('tripQuestions.checkOut')} value={h.checkOut} optional min={h.checkIn || tripStart} max={tripEnd} onChange={(checkOut) => setHotel(index, { checkOut })} error={error === 'dates' ? t('tripQuestions.hotelDatesInvalid') : null} />
                 </View>
               </View>
             </View>

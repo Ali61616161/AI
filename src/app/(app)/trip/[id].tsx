@@ -21,6 +21,7 @@ import { TripTools } from '@/features/tools/trip-tools';
 import { TripHero } from '@/features/trips/trip-hero';
 import { useTripWeather } from '@/features/places/api';
 import { GenerateCard } from '@/features/plan/generate-card';
+import { asBuildError } from '@/features/trips/building-logic';
 import { DaySelector, DayTimeline } from '@/features/plan/plan-timeline';
 import {
   GenerateError,
@@ -84,7 +85,7 @@ function initialDayIndex(dates: string[]): number {
 export default function TripScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, genError } = useLocalSearchParams<{ id: string; genError?: string }>();
   const { data: trip, isLoading, isError } = useTrip(id);
   const { data: plan, isLoading: planLoading } = useActivePlan(id);
   const generate = useGenerateItinerary(id);
@@ -123,8 +124,15 @@ export default function TripScreen() {
   const mapPoints = (day?.plan_items ?? [])
     .filter((i) => i.lat !== null && i.lng !== null)
     .map((i, n) => ({ id: i.id, lat: i.lat!, lng: i.lng!, title: i.place_name ?? i.title, label: String(n + 1), locked: i.is_locked }));
+  const initialError = asBuildError(genError);
   const generateError =
-    generate.error instanceof GenerateError ? t(`plan.errors.${generate.error.code}`) : generate.error ? t('plan.errors.network') : null;
+    generate.error instanceof GenerateError
+      ? t(`plan.errors.${generate.error.code}`)
+      : generate.error
+        ? t('plan.errors.network')
+        : !generate.isPending && !generate.isSuccess && initialError
+          ? t(`plan.errors.${initialError}`)
+          : null;
 
   return (
     <Screen
@@ -262,7 +270,7 @@ export default function TripScreen() {
                 {showMap && <PlacesMap key={day?.id} points={mapPoints} />}
               </View>
             )}
-            {day && <DayTimeline day={day} weather={dayWeather} tripId={trip.id} budget={trip.budget_amount && trip.budget_currency ? { amount: trip.budget_amount, currency: trip.budget_currency } : null} />}
+            {day && <DayTimeline day={day} weather={dayWeather} tripId={trip.id} readOnly={readOnly} budget={trip.budget_amount && trip.budget_currency ? { amount: trip.budget_amount, currency: trip.budget_currency } : null} />}
             {generateError && (
               <Text variant="caption" color="danger">
                 {generateError}

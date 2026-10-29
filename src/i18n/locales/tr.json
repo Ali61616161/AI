@@ -16,7 +16,10 @@
     "done": "Tamam",
     "close": "Kapat",
     "search": "Ara",
-    "stepOf": "Adım {{step}}/{{total}}"
+    "stepOf": "Adım {{step}}/{{total}}",
+    "clear": "Temizle",
+    "pickDate": "Tarih seç",
+    "pickTime": "Saat seç"
   },
   "welcome": {
     "title": "Bir sonraki yolculuğun burada başlıyor",
@@ -34,7 +37,7 @@
     "restartNow": "Şimdi başlat",
     "later": "Sonra",
     "confirmTitle": "Dili değiştir",
-    "confirmMessage": "Dili değiştirmek için uygulama yeniden yüklenecek: açık ekranlar ve sohbetler sıfırlanır. Daha önce oluşturulan seyahat içerikleri kendi dilinde kalır. Onaylıyor musun?",
+    "confirmMessage": "Dili değiştirmek için uygulama yeniden yüklenecek: açık ekranlar ve sohbetler sıfırlanır. Daha önce oluşturulan seyahat içerikleri kendi dilinde kalır. Bir seyahatin rotasını yeni dilde almak için “Rotayı yeniden oluştur”u kullan. Onaylıyor musun?",
     "confirm": "Onayla",
     "cancel": "Vazgeç"
   },
@@ -120,7 +123,10 @@
     "mostExpensive": "En pahalılar: {{items}}",
     "askCheaper": "Daha ucuz öner",
     "askMessage": "Günlük bütçem {{budget}} ama bugünün tahmini harcaması {{total}}. Kalan planı bütçeme uyacak şekilde daha ucuz yerlerle değiştir.",
-    "skipped": "{{count}} kalemin kuru bulunamadı, toplama katılmadı."
+    "skipped": "{{count}} kalemin kuru bulunamadı, toplama katılmadı.",
+    "working": "Bu gün bütçene uyacak şekilde yeniden düzenleniyor…",
+    "failed": "Plan güncellenemedi. Tekrar dene.",
+    "done": "Plan bütçene uyacak şekilde güncellendi."
   },
   "interest": {
     "art": "Sanat",
@@ -374,7 +380,8 @@
     "createFailed": "Seyahat oluşturulamadı: {{message}}",
     "nothingSelected": "En az bir rezervasyon seç.",
     "fixDates": "Hatalı tarihleri düzelt.",
-    "summary": "{{dates}} · {{cities}}"
+    "summary": "{{dates}} · {{cities}}",
+    "fieldTime": "Saat"
   },
   "reservationType": {
     "flight": "Uçuş",
@@ -931,7 +938,15 @@
     "namePlaceholder": "ör. Roma'da yaz",
     "endBeforeStart": "Bitiş tarihi başlangıçtan sonra olmalı.",
     "hint": "Bilet ve otel rezervasyonlarını sonra ekleyebilirsin; Yola planı onların etrafına yerleştirir.",
-    "countryWhy": "Acil durum numaraları, vize bilgisi ve yerel ifadeler için gerekli."
+    "countryWhy": "Acil durum numaraları, vize bilgisi ve yerel ifadeler için gerekli.",
+    "destination": "Gidilecek yer",
+    "searchPlaceholder": "Şehir ara, örn. Roma",
+    "searchFailed": "Arama şu an kullanılamıyor. Aşağıdan elle girebilirsin.",
+    "noResults": "Eşleşme yok. Başka yazımı dene ya da elle gir.",
+    "enterManually": "Listede yok mu? Şehir ve ülkeyi elle gir",
+    "useSearch": "Şehri aramayla bul",
+    "changeDestination": "{{place}} yerini değiştir",
+    "duplicateName": "Bu adla zaten bir seyahatin var. Farklı bir ad seç."
   },
   "legal": {
     "effective": "Yürürlük: {{date}}",
@@ -1450,7 +1465,9 @@
       "arrivedShort": "Vardın",
       "theme": "Harita görünümü: otomatik, açık, koyu",
       "satellite": "Uydu görünümü",
-      "rerouting": "Rota yeniden hesaplanıyor…"
+      "rerouting": "Rota yeniden hesaplanıyor…",
+      "voiceOn": "Sesli yönlendirmeyi aç",
+      "voiceOff": "Sesli yönlendirmeyi kapat"
     }
   },
   "widget": {
@@ -1738,7 +1755,17 @@
       "ok": "Fena değil",
       "tired": "Yorgun",
       "bad": "Kötü"
-    }
+    },
+    "prompts": {
+      "0": "Bugün seni en çok ne şaşırttı?",
+      "1": "Hangi anı sonsuza dek hatırlamak istersin?",
+      "2": "Bugün yediğin en güzel şeyi anlat.",
+      "3": "Bugün seni kim ya da ne güldürdü?",
+      "4": "Yarın neyi farklı yapardın?",
+      "5": "Bugünün nasıl hissettirdiğini tek cümleyle yaz."
+    },
+    "placesTitle": "Bugün gittiğin yerler",
+    "statsPlaces": "yer: {{places}}"
   },
   "esim": {
     "title": "Mobil veri (eSIM)",
@@ -1762,8 +1789,8 @@
     "flexibleShort": "ayın herhangi bir günü",
     "depart": "Gidiş tarihi",
     "return": "Dönüş tarihi (isteğe bağlı)",
-    "monthHint": "Biçim: 2026-12 (o ayın en ucuz günü)",
-    "returnHint": "Tek yön için boş bırak. Biçim: 2026-12-12",
+    "monthHint": "Seçtiğin ayın tamamındaki en ucuz gün aranır",
+    "returnHint": "Tek yön için boş bırak",
     "targetLabel": "Hedef fiyat (isteğe bağlı)",
     "targetHint": "Fiyat buna inince haber verilir. Boşsa %10 düşüşte haber verilir.",
     "oneWay": "tek yön",
@@ -1794,5 +1821,14 @@
     "now": "Şu an",
     "later_one": "{{count}} durak daha",
     "later_other": "{{count}} durak daha"
+  },
+  "building": {
+    "title": "Seyahatiniz oluşturuluyor",
+    "step1": "Tarihlerin ve tercihlerin okunuyor…",
+    "step2": "Bütçene uygun yerler seçiliyor…",
+    "step3": "Açılış saatleri ve yol süreleri kontrol ediliyor…",
+    "step4": "Her şey rezervasyonlarının etrafına yerleştiriliyor…",
+    "step5": "Son dokunuşlar yapılıyor…",
+    "hint": "Hazır olunca seyahatin kendiliğinden açılır."
   }
 }

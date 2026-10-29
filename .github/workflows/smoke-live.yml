@@ -58,6 +58,11 @@ jobs:
           if [ -n "$pid" ]; then
             check "Google mekân kartı (ayrıntı + fotoğraf)" places "$(jq -n --arg p "$pid" '{action:"place",place_id:$p}')" '"\(.place.name) · \(.place.photos | length) fotoğraf · \(.place.hours | length) gün saat · puan \(.place.rating)"'
           fi
+          check "Şehir arama (Google Autocomplete: Roma → ülke)" places '{"action":"city_suggest","input":"Roma","session_token":"smokeSession12345"}' '"\(.cities | length) öneri, ilki: \(.cities[0].name) (\(.cities[0].detail))"'
+          cid=$(jq -r '.cities[0].place_id // empty' /tmp/out.json 2>/dev/null)
+          if [ -n "$cid" ]; then
+            check "Şehir seçimi (ülke kodu)" places "$(jq -n --arg p "$cid" '{action:"city_pick",place_id:$p,session_token:"smokeSession12345"}')" '"\(.city.name) · \(.city.country_code)"'
+          fi
           check "Google Weather" places '{"action":"weather","lat":41.0369,"lng":28.985}' '"\(.days | length) gün tahmin"'
           check "Google Routes (Nasıl giderim: Interlaken → Grindelwald)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"origin_name":"Interlaken","destination_name":"Grindelwald","country_code":"CH"}' '"\(.routes | length) güzergah; ilk: \([.routes[0].steps[] | (.transit.lineShort // .transit.line // .mode)] | join(" → ")) (\(.routes[0].durationMin) dk)"'
           check "Rota çizgisi (uygulama içi harita)" places '{"action":"route","origin":{"address":"Interlaken Ost, Switzerland"},"destination":{"address":"Grindelwald, Switzerland"},"country_code":"CH"}' '"çizgi \(.routes[0].polyline | length) karakter"'

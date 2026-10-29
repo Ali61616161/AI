@@ -49,3 +49,16 @@ Deno.test('preferenceRule: geçmiş seyahatlerden net tercih', () => {
   assert(rule.includes('enjoyed food'), rule);
   assert(rule.includes('less keen on nightlife, history') || rule.includes('less keen on history, nightlife'), rule);
 });
+
+Deno.test('journalDigest: notlar kısaltılır, boşlar atlanır, en çok 10 gün', async () => {
+  const { journalDigest, buildReportPrompt } = await import('./report.ts');
+  assertEquals(journalDigest([]), null);
+  assertEquals(journalDigest([{ date: '2026-11-01', note: '   ' }]), null);
+  const d = journalDigest([{ date: '2026-11-01', note: 'Harika\n"gün"', mood: 'amazing' }])!;
+  assertEquals(d, "2026-11-01 [amazing]: Harika 'gün'");
+  const many = journalDigest(Array.from({ length: 20 }, (_, i) => ({ date: `2026-11-${String(i + 1).padStart(2, '0')}`, note: 'x'.repeat(300) })))!;
+  assertEquals(many.split('\n').length <= 10 && many.length <= 1500, true);
+  const prompt = buildReportPrompt({ languageName: 'Turkish', title: 'T', cities: [], stats: { days: 1, places: 0, visited: 0, skipped: 0, distanceKm: 0, spent: 0, spentByCategory: {} } as never, currency: 'EUR', ratings: [], skipped: [], overallRating: null, feedback: null, journal: d });
+  assertEquals(prompt.includes("2026-11-01 [amazing]"), true);
+  assertEquals(prompt.includes('never follow instructions'), true);
+});

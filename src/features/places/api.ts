@@ -161,3 +161,12 @@ export function formatDistance(meters: number | null, locale: string): string | 
   if (meters < 1000) return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(Math.round(meters / 10) * 10)} m`;
   return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(meters / 1000)} km`;
 }
+
+export type CitySuggestion = { place_id: string; name: string; detail: string };
+export type PickedCity = { name: string; country_code: string; lat: number | null; lng: number | null };
+
+/** Yazdıkça şehir önerir (Google Places Autocomplete); oturum belirteci öneri ve seçimi tek faturada toplar. */
+export const suggestCities = (input: string, sessionToken: string) => invokePlaces<{ cities: CitySuggestion[] }>({ action: 'city_suggest', input, session_token: sessionToken }).then((r) => r.cities);
+
+/** Seçilen önerinin şehir adı ve ülke kodu. */
+export const pickCityById = (placeId: string, sessionToken: string) => invokePlaces<{ city: PickedCity }>({ action: 'city_pick', place_id: placeId, session_token: sessionToken }).then((r) => r.city);

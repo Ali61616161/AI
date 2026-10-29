@@ -10,6 +10,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
+import { DateField } from '@/components/ui/date-field';
 import { TextField } from '@/components/ui/text-field';
 import { openBookingLink } from '@/features/places/api';
 import { useAddPriceWatch, useDeletePriceWatch, usePriceWatches, useUpdatePriceWatch, type PriceWatch } from '@/features/price/api';
@@ -171,22 +172,21 @@ export default function PriceWatchScreen() {
                 <Chip label={t('priceWatch.exactDate')} selected={!form.flexible} onPress={() => set('flexible', false)} />
                 <Chip label={t('priceWatch.flexibleMonth')} selected={form.flexible} onPress={() => set('flexible', true)} />
               </View>
-              <TextField
+              <DateField
                 label={t('priceWatch.depart')}
                 value={form.depart}
-                onChangeText={(v) => set('depart', v)}
-                hint={form.flexible ? t('priceWatch.monthHint') : t('dates.hint')}
-                keyboardType="numbers-and-punctuation"
-                maxLength={10}
+                min={todayIsoDate()}
+                hint={form.flexible ? t('priceWatch.monthHint') : undefined}
+                onChange={(v) => set('depart', v)}
                 error={showErrors && (problem === 'depart' || problem === 'past') ? t(problem === 'past' ? 'priceWatch.errors.past' : 'priceWatch.errors.depart') : null}
               />
-              <TextField
+              <DateField
                 label={t('priceWatch.return')}
                 value={form.ret}
-                onChangeText={(v) => set('ret', v)}
+                optional
+                min={form.depart || todayIsoDate()}
                 hint={t('priceWatch.returnHint')}
-                keyboardType="numbers-and-punctuation"
-                maxLength={10}
+                onChange={(v) => set('ret', v)}
                 error={showErrors && problem === 'return' ? t('priceWatch.errors.return') : null}
               />
               <View style={styles.chips}>

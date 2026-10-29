@@ -77,3 +77,25 @@ Deno.test('akıcı takip: tahmin, yön geçişi, bölme', async () => {
   assertEquals(Math.round((s.rest[0][0].lat - 41) * 1e4), 15);
   assertEquals(m.splitAtNearest([], { lat: 1, lng: 1 }).rest, []);
 });
+
+import { remainingAlongPath } from './navigation-logic.ts';
+
+Deno.test('remainingAlongPath: dolambaçlı rotada kuş uçuşundan uzun, düz rotada eşit, bitişte ~0', () => {
+  // L şeklinde rota: önce kuzeye ~1.1 km, sonra doğuya ~1.1 km (kuş uçuşu ~1.6 km).
+  const path = [
+    { lat: 41.0, lng: 29.0 },
+    { lat: 41.01, lng: 29.0 },
+    { lat: 41.01, lng: 29.0132 },
+  ];
+  const start = remainingAlongPath(path[0], path)!;
+  assertEquals(start > 2100 && start < 2300, true);
+  const mid = remainingAlongPath({ lat: 41.01, lng: 29.0 }, path)!;
+  assertEquals(mid > 1000 && mid < 1200, true);
+  assertEquals((remainingAlongPath(path[2], path) ?? 99) < 3, true);
+  // Düz rota: kuş uçuşuyla aynı.
+  const line = [{ lat: 41.0, lng: 29.0 }, { lat: 41.0, lng: 29.02 }];
+  const straight = remainingAlongPath(line[0], line)!;
+  assertEquals(Math.abs(straight - remainingMeters(line[0], line)!) < 5, true);
+  assertEquals(remainingAlongPath(null, path), null);
+  assertEquals(remainingAlongPath(path[0], []), null);
+});

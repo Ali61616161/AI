@@ -16,7 +16,10 @@
     "done": "完成",
     "close": "关闭",
     "search": "搜索",
-    "stepOf": "第 {{step}} 步，共 {{total}} 步"
+    "stepOf": "第 {{step}} 步，共 {{total}} 步",
+    "clear": "清除",
+    "pickDate": "选择日期",
+    "pickTime": "选择时间"
   },
   "welcome": {
     "title": "你的下一段旅程从这里开始",
@@ -34,7 +37,7 @@
     "restartNow": "立即重启",
     "later": "稍后",
     "confirmTitle": "切换语言",
-    "confirmMessage": "应用将重新加载以切换语言：已打开的页面和对话会被重置。已为行程生成的内容将保持原语言。确认吗？",
+    "confirmMessage": "应用将重新加载以切换语言：已打开的页面和对话会被重置。已为行程生成的内容将保持原语言。 若要以新语言获取行程路线，请使用“重新生成路线”。 确认吗？",
     "confirm": "确认",
     "cancel": "取消"
   },
@@ -120,7 +123,10 @@
     "mostExpensive": "最贵：{{items}}",
     "askCheaper": "推荐更便宜的",
     "askMessage": "我的每日预算是 {{budget}}，但今天预计 {{total}}。请把今天剩下的安排换成更便宜的地方。",
-    "skipped": "{{count}} 项缺少汇率，未计入。"
+    "skipped": "{{count}} 项缺少汇率，未计入。",
+    "working": "正在按你的预算重新安排这一天…",
+    "failed": "无法更新行程，请重试。",
+    "done": "行程已按预算更新。"
   },
   "interest": {
     "art": "艺术",
@@ -371,7 +377,8 @@
     "createFailed": "无法创建行程：{{message}}",
     "nothingSelected": "请至少选择一项预订。",
     "fixDates": "请修正无效日期。",
-    "summary": "{{dates}} · {{cities}}"
+    "summary": "{{dates}} · {{cities}}",
+    "fieldTime": "时间"
   },
   "reservationType": {
     "flight": "航班",
@@ -912,7 +919,15 @@
     "namePlaceholder": "例如：罗马之夏",
     "endBeforeStart": "结束日期必须晚于开始日期。",
     "hint": "之后可以添加机票和酒店预订，Yola 会据此调整计划。",
-    "countryWhy": "用于紧急电话、签证信息和当地常用语。"
+    "countryWhy": "用于紧急电话、签证信息和当地常用语。",
+    "destination": "目的地",
+    "searchPlaceholder": "搜索城市，例如罗马",
+    "searchFailed": "搜索暂不可用。请在下方手动输入。",
+    "noResults": "没有匹配项。换个拼写或手动输入。",
+    "enterManually": "列表里没有？手动输入城市和国家",
+    "useSearch": "改用搜索城市",
+    "changeDestination": "更改 {{place}}",
+    "duplicateName": "你已有同名行程，请换一个名称。"
   },
   "legal": {
     "effective": "生效日期：{{date}}",
@@ -1413,7 +1428,9 @@
       "arrivedShort": "已到达",
       "theme": "地图外观：自动、浅色、深色",
       "satellite": "卫星视图",
-      "rerouting": "正在重新规划路线…"
+      "rerouting": "正在重新规划路线…",
+      "voiceOn": "开启语音导航",
+      "voiceOff": "关闭语音导航"
     }
   },
   "widget": {
@@ -1700,7 +1717,17 @@
       "ok": "一般",
       "tired": "疲惫",
       "bad": "糟糕"
-    }
+    },
+    "prompts": {
+      "0": "今天最让你惊讶的是什么？",
+      "1": "你最想永远记住哪个瞬间？",
+      "2": "描述一下今天吃到的最好的东西。",
+      "3": "今天是谁或什么让你笑了？",
+      "4": "明天你会有什么不同的做法？",
+      "5": "用一句话写下今天的感受。"
+    },
+    "placesTitle": "今天去过的地方",
+    "statsPlaces": "地点：{{places}}"
   },
   "esim": {
     "title": "手机流量（eSIM）",
@@ -1724,8 +1751,8 @@
     "flexibleShort": "当月任意一天",
     "depart": "出发日期",
     "return": "返程日期（可选）",
-    "monthHint": "格式：2026-12（当月最便宜的一天）",
-    "returnHint": "单程请留空。格式：2026-12-12",
+    "monthHint": "将搜索整个月内最便宜的一天",
+    "returnHint": "单程请留空",
     "targetLabel": "目标价格（可选）",
     "targetHint": "价格达到目标时通知你。留空：下降 10% 时通知。",
     "oneWay": "单程",
@@ -1755,5 +1782,14 @@
     "next": "下一站",
     "now": "现在",
     "later_other": "还有 {{count}} 站"
+  },
+  "building": {
+    "title": "正在创建你的行程",
+    "step1": "正在读取日期和偏好…",
+    "step2": "正在挑选符合预算的地点…",
+    "step3": "正在核对营业时间和路程…",
+    "step4": "正在围绕你的预订安排行程…",
+    "step5": "最后润色…",
+    "hint": "准备好后行程会自动打开。"
   }
 }

@@ -6,10 +6,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { Text } from '@/components/ui/text';
+import { syncPreferredLanguage } from '@/features/auth/sync-language';
 import { changeLanguage, currentLanguage } from '@/i18n';
 import { SUPPORTED_LANGUAGES, type LanguageCode } from '@/i18n/languages';
 import { queryClient } from '@/lib/query-client';
 import { useReloadStore } from '@/stores/reload-store';
+import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
@@ -23,6 +25,7 @@ export function LanguagePicker() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const reload = useReloadStore((s) => s.reload);
+  const userId = useSessionStore((s) => s.session?.user.id ?? null);
   const [open, setOpen] = useState(false);
   const current = SUPPORTED_LANGUAGES.find((l) => l.code === currentLanguage());
 
@@ -35,6 +38,8 @@ export function LanguagePicker() {
         text: t('language.confirm'),
         onPress: async () => {
           const { needsRestart } = await changeLanguage(code);
+          // Sunucu da yeni dilde üretsin (rota, mekan açıklamaları, hava metni); önbellek temizlenmeden önce yazılır.
+          await syncPreferredLanguage(userId, code);
           // Önceki dildeki önbellek (yer açıklamaları, hava metni vb.) silinir; internet yokken çevrimdışı görünüm bozulmasın.
           if (onlineManager.isOnline()) queryClient.clear();
           reload();

@@ -138,6 +138,18 @@ http
       return send(res, 200, { subscriber: { original_app_user_id: id, subscriptions: {}, non_subscriptions: {}, ...(rcSubscribers.get(id) ?? {}) } });
     }
 
+    if (req.method === 'POST' && url.pathname === '/v1/places:autocomplete') {
+      const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
+      calls.push({ api: 'places:autocomplete', body });
+      if (!body.input || !body.sessionToken || JSON.stringify(body.includedPrimaryTypes) !== '["(cities)"]') return send(res, 400, { error: { code: 400, status: 'INVALID_ARGUMENT' } });
+      const cities = [['Roma', 'Lazio, İtalya', 'IT'], ['Rome', 'Georgia, ABD', 'US']].filter(([n]) => n.toLowerCase().startsWith(String(body.input).toLowerCase().slice(0, 3)));
+      return send(res, 200, { suggestions: cities.map(([n, d, c]) => ({ placePrediction: { placeId: `fake-city-${c}-${n}`, text: { text: `${n}, ${d}` }, structuredFormat: { mainText: { text: n }, secondaryText: { text: d } } } })) });
+    }
+    const cityDetails = /^\/v1\/places\/(fake-city-([A-Z]{2})-([A-Za-z]+))$/.exec(url.pathname);
+    if (req.method === 'GET' && cityDetails) {
+      calls.push({ api: 'places:cityDetails', params: Object.fromEntries(url.searchParams) });
+      return send(res, 200, { id: cityDetails[1], displayName: { text: cityDetails[3] }, addressComponents: [{ types: ['locality'], shortText: cityDetails[3] }, { types: ['country', 'political'], shortText: cityDetails[2] }], location: ROME });
+    }
     if (req.method === 'POST' && url.pathname === '/v1/places:searchText') {
       const body = JSON.parse(Buffer.concat(chunks).toString() || '{}');
       const mask = req.headers['x-goog-fieldmask'] ?? '';

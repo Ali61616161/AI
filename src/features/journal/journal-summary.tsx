@@ -30,7 +30,7 @@ export function JournalSummary({ tripId }: { tripId: string }) {
         </Text>
         {stats.days > 0 && (
           <Text variant="caption" color="textMuted">
-            {t('journal.stats', { days: stats.days, photos: stats.photos })}
+            {t('journal.stats', { days: stats.days, photos: stats.photos })}{stats.places > 0 ? ` · ${t('journal.statsPlaces', { places: stats.places })}` : ''}
           </Text>
         )}
       </View>
@@ -41,6 +41,11 @@ export function JournalSummary({ tripId }: { tripId: string }) {
             <Text variant="bodyStrong">{formatDayShort(e.entry_date)}</Text>
           </View>
           {e.note ? <Text variant="body">{e.note}</Text> : null}
+          {e.places.length > 0 && (
+            <Text variant="caption" color="textSecondary">
+              {e.places.join(' · ')}
+            </Text>
+          )}
           {e.photos.length > 0 && (
             <View style={styles.photos}>
               {e.photos.map((p) => (

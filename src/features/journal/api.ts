@@ -23,7 +23,7 @@ export function useJournal(tripId: string | undefined) {
     queryFn: async (): Promise<JournalEntry[]> => {
       const { data, error } = await getSupabase()
         .from('journal_entries')
-        .select('id, trip_id, entry_date, note, mood, photos')
+        .select('id, trip_id, entry_date, note, mood, photos, places')
         .eq('trip_id', tripId!)
         .eq('user_id', userId!)
         .order('entry_date', { ascending: true });
@@ -59,7 +59,7 @@ export async function uploadJournalPhoto(uri: string, userId: string, tripId: st
   return path;
 }
 
-export type SaveEntryInput = { tripId: string; date: string; note: string; mood: JournalMood | null; photos: string[]; previousPhotos?: string[] };
+export type SaveEntryInput = { tripId: string; date: string; note: string; mood: JournalMood | null; photos: string[]; places: string[]; previousPhotos?: string[] };
 
 /** O günün kaydını yazar; her şey boşaltılmışsa kaydı siler. Kaydından çıkarılan fotoğraflar kovadan da silinir. */
 export function useSaveJournalEntry() {
@@ -69,13 +69,13 @@ export function useSaveJournalEntry() {
     mutationFn: async (input: SaveEntryInput) => {
       const supabase = getSupabase();
       const note = input.note.trim();
-      if (isEmptyEntry({ note, mood: input.mood, photos: input.photos })) {
+      if (isEmptyEntry({ note, mood: input.mood, photos: input.photos, places: input.places })) {
         const { error } = await supabase.from('journal_entries').delete().eq('trip_id', input.tripId).eq('user_id', userId!).eq('entry_date', input.date);
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from('journal_entries')
-          .upsert({ trip_id: input.tripId, user_id: userId!, entry_date: input.date, note, mood: input.mood, photos: input.photos }, { onConflict: 'trip_id,user_id,entry_date' });
+          .upsert({ trip_id: input.tripId, user_id: userId!, entry_date: input.date, note, mood: input.mood, photos: input.photos, places: input.places }, { onConflict: 'trip_id,user_id,entry_date' });
         if (error) throw error;
       }
       const removed = (input.previousPhotos ?? []).filter((p) => !input.photos.includes(p));

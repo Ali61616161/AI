@@ -237,3 +237,16 @@ Deno.test('priceFields: Google aralığı kalemin fiyatı olur, aralık yoksa AI
   assertEquals(priceFields(onlyMin), { estimated_cost: 20, cost_currency: 'EUR', cost_min: 20, cost_max: 20 });
   assertEquals(priceFields(normalizePlace({ id: 'p3', displayName: { text: 'Z' } })!), null);
 });
+
+Deno.test('pickNearest: zincir şubelerden şehir merkezine en yakını seçilir', async () => {
+  const { pickNearest, MAX_DISTANCE_M } = await import('./places.ts');
+  const mk = (id: string, lat: number | null, lng: number | null) => ({ id, name: id, address: null, lat, lng }) as unknown as Parameters<typeof pickNearest>[0][number];
+  const center = { lat: 41.0082, lng: 28.9784 };
+  const gebze = mk('gebze', 40.8, 29.43);
+  const karakoy = mk('karakoy', 41.0225, 28.977);
+  assertEquals(pickNearest([gebze, karakoy], center)?.id, 'karakoy');
+  assertEquals(pickNearest([gebze, karakoy], null)?.id, 'gebze');
+  assertEquals(pickNearest([mk('x', null, null), gebze], center)?.id, 'gebze');
+  assertEquals(pickNearest([], center), undefined);
+  assertEquals(MAX_DISTANCE_M, 30_000);
+});

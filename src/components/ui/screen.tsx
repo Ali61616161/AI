@@ -1,5 +1,5 @@
-import { useRef, useState, type ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Keyboard, LayoutAnimation, Platform, ScrollView, StyleSheet, View, type KeyboardEvent } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
 import { useResetScrollOnTabEnter } from '@/lib/tab-scroll';
@@ -23,10 +23,24 @@ type Props = {
 export function Screen({ children, footer, scroll = true, edges = ['top', 'bottom'], tabBarSpace = false, aurora = 'default', tabName }: Props) {
   const scrollRef = useRef<ScrollView>(null);
   useResetScrollOnTabEnter(tabName, scrollRef);
-  // Sayfa ekranın tepesinden başlamıyorsa (iOS "sheet" olarak açılan ekranlar) klavye payı o kadar artar;
-  // aksi halde yazı alanı klavyenin altında kalır.
+  // Klavyenin ekrandaki gerçek konumuna göre alt boşluk: sayfa "sheet" olarak açıldığında (animasyonlu, ekranın
+  // tepesinden başlamaz) sabit bir ofset yanlış kalıyordu; bu yüzden her klavye olayında kutunun pencere konumu ölçülür.
   const frame = useRef<View>(null);
-  const [windowTop, setWindowTop] = useState(0);
+  const [keyboardInset, setKeyboardInset] = useState(0);
+  useEffect(() => {
+    const ios = Platform.OS === 'ios';
+    const apply = (inset: number, e?: KeyboardEvent) => {
+      if (ios && e?.duration) LayoutAnimation.configureNext({ duration: e.duration, update: { type: LayoutAnimation.Types.keyboard } });
+      setKeyboardInset((prev) => (Math.abs(prev - inset) > 1 ? inset : prev));
+    };
+    const onFrame = (e: KeyboardEvent) => {
+      frame.current?.measureInWindow((_x, y, _w, h) => apply(Math.max(0, Math.round(y + h - e.endCoordinates.screenY)), e));
+    };
+    const subs = ios
+      ? [Keyboard.addListener('keyboardWillChangeFrame', onFrame), Keyboard.addListener('keyboardWillHide', (e) => apply(0, e))]
+      : [Keyboard.addListener('keyboardDidShow', onFrame), Keyboard.addListener('keyboardDidHide', () => apply(0))];
+    return () => subs.forEach((sub) => sub.remove());
+  }, []);
   const bottomSpace = tabBarSpace ? { paddingBottom: 120 } : null;
   const body = scroll ? (
     <ScrollView ref={scrollRef} contentContainerStyle={[styles.content, bottomSpace]} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
@@ -40,11 +54,11 @@ export function Screen({ children, footer, scroll = true, edges = ['top', 'botto
     <View style={styles.fill}>
       <Aurora variant={aurora} />
       <SafeAreaView edges={edges} style={styles.fill}>
-        <View ref={frame} style={styles.fill} onLayout={() => frame.current?.measureInWindow((_x, y) => setWindowTop((prev) => (Math.abs(prev - y) > 1 ? y : prev)))}>
-          <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === 'web' ? undefined : 'padding'} keyboardVerticalOffset={windowTop}>
-          {body}
-          {footer && <View style={styles.footer}>{footer}</View>}
-          </KeyboardAvoidingView>
+        <View ref={frame} collapsable={false} style={styles.fill}>
+          <View style={[styles.fill, { paddingBottom: keyboardInset }]}>
+            {body}
+            {footer && <View style={styles.footer}>{footer}</View>}
+          </View>
         </View>
       </SafeAreaView>
     </View>

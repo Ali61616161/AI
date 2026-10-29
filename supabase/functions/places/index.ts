@@ -23,6 +23,7 @@ import { adminClient } from '../_shared/admin.ts';
 import { consumeQuota, userClient } from '../_shared/auth.ts';
 import { cleanNote } from '../_shared/itinerary.ts';
 import { destinationCoords, googleConfig, MAX_LOOKUP_DESTINATIONS } from '../_shared/enrich.ts';
+import { cleanQuery, pickCity, SESSION_TOKEN, suggestCities } from '../_shared/city-search.ts';
 import { corsHeaders, error, json } from '../_shared/http.ts';
 import { distanceMeters, fetchPhotoUri, fetchPlaceDetails, hotelRequest, isNearbyCategory, openNowRequest, PLACE_ID_PATTERN, PlacesError, searchText } from '../_shared/places.ts';
 import { computeRoutes, type RouteMode, type RoutePoint, RoutesError, type VehicleKind } from '../_shared/routes.ts';
@@ -107,8 +108,12 @@ Deno.serve(async (req) => {
         return await route();
       case 'place':
         return await placeCard();
+      case 'city_suggest':
+        return await citySuggest();
+      case 'city_pick':
+        return await cityPick();
       default:
-        return error('bad_request', 400, 'action must be open_now, hotels, weather, route or place');
+        return error('bad_request', 400, 'action must be open_now, hotels, weather, route, place, city_suggest or city_pick');
     }
   } catch (e) {
     if (e instanceof RoutesError) {
@@ -144,6 +149,28 @@ Deno.serve(async (req) => {
       if (verifyError) console.warn('places: verified_places upsert failed', verifyError.message);
     }
     return json({ places: open, quota: { plan: quota.plan, remaining: quota.remaining } });
+  }
+
+  /** Seyahat kurarken şehir önerileri (Places Autocomplete). Her istek günlük 'city_search' kotasından düşer. */
+  async function citySuggest() {
+    const input = cleanQuery(body.input);
+    if (!input || typeof body.session_token !== 'string' || !SESSION_TOKEN.test(body.session_token)) return error('bad_request', 400, 'input and session_token are required');
+    const quota = await consumeQuota(supabase, 'city_search', null);
+    if (!quota.allowed) return error('quota_exceeded', 402);
+    const cities = await suggestCities({ apiKey, apiBase: google.placesBase, input, language, sessionToken: body.session_token });
+    return json({ cities });
+  }
+
+  /** Seçilen şehrin adı, ülke kodu ve koordinatı. */
+  async function cityPick() {
+    if (typeof body.place_id !== 'string' || !PLACE_ID_PATTERN.test(body.place_id) || typeof body.session_token !== 'string' || !SESSION_TOKEN.test(body.session_token)) {
+      return error('bad_request', 400, 'place_id and session_token are required');
+    }
+    const quota = await consumeQuota(supabase, 'city_search', null);
+    if (!quota.allowed) return error('quota_exceeded', 402);
+    const city = await pickCity({ apiKey, apiBase: google.placesBase, placeId: body.place_id, language, sessionToken: body.session_token });
+    if (!city) return error('not_found', 404);
+    return json({ city });
   }
 
   async function placeCard() {

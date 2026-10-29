@@ -28,10 +28,19 @@ test('fotoğraf yolu kullanıcı/seyahat klasöründedir', () => {
 });
 
 test('istatistik ve boş kayıt', () => {
-  const e = { id: '1', trip_id: 't', entry_date: '2026-11-10', note: 'x', mood: null, photos: ['a', 'b'] } as const;
-  assert.deepEqual(journalStats([{ ...e, photos: [...e.photos] }]), { days: 1, photos: 2 });
+  const e = { id: '1', trip_id: 't', entry_date: '2026-11-10', note: 'x', mood: null, photos: ['a', 'b'], places: ['Kule'] } as const;
+  assert.deepEqual(journalStats([{ ...e, photos: [...e.photos], places: [...e.places] }]), { days: 1, photos: 2, places: 1 });
   assert.equal(isEmptyEntry({ note: '  ', mood: null, photos: [] }), true);
   assert.equal(isEmptyEntry({ note: '', mood: 'good', photos: [] }), false);
   assert.equal(isMood('amazing'), true);
   assert.equal(isMood('x'), false);
+});
+
+import { PROMPT_COUNT, promptIndex } from './logic.ts';
+
+test('yazma ipucu: tarihe göre döner, aralık içinde', () => {
+  assert.equal(promptIndex('2026-11-10'), promptIndex('2026-11-10'));
+  assert.ok(promptIndex('2026-11-10') >= 0 && promptIndex('2026-11-10') < PROMPT_COUNT);
+  assert.notEqual(promptIndex('2026-11-10'), promptIndex('2026-11-11'));
+  assert.equal(isEmptyEntry({ note: '', mood: null, photos: [], places: ['Kule'] }), false);
 });

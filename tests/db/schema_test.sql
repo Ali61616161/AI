@@ -1016,6 +1016,25 @@ reset role;
 delete from storage.objects where bucket_id = 'journal';
 
 -- ---------------------------------------------------------------------------
+\echo '18h. Aynı ada ikinci seyahat engellenir (kullanıcı başına, harf/boşluk fark etmez)'
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+insert into public.trips (id, title) values ('10000000-0000-0000-0000-0000000000e1', 'Lizbon');
+do $$ begin
+  assert tests.throws($q$ insert into public.trips (title) values ('  lizbon ') $q$), 'aynı ad (harf ve boşluk farkıyla) engellenir';
+end $$;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$ begin
+  assert not tests.throws($q$ insert into public.trips (title) values ('Lizbon') $q$), 'başka kullanıcı aynı adı kullanabilir';
+end $$;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+update public.trips set status = 'cancelled' where id = '10000000-0000-0000-0000-0000000000e1';
+do $$ begin
+  assert not tests.throws($q$ insert into public.trips (title) values ('Lizbon') $q$), 'iptal edilmiş seyahat sayılmaz';
+end $$;
+reset role;
+
+-- ---------------------------------------------------------------------------
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

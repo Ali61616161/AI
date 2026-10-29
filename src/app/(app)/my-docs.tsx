@@ -14,6 +14,7 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { SelectSheet } from '@/components/ui/select-sheet';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
+import { DateField } from '@/components/ui/date-field';
 import { TextField } from '@/components/ui/text-field';
 import { useCountryOptions } from '@/features/identity/country-options';
 import { flag } from '@/features/tools/emergency-numbers';
@@ -151,7 +152,7 @@ export default function MyDocsScreen() {
             </View>
             <SelectSheet label={t('docs.country')} value={country} options={countries} placeholder={t('docs.country')} onChange={setCountry} />
             <TextField label={t('docs.label')} value={label} onChangeText={(v) => setLabel(v.slice(0, 60))} placeholder={t('docs.labelPlaceholder')} />
-            <TextField label={t('docs.expiresOn')} value={expires} onChangeText={setExpires} hint={t('dates.hint')} keyboardType="numbers-and-punctuation" maxLength={10} />
+            <DateField label={t('docs.expiresOn')} value={expires} onChange={setExpires} />
             <Text variant="caption" color="textMuted">
               {t('docs.privacyNote')}
             </Text>
@@ -191,7 +192,7 @@ export default function MyDocsScreen() {
 
         <Card>
           <Text variant="subtitle">{t('docs.planTitle')}</Text>
-          <TextField label={t('docs.planEntry')} value={planEntry} onChangeText={setPlanEntry} hint={t('dates.hint')} keyboardType="numbers-and-punctuation" maxLength={10} />
+          <DateField label={t('docs.planEntry')} value={planEntry} onChange={setPlanEntry} />
           {plan && (
             <Text variant="bodyStrong" color={plan.days ? 'success' : 'danger'}>
               {plan.days ? t('docs.planResult', { count: plan.days, date: formatDayShort(plan.lastDay!) }) : t('docs.planNone')}
@@ -214,10 +215,10 @@ export default function MyDocsScreen() {
           ))}
           <View style={styles.row}>
             <View style={styles.flex}>
-              <TextField label={t('docs.entry')} value={entry} onChangeText={setEntry} keyboardType="numbers-and-punctuation" maxLength={10} placeholder="2026-06-01" />
+              <DateField label={t('docs.entry')} value={entry} onChange={setEntry} />
             </View>
             <View style={styles.flex}>
-              <TextField label={t('docs.exit')} value={exit} onChangeText={setExit} keyboardType="numbers-and-punctuation" maxLength={10} placeholder="2026-06-10" />
+              <DateField label={t('docs.exit')} value={exit} min={entry || null} onChange={setExit} />
             </View>
           </View>
           <Button

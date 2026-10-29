@@ -8,11 +8,14 @@ import { Button } from '@/components/ui/button';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
+import { DateField as DatePickerField, TimeField } from '@/components/ui/date-field';
 import { TextField } from '@/components/ui/text-field';
 import { buildTripDraft, type DraftItem } from '@/features/documents/build-trip';
 import { RESERVATION_ICONS, TRANSPORT_TYPES } from '@/features/documents/reservation-icons';
 import { useUploadStore } from '@/features/documents/upload-store';
-import { useCreateTripFromDocuments } from '@/features/trips/queries';
+import { useCreateTripFromDocuments, useTrips } from '@/features/trips/queries';
+import { isDuplicateNameError, uniqueTripTitle } from '@/features/trips/trip-name';
+import { useSessionStore } from '@/stores/session-store';
 import { normalizeAnswers } from '@/features/trips/trip-answers';
 import { TripQuestions, useDefaultTripAnswers } from '@/features/trips/trip-questions';
 import { formatDateRange } from '@/lib/format';
@@ -103,35 +106,31 @@ function ItemCard({
             autoCapitalize="characters"
             onChangeText={(v) => updateItem(item.key, (it) => ({ ...it, reference_code: v.trim() || null }))}
           />
-          <View style={styles.row}>
-            <View style={styles.flex}>
-              <TextField
-                label={t('review.fieldStart')}
-                value={dates.start}
-                warning={low('start_datetime')}
-                error={dateErrors.start ? t('review.invalidDate') : null}
-                hint={t('review.dateHint')}
-                keyboardType="numbers-and-punctuation"
-                onChangeText={(v) => {
-                  setDates((d) => ({ ...d, start: v }));
-                  onDateText('start', v);
-                }}
-              />
-            </View>
-            <View style={styles.flex}>
-              <TextField
-                label={t('review.fieldEnd')}
-                value={dates.end}
-                warning={low('end_datetime')}
-                error={dateErrors.end ? t('review.invalidDate') : null}
-                keyboardType="numbers-and-punctuation"
-                onChangeText={(v) => {
-                  setDates((d) => ({ ...d, end: v }));
-                  onDateText('end', v);
-                }}
-              />
-            </View>
-          </View>
+          {(['start', 'end'] as const).map((field) => {
+            const [datePart = '', timePart = ''] = dates[field].split(' ');
+            const set = (d: string, tm: string) => {
+              const text = [d, tm].filter(Boolean).join(' ');
+              setDates((prev) => ({ ...prev, [field]: text }));
+              onDateText(field, text);
+            };
+            const key = field === 'start' ? 'start_datetime' : 'end_datetime';
+            return (
+              <View key={field} style={styles.row}>
+                <View style={styles.flex}>
+                  <DatePickerField
+                    label={t(field === 'start' ? 'review.fieldStart' : 'review.fieldEnd')}
+                    value={datePart}
+                    optional={field === 'end'}
+                    error={dateErrors[field] ? t('review.invalidDate') : low(key)}
+                    onChange={(d) => set(d, timePart)}
+                  />
+                </View>
+                <View style={styles.time}>
+                  <TimeField label={t('review.fieldTime')} value={timePart} onChange={(tm) => set(datePart, tm)} />
+                </View>
+              </View>
+            );
+          })}
           {transport ? (
             <View style={styles.row}>
               <View style={styles.flex}>
@@ -178,6 +177,8 @@ export default function TicketReviewScreen() {
   const { tripId } = useLocalSearchParams<{ tripId?: string }>();
   const { items, excluded, updateItem, reset } = useUploadStore();
   const createTrip = useCreateTripFromDocuments();
+  const { data: trips } = useTrips();
+  const userId = useSessionStore((s) => s.session?.user.id ?? s.userId);
   const [dateErrors, setDateErrors] = useState<Record<string, Partial<Record<DateField, boolean>>>>({});
   const [formError, setFormError] = useState<string | null>(null);
   // Yeni seyahat kurulurken seyahate özel sorular (mevcut seyahate belge eklerken sorulmaz).
@@ -222,12 +223,16 @@ export default function TicketReviewScreen() {
     }
     try {
       const documentIds = [...new Set(selected.map((i) => i.documentId))];
-      const id = await createTrip.mutateAsync({ draft, documentIds, tripId, answers: tripId ? undefined : answers });
+      // Aynı adlı seyahat varsa ad numaralanır (aynı ad ikinci kez kullanılamaz).
+      const title = tripId ? draft.title : uniqueTripTitle(trips, draft.title, userId);
+      const id = await createTrip.mutateAsync({ draft: { ...draft, title }, documentIds, tripId, answers: tripId ? undefined : answers });
       reset();
       if (router.canDismiss()) router.dismissAll();
-      router.push({ pathname: '/trip/[id]', params: { id } });
+      // Yeni seyahatte rota arka planda üretilir (tam ekran oluşturma sayfası); mevcut seyahate belge eklenince doğrudan açılır.
+      if (tripId) router.push({ pathname: '/trip/[id]', params: { id } });
+      else router.push({ pathname: '/trip-building', params: { tripId: id } });
     } catch (e) {
-      setFormError(t('review.createFailed', { message: e instanceof Error ? e.message : String(e) }));
+      setFormError(isDuplicateNameError(e) ? t('newTrip.duplicateName') : t('review.createFailed', { message: e instanceof Error ? e.message : String(e) }));
     }
   }
 
@@ -271,6 +276,7 @@ const styles = StyleSheet.create({
   cardHeader: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   typeIcon: { width: 36, height: 36, borderRadius: Radius.md, alignItems: 'center', justifyContent: 'center' },
   include: { flexDirection: 'row', alignItems: 'center', gap: Spacing.xs },
+  time: { width: 130 },
   fields: { gap: Spacing.md },
   row: { flexDirection: 'row', gap: Spacing.md },
   flex: { flex: 1 },

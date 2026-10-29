@@ -13,10 +13,12 @@ import { Radius, Spacing, Typography } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
 
 import { uploadJournalPhoto, usePhotoUrls, useSaveJournalEntry } from './api';
-import { JOURNAL_MOODS, MAX_NOTE, MAX_PHOTOS, MOOD_ICONS, type JournalEntry, type JournalMood } from './logic';
+import { Chip } from '@/components/ui/chip';
+
+import { JOURNAL_MOODS, MAX_NOTE, MAX_PHOTOS, MAX_PLACES, MOOD_ICONS, promptIndex, type JournalEntry, type JournalMood } from './logic';
 
 /** Tek günün günlüğü: not, ruh hali ve en fazla 4 fotoğraf. Kişiseldir; yalnızca yazan görür. */
-export function JournalDay({ tripId, date, entry }: { tripId: string; date: string; entry: JournalEntry | undefined }) {
+export function JournalDay({ tripId, date, entry, placeOptions = [] }: { tripId: string; date: string; entry: JournalEntry | undefined; placeOptions?: string[] }) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const userId = useSessionStore((s) => s.session?.user.id ?? null);
@@ -24,12 +26,13 @@ export function JournalDay({ tripId, date, entry }: { tripId: string; date: stri
   const [note, setNote] = useState(entry?.note ?? '');
   const [mood, setMood] = useState<JournalMood | null>(entry?.mood ?? null);
   const [photos, setPhotos] = useState<string[]>(entry?.photos ?? []);
+  const [places, setPlaces] = useState<string[]>(entry?.places ?? []);
   const [uploading, setUploading] = useState(false);
   const [failed, setFailed] = useState(false);
   const [saved, setSaved] = useState(false);
   const { data: urls } = usePhotoUrls(photos);
 
-  const dirty = note !== (entry?.note ?? '') || mood !== (entry?.mood ?? null) || photos.join('|') !== (entry?.photos ?? []).join('|');
+  const dirty = note !== (entry?.note ?? '') || mood !== (entry?.mood ?? null) || photos.join('|') !== (entry?.photos ?? []).join('|') || places.join('|') !== (entry?.places ?? []).join('|');
 
   async function addPhoto() {
     if (!userId || photos.length >= MAX_PHOTOS) return;
@@ -52,7 +55,7 @@ export function JournalDay({ tripId, date, entry }: { tripId: string; date: stri
   function submit() {
     setFailed(false);
     save.mutate(
-      { tripId, date, note, mood, photos, previousPhotos: entry?.photos },
+      { tripId, date, note, mood, photos, places, previousPhotos: entry?.photos },
       { onSuccess: () => setSaved(true), onError: () => setFailed(true) },
     );
   }
@@ -84,11 +87,35 @@ export function JournalDay({ tripId, date, entry }: { tripId: string; date: stri
         }}
         multiline
         maxLength={MAX_NOTE}
-        placeholder={t('journal.placeholder')}
+        placeholder={t(`journal.prompts.${promptIndex(date)}` as 'journal.prompts.0')}
         placeholderTextColor={colors.textMuted}
         accessibilityLabel={t('journal.placeholder')}
         style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]}
       />
+      {placeOptions.length > 0 && (
+        <View style={styles.placesBlock}>
+          <Text variant="overline" color="textMuted">
+            {t('journal.placesTitle')}
+          </Text>
+          <View style={styles.photos}>
+            {placeOptions.map((name) => {
+              const on = places.includes(name);
+              return (
+                <Chip
+                  key={name}
+                  icon={on ? 'checkmark-circle' : 'location-outline'}
+                  label={name}
+                  selected={on}
+                  onPress={() => {
+                    setPlaces((list) => (list.includes(name) ? list.filter((x) => x !== name) : list.length >= MAX_PLACES ? list : [...list, name]));
+                    setSaved(false);
+                  }}
+                />
+              );
+            })}
+          </View>
+        </View>
+      )}
       <View style={styles.photos}>
         {photos.map((p) => (
           <View key={p} style={[styles.photo, { backgroundColor: colors.border }]}>
@@ -138,6 +165,7 @@ const styles = StyleSheet.create({
   mood: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   input: { minHeight: 90, padding: Spacing.md, borderRadius: Radius.md, borderWidth: 1, textAlignVertical: 'top' },
   photos: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
+  placesBlock: { gap: Spacing.xs },
   photo: { width: 72, height: 72, borderRadius: Radius.md, overflow: 'hidden' },
   add: { alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderStyle: 'dashed', backgroundColor: 'transparent' },
   remove: { position: 'absolute', top: 4, right: 4, width: 20, height: 20, borderRadius: 10, backgroundColor: 'rgba(0,0,0,0.6)', alignItems: 'center', justifyContent: 'center' },

@@ -157,6 +157,24 @@ await step('Ücretsiz planda günde 10 yakın arama; 11. reddedilir', async () =
   assert.equal(r.data.error.code, 'quota_exceeded');
 });
 
+await step('Şehir arama: öneri, seçim (ülke kodu), geçersiz girdi ve kota', async () => {
+  const session = 'e2eSession12345';
+  const bad = await places({ action: 'city_suggest', input: 'R', session_token: session });
+  assert.equal(bad.status, 400);
+  assert.equal((await places({ action: 'city_suggest', input: 'Rom', session_token: '!' })).status, 400);
+  const r = await places({ action: 'city_suggest', input: 'Rom', session_token: session });
+  assert.equal(r.status, 200, JSON.stringify(r.data));
+  assert.equal(r.data.cities[0].name, 'Roma');
+  assert.ok(r.data.cities[0].place_id.startsWith('fake-city-IT'));
+  const pick = await places({ action: 'city_pick', place_id: r.data.cities[0].place_id, session_token: session });
+  assert.equal(pick.status, 200, JSON.stringify(pick.data));
+  assert.deepEqual({ name: pick.data.city.name, country_code: pick.data.city.country_code }, { name: 'Roma', country_code: 'IT' });
+  assert.equal((await places({ action: 'city_pick', place_id: '../etc', session_token: session })).status, 400);
+  const calls = await (await fetch(`${FAKE_GOOGLE}/calls`)).json();
+  const ac = calls.filter((c) => c.api === 'places:autocomplete').at(-1);
+  assert.deepEqual(ac.body.includedPrimaryTypes, ['(cities)']);
+});
+
 await step('Başka kullanıcı bu seyahatin otel ve hava bilgisini göremez', async () => {
   const other = await call('/auth/v1/verify', { email: `places-other-${Date.now()}@yola.local`, token: '123456', type: 'email' });
   token = other.data.access_token;

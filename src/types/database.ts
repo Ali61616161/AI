@@ -435,6 +435,7 @@ export type Database = {
           mood: string | null;
           note: string;
           photos: string[];
+          places: string[];
           trip_id: string;
           updated_at: string;
           user_id: string;
@@ -447,6 +448,7 @@ export type Database = {
           mood?: string | null;
           note?: string;
           photos?: string[];
+          places?: string[];
           trip_id: string;
           updated_at?: string;
           user_id?: string;
@@ -458,6 +460,7 @@ export type Database = {
           mood?: string | null;
           note?: string;
           photos?: string[];
+          places?: string[];
           trip_id?: string;
           updated_at?: string;
           user_id?: string;
@@ -1845,7 +1848,8 @@ export type Database = {
         | 'trip_report'
         | 'city_plan'
         | 'getaway'
-        | 'spin';
+        | 'spin'
+        | 'city_search';
       report_reason: 'harassment' | 'fake_profile' | 'unsafe_behavior' | 'spam' | 'other';
       reservation_type: 'flight' | 'hotel' | 'train' | 'bus' | 'car_rental' | 'event' | 'other';
       subscription_plan: 'free' | 'trip_pass' | 'pro_monthly' | 'pro_yearly';
@@ -1992,6 +1996,7 @@ export const Constants = {
         'city_plan',
         'getaway',
         'spin',
+        'city_search',
       ],
       report_reason: ['harassment', 'fake_profile', 'unsafe_behavior', 'spam', 'other'],
       reservation_type: ['flight', 'hotel', 'train', 'bus', 'car_rental', 'event', 'other'],

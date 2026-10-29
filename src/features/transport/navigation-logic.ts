@@ -184,3 +184,31 @@ export function splitAtNearest(parts: LatLng[][], here: LatLng): { passed: LatLn
     rest: [[cut, ...pts.slice(best.seg + 1)], ...parts.slice(best.part + 1)],
   };
 }
+
+/**
+ * Konumdan rotanın sonuna ROTA BOYUNCA kalan mesafe (metre): konum çizgiye izdüşürülür, kalan doğru parçalarının
+ * uzunlukları toplanır. Kuş uçuşu mesafeden farklı olarak ekrandaki "kalan" rota süresiyle tutarlıdır.
+ * Çizgi boşsa ya da konum yoksa null.
+ */
+export function remainingAlongPath(here: LatLng | null, path: LatLng[]): number | null {
+  if (!here || path.length === 0) return null;
+  if (path.length === 1) return Math.round(distanceKm(here, path[0]) * 1000);
+  const mLng = M_PER_DEG * Math.cos((here.lat * Math.PI) / 180);
+  const px = here.lng * mLng;
+  const py = here.lat * M_PER_DEG;
+  let best = { d: Infinity, seg: 0, t: 0 };
+  for (let i = 0; i < path.length - 1; i++) {
+    const ax = path[i].lng * mLng;
+    const ay = path[i].lat * M_PER_DEG;
+    const dx = path[i + 1].lng * mLng - ax;
+    const dy = path[i + 1].lat * M_PER_DEG - ay;
+    const len2 = dx * dx + dy * dy;
+    const t = len2 === 0 ? 0 : Math.max(0, Math.min(1, ((px - ax) * (dx) + (py - ay) * dy) / len2));
+    const d = Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+    if (d < best.d) best = { d, seg: i, t };
+  }
+  const seg = (i: number) => Math.hypot((path[i + 1].lng - path[i].lng) * mLng, (path[i + 1].lat - path[i].lat) * M_PER_DEG);
+  let total = seg(best.seg) * (1 - best.t);
+  for (let i = best.seg + 1; i < path.length - 1; i++) total += seg(i);
+  return Math.round(total);
+}
