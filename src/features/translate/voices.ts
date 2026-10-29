@@ -59,6 +59,11 @@ export const PREVIEW_TEXT: Record<string, string> = {
   zh: '你好，你好吗？很高兴认识你。',
   ja: 'こんにちは、お元気ですか？はじめまして。',
   ko: '안녕하세요, 잘 지내세요? 만나서 반갑습니다.',
+  pt: 'Olá, tudo bem? Prazer em conhecer você.',
+  nl: 'Hallo, hoe gaat het? Leuk je te ontmoeten.',
+  pl: 'Cześć, jak się masz? Miło cię poznać.',
+  hi: 'नमस्ते, आप कैसे हैं? आपसे मिलकर खुशी हुई।',
+  id: 'Halo, apa kabar? Senang bertemu denganmu.',
 };
 
 export function previewText(speechTag: string): string {

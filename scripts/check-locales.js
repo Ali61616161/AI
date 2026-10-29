@@ -25,5 +25,15 @@ for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     console.error(`${file}: eksik [${missing.join(', ')}] fazla [${extra.join(', ')}]`);
   }
 }
+// iOS izin metinleri (assets/locales) de her dil için bulunmalı.
+const iosKeys = (file) => Object.keys(JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', 'locales', file), 'utf8')).ios ?? {}).sort().join();
+const iosRef = iosKeys('en.json');
+for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+  const assetFile = path.join(__dirname, '..', 'assets', 'locales', file);
+  if (!fs.existsSync(assetFile) || iosKeys(file) !== iosRef) {
+    failed = true;
+    console.error(`assets/locales/${file}: iOS izin metinleri eksik veya farklı`);
+  }
+}
 if (failed) process.exit(1);
 console.log(`Tüm dil dosyaları uyumlu (${reference.size} anahtar).`);

@@ -37,7 +37,7 @@
     "restartNow": "Jetzt neu starten",
     "later": "Später",
     "confirmTitle": "Sprache ändern",
-    "confirmMessage": "Die App wird neu geladen, um die Sprache zu ändern: geöffnete Bildschirme und Chats werden zurückgesetzt. Bereits erstellte Reiseinhalte bleiben in ihrer Sprache. Um die Route einer Reise in der neuen Sprache zu erhalten, nutze „Route neu erstellen“. Bestätigst du?",
+    "confirmMessage": "Die App wird neu geladen, um die Sprache zu wechseln: offene Bildschirme und Chats werden zurückgesetzt. Bereits erstellte Routen, Berichte und Notizen deiner Reisen werden automatisch in die neue Sprache übersetzt. Bestätigst du?",
     "confirm": "Bestätigen",
     "cancel": "Abbrechen"
   },

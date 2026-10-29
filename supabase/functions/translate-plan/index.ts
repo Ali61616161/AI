@@ -7,11 +7,11 @@
 // Sunucu sırrı: GOOGLE_TRANSLATE_API_KEY (yoksa GOOGLE_MAPS_API_KEY).
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
+import { SUPPORTED_LANGUAGE_SET } from '../_shared/languages.ts';
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import { buildTranslation, chunkStrings, collectStrings, decodeEntities, sameLanguageShare, type PlanText, type PlanTranslation } from '../_shared/plan-translation.ts';
 import { translateBatch, TranslateError } from '../_shared/translate.ts';
 
-const LANGUAGES = new Set(['tr', 'en', 'es', 'fr', 'de', 'it', 'ru', 'ar', 'zh']);
 /** Plan zaten hedef dildeyse (metinlerin bu kadarı hedef dilde algılanırsa) çeviri yapılmaz. */
 const SAME_SHARE = 0.8;
 /** Kullanıcı başına saatte en çok bu kadar yeni çeviri (aynı plan ve dil için tekrar çağrı önbellekten gelir). */
@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
   } catch {
     return error('bad_request', 400, 'body must be JSON');
   }
-  if (typeof body?.trip_id !== 'string' || !LANGUAGES.has(body?.language)) return error('bad_request', 400, 'trip_id and a supported language are required');
+  if (typeof body?.trip_id !== 'string' || !SUPPORTED_LANGUAGE_SET.has(body?.language)) return error('bad_request', 400, 'trip_id and a supported language are required');
   const language: string = body.language;
 
   // RLS: yalnızca üyesi olunan seyahatin planı gelir.

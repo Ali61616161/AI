@@ -1,0 +1,11 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Yola",
+    "NSCameraUsageDescription": "Yola używa aparatu, abyś mógł(-a) fotografować bilety, rezerwacje i menu.",
+    "NSPhotoLibraryUsageDescription": "Yola używa twoich zdjęć, abyś mógł(-a) przesyłać zrzuty ekranu biletów i rezerwacji.",
+    "NSLocationWhenInUseUsageDescription": "Yola używa twojej lokalizacji, aby pokazywać otwarte miejsca w pobliżu, prowadzić cię podczas podróży i — tylko jeśli włączysz Podróżników — pokazywać innym podróżnikom twoją przybliżoną okolicę.",
+    "NSMicrophoneUsageDescription": "Yola używa mikrofonu do tłumaczenia twoich rozmów.",
+    "NSSpeechRecognitionUsageDescription": "Yola zamienia twoją mowę na tekst, aby można ją było przetłumaczyć.",
+    "NSUserTrackingUsageDescription": "Yola używa tego, aby pokazywać reklamy bardziej dopasowane do ciebie. Plany płatne nie mają reklam."
+  }
+}

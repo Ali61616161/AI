@@ -27,7 +27,7 @@ export const AMAZON_DOMAINS: Record<string, string> = {
   SG: 'amazon.sg',
 };
 
-const LANGUAGE_STORE: Record<string, string> = { tr: 'TR', de: 'DE', fr: 'FR', it: 'IT', es: 'ES', ar: 'AE', en: 'US', ru: 'US', zh: 'US' };
+const LANGUAGE_STORE: Record<string, string> = { tr: 'TR', de: 'DE', fr: 'FR', it: 'IT', es: 'ES', ar: 'AE', en: 'US', ru: 'US', zh: 'US', pt: 'BR', ja: 'JP', ko: 'US', nl: 'NL', pl: 'PL', hi: 'IN', id: 'SG' };
 
 /**
  * Kullanıcının alışveriş yapacağı mağaza: önce yaşadığı ülke (eşyalar seyahatten önce evde alınır), o ülkede Amazon

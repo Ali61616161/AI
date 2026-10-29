@@ -13,7 +13,7 @@ Metinler `python3 store/build-metadata.py` ile üretilir (karakter sınırları 
 | Tanıtım metni (170) | `promotional_text.txt` | — |
 | Açıklama (4000) | `description.txt` | `full_description.txt` |
 
-Diller: Türkçe, İngilizce, İspanyolca, Fransızca, Almanca, İtalyanca, Rusça, Arapça, Çince (Basitleştirilmiş).
+Diller: Türkçe, İngilizce, İspanyolca, Fransızca, Almanca, İtalyanca, Rusça, Arapça, Çince (Basitleştirilmiş), Portekizce (Brezilya), Japonca, Korece, Felemenkçe, Lehçe, Hintçe, Endonezce.
 Uygulama adı ve iOS izin metinleri cihaz diline göre gösterilir (`assets/locales/*.json`).
 
 ## Yasal sayfalar

@@ -1,0 +1,11 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Yola",
+    "NSCameraUsageDescription": "Yola memakai kamera agar kamu bisa memotret tiket, pemesanan, dan menu.",
+    "NSPhotoLibraryUsageDescription": "Yola memakai fotomu agar kamu bisa mengunggah tangkapan layar tiket dan pemesanan.",
+    "NSLocationWhenInUseUsageDescription": "Yola memakai lokasimu untuk menampilkan tempat yang buka di dekatmu, memandumu selama perjalanan, dan — hanya jika kamu mengaktifkan Pelancong — menampilkan area perkiraanmu kepada pelancong lain.",
+    "NSMicrophoneUsageDescription": "Yola memakai mikrofon untuk menerjemahkan percakapanmu.",
+    "NSSpeechRecognitionUsageDescription": "Yola mengubah ucapanmu menjadi teks agar dapat diterjemahkan.",
+    "NSUserTrackingUsageDescription": "Yola memakai ini untuk menampilkan iklan yang lebih relevan bagimu. Paket berbayar tidak ada iklan."
+  }
+}

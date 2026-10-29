@@ -388,6 +388,7 @@ export function planOptionRules(options: PlanOptions): string[] {
 
 export const LANGUAGE_NAMES: Record<string, string> = {
   tr: 'Turkish', en: 'English', es: 'Spanish', fr: 'French', de: 'German', it: 'Italian', ru: 'Russian', ar: 'Arabic', zh: 'Simplified Chinese',
+  pt: 'Portuguese', ja: 'Japanese', ko: 'Korean', nl: 'Dutch', pl: 'Polish', hi: 'Hindi', id: 'Indonesian',
 };
 
 export function buildItineraryPrompt(

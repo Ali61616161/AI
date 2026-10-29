@@ -1,0 +1,11 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Yola",
+    "NSCameraUsageDescription": "Yolaはチケット、予約、メニューを撮影するためにカメラを使用します。",
+    "NSPhotoLibraryUsageDescription": "Yolaはチケットや予約のスクリーンショットをアップロードするために写真を使用します。",
+    "NSLocationWhenInUseUsageDescription": "Yolaは、近くの営業中の場所を表示し、旅行中の案内を行うために位置情報を使用します。「旅行者」をオンにした場合に限り、他の旅行者にあなたのおおよそのエリアを表示します。",
+    "NSMicrophoneUsageDescription": "Yolaは会話を翻訳するためにマイクを使用します。",
+    "NSSpeechRecognitionUsageDescription": "Yolaは翻訳のために、あなたの音声をテキストに変換します。",
+    "NSUserTrackingUsageDescription": "Yolaは、あなたに関連性の高い広告を表示するためにこれを使用します。有料プランには広告はありません。"
+  }
+}

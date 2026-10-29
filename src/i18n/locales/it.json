@@ -37,7 +37,7 @@
     "restartNow": "Riavvia ora",
     "later": "Più tardi",
     "confirmTitle": "Cambia lingua",
-    "confirmMessage": "L'app si ricaricherà per cambiare lingua: le schermate aperte e le chat verranno azzerate. I contenuti già generati per i tuoi viaggi restano nella loro lingua. Per avere l'itinerario di un viaggio nella nuova lingua, usa «Ricrea l'itinerario». Confermi?",
+    "confirmMessage": "L’app si ricaricherà per cambiare lingua: le schermate e le chat aperte verranno reimpostate. Itinerari, resoconti e note già creati per i tuoi viaggi vengono tradotti automaticamente nella nuova lingua. Confermi?",
     "confirm": "Conferma",
     "cancel": "Annulla"
   },

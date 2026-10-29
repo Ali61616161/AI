@@ -7,5 +7,12 @@
   { "code": "it", "nativeName": "Italiano", "rtl": false },
   { "code": "ru", "nativeName": "Русский", "rtl": false },
   { "code": "ar", "nativeName": "العربية", "rtl": true },
-  { "code": "zh", "nativeName": "中文", "rtl": false }
+  { "code": "zh", "nativeName": "中文", "rtl": false },
+  { "code": "pt", "nativeName": "Português", "rtl": false },
+  { "code": "ja", "nativeName": "日本語", "rtl": false },
+  { "code": "ko", "nativeName": "한국어", "rtl": false },
+  { "code": "nl", "nativeName": "Nederlands", "rtl": false },
+  { "code": "pl", "nativeName": "Polski", "rtl": false },
+  { "code": "hi", "nativeName": "हिन्दी", "rtl": false },
+  { "code": "id", "nativeName": "Bahasa Indonesia", "rtl": false }
 ]

@@ -8,12 +8,12 @@
 // Sunucu sırrı: GOOGLE_TRANSLATE_API_KEY (yoksa GOOGLE_MAPS_API_KEY).
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
+import { SUPPORTED_LANGUAGE_SET } from '../_shared/languages.ts';
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import { decodeEntities } from '../_shared/plan-translation.ts';
 import { translateBatch, TranslateError } from '../_shared/translate.ts';
 import { sameLanguage } from '../_shared/translate-texts.ts';
 
-const LANGUAGES = new Set(['tr', 'en', 'es', 'fr', 'de', 'it', 'ru', 'ar', 'zh']);
 /** Kullanıcı başına günde en çok bu kadar karakter (≈ 25 uzun mesaj); aşılınca quota_exceeded. */
 const DAILY_CHARS = 40_000;
 
@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
   } catch {
     return error('bad_request', 400, 'body must be JSON');
   }
-  if (!LANGUAGES.has(body?.language)) return error('bad_request', 400, 'a supported language is required');
+  if (!SUPPORTED_LANGUAGE_SET.has(body?.language)) return error('bad_request', 400, 'a supported language is required');
   const language: string = body.language;
 
   let text: string | null = null;

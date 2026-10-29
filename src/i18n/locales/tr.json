@@ -37,7 +37,7 @@
     "restartNow": "Şimdi başlat",
     "later": "Sonra",
     "confirmTitle": "Dili değiştir",
-    "confirmMessage": "Dili değiştirmek için uygulama yeniden yüklenecek: açık ekranlar ve sohbetler sıfırlanır. Daha önce oluşturulan seyahat içerikleri kendi dilinde kalır. Bir seyahatin rotasını yeni dilde almak için “Rotayı yeniden oluştur”u kullan. Onaylıyor musun?",
+    "confirmMessage": "Dili değiştirmek için uygulama yeniden yüklenecek: açık ekranlar ve sohbetler sıfırlanır. Seyahatlerin için daha önce üretilen rota, rapor ve notlar otomatik olarak yeni dile çevrilir. Onaylıyor musun?",
     "confirm": "Onayla",
     "cancel": "Vazgeç"
   },

@@ -1,0 +1,11 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Yola",
+    "NSCameraUsageDescription": "Yola gebruikt de camera zodat je tickets, boekingen en menu's kunt fotograferen.",
+    "NSPhotoLibraryUsageDescription": "Yola gebruikt je foto's zodat je screenshots van tickets en boekingen kunt uploaden.",
+    "NSLocationWhenInUseUsageDescription": "Yola gebruikt je locatie om plekken in de buurt te tonen die open zijn, je tijdens je reis te begeleiden en, alleen als je Reizigers inschakelt, je ongeveer gebied aan andere reizigers te tonen.",
+    "NSMicrophoneUsageDescription": "Yola gebruikt de microfoon om je gesprekken te vertalen.",
+    "NSSpeechRecognitionUsageDescription": "Yola zet je spraak om in tekst zodat het vertaald kan worden.",
+    "NSUserTrackingUsageDescription": "Yola gebruikt dit om advertenties te tonen die beter bij je passen. Betaalde abonnementen hebben geen advertenties."
+  }
+}

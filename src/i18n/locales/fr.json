@@ -37,7 +37,7 @@
     "restartNow": "Redémarrer",
     "later": "Plus tard",
     "confirmTitle": "Changer de langue",
-    "confirmMessage": "L'app va se recharger pour changer la langue : les écrans ouverts et les discussions seront réinitialisés. Le contenu déjà généré pour tes voyages reste dans sa langue. Pour obtenir l'itinéraire d'un voyage dans la nouvelle langue, utilise « Recréer l'itinéraire ». Tu confirmes ?",
+    "confirmMessage": "L’application va se recharger pour changer de langue : les écrans et discussions ouverts seront réinitialisés. Les itinéraires, bilans et notes déjà créés pour vos voyages sont traduits automatiquement dans la nouvelle langue. Confirmez-vous ?",
     "confirm": "Confirmer",
     "cancel": "Annuler"
   },

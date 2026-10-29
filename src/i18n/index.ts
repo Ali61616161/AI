@@ -13,6 +13,13 @@ import it from './locales/it.json';
 import ru from './locales/ru.json';
 import tr from './locales/tr.json';
 import zh from './locales/zh.json';
+import pt from './locales/pt.json';
+import ja from './locales/ja.json';
+import ko from './locales/ko.json';
+import nl from './locales/nl.json';
+import pl from './locales/pl.json';
+import hi from './locales/hi.json';
+import id from './locales/id.json';
 import { FALLBACK_LANGUAGE, isRTL, isSupportedLanguage, type LanguageCode } from './languages';
 
 export const resources = {
@@ -25,6 +32,13 @@ export const resources = {
   ru: { translation: ru },
   ar: { translation: ar },
   zh: { translation: zh },
+  pt: { translation: pt },
+  ja: { translation: ja },
+  ko: { translation: ko },
+  nl: { translation: nl },
+  pl: { translation: pl },
+  hi: { translation: hi },
+  id: { translation: id },
 } as const;
 
 // Uygulamaya özel bir i18next örneği; global varsayılan örnekle karışmaz.

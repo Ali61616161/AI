@@ -1,0 +1,11 @@
+{
+  "ios": {
+    "CFBundleDisplayName": "Yola",
+    "NSCameraUsageDescription": "Yola कैमरे का उपयोग करता है ताकि आप टिकट, बुकिंग और मेन्यू की फ़ोटो ले सकें।",
+    "NSPhotoLibraryUsageDescription": "Yola आपकी फ़ोटो का उपयोग करता है ताकि आप टिकट और बुकिंग के स्क्रीनशॉट अपलोड कर सकें।",
+    "NSLocationWhenInUseUsageDescription": "Yola आपकी लोकेशन का उपयोग पास में खुली जगहें दिखाने, यात्रा में आपका मार्गदर्शन करने और — केवल यात्री चालू करने पर — दूसरे यात्रियों को आपका अनुमानित क्षेत्र दिखाने के लिए करता है।",
+    "NSMicrophoneUsageDescription": "Yola आपकी बातचीत का अनुवाद करने के लिए माइक्रोफ़ोन का उपयोग करता है।",
+    "NSSpeechRecognitionUsageDescription": "Yola आपकी आवाज़ को टेक्स्ट में बदलता है ताकि उसका अनुवाद हो सके।",
+    "NSUserTrackingUsageDescription": "Yola इसका उपयोग आपको अधिक प्रासंगिक विज्ञापन दिखाने के लिए करता है। सशुल्क प्लान में विज्ञापन नहीं होते।"
+  }
+}

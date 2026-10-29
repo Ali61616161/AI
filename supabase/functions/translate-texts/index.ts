@@ -7,12 +7,12 @@
 // Sunucu sırrı: GOOGLE_TRANSLATE_API_KEY (yoksa GOOGLE_MAPS_API_KEY).
 import { adminClient } from '../_shared/admin.ts';
 import { userClient } from '../_shared/auth.ts';
+import { SUPPORTED_LANGUAGE_SET } from '../_shared/languages.ts';
 import { corsHeaders, dbError, error, json } from '../_shared/http.ts';
 import { decodeEntities } from '../_shared/plan-translation.ts';
 import { translateBatch, TranslateError } from '../_shared/translate.ts';
 import { textHash, cleanTexts, MAX_TEXTS } from '../_shared/translate-texts.ts';
 
-const LANGUAGES = new Set(['tr', 'en', 'es', 'fr', 'de', 'it', 'ru', 'ar', 'zh']);
 const PER_HOUR = 60;
 /** Kullanıcı başına günde çevrilecek yeni (önbellekte olmayan) en çok karakter; maliyeti sınırlar. */
 const DAILY_CHARS = 60_000;
@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
     return error('bad_request', 400, 'body must be JSON');
   }
   const texts = cleanTexts(body?.texts);
-  if (!texts || !LANGUAGES.has(body?.language)) return error('bad_request', 400, `texts (max ${MAX_TEXTS} strings) and a supported language are required`);
+  if (!texts || !SUPPORTED_LANGUAGE_SET.has(body?.language)) return error('bad_request', 400, `texts (max ${MAX_TEXTS} strings) and a supported language are required`);
   const language: string = body.language;
 
   const hashes = await Promise.all(texts.map(textHash));

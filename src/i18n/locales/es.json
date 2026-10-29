@@ -37,7 +37,7 @@
     "restartNow": "Reiniciar ahora",
     "later": "Más tarde",
     "confirmTitle": "Cambiar idioma",
-    "confirmMessage": "La app se recargará para cambiar el idioma: las pantallas abiertas y los chats se reiniciarán. El contenido ya generado de tus viajes conserva su idioma. Para tener la ruta de un viaje en el nuevo idioma, usa «Rehacer la ruta». ¿Confirmas?",
+    "confirmMessage": "La app se recargará para cambiar el idioma: las pantallas y chats abiertos se reiniciarán. Las rutas, informes y notas ya creados para tus viajes se traducen automáticamente al nuevo idioma. ¿Confirmas?",
     "confirm": "Confirmar",
     "cancel": "Cancelar"
   },

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mağaza sayfası metinlerini 9 dilde üretir ve karakter sınırlarını doğrular.
+"""Mağaza sayfası metinlerini 16 dilde üretir ve karakter sınırlarını doğrular.
 Çıktı: store/app-store/<locale>/*.txt ve store/google-play/<locale>/*.txt
 (EAS Metadata / fastlane deliver / supply ile yüklenebilir biçim).
 Kullanım: python3 store/build-metadata.py
@@ -81,6 +81,62 @@ L = {
  bullets=["上传机票和酒店预订，AI 自动识别并生成行程", "根据预算和同行人规划每日行程", "「调整计划」：下雨、延误或疲惫？几秒钟重新规划当天剩余行程", "经 Google 验证的地点、正在营业的店铺、天气和酒店推荐", "实时双向对话翻译、文本和菜单照片翻译", "离线可用：行程、票据和紧急用语都在手机上", "记账与分摊、智能行李清单、签证信息、倒时差计划", "带评分的旅行报告和可分享卡片", "可选社交模式：在公共场所安全结识旅伴"],
  intro="Yola 是你的 AI 旅行伙伴。它围绕你的真实预订规划行程，随时调整，并帮助你在任何地方沟通无碍。",
  plans="免费开始。Yola Pro（月付或年付）或一次性 Trip Pass 解锁无限规划、调整和翻译。"),
+"pt": dict(asc="pt-BR", play="pt-BR",
+ subtitle="Planejador de viagens com IA",
+ keywords="viagem,roteiro,planejador,ia,tradutor,visto,passaporte,schengen,escapada,férias,guia,offline",
+ promo="Envie suas passagens e o Yola planeja cada dia em volta delas — e replaneja com um toque se chover ou o trem atrasar.",
+ short="Planejador de viagens com IA: roteiro diário, tradução ao vivo e modo offline.",
+ bullets=["Envie passagens e reservas de hotel — a IA lê tudo e monta sua viagem", "Roteiros dia a dia para o seu orçamento e seus acompanhantes", "\"Mudar o plano\": chuva, atrasos ou cansaço? Replaneje o resto do dia em segundos", "Lugares verificados no Google, abertos agora, clima e ideias de hotel", "Tradução de conversas ao vivo, de texto e de fotos de cardápios", "Funciona offline: roteiro, passagens e frases de emergência no celular", "Despesas e divisão de contas, mala inteligente, vistos e plano contra o jet lag", "Relatório da viagem com avaliações e cartão para compartilhar", "Modo social opcional: conheça viajantes em lugares públicos, com segurança"],
+ intro="O Yola é seu companheiro de viagem com IA. Ele planeja em torno das suas reservas reais, se adapta na hora e ajuda você a entender e ser entendido em qualquer lugar.",
+ plans="Comece de graça. O Yola Pro (mensal ou anual) ou um Trip Pass avulso libera planejamento, replanejamento e tradução ilimitados."),
+"ja": dict(asc="ja", play="ja-JP",
+ subtitle="AI旅行プランナー＆翻訳",
+ keywords="旅行,旅程,プランナー,AI,翻訳,ビザ,パスポート,シェンゲン,小旅行,休暇,ガイド,オフライン",
+ promo="チケットをアップロードすると、Yolaがそれに合わせて毎日を計画。雨や電車の遅れも、ワンタップで再計画。",
+ short="AI旅行プランナー：日ごとのプラン、リアルタイム翻訳、オフライン対応。",
+ bullets=["チケットやホテルの予約をアップロード — AIが読み取って旅を作成", "予算や同行者に合わせた日ごとのプラン", "「プランを変更」：雨、遅延、疲れ？ 一日の残りを数秒で再計画", "Googleで確認済みのスポット、営業中の場所、天気、ホテルの提案", "会話のリアルタイム翻訳、テキストやメニュー写真の翻訳", "オフラインでも使える：プラン、チケット、緊急フレーズ", "支出の記録と割り勘、スマートな持ち物リスト、ビザ情報、時差ぼけ対策", "評価付きの旅行レポートとシェアできるカード", "任意のソーシャルモード：公共の場所で安全に旅行者と出会う"],
+ intro="YolaはAIの旅の相棒です。実際の予約に合わせて旅を計画し、その場で柔軟に対応し、世界中で言葉の壁を越えるお手伝いをします。",
+ plans="無料で始められます。Yola Pro（月額または年額）または1回限りのトリップパスで、プランニング、再計画、翻訳が無制限に。"),
+"ko": dict(asc="ko", play="ko-KR",
+ subtitle="AI 여행 플래너 & 번역",
+ keywords="여행,일정,플래너,AI,번역,비자,여권,솅겐,당일치기,휴가,가이드,오프라인",
+ promo="티켓을 올리면 Yola가 그에 맞춰 매일을 계획해요. 비가 오거나 기차가 늦어도 한 번의 탭으로 다시 짜 드려요.",
+ short="AI 여행 플래너: 일별 계획, 실시간 번역, 오프라인 모드까지.",
+ bullets=["티켓과 호텔 예약을 올리면 AI가 읽고 여행을 만들어 줘요", "예산과 동행에 맞춘 일별 계획", "\"계획 바꾸기\": 비, 지연, 피로? 남은 하루를 몇 초 만에 다시 짜요", "구글에서 확인된 장소, 지금 영업 중인 곳, 날씨와 호텔 추천", "실시간 대화 번역, 텍스트와 메뉴판 사진 번역", "오프라인에서도 작동: 계획, 티켓, 긴급 표현", "지출 기록과 정산, 스마트 짐 목록, 비자 정보, 시차 적응 계획", "평가가 담긴 여행 리포트와 공유 카드", "선택형 소셜 모드: 공공장소에서 안전하게 여행자 만나기"],
+ intro="Yola는 AI 여행 동반자예요. 실제 예약에 맞춰 여행을 계획하고, 그때그때 유연하게 바꾸고, 어디서든 소통할 수 있게 도와줘요.",
+ plans="무료로 시작하세요. Yola Pro(월간 또는 연간)나 1회 구매 트립 패스로 무제한 계획, 재계획, 번역을 이용할 수 있어요."),
+"nl": dict(asc="nl-NL", play="nl-NL",
+ subtitle="AI-reisplanner & vertaler",
+ keywords="reis,reisplanner,route,ai,vertaler,visum,paspoort,schengen,uitstapje,vakantie,stadsgids,offline",
+ promo="Upload je tickets en Yola plant elke dag eromheen — en plant met één tik opnieuw als het regent of je trein te laat is.",
+ short="AI-reisplanner: dagplannen, live vertalen, offlinemodus en meer.",
+ bullets=["Upload tickets en hotelboekingen — AI leest ze en bouwt je reis", "Dagplannen voor je budget en reisgezelschap", "\"Plan wijzigen\": regen, vertraging of moe? Plan de rest van de dag in seconden opnieuw", "Op Google geverifieerde plekken, nu geopend, weer en hotelideeën", "Live gespreksvertaling, tekst en foto's van menukaarten", "Werkt offline: plan, tickets en noodzinnen op je telefoon", "Uitgaven en kosten delen, slimme paklijst, visuminfo, jetlagplan", "Reisverslag met beoordelingen en een deelbare kaart", "Optionele sociale modus: ontmoet reizigers veilig op openbare plekken"],
+ intro="Yola is je AI-reisgenoot. Het plant rond je echte boekingen, past zich ter plekke aan en helpt je overal te begrijpen en begrepen te worden.",
+ plans="Gratis beginnen. Yola Pro (maandelijks of jaarlijks) of een eenmalige Reispas ontgrendelt onbeperkt plannen, herplannen en vertalen."),
+"pl": dict(asc="pl", play="pl-PL",
+ subtitle="Planer podróży z AI i tłumacz",
+ keywords="podróż,planer,trasa,ai,tłumacz,wiza,paszport,schengen,wypad,wakacje,przewodnik,offline",
+ promo="Wgraj bilety, a Yola zaplanuje każdy dzień wokół nich — i jednym dotknięciem przeplanuje, gdy popada lub pociąg się spóźni.",
+ short="Planer podróży z AI: plan dzień po dniu, tłumaczenie na żywo, tryb offline.",
+ bullets=["Wgraj bilety i rezerwacje hoteli — AI je odczyta i zbuduje podróż", "Plany dzień po dniu dla twojego budżetu i towarzyszy", "„Zmień plan”: deszcz, opóźnienie lub zmęczenie? Przeplanuj resztę dnia w kilka sekund", "Miejsca zweryfikowane w Google, otwarte teraz, pogoda i pomysły na hotel", "Tłumaczenie rozmów na żywo, tekstu i zdjęć menu", "Działa offline: plan, bilety i zwroty alarmowe w telefonie", "Wydatki i dzielenie rachunków, inteligentna lista pakowania, informacje o wizach, plan na jet lag", "Raport z podróży z ocenami i kartą do udostępnienia", "Opcjonalny tryb społecznościowy: poznawaj podróżników w miejscach publicznych, bezpiecznie"],
+ intro="Yola to twój towarzysz podróży z AI. Planuje wokół twoich prawdziwych rezerwacji, dostosowuje się na bieżąco i pomaga rozumieć i być rozumianym wszędzie.",
+ plans="Zacznij za darmo. Yola Pro (miesięcznie lub rocznie) albo jednorazowa Przepustka na podróż odblokowuje nielimitowane planowanie, przeplanowywanie i tłumaczenie."),
+"hi": dict(asc="hi", play="hi-IN",
+ subtitle="AI यात्रा योजनाकार और अनुवादक",
+ keywords="यात्रा,योजना,रूट,एआई,अनुवाद,वीज़ा,पासपोर्ट,शेंगेन,छोटी यात्रा,छुट्टी,गाइड,ऑफ़लाइन",
+ promo="अपने टिकट अपलोड करें, Yola उनके आसपास हर दिन की योजना बनाता है — और बारिश या ट्रेन लेट होने पर एक टैप में दोबारा योजना बना देता है।",
+ short="AI यात्रा योजनाकार: दिन-दर-दिन योजना, लाइव अनुवाद, ऑफ़लाइन मोड और बहुत कुछ।",
+ bullets=["टिकट और होटल बुकिंग अपलोड करें — AI उन्हें पढ़कर आपकी यात्रा बनाता है", "आपके बजट और सहयात्रियों के अनुसार दिन-दर-दिन योजना", "\"योजना बदलें\": बारिश, देरी या थकान? दिन का बाकी हिस्सा सेकंड में दोबारा बनाएँ", "Google पर सत्यापित जगहें, अभी खुली जगहें, मौसम और होटल के सुझाव", "लाइव बातचीत का अनुवाद, टेक्स्ट और मेन्यू की फ़ोटो", "ऑफ़लाइन चलता है: योजना, टिकट और आपातकालीन वाक्यांश फ़ोन पर", "खर्च और बिल बाँटना, स्मार्ट पैकिंग सूची, वीज़ा जानकारी, जेट लैग योजना", "रेटिंग के साथ यात्रा रिपोर्ट और साझा करने योग्य कार्ड", "वैकल्पिक सोशल मोड: सार्वजनिक जगहों पर यात्रियों से सुरक्षित मिलें"],
+ intro="Yola आपका AI यात्रा साथी है। यह आपकी असली बुकिंग के आसपास यात्रा की योजना बनाता है, मौके पर ढल जाता है और हर जगह समझने व समझे जाने में मदद करता है।",
+ plans="मुफ़्त शुरू करें। Yola Pro (मासिक या वार्षिक) या एकमुश्त ट्रिप पास से असीमित योजना, दोबारा योजना और अनुवाद खुल जाते हैं।"),
+"id": dict(asc="id", play="id",
+ subtitle="Perencana perjalanan AI",
+ keywords="perjalanan,rencana,rute,ai,penerjemah,visa,paspor,schengen,wisata singkat,liburan,panduan,offline",
+ promo="Unggah tiketmu dan Yola merencanakan setiap hari di sekitarnya — lalu menyusun ulang dengan satu ketukan jika hujan atau kereta terlambat.",
+ short="Perencana perjalanan AI: rencana harian, terjemahan langsung, mode offline.",
+ bullets=["Unggah tiket dan pemesanan hotel — AI membacanya dan menyusun perjalananmu", "Rencana harian sesuai anggaran dan teman perjalananmu", "\"Ubah rencana\": hujan, penundaan, atau lelah? Susun ulang sisa hari dalam hitungan detik", "Tempat terverifikasi di Google, buka sekarang, cuaca, dan ide hotel", "Terjemahan percakapan langsung, teks, dan foto menu", "Berfungsi offline: rencana, tiket, dan frasa darurat di ponsel", "Pengeluaran dan patungan, daftar bawaan pintar, info visa, rencana jet lag", "Laporan perjalanan dengan penilaian dan kartu yang bisa dibagikan", "Mode sosial opsional: temui pelancong di tempat umum dengan aman"],
+ intro="Yola adalah teman perjalanan AI-mu. Ia merencanakan perjalanan di sekitar pemesanan nyatamu, menyesuaikan diri saat itu juga, dan membantumu memahami serta dipahami di mana saja.",
+ plans="Mulai gratis. Yola Pro (bulanan atau tahunan) atau Trip Pass sekali bayar membuka perencanaan, perencanaan ulang, dan terjemahan tanpa batas."),
 }
 # Seyahat dışı (Şehrim) ve pasaport/geçmiş bölümleri; uygulamadaki özellik adlarıyla aynı.
 EXTRA = {
@@ -138,6 +194,48 @@ EXTRA = {
  docs_head="你的护照与旅行足迹：",
  docs=["我的护照：看看你的护照和额外签证（申根、美国、英国等）能去哪里", "我去过的国家：你走过世界和各大洲的百分比、国家和城市数量以及徽章", "申根 90/180 计算器，以及护照和签证到期提醒"],
  ads="免费版含广告；Pro 无广告。"),
+"pt": dict(
+ city_head="Não está viajando? O Yola também funciona na sua cidade:",
+ city=["Minha Cidade: planos para hoje à noite e o fim de semana com lugares reais e abertos perto de você", "\"Decida por mim\": sem conseguir escolher? Receba uma ótima sugestão, só lugares novos se quiser", "Minhas listas e Passaporte da cidade: salve lugares, acompanhe o que descobriu, ganhe conquistas", "Escapadas: viagens curtas e baratas perto de você, por distância e orçamento", "Gire a roleta: deixe a sorte escolher seu próximo país e compartilhe o cartão"],
+ docs_head="Seu passaporte e seu histórico de viagens:",
+ docs=["Meu passaporte: veja aonde seu passaporte e seus vistos extras (Schengen, EUA, Reino Unido e mais) levam você", "Países que visitei: sua fatia do mundo e de cada continente, países, cidades e conquistas", "Calculadora Schengen 90/180 e lembretes de validade de passaporte e vistos"],
+ ads="A versão gratuita mostra anúncios; o Pro não tem anúncios."),
+"ja": dict(
+ city_head="旅行中でなくても、Yolaは自分の街で使えます：",
+ city=["マイシティ：近くの実在する営業中の場所で、今夜や週末のプランを作成", "「代わりに決めて」：選べないときは、とっておきの1件を提案（新しい場所だけも選べます）", "マイリストとシティパスポート：場所を保存し、発見を記録し、バッジを獲得", "小旅行：距離と予算で選ぶ、近場の格安ショートトリップ", "ルーレット：次の国を運に任せて、カードをシェア"],
+ docs_head="あなたのパスポートと旅の記録：",
+ docs=["マイパスポート：パスポートと追加ビザ（シェンゲン、米国、英国など）で行ける国を確認", "訪れた国：世界と各大陸の踏破率、国・都市の数、バッジ", "シェンゲン90/180日計算機、パスポートとビザの期限リマインダー"],
+ ads="無料版には広告が表示されます。Proは広告なしです。"),
+"ko": dict(
+ city_head="여행 중이 아니어도 Yola는 내 도시에서 쓸 수 있어요:",
+ city=["나의 도시: 근처의 실제 영업 중인 장소로 오늘 밤과 주말 계획 만들기", "\"대신 정해 줘\": 고르기 어려울 때 딱 하나만 추천받아요 (원하면 새로운 곳만)", "내 목록과 도시 여권: 장소를 저장하고, 발견한 곳을 기록하고, 배지를 모아요", "당일치기 여행: 거리와 예산에 맞는 가까운 알뜰 여행", "룰렛 돌리기: 다음 나라를 운에 맡기고 카드를 공유해요"],
+ docs_head="내 여권과 여행 기록:",
+ docs=["내 여권: 여권과 추가 비자(솅겐, 미국, 영국 등)로 갈 수 있는 곳 확인", "내가 방문한 나라: 세계와 대륙별 달성률, 국가·도시 수, 배지", "솅겐 90/180일 계산기, 여권·비자 만료 알림"],
+ ads="무료 버전에는 광고가 표시돼요. Pro는 광고가 없어요."),
+"nl": dict(
+ city_head="Niet op reis? Yola werkt ook in je eigen stad:",
+ city=["Mijn stad: plannen voor vanavond en het weekend met echte, geopende plekken bij jou in de buurt", "\"Beslis voor mij\": kun je niet kiezen? Krijg één goede tip, desgewenst alleen nieuwe plekken", "Mijn lijsten en Stadspaspoort: bewaar plekken, hou bij wat je ontdekt en verdien badges", "Uitstapjes: voordelige korte trips bij jou in de buurt, op afstand en budget", "Draai aan het rad: laat het lot je volgende land kiezen en deel de kaart"],
+ docs_head="Je paspoort en reisgeschiedenis:",
+ docs=["Mijn paspoort: zie waar je paspoort en extra visa (Schengen, VS, VK en meer) je naartoe laten gaan", "Landen die ik heb bezocht: je deel van de wereld en elk continent, landen, steden en badges", "Schengen 90/180-calculator en herinneringen voor de vervaldatum van paspoort en visa"],
+ ads="De gratis versie toont advertenties; Pro is advertentievrij."),
+"pl": dict(
+ city_head="Nie podróżujesz? Yola działa też w twoim mieście:",
+ city=["Moje miasto: plany na dziś wieczór i weekend z prawdziwymi, otwartymi miejscami w pobliżu", "„Zdecyduj za mnie”: nie możesz wybrać? Dostań jedną świetną propozycję, w razie chęci tylko nowe miejsca", "Moje listy i Paszport miasta: zapisuj miejsca, śledź odkrycia, zdobywaj odznaki", "Wypady: tanie krótkie podróże w okolicy, według odległości i budżetu", "Zakręć kołem: niech los wybierze twój następny kraj i udostępnij kartę"],
+ docs_head="Twój paszport i historia podróży:",
+ docs=["Mój paszport: zobacz, dokąd zaprowadzą cię paszport i dodatkowe wizy (Schengen, USA, Wielka Brytania i inne)", "Odwiedzone kraje: twój udział w świecie i na każdym kontynencie, kraje, miasta i odznaki", "Kalkulator Schengen 90/180 oraz przypomnienia o ważności paszportu i wiz"],
+ ads="Wersja darmowa pokazuje reklamy; Pro jest bez reklam."),
+"hi": dict(
+ city_head="यात्रा पर नहीं हैं? Yola आपके अपने शहर में भी काम करता है:",
+ city=["मेरा शहर: आपके पास की असली, खुली जगहों के साथ आज रात और सप्ताहांत की योजना", "\"मेरे लिए तय करें\": चुन नहीं पा रहे? एक बढ़िया सुझाव पाएँ, चाहें तो सिर्फ़ नई जगहें", "मेरी सूचियाँ और सिटी पासपोर्ट: जगहें सहेजें, अपनी खोजें दर्ज करें, बैज जीतें", "छोटी यात्राएँ: दूरी और बजट के अनुसार आपके पास की सस्ती छोटी यात्राएँ", "चक्का घुमाएँ: अगला देश किस्मत पर छोड़ें और कार्ड साझा करें"],
+ docs_head="आपका पासपोर्ट और यात्रा इतिहास:",
+ docs=["मेरा पासपोर्ट: देखें कि आपका पासपोर्ट और अतिरिक्त वीज़ा (शेंगेन, अमेरिका, यूके और अन्य) आपको कहाँ ले जा सकते हैं", "जिन देशों में मैं गया: दुनिया और हर महाद्वीप का आपका हिस्सा, देश, शहर और बैज", "शेंगेन 90/180 कैलकुलेटर और पासपोर्ट व वीज़ा की समाप्ति के रिमाइंडर"],
+ ads="मुफ़्त संस्करण में विज्ञापन दिखते हैं; Pro विज्ञापन-मुक्त है।"),
+"id": dict(
+ city_head="Sedang tidak bepergian? Yola juga bekerja di kotamu sendiri:",
+ city=["Kotaku: rencana untuk malam ini dan akhir pekan dengan tempat nyata yang sedang buka di dekatmu", "\"Putuskan untukku\": bingung memilih? Dapatkan satu pilihan bagus, hanya tempat baru jika kamu mau", "Daftarku dan Paspor kota: simpan tempat, catat penemuanmu, kumpulkan lencana", "Pelarian singkat: perjalanan singkat hemat di dekatmu, berdasarkan jarak dan anggaran", "Putar roda: serahkan negara berikutnya pada keberuntungan dan bagikan kartunya"],
+ docs_head="Paspor dan riwayat perjalananmu:",
+ docs=["Paspor saya: lihat ke mana paspor dan visa tambahanmu (Schengen, AS, Inggris, dan lainnya) bisa membawamu", "Negara yang pernah kukunjungi: porsimu dari dunia dan setiap benua, negara, kota, dan lencana", "Kalkulator Schengen 90/180 serta pengingat masa berlaku paspor dan visa"],
+ ads="Versi gratis menampilkan iklan; Pro bebas iklan."),
 }
 
 NAME = "Yola: AI Travel Planner"
@@ -174,4 +272,4 @@ for lang, d in L.items():
             f.write(text + "\n")
 if problems:
     raise SystemExit("Karakter sınırı aşıldı:\n" + "\n".join(problems))
-print("store metadata: 9 dil, sınırlar uygun")
+print(f"store metadata: {len(L)} dil, sınırlar uygun")

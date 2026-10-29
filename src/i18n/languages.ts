@@ -1,7 +1,7 @@
 import languages from './languages.json';
 
 /** Desteklenen diller. Liste languages.json dosyasındadır, app.config.ts de oradan okur. */
-export const LANGUAGE_CODES = ['tr', 'en', 'es', 'fr', 'de', 'it', 'ru', 'ar', 'zh'] as const;
+export const LANGUAGE_CODES = ['tr', 'en', 'es', 'fr', 'de', 'it', 'ru', 'ar', 'zh', 'pt', 'ja', 'ko', 'nl', 'pl', 'hi', 'id'] as const;
 
 export type LanguageCode = (typeof LANGUAGE_CODES)[number];
 

@@ -37,7 +37,7 @@
     "restartNow": "Restart now",
     "later": "Later",
     "confirmTitle": "Change language",
-    "confirmMessage": "The app will reload to change the language: open screens and chats will be reset. Content already generated for your trips stays in its original language. To get a trip's route in the new language, use “Rebuild the route”. Do you confirm?",
+    "confirmMessage": "The app will reload to change the language: open screens and chats will be reset. Routes, reports and notes already created for your trips are translated into the new language automatically. Do you confirm?",
     "confirm": "Confirm",
     "cancel": "Cancel"
   },
