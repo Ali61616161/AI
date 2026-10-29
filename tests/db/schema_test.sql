@@ -846,13 +846,15 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
-\echo '18b. Gezginler moderasyonu: 3 farklı şikayet askıya alır, hız sınırları'
+\echo '18b. Gezginler moderasyonu: şikayet otomatik askıya almaz, delil toplanır, moderatör karar verir'
 reset role;
-insert into auth.users (id, email, raw_user_meta_data) values
-  ('00000000-0000-0000-0000-0000000000d1', 'r1@example.com', '{"display_name": "R1"}'),
-  ('00000000-0000-0000-0000-0000000000d2', 'r2@example.com', '{"display_name": "R2"}'),
-  ('00000000-0000-0000-0000-0000000000d3', 'r3@example.com', '{"display_name": "R3"}'),
-  ('00000000-0000-0000-0000-0000000000d4', 'target@example.com', '{"display_name": "Hedef"}');
+insert into auth.users (id, email, email_confirmed_at, raw_user_meta_data) values
+  ('00000000-0000-0000-0000-0000000000d1', 'r1@example.com', now(), '{"display_name": "R1"}'),
+  ('00000000-0000-0000-0000-0000000000d2', 'r2@example.com', now(), '{"display_name": "R2"}'),
+  ('00000000-0000-0000-0000-0000000000d3', 'r3@example.com', now(), '{"display_name": "R3"}'),
+  ('00000000-0000-0000-0000-0000000000d4', 'target@example.com', now(), '{"display_name": "Hedef"}'),
+  ('00000000-0000-0000-0000-0000000000d5', 'mod@example.com', now(), '{"display_name": "Mod"}');
+insert into public.internal_config (key, value) values ('moderator_emails', 'mod@example.com') on conflict (key) do update set value = excluded.value;
 update public.profiles set birth_year = 1990, display_name = coalesce(display_name, 'Test');
 set role authenticated;
 call tests.login('00000000-0000-0000-0000-0000000000d4');
@@ -860,39 +862,92 @@ insert into public.consents (consent, granted, version) values ('social_matching
 insert into public.social_profiles (user_id, is_visible, city, approx_location)
   values (auth.uid(), true, 'Roma', 'SRID=4326;POINT(12.49 41.89)');
 
--- Şikayet edilenle gerçek etkileşimi olanlar sayılır: hedef d1 ve d2'yi davet etmiş (spam davet), d3 ile etkileşim yok.
+-- Hedef d1 ve d2'yi davet etmiş, d1 kabul etmiş ve mesajlaşmışlar.
 reset role;
-insert into public.match_invites (from_user, to_user, google_place_id, place_name, meet_at) values
-  ('00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d1', 'ChIJtest0000001', 'Kafe', now() + interval '1 day'),
-  ('00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d2', 'ChIJtest0000001', 'Kafe', now() + interval '1 day');
+insert into public.match_invites (id, from_user, to_user, google_place_id, place_name, meet_at, message, status) values
+  ('20000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d1', 'ChIJtest0000001', 'Kafe', now() + interval '1 day', 'Selam', 'accepted'),
+  ('20000000-0000-0000-0000-0000000000a2', '00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d2', 'ChIJtest0000001', 'Kafe', now() + interval '1 day', null, 'pending');
+insert into public.messages (invite_id, sender_id, body) values
+  ('20000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-0000000000d4', 'Merhaba'),
+  ('20000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-0000000000d1', 'Selam'),
+  ('20000000-0000-0000-0000-0000000000a1', '00000000-0000-0000-0000-0000000000d4', 'Uygunsuz bir mesaj');
 set role authenticated;
--- Aynı kişinin tekrarlayan şikayetleri sayıyı artırmaz.
+
+-- Mesaj sahibi siler; karşı taraf silemez; silinen mesaj taraflara görünmez ama delil olarak kalır.
 call tests.login('00000000-0000-0000-0000-0000000000d1');
-insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'harassment');
-insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'harassment');
+do $$ begin
+  assert tests.throws($q$ select public.delete_message((select id from public.messages where body = 'Merhaba')) $q$), 'başkasının mesajı silinemez';
+end $$;
+update public.messages set deleted_at = now();
+do $$ begin
+  assert (select count(*) from public.messages) = 3, 'istemci doğrudan mesaj güncelleyemez (silme yalnızca işlevle)';
+end $$;
+-- d1 hedefin mesajını şikayet eder (mesaj bağlanır, sahte alanlar yok sayılır).
+insert into public.user_reports (reported_id, invite_id, message_id, reason, status, resolution, evidence)
+  values ('00000000-0000-0000-0000-0000000000d4', '20000000-0000-0000-0000-0000000000a1', (select id from public.messages where body = 'Uygunsuz bir mesaj'), 'harassment', 'resolved', 'dismissed', '{"sahte": true}');
+reset role;
+do $$ begin
+  assert (select status from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d1') = 'open', 'istemci durumu yazamaz';
+  assert (select resolution from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d1') is null;
+  assert (select evidence ->> 'sahte' from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d1') is null, 'delil istemciden alınmaz';
+  assert (select jsonb_array_length(evidence -> 'messages') from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d1') = 3, 'delilde sohbet mesajları olmalı';
+  assert (select message_id from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d1') is not null, 'şikayet edilen mesaj bağlanır';
+end $$;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-0000000000d4');
+select public.delete_message((select id from public.messages where body = 'Uygunsuz bir mesaj'));
+do $$ begin
+  assert not exists (select 1 from public.messages where body = 'Uygunsuz bir mesaj'), 'silinen mesaj taraflara görünmez';
+end $$;
+reset role;
+do $$ begin
+  assert exists (select 1 from public.messages where body = 'Uygunsuz bir mesaj' and deleted_at is not null), 'silinen mesaj delil için saklanır';
+end $$;
+set role authenticated;
+
+-- Aynı kişi başkasının davetine ve olmayan mesaja bağlanamaz.
+call tests.login('00000000-0000-0000-0000-0000000000d3');
+insert into public.user_reports (reported_id, invite_id, message_id, reason) values ('00000000-0000-0000-0000-0000000000d4', '20000000-0000-0000-0000-0000000000a1', 1, 'spam');
+reset role;
+do $$ begin
+  assert (select invite_id from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d3') is null, 'başkasının daveti şikayete bağlanamaz';
+  assert (select evidence from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d3') is null, 'davetsiz şikayette delil olmaz';
+end $$;
+set role authenticated;
+
+-- Çok sayıda şikayet kimseyi otomatik askıya almaz.
 call tests.login('00000000-0000-0000-0000-0000000000d2');
-insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'unsafe_behavior');
+insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'spam');
 reset role;
 do $$ begin
-  assert (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), '2 farklı şikayet askıya almamalı';
+  assert (select count(distinct reporter_id) from public.user_reports where reported_id = '00000000-0000-0000-0000-0000000000d4') >= 3;
+  assert (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), '3 şikayet otomatik askıya almamalı';
+  assert not exists (select 1 from public.social_suspensions), 'otomatik askı olmamalı';
 end $$;
+
+-- Moderatör kuyruğu yalnızca moderatöre; karar askıya alır.
 set role authenticated;
-call tests.login('00000000-0000-0000-0000-0000000000d3');
-insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'fake_profile');
-reset role;
+call tests.login('00000000-0000-0000-0000-0000000000d1');
 do $$ begin
-  assert (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), 'etkileşimsiz hesabın şikayeti otomatik askıya almamalı (sahte hesap saldırısı)';
+  assert not public.is_moderator(), 'sıradan kullanıcı moderatör değil';
+  assert tests.throws($q$ select * from public.moderation_queue() $q$), 'sıradan kullanıcı kuyruğu göremez';
+  assert tests.throws($q$ select public.moderation_resolve((select id from public.user_reports limit 1), 'banned') $q$), 'sıradan kullanıcı karar veremez';
 end $$;
--- d3 ile gerçek etkileşim olunca (hedef onu da davet etti) şikayeti sayılır.
-insert into public.match_invites (from_user, to_user, google_place_id, place_name, meet_at)
-  values ('00000000-0000-0000-0000-0000000000d4', '00000000-0000-0000-0000-0000000000d3', 'ChIJtest0000001', 'Kafe', now() + interval '1 day');
-set role authenticated;
-call tests.login('00000000-0000-0000-0000-0000000000d3');
-insert into public.user_reports (reported_id, reason) values ('00000000-0000-0000-0000-0000000000d4', 'fake_profile');
+call tests.login('00000000-0000-0000-0000-0000000000d5');
+do $$
+declare v_id uuid;
+begin
+  assert public.is_moderator(), 'yönetici e-postası moderatör olmalı';
+  assert (select count(*) from public.moderation_queue()) = 3, 'kuyrukta 3 şikayet olmalı';
+  assert (select jsonb_array_length(evidence -> 'messages') from public.moderation_queue() where reporter_name = 'R1') = 3, 'moderatör sohbet delilini görür';
+  select id into v_id from public.moderation_queue() where reporter_id = '00000000-0000-0000-0000-0000000000d1';
+  perform public.moderation_resolve(v_id, 'suspended');
+end $$;
 reset role;
 do $$ begin
-  assert not (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), '3 farklı şikayet profili gizlemeli';
-  assert exists (select 1 from public.social_suspensions where user_id = '00000000-0000-0000-0000-0000000000d4' and suspended_until > now() + interval '13 days');
+  assert exists (select 1 from public.social_suspensions where user_id = '00000000-0000-0000-0000-0000000000d4' and suspended_until > now() + interval '13 days'), 'moderatör kararı askıya almalı';
+  assert not (select is_visible from public.social_profiles where user_id = '00000000-0000-0000-0000-0000000000d4'), 'askıdaki profil gizlenmeli';
+  assert (select status from public.user_reports where reporter_id = '00000000-0000-0000-0000-0000000000d1') = 'resolved';
 end $$;
 -- Askıdayken tekrar görünür olamaz, askı tablosunu istemci okuyamaz/yazamaz.
 set role authenticated;
@@ -906,6 +961,10 @@ reset role;
 do $$ begin
   assert exists (select 1 from public.social_suspensions where user_id = '00000000-0000-0000-0000-0000000000d4'), 'askı istemciden silinemez';
 end $$;
+delete from public.messages;
+delete from public.match_invites;
+delete from public.internal_config where key = 'moderator_emails';
+insert into public.internal_config (key, value) values ('moderator_emails', 'info@akturangroup.com');
 set role authenticated;
 -- Günde en fazla 20 şikayet.
 call tests.login('00000000-0000-0000-0000-0000000000d1');

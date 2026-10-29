@@ -1588,6 +1588,7 @@ export type Database = {
           details: string | null;
           id: string;
           invite_id: string | null;
+          message_id: number | null;
           reason: Database['public']['Enums']['report_reason'];
           reported_id: string;
           reporter_id: string;
@@ -1599,6 +1600,7 @@ export type Database = {
           details?: string | null;
           id?: string;
           invite_id?: string | null;
+          message_id?: number | null;
           reason: Database['public']['Enums']['report_reason'];
           reported_id: string;
           reporter_id?: string;
@@ -1609,6 +1611,7 @@ export type Database = {
           details?: string | null;
           id?: string;
           invite_id?: string | null;
+          message_id?: number | null;
           reason?: Database['public']['Enums']['report_reason'];
           reported_id?: string;
           reporter_id?: string;
@@ -1742,6 +1745,10 @@ export type Database = {
       is_invite_participant: { Args: { p_invite_id: string; p_require_accepted: boolean }; Returns: boolean };
       is_trip_member: { Args: { p_trip_id: string }; Returns: boolean };
       is_trip_owner: { Args: { p_trip_id: string }; Returns: boolean };
+      delete_message: { Args: { p_message_id: number }; Returns: undefined };
+      is_moderator: { Args: Record<PropertyKey, never>; Returns: boolean };
+      moderation_resolve: { Args: { p_report_id: string; p_action: string }; Returns: undefined };
+      moderation_queue: { Args: Record<PropertyKey, never>; Returns: Record<string, unknown>[] };
       my_blocks: {
         Args: Record<PropertyKey, never>;
         Returns: { blocked_id: string; display_name: string; avatar_url: string; created_at: string }[];

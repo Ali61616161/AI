@@ -15,7 +15,7 @@ type State = { status: 'idle' } | { status: 'loading' } | { status: 'done'; resu
  * Karşı tarafın mesajı: dokununca uygulamanın diline çevrilir, tekrar dokununca özgünü gösterir. Çeviri oturum
  * boyunca bellekte tutulur (sunucu saklamaz), bu yüzden aynı mesaj için ikinci dokunuş istek atmaz.
  */
-export function TranslatableText({ target, text, color, mutedColor }: { target: { messageId: number } | { inviteId: string }; text: string; color: string; mutedColor: string }) {
+export function TranslatableText({ target, text, color, mutedColor, onLongPress }: { target: { messageId: number } | { inviteId: string }; text: string; color: string; mutedColor: string; onLongPress?: () => void }) {
   const { t } = useTranslation();
   const [state, setState] = useState<State>({ status: 'idle' });
 
@@ -48,7 +48,7 @@ export function TranslatableText({ target, text, color, mutedColor }: { target: 
           : t('social.translate');
 
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${text}. ${hint}`} onPress={press} style={styles.wrap}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${text}. ${hint}`} onPress={press} onLongPress={onLongPress} style={styles.wrap}>
       <Text variant="body" style={{ color }}>
         {translated ? state.result.text : text}
       </Text>

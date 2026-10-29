@@ -82,6 +82,8 @@ jobs:
           if [ "$code" = 401 ]; then sum "- ✅ Uçuş zamanlayıcı (flight-watch) yayında, sırsız çağrı reddedildi"; else sum "- ❌ Uçuş zamanlayıcı (flight-watch) — beklenen 401, gelen HTTP $code"; fi
           code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "$base/functions/v1/price-watch" -H 'Content-Type: application/json' -d '{}')
           if [ "$code" = 401 ]; then sum "- ✅ Fiyat zamanlayıcı (price-watch) yayında, sırsız çağrı reddedildi"; else sum "- ❌ Fiyat zamanlayıcı (price-watch) — beklenen 401, gelen HTTP $code"; fi
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "$base/functions/v1/notify-report" -H 'Content-Type: application/json' -d '{}')
+          if [ "$code" = 401 ]; then sum "- ✅ Şikayet bildirimi (notify-report) yayında, sırsız çağrı reddedildi"; else sum "- ❌ Şikayet bildirimi (notify-report) — beklenen 401, gelen HTTP $code"; fi
           # Canlı fiyat takibi: geçici hesaba İstanbul → Roma takibi ekler, zamanlayıcıyı çalıştırır, fiyatı okur.
           depart=$(date -u -d '+45 days' +%F)
           code=$(curl -sS -o /tmp/watch.json -w '%{http_code}' -X POST "$base/rest/v1/price_watches" -H "apikey: $anon" -H "Authorization: Bearer $jwt" -H 'Content-Type: application/json' -H 'Prefer: return=representation' \

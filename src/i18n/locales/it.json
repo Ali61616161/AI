@@ -280,7 +280,14 @@
     "blockedSubtitle": "Persone che hai bloccato",
     "blockedEmpty": "Non hai bloccato nessuno.",
     "unblock": "Sblocca",
-    "unblockNote": "Dopo lo sblocco la persona può riapparire nell'elenco nelle vicinanze; gli inviti annullati non tornano."
+    "unblockNote": "Dopo lo sblocco la persona può riapparire nell'elenco nelle vicinanze; gli inviti annullati non tornano.",
+    "deleteMessage": "Eliminare il messaggio?",
+    "deleteMessageBody": "Il messaggio viene eliminato per entrambi.",
+    "deleteMessageAction": "Elimina",
+    "reportMessageTitle": "Cosa c'è che non va in questo messaggio?",
+    "reportMessageNote": "Il messaggio e l'ultima parte della chat vengono inviati al nostro team per la revisione. Per bloccare la persona usa Blocca.",
+    "reportThanks": "La tua segnalazione è arrivata al nostro team. La esamineremo.",
+    "messageMenuHint": "Tieni premuto un messaggio per eliminarlo o segnalarlo."
   },
   "profile": {
     "title": "Profilo",
@@ -1940,5 +1947,29 @@
   "homeCity": {
     "title": "Dove vivi?",
     "current": "Attuale: {{city}}"
+  },
+  "moderation": {
+    "title": "Moderazione",
+    "subtitle": "Segnalazioni degli utenti",
+    "notAllowed": "Questa schermata è solo per l'account amministratore.",
+    "empty": "Nessuna segnalazione da esaminare.",
+    "suspended": "Sospeso",
+    "deleted": "eliminato",
+    "noEvidence": "Nessuna prova della chat (segnalazione senza invito).",
+    "evidence": "Prova della chat · {{place}}",
+    "inviteNote": "Nota d'invito di {{who}}",
+    "counts": "{{onReported}} segnalazioni su di lui/lei · chi segnala ne ha fatte {{byReporter}}",
+    "resolution": {
+      "dismissed": "Respinta",
+      "warned": "Ammonito",
+      "suspended": "Sospensione di 14 giorni",
+      "banned": "Bannato"
+    },
+    "actions": {
+      "dismissed": "Respingi",
+      "warned": "Ammonisci",
+      "suspended": "Sospendi 14 giorni",
+      "banned": "Banna per sempre"
+    }
   }
 }

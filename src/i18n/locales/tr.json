@@ -280,7 +280,14 @@
     "blockedSubtitle": "Engellediğin kişiler",
     "blockedEmpty": "Kimseyi engellemedin.",
     "unblock": "Engeli kaldır",
-    "unblockNote": "Engeli kaldırınca kişi yeniden yakındaki listede görünebilir; iptal olan davetler geri gelmez."
+    "unblockNote": "Engeli kaldırınca kişi yeniden yakındaki listede görünebilir; iptal olan davetler geri gelmez.",
+    "deleteMessage": "Mesaj silinsin mi?",
+    "deleteMessageBody": "Mesaj iki taraf için de silinir.",
+    "deleteMessageAction": "Sil",
+    "reportMessageTitle": "Bu mesajda ne var?",
+    "reportMessageNote": "Mesaj ve sohbetin son kısmı incelenmek üzere ekibimize iletilir. Kişiyi engellemek için Engelle'yi kullan.",
+    "reportThanks": "Şikayetin ekibimize ulaştı. İnceleyeceğiz.",
+    "messageMenuHint": "Mesaja uzun basarak sil ya da şikayet et."
   },
   "profile": {
     "title": "Profil",
@@ -1940,5 +1947,29 @@
   "homeCity": {
     "title": "Nerede yaşıyorsun?",
     "current": "Şu an: {{city}}"
+  },
+  "moderation": {
+    "title": "Moderasyon",
+    "subtitle": "Kullanıcı şikayetleri",
+    "notAllowed": "Bu ekran yalnızca yönetici hesabı içindir.",
+    "empty": "İncelenecek şikayet yok.",
+    "suspended": "Askıda",
+    "deleted": "silinmiş",
+    "noEvidence": "Sohbet delili yok (davetsiz şikayet).",
+    "evidence": "Sohbet delili · {{place}}",
+    "inviteNote": "{{who}} davet notu",
+    "counts": "Hakkında {{onReported}} şikayet · şikayet edenin {{byReporter}} şikayeti",
+    "resolution": {
+      "dismissed": "Reddedildi",
+      "warned": "Uyarıldı",
+      "suspended": "14 gün askı",
+      "banned": "Yasaklandı"
+    },
+    "actions": {
+      "dismissed": "Reddet",
+      "warned": "Uyar",
+      "suspended": "14 gün askı",
+      "banned": "Kalıcı yasak"
+    }
   }
 }

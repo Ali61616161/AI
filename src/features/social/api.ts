@@ -278,12 +278,15 @@ export const REPORT_REASONS = ['harassment', 'fake_profile', 'unsafe_behavior', 
 export function useBlockAndReport() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { userId: string; inviteId?: string; reason?: (typeof REPORT_REASONS)[number]; details?: string }) => {
+    mutationFn: async (input: { userId: string; inviteId?: string; messageId?: number; reason?: (typeof REPORT_REASONS)[number]; details?: string; blockToo?: boolean }) => {
       const supabase = getSupabase();
       if (input.reason) {
-        const { error } = await supabase.from('user_reports').insert({ reported_id: input.userId, invite_id: input.inviteId ?? null, reason: input.reason, details: input.details?.slice(0, 1000) || null });
+        const { error } = await supabase
+          .from('user_reports')
+          .insert({ reported_id: input.userId, invite_id: input.inviteId ?? null, message_id: input.messageId ?? null, reason: input.reason, details: input.details?.slice(0, 1000) || null });
         if (error) throw error;
       }
+      if (input.blockToo === false) return;
       const { error } = await supabase.from('user_blocks').insert({ blocked_id: input.userId });
       if (error && error.code !== '23505') throw error;
     },
@@ -340,4 +343,83 @@ export async function translateMessage(target: { messageId: number } | { inviteI
   const result = data as Partial<MessageTranslation> | null;
   if (typeof result?.text !== 'string') throw Object.assign(new Error('translate failed'), { code: 'failed' satisfies TranslateErrorCode });
   return { text: result.text, same: Boolean(result.same) };
+}
+
+/** Kendi mesajını siler (karşı tarafa da görünmez olur). Şikayet delili sunucuda 30 gün saklanır. */
+export function useDeleteMessage(inviteId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (messageId: number) => {
+      const { error } = await getSupabase().rpc('delete_message', { p_message_id: messageId });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['messages', inviteId] });
+      queryClient.invalidateQueries({ queryKey: ['invites'] });
+    },
+  });
+}
+
+export type ModerationReport = {
+  id: string;
+  created_at: string;
+  reason: (typeof REPORT_REASONS)[number];
+  details: string | null;
+  status: 'open' | 'reviewing' | 'resolved';
+  resolution: 'dismissed' | 'warned' | 'suspended' | 'banned' | null;
+  reporter_id: string;
+  reporter_name: string | null;
+  reported_id: string;
+  reported_name: string | null;
+  message_id: number | null;
+  evidence: {
+    invite_message: string | null;
+    place: string;
+    meet_at: string;
+    invited_by: 'reporter' | 'reported';
+    messages: { id: number; from: 'reporter' | 'reported'; body: string; at: string; deleted: boolean }[];
+  } | null;
+  reports_on_reported: number;
+  reports_by_reporter: number;
+  reported_suspended: boolean;
+};
+
+/** Hesap moderatör mü (yönetici e-postası). Değilse Moderasyon ekranı hiç görünmez. */
+export function useIsModerator() {
+  const userId = useUser();
+  return useQuery({
+    queryKey: ['is-moderator', userId],
+    enabled: enabled(userId),
+    staleTime: 3600_000,
+    queryFn: async () => {
+      const { data, error } = await getSupabase().rpc('is_moderator');
+      if (error) throw error;
+      return data === true;
+    },
+  });
+}
+
+export function useModerationQueue() {
+  const userId = useUser();
+  return useQuery({
+    queryKey: ['moderation-queue', userId],
+    enabled: enabled(userId),
+    refetchInterval: 60_000,
+    queryFn: async () => {
+      const { data, error } = await getSupabase().rpc('moderation_queue');
+      if (error) throw error;
+      return (data ?? []) as unknown as ModerationReport[];
+    },
+  });
+}
+
+export function useResolveReport() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: { id: string; action: 'dismissed' | 'warned' | 'suspended' | 'banned' }) => {
+      const { error } = await getSupabase().rpc('moderation_resolve', { p_report_id: input.id, p_action: input.action });
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['moderation-queue'] }),
+  });
 }

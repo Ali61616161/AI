@@ -280,7 +280,14 @@
     "blockedSubtitle": "Personas que has bloqueado",
     "blockedEmpty": "No has bloqueado a nadie.",
     "unblock": "Desbloquear",
-    "unblockNote": "Al desbloquear, la persona puede volver a aparecer en la lista cercana; las invitaciones canceladas no vuelven."
+    "unblockNote": "Al desbloquear, la persona puede volver a aparecer en la lista cercana; las invitaciones canceladas no vuelven.",
+    "deleteMessage": "¿Eliminar el mensaje?",
+    "deleteMessageBody": "El mensaje se elimina para ambos.",
+    "deleteMessageAction": "Eliminar",
+    "reportMessageTitle": "¿Qué le pasa a este mensaje?",
+    "reportMessageNote": "El mensaje y la parte reciente del chat se envían a nuestro equipo para revisión. Para bloquear a la persona, usa Bloquear.",
+    "reportThanks": "Tu denuncia llegó a nuestro equipo. La revisaremos.",
+    "messageMenuHint": "Mantén pulsado un mensaje para eliminarlo o denunciarlo."
   },
   "profile": {
     "title": "Perfil",
@@ -1940,5 +1947,29 @@
   "homeCity": {
     "title": "¿Dónde vives?",
     "current": "Ahora: {{city}}"
+  },
+  "moderation": {
+    "title": "Moderación",
+    "subtitle": "Denuncias de usuarios",
+    "notAllowed": "Esta pantalla es solo para la cuenta de administrador.",
+    "empty": "No hay denuncias que revisar.",
+    "suspended": "Suspendido",
+    "deleted": "eliminado",
+    "noEvidence": "Sin prueba de chat (denuncia sin invitación).",
+    "evidence": "Prueba del chat · {{place}}",
+    "inviteNote": "Nota de invitación de {{who}}",
+    "counts": "{{onReported}} denuncias sobre esta persona · quien denuncia ha presentado {{byReporter}}",
+    "resolution": {
+      "dismissed": "Desestimada",
+      "warned": "Advertido",
+      "suspended": "Suspensión de 14 días",
+      "banned": "Expulsado"
+    },
+    "actions": {
+      "dismissed": "Desestimar",
+      "warned": "Advertir",
+      "suspended": "Suspender 14 días",
+      "banned": "Expulsar"
+    }
   }
 }

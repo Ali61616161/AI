@@ -21,6 +21,7 @@ import { adPrivacyOptionsAvailable, openAdPrivacyOptions } from '@/features/ads/
 import { PassportCard } from '@/features/identity/passport-card';
 import { usePassportPower } from '@/features/identity/use-passport-power';
 import { resetLocalUserData } from '@/features/auth/reset-local-data';
+import { useIsModerator } from '@/features/social/api';
 import { useCurrentPlan } from '@/features/subscription/purchases';
 import { getSupabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useAppearanceStore, type Appearance } from '@/stores/appearance-store';
@@ -59,6 +60,7 @@ export default function ProfileScreen() {
   const notSet = t('profile.notSet');
   const { data: plan } = useCurrentPlan();
   const isPro = plan === 'pro_monthly' || plan === 'pro_yearly';
+  const { data: isModerator } = useIsModerator();
 
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -206,6 +208,7 @@ export default function ProfileScreen() {
         <SectionHeader title={t('profile.account')} />
         <Card padding={Spacing.xs}>
           {Features.social && <ListRow icon="people-outline" label={t('today.quick.travelers')} onPress={() => router.push('/social')} />}
+          {isModerator && <ListRow icon="shield-half-outline" label={t('moderation.title')} onPress={() => router.push('/moderation')} />}
           {Features.referral && <ListRow icon="gift-outline" label={t('referral.title')} onPress={() => router.push('/refer')} />}
           <ListRow icon="home-outline" label={identity.homeCity ? `${t('identity.homeCity')} · ${identity.homeCity}` : t('identity.homeCity')} onPress={() => router.push('/home-city')} />
           <ListRow icon="pricetag-outline" label={t('priceWatch.title')} onPress={() => router.push('/price-watch')} />

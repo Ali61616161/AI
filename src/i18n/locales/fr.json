@@ -280,7 +280,14 @@
     "blockedSubtitle": "Personnes que vous avez bloquées",
     "blockedEmpty": "Vous n'avez bloqué personne.",
     "unblock": "Débloquer",
-    "unblockNote": "Après le déblocage, la personne peut réapparaître dans la liste à proximité ; les invitations annulées ne reviennent pas."
+    "unblockNote": "Après le déblocage, la personne peut réapparaître dans la liste à proximité ; les invitations annulées ne reviennent pas.",
+    "deleteMessage": "Supprimer le message ?",
+    "deleteMessageBody": "Le message est supprimé pour vous deux.",
+    "deleteMessageAction": "Supprimer",
+    "reportMessageTitle": "Qu'est-ce qui ne va pas avec ce message ?",
+    "reportMessageNote": "Le message et la fin de la discussion sont transmis à notre équipe pour examen. Pour bloquer la personne, utilisez Bloquer.",
+    "reportThanks": "Votre signalement est parvenu à notre équipe. Nous allons l'examiner.",
+    "messageMenuHint": "Appuyez longuement sur un message pour le supprimer ou le signaler."
   },
   "profile": {
     "title": "Profil",
@@ -1940,5 +1947,29 @@
   "homeCity": {
     "title": "Où habitez-vous ?",
     "current": "Actuel : {{city}}"
+  },
+  "moderation": {
+    "title": "Modération",
+    "subtitle": "Signalements d'utilisateurs",
+    "notAllowed": "Cet écran est réservé au compte administrateur.",
+    "empty": "Aucun signalement à examiner.",
+    "suspended": "Suspendu",
+    "deleted": "supprimé",
+    "noEvidence": "Aucune preuve de discussion (signalement sans invitation).",
+    "evidence": "Preuve de la discussion · {{place}}",
+    "inviteNote": "Note d'invitation de {{who}}",
+    "counts": "{{onReported}} signalements le concernant · le signaleur en a déposé {{byReporter}}",
+    "resolution": {
+      "dismissed": "Rejeté",
+      "warned": "Averti",
+      "suspended": "Suspension de 14 jours",
+      "banned": "Banni"
+    },
+    "actions": {
+      "dismissed": "Rejeter",
+      "warned": "Avertir",
+      "suspended": "Suspendre 14 jours",
+      "banned": "Bannir définitivement"
+    }
   }
 }

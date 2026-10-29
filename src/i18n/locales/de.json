@@ -280,7 +280,14 @@
     "blockedSubtitle": "Personen, die du blockiert hast",
     "blockedEmpty": "Du hast niemanden blockiert.",
     "unblock": "Entsperren",
-    "unblockNote": "Nach dem Entsperren kann die Person wieder in der Liste in der Nähe erscheinen; stornierte Einladungen kommen nicht zurück."
+    "unblockNote": "Nach dem Entsperren kann die Person wieder in der Liste in der Nähe erscheinen; stornierte Einladungen kommen nicht zurück.",
+    "deleteMessage": "Nachricht löschen?",
+    "deleteMessageBody": "Die Nachricht wird für euch beide gelöscht.",
+    "deleteMessageAction": "Löschen",
+    "reportMessageTitle": "Was ist mit dieser Nachricht?",
+    "reportMessageNote": "Die Nachricht und der letzte Teil des Chats gehen zur Prüfung an unser Team. Zum Blockieren der Person nutze Blockieren.",
+    "reportThanks": "Deine Meldung ist bei unserem Team angekommen. Wir prüfen sie.",
+    "messageMenuHint": "Nachricht lange drücken, um sie zu löschen oder zu melden."
   },
   "profile": {
     "title": "Profil",
@@ -1940,5 +1947,29 @@
   "homeCity": {
     "title": "Wo wohnst du?",
     "current": "Aktuell: {{city}}"
+  },
+  "moderation": {
+    "title": "Moderation",
+    "subtitle": "Nutzermeldungen",
+    "notAllowed": "Dieser Bildschirm ist nur für das Administratorkonto.",
+    "empty": "Keine Meldungen zu prüfen.",
+    "suspended": "Gesperrt",
+    "deleted": "gelöscht",
+    "noEvidence": "Kein Chat-Beleg (Meldung ohne Einladung).",
+    "evidence": "Chat-Beleg · {{place}}",
+    "inviteNote": "Einladungsnotiz von {{who}}",
+    "counts": "{{onReported}} Meldungen über die Person · meldende Person hat {{byReporter}} gemeldet",
+    "resolution": {
+      "dismissed": "Abgewiesen",
+      "warned": "Verwarnt",
+      "suspended": "14 Tage gesperrt",
+      "banned": "Gebannt"
+    },
+    "actions": {
+      "dismissed": "Abweisen",
+      "warned": "Verwarnen",
+      "suspended": "14 Tage sperren",
+      "banned": "Dauerhaft bannen"
+    }
   }
 }

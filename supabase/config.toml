@@ -427,3 +427,6 @@ verify_jwt = false
 
 [functions.price-watch]
 verify_jwt = false
+
+[functions.notify-report]
+verify_jwt = false

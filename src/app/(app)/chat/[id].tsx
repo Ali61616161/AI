@@ -10,7 +10,7 @@ import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { openInMaps } from '@/features/places/api';
-import { REPORT_REASONS, useBlockAndReport, useMessages, useMyInvites, useSendMessage } from '@/features/social/api';
+import { REPORT_REASONS, useBlockAndReport, useDeleteMessage, useMessages, useMyInvites, useSendMessage } from '@/features/social/api';
 import { TranslatableText } from '@/features/social/translatable-text';
 import { formatLocalDateTime, formatTime } from '@/lib/format';
 import { useSessionStore } from '@/stores/session-store';
@@ -28,8 +28,11 @@ export default function ChatScreen() {
   const { data: messages } = useMessages(id);
   const send = useSendMessage(id);
   const safety = useBlockAndReport();
+  const deleteMessage = useDeleteMessage(id);
   const [text, setText] = useState('');
   const [reporting, setReporting] = useState(false);
+  const [reportMessageId, setReportMessageId] = useState<number | null>(null);
+  const [reported, setReported] = useState(false);
   const canWrite = invite?.status === 'accepted';
   const when = invite ? formatLocalDateTime(invite.meet_at, null) : '';
 
@@ -43,6 +46,28 @@ export default function ChatScreen() {
     if (!invite) return;
     await safety.mutateAsync({ userId: invite.other_id, inviteId: invite.id, reason });
     router.back();
+  }
+
+  /** Tek bir mesajı şikayet eder (engellemeden); son mesajlar delil olarak ekibe iletilir. */
+  async function reportMessage(reason: (typeof REPORT_REASONS)[number]) {
+    if (!invite || reportMessageId === null) return;
+    await safety.mutateAsync({ userId: invite.other_id, inviteId: invite.id, messageId: reportMessageId, reason, blockToo: false });
+    setReporting(false);
+    setReportMessageId(null);
+    setReported(true);
+  }
+
+  function messageMenu(m: { id: number; sender_id: string }) {
+    if (m.sender_id === me) {
+      Alert.alert(t('social.deleteMessage'), t('social.deleteMessageBody'), [
+        { text: t('common.cancel'), style: 'cancel' },
+        { text: t('social.deleteMessageAction'), style: 'destructive', onPress: () => deleteMessage.mutate(m.id) },
+      ]);
+    } else {
+      setReportMessageId(m.id);
+      setReporting(true);
+      setReported(false);
+    }
   }
 
   function confirmBlock() {
@@ -91,21 +116,35 @@ export default function ChatScreen() {
           <Chip icon="navigate-outline" label={t('map.openInMaps')} onPress={() => openInMaps({ name: invite.place_name, placeId: invite.google_place_id, lat: invite.place_lat, lng: invite.place_lng })} />
           <Chip icon="share-outline" label={t('social.shareMeeting')} onPress={shareMeeting} />
           <Chip icon="ban-outline" label={t('social.block')} onPress={confirmBlock} />
-          <Chip icon="flag-outline" label={t('social.report')} onPress={() => setReporting((v) => !v)} />
+          <Chip icon="flag-outline" label={t('social.report')} onPress={() => {
+              setReportMessageId(null);
+              setReported(false);
+              setReporting((v) => !v);
+            }}
+          />
         </View>
       )}
 
       {reporting && (
         <View style={[styles.report, { backgroundColor: colors.surfaceMuted }]}>
-          <Text variant="bodyStrong">{t('social.reportTitle')}</Text>
+          <Text variant="bodyStrong">{reportMessageId !== null ? t('social.reportMessageTitle') : t('social.reportTitle')}</Text>
           <View style={styles.actions}>
             {REPORT_REASONS.map((r) => (
-              <Chip key={r} label={t(`social.reasons.${r}`)} onPress={() => block(r)} />
+              <Chip key={r} label={t(`social.reasons.${r}`)} onPress={() => (reportMessageId !== null ? reportMessage(r) : block(r))} />
             ))}
           </View>
-          <Button title={t('social.blockOnly')} variant="ghost" loading={safety.isPending} onPress={() => block()} />
+          {reportMessageId === null && <Button title={t('social.blockOnly')} variant="ghost" loading={safety.isPending} onPress={() => block()} />}
           <Text variant="caption" color="textMuted">
-            {t('social.reportNote')}
+            {reportMessageId !== null ? t('social.reportMessageNote') : t('social.reportNote')}
+          </Text>
+        </View>
+      )}
+
+      {reported && (
+        <View style={[styles.tip, { backgroundColor: colors.surfaceMuted }]}>
+          <Ionicons name="checkmark-circle-outline" size={18} color={colors.success} />
+          <Text variant="caption" style={styles.flex}>
+            {t('social.reportThanks')}
           </Text>
         </View>
       )}
@@ -113,7 +152,7 @@ export default function ChatScreen() {
       <View style={[styles.tip, { backgroundColor: colors.surfaceMuted }]}>
         <Ionicons name="shield-checkmark-outline" size={18} color={colors.accent} />
         <Text variant="caption" style={styles.flex}>
-          {t('social.chatSafety')}
+          {t('social.chatSafety')} {t('social.messageMenuHint')}
         </Text>
       </View>
 
@@ -134,11 +173,13 @@ export default function ChatScreen() {
           return (
             <View key={m.id} style={[styles.bubble, mine ? styles.mine : styles.theirs, { backgroundColor: mine ? colors.primary : colors.surface, borderColor: colors.border }]}>
               {mine ? (
-                <Text variant="body" style={{ color: colors.onPrimary }}>
-                  {m.body}
-                </Text>
+                <Pressable accessibilityRole="button" accessibilityHint={t('social.messageMenuHint')} onLongPress={() => messageMenu(m)}>
+                  <Text variant="body" style={{ color: colors.onPrimary }}>
+                    {m.body}
+                  </Text>
+                </Pressable>
               ) : (
-                <TranslatableText target={{ messageId: m.id }} text={m.body} color={colors.text} mutedColor={colors.textMuted} />
+                <TranslatableText target={{ messageId: m.id }} text={m.body} color={colors.text} mutedColor={colors.textMuted} onLongPress={() => messageMenu(m)} />
               )}
               <Text variant="caption" style={{ color: mine ? colors.onPrimary : colors.textMuted, opacity: 0.8 }}>
                 {formatTime(m.created_at, null)}

@@ -67,6 +67,7 @@ export default function AppLayout() {
       <Stack.Screen name="refer" options={{ presentation: 'modal' }} />
       <Stack.Screen name="social" />
       <Stack.Screen name="blocked-users" />
+      <Stack.Screen name="moderation" />
       <Stack.Screen name="passport" options={{ presentation: 'modal' }} />
       <Stack.Screen name="evening" options={{ presentation: 'modal' }} />
       <Stack.Screen name="getaway" options={{ presentation: 'modal' }} />

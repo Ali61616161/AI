@@ -280,7 +280,14 @@
     "blockedSubtitle": "People you've blocked",
     "blockedEmpty": "You haven't blocked anyone.",
     "unblock": "Unblock",
-    "unblockNote": "After unblocking, the person may show up in the nearby list again; cancelled invites don't come back."
+    "unblockNote": "After unblocking, the person may show up in the nearby list again; cancelled invites don't come back.",
+    "deleteMessage": "Delete message?",
+    "deleteMessageBody": "The message is deleted for both of you.",
+    "deleteMessageAction": "Delete",
+    "reportMessageTitle": "What's wrong with this message?",
+    "reportMessageNote": "The message and the latest part of the chat are sent to our team for review. To block the person, use Block.",
+    "reportThanks": "Your report reached our team. We'll review it.",
+    "messageMenuHint": "Long-press a message to delete or report it."
   },
   "profile": {
     "title": "Profile",
@@ -1940,5 +1947,29 @@
   "homeCity": {
     "title": "Where do you live?",
     "current": "Now: {{city}}"
+  },
+  "moderation": {
+    "title": "Moderation",
+    "subtitle": "User reports",
+    "notAllowed": "This screen is for the admin account only.",
+    "empty": "No reports to review.",
+    "suspended": "Suspended",
+    "deleted": "deleted",
+    "noEvidence": "No chat evidence (report without an invite).",
+    "evidence": "Chat evidence · {{place}}",
+    "inviteNote": "{{who}}'s invite note",
+    "counts": "{{onReported}} reports about them · reporter has filed {{byReporter}}",
+    "resolution": {
+      "dismissed": "Dismissed",
+      "warned": "Warned",
+      "suspended": "14-day suspension",
+      "banned": "Banned"
+    },
+    "actions": {
+      "dismissed": "Dismiss",
+      "warned": "Warn",
+      "suspended": "Suspend 14 days",
+      "banned": "Ban permanently"
+    }
   }
 }

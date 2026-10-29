@@ -278,7 +278,14 @@
     "blockedSubtitle": "你屏蔽的人",
     "blockedEmpty": "你还没有屏蔽任何人。",
     "unblock": "解除屏蔽",
-    "unblockNote": "解除屏蔽后，对方可能重新出现在附近列表中；已取消的邀请不会恢复。"
+    "unblockNote": "解除屏蔽后，对方可能重新出现在附近列表中；已取消的邀请不会恢复。",
+    "deleteMessage": "删除消息？",
+    "deleteMessageBody": "这条消息将对双方都删除。",
+    "deleteMessageAction": "删除",
+    "reportMessageTitle": "这条消息有什么问题？",
+    "reportMessageNote": "该消息及聊天的最近部分将发送给我们的团队审核。如需屏蔽此人，请使用“屏蔽”。",
+    "reportThanks": "你的举报已送达我们的团队，我们会进行审核。",
+    "messageMenuHint": "长按消息可删除或举报。"
   },
   "profile": {
     "title": "我的",
@@ -1901,5 +1908,29 @@
   "homeCity": {
     "title": "你住在哪里？",
     "current": "当前：{{city}}"
+  },
+  "moderation": {
+    "title": "审核",
+    "subtitle": "用户举报",
+    "notAllowed": "此页面仅限管理员账号。",
+    "empty": "没有待审核的举报。",
+    "suspended": "已暂停",
+    "deleted": "已删除",
+    "noEvidence": "没有聊天证据（未通过邀请的举报）。",
+    "evidence": "聊天证据 · {{place}}",
+    "inviteNote": "{{who}}的邀请备注",
+    "counts": "针对此人的举报 {{onReported}} 条 · 举报人已提交 {{byReporter}} 条",
+    "resolution": {
+      "dismissed": "已驳回",
+      "warned": "已警告",
+      "suspended": "暂停 14 天",
+      "banned": "已封禁"
+    },
+    "actions": {
+      "dismissed": "驳回",
+      "warned": "警告",
+      "suspended": "暂停 14 天",
+      "banned": "永久封禁"
+    }
   }
 }
