@@ -107,3 +107,17 @@ npx eas-cli@latest submit --profile production                  # eas.json → a
 - Sosyal mod iki cihazla: görünürlük, davet, sohbet (Realtime), engelleme
 - Çevrimdışı: uçak modunda belgeler ve plan
 - Hesap silme
+
+
+## 7. Yayın öncesi hesaplar (EAS ortam değişkenleri)
+
+Değişkenler expo.dev → Yola projesi → Environment variables → **production** ortamına eklenir (Visibility: Plain text, hepsi herkese açık kimliktir; gizli anahtar değil). `Secret` olanlar bu listede yok.
+
+| Değişken | Ne için | Nereden |
+|---|---|---|
+| `EXPO_PUBLIC_SENTRY_DSN` | Çökme/hata izleme | sentry.io → Developer (ücretsiz) → proje (React Native) → Settings → Client Keys (DSN). Yoksa izleme kapalıdır. |
+| `ADMOB_IOS_APP_ID` | Reklam uygulama kimliği (`ca-app-pub-…~…`) | AdMob → Apps → Add app (iOS) |
+| `EXPO_PUBLIC_ADMOB_IOS_NATIVE`, `EXPO_PUBLIC_ADMOB_IOS_REWARDED` | Reklam birimi kimlikleri (`ca-app-pub-…/…`) | AdMob → Ad units: Native advanced + Rewarded |
+| `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID`, `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` | Google ile giriş | Google Cloud → APIs & Services → Credentials → OAuth client ID (iOS: paket `com.akturangroup.yola`; Web application). Supabase → Auth → Providers → Google'a web kimliği + web gizli anahtarı (ve "Authorized Client IDs" alanına iOS kimliği) yazılır. |
+
+Sentry, AdMob ve Google OAuth kimlikleri ücretsizdir. Google OAuth için geliştirici hesabı doğrulaması gerekmez: izin ekranı (OAuth consent screen) "External" seçilir, yalnızca `email`, `profile`, `openid` kapsamları kullanılır ve "Publish app" ile üretime alınır; bu kapsamlar için Google incelemesi istemez.

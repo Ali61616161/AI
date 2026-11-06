@@ -316,7 +316,9 @@
       "system": "System"
     },
     "signOutTitle": "Sign out?",
-    "signOutBody": "You'll be signed out of your account. You can sign back in any time."
+    "signOutBody": "You'll be signed out of your account. You can sign back in any time.",
+    "help": "Help & support",
+    "helpSubject": "Yola support request"
   },
   "assistant": {
     "title": "Change the plan",

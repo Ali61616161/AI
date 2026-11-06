@@ -316,7 +316,9 @@
       "system": "System"
     },
     "signOutTitle": "Abmelden?",
-    "signOutBody": "Du wirst von deinem Konto abgemeldet. Du kannst dich jederzeit wieder anmelden."
+    "signOutBody": "Du wirst von deinem Konto abgemeldet. Du kannst dich jederzeit wieder anmelden.",
+    "help": "Hilfe & Support",
+    "helpSubject": "Yola-Supportanfrage"
   },
   "assistant": {
     "title": "Plan ändern",

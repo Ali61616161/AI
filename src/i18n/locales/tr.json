@@ -316,7 +316,9 @@
       "system": "Sistem"
     },
     "signOutTitle": "Çıkış yapılsın mı?",
-    "signOutBody": "Hesabından çıkış yapılacak. İstediğin zaman tekrar giriş yapabilirsin."
+    "signOutBody": "Hesabından çıkış yapılacak. İstediğin zaman tekrar giriş yapabilirsin.",
+    "help": "Yardım ve destek",
+    "helpSubject": "Yola destek talebi"
   },
   "assistant": {
     "title": "Planı Değiştir",

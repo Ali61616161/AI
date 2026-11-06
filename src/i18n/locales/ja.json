@@ -43,10 +43,10 @@
   },
   "tabs": {
     "today": "今日",
-    "trips": "マイトリップ",
-    "assistant": "アシスタント",
+    "trips": "旅行",
+    "assistant": "AI",
     "social": "ソーシャル",
-    "profile": "プロフィール",
+    "profile": "マイページ",
     "explore": "探索",
     "live": "ライブ"
   },
@@ -314,7 +314,9 @@
       "system": "システム"
     },
     "signOutTitle": "ログアウトしますか？",
-    "signOutBody": "アカウントからログアウトします。いつでもまたログインできます。"
+    "signOutBody": "アカウントからログアウトします。いつでもまたログインできます。",
+    "help": "ヘルプとサポート",
+    "helpSubject": "Yolaサポートのお問い合わせ"
   },
   "assistant": {
     "title": "プランを変更",

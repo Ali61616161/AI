@@ -85,7 +85,7 @@ export function TabBar({ state, descriptors, navigation, insets }: BottomTabBarP
         scaleTo={0.9}
         style={styles.tab}>
         <Ionicons name={focused ? icon.active : icon.inactive} size={22} color={focused ? colors.primary : color} />
-        <Text variant="caption" numberOfLines={1} style={[styles.label, { color }]}>
+        <Text variant="caption" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75} style={[styles.label, { color }]}>
           {options.title}
         </Text>
       </Tap>

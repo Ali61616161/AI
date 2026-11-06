@@ -314,7 +314,9 @@
       "system": "跟随系统"
     },
     "signOutTitle": "退出登录？",
-    "signOutBody": "你将退出账号，之后可随时重新登录。"
+    "signOutBody": "你将退出账号，之后可随时重新登录。",
+    "help": "帮助与支持",
+    "helpSubject": "Yola 支持请求"
   },
   "assistant": {
     "title": "调整计划",

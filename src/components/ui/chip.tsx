@@ -22,7 +22,7 @@ export function Chip({ label, icon, selected = false, onPress }: Props) {
   const inner = (
     <>
       {icon && <Ionicons name={icon} size={15} color={selected ? foreground : colors.textSecondary} />}
-      <Text variant="caption" numberOfLines={1} style={{ color: foreground }}>
+      <Text variant="caption" numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} style={{ color: foreground }}>
         {label}
       </Text>
     </>

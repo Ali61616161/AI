@@ -314,7 +314,9 @@
       "system": "Sistem"
     },
     "signOutTitle": "Keluar?",
-    "signOutBody": "Kamu akan keluar dari akunmu. Kamu bisa masuk lagi kapan saja."
+    "signOutBody": "Kamu akan keluar dari akunmu. Kamu bisa masuk lagi kapan saja.",
+    "help": "Bantuan & dukungan",
+    "helpSubject": "Permintaan dukungan Yola"
   },
   "assistant": {
     "title": "Ubah rencana",

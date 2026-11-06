@@ -318,7 +318,9 @@
       "system": "Sistema"
     },
     "signOutTitle": "Sair?",
-    "signOutBody": "Você será desconectado da sua conta. Pode entrar de novo quando quiser."
+    "signOutBody": "Você será desconectado da sua conta. Pode entrar de novo quando quiser.",
+    "help": "Ajuda e suporte",
+    "helpSubject": "Pedido de suporte do Yola"
   },
   "assistant": {
     "title": "Mudar o plano",

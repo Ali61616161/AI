@@ -316,7 +316,9 @@
       "system": "Système"
     },
     "signOutTitle": "Se déconnecter ?",
-    "signOutBody": "Tu seras déconnecté de ton compte. Tu pourras te reconnecter à tout moment."
+    "signOutBody": "Tu seras déconnecté de ton compte. Tu pourras te reconnecter à tout moment.",
+    "help": "Aide et assistance",
+    "helpSubject": "Demande d’assistance Yola"
   },
   "assistant": {
     "title": "Changer le plan",

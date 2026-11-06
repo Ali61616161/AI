@@ -320,7 +320,9 @@
       "system": "Systemowy"
     },
     "signOutTitle": "Wylogować się?",
-    "signOutBody": "Zostaniesz wylogowany(-a) z konta. W każdej chwili możesz zalogować się ponownie."
+    "signOutBody": "Zostaniesz wylogowany(-a) z konta. W każdej chwili możesz zalogować się ponownie.",
+    "help": "Pomoc i wsparcie",
+    "helpSubject": "Zgłoszenie do pomocy Yola"
   },
   "assistant": {
     "title": "Zmień plan",

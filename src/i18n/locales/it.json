@@ -316,7 +316,9 @@
       "system": "Sistema"
     },
     "signOutTitle": "Uscire?",
-    "signOutBody": "Verrai disconnesso dal tuo account. Puoi accedere di nuovo quando vuoi."
+    "signOutBody": "Verrai disconnesso dal tuo account. Puoi accedere di nuovo quando vuoi.",
+    "help": "Aiuto e assistenza",
+    "helpSubject": "Richiesta di assistenza Yola"
   },
   "assistant": {
     "title": "Cambia il piano",

@@ -316,7 +316,9 @@
       "system": "Systeem"
     },
     "signOutTitle": "Uitloggen?",
-    "signOutBody": "Je wordt uitgelogd van je account. Je kunt op elk moment weer inloggen."
+    "signOutBody": "Je wordt uitgelogd van je account. Je kunt op elk moment weer inloggen.",
+    "help": "Hulp en support",
+    "helpSubject": "Yola-supportverzoek"
   },
   "assistant": {
     "title": "Plan wijzigen",

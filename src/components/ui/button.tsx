@@ -31,7 +31,7 @@ export function Button({ title, variant = 'primary', size = 'md', icon, loading 
   ) : (
     <View style={styles.row}>
       {icon && <Ionicons name={icon} size={size === 'sm' ? 16 : 18} color={foreground} style={icon.includes('forward') ? flip : undefined} />}
-      <Text variant={size === 'sm' ? 'caption' : 'bodyStrong'} numberOfLines={1} style={{ color: foreground }}>
+      <Text variant={size === 'sm' ? 'caption' : 'bodyStrong'} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} style={{ color: foreground }}>
         {title}
       </Text>
     </View>

@@ -112,5 +112,10 @@ jobs:
           elif [ "$code" = 200 ]; then sum "- ⚠️ Uçuş arama: istek geçti ama uçuş bulunamadı (TK1861 o gün seferde olmayabilir) $(head -c 160 /tmp/out.json)"
           else sum "- ❌ Uçuş arama — HTTP $code $(head -c 200 /tmp/out.json)"; fi
           check "Ortaklık ayarları (sunucudan)" affiliate-config '{}' '"eSIM şablonu: \(.esim | length), Amazon mağazası: \(.amazon | length)"'
+          # Dil değişince içerik çevirisi: rapor/günlük metinleri (gerçek çeviri), plan (var olmayan seyahat → boş), mesaj (var olmayan → 404).
+          check "Metin çevirisi (translate-texts: rapor/günlük)" translate-texts '{"texts":["Wonderful trip, the food was great."],"language":"tr"}' '.texts[0]'
+          check "Plan çevirisi (translate-plan, var olmayan seyahat boş döner)" translate-plan '{"trip_id":"00000000-0000-0000-0000-000000000000","language":"tr"}' '"translation: \(.translation)"'
+          code=$(call translate-message '{"message_id":2147483000,"language":"tr"}')
+          if [ "$code" = 404 ]; then sum "- ✅ Mesaj çevirisi (translate-message) yayında, olmayan mesaj reddedildi"; else sum "- ❌ Mesaj çevirisi (translate-message) — beklenen 404, gelen HTTP $code"; fi
           check "Gemini (vize bilgisi)" travel-info '{"passport":"TR","destination":"JP"}' '"\(.requirement) · \(.summary[0:80])"'
           check "Gemini + Places (Şehrim akşam planı)" city '{"action":"evening","when":"tonight","companion":"friends","budget":"mid","timezone":"Europe/Istanbul"}' '"\(.title) · \(.stops | length) durak, doğrulanan \([.stops[] | select(.google_place_id)] | length)"'

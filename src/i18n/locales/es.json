@@ -316,7 +316,9 @@
       "system": "Sistema"
     },
     "signOutTitle": "¿Cerrar sesión?",
-    "signOutBody": "Se cerrará la sesión de tu cuenta. Puedes volver a entrar cuando quieras."
+    "signOutBody": "Se cerrará la sesión de tu cuenta. Puedes volver a entrar cuando quieras.",
+    "help": "Ayuda y soporte",
+    "helpSubject": "Solicitud de soporte de Yola"
   },
   "assistant": {
     "title": "Cambiar el plan",

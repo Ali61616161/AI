@@ -314,7 +314,9 @@
       "system": "시스템"
     },
     "signOutTitle": "로그아웃할까요?",
-    "signOutBody": "계정에서 로그아웃돼요. 언제든 다시 로그인할 수 있어요."
+    "signOutBody": "계정에서 로그아웃돼요. 언제든 다시 로그인할 수 있어요.",
+    "help": "도움말 및 지원",
+    "helpSubject": "Yola 지원 요청"
   },
   "assistant": {
     "title": "계획 바꾸기",

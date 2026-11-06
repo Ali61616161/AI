@@ -11,6 +11,7 @@ import { usePushRegistration } from '@/features/push/push';
 import { useAuthListener } from '@/features/auth/use-auth-listener';
 import { OfflineBanner } from '@/features/offline/offline-banner';
 import i18n, { initI18n } from '@/i18n';
+import { initMonitoring, withMonitoring } from '@/lib/monitoring';
 import { persistOptions, queryClient } from '@/lib/query-client';
 import { useAppearanceStore } from '@/stores/appearance-store';
 import { useReloadStore } from '@/stores/reload-store';
@@ -18,6 +19,7 @@ import { useIsSignedIn, useSessionStore } from '@/stores/session-store';
 import { useTheme } from '@/theme/use-theme';
 
 SplashScreen.preventAutoHideAsync();
+initMonitoring();
 
 
 type PersistedStore = { persist: { hasHydrated: () => boolean; onFinishHydration: (fn: () => void) => () => void } };
@@ -32,7 +34,7 @@ function useStoreHydrated(store: PersistedStore): boolean {
   return hydrated;
 }
 
-export default function RootLayout() {
+function RootLayout() {
   const [i18nReady, setI18nReady] = useState(false);
   const sessionHydrated = useStoreHydrated(useSessionStore);
   const appearanceHydrated = useStoreHydrated(useAppearanceStore);
@@ -108,3 +110,5 @@ export default function RootLayout() {
     </I18nextProvider>
   );
 }
+
+export default withMonitoring(RootLayout);
