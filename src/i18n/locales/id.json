@@ -1931,5 +1931,26 @@
       "suspended": "Tangguhkan 14 hari",
       "banned": "Blokir permanen"
     }
+  },
+  "faq": {
+    "title": "Pertanyaan umum",
+    "notFound": "Tidak menemukan jawabanmu?",
+    "email": "Kirim email",
+    "q1": "Bagaimana Yola merencanakan perjalananku?",
+    "q2": "Apakah gratis?",
+    "q3": "Apakah berfungsi offline?",
+    "q4": "Bagaimana cara mengganti bahasa?",
+    "q5": "Bagaimana cara kerja Pelancong dan apakah aman?",
+    "q6": "Bagaimana cara membatalkan langganan?",
+    "q7": "Bagaimana cara menghapus akun dan data?",
+    "q8": "Apakah informasi visa dan masuk bersifat resmi?",
+    "a1": "Unggah tiket atau pemesanan hotelmu, atau buat perjalanan secara manual. Yola menyusun rencana hari demi hari dan jam demi jam di sekitar pemesananmu, dan jika hujan atau terlambat, menyusun ulang dengan satu ketukan.",
+    "a2": "Kamu bisa mulai gratis; perencanaan, terjemahan, dan fitur lain punya batas harian dan iklan ditampilkan. Yola Pro atau Trip Pass sekali bayar menghapus batasnya.",
+    "a3": "Simpan perjalanan secara offline dari pengaturan perjalanan (⋯): rencana, tiket, dan frasa darurat berfungsi tanpa internet. AI dan terjemahan langsung butuh internet.",
+    "a4": "Profil → Bahasa. Rute, laporan, dan catatan yang dibuat sebelumnya diterjemahkan otomatis ke bahasa baru.",
+    "a5": "Pelancong untuk usia 18 tahun ke atas; lokasimu ditampilkan dengan akurasi sekitar 1 km dan pertemuan hanya di tempat umum. Kamu bisa memblokir siapa pun, menghapus pesan, dan melaporkan; tim kami meninjau setiap laporan.",
+    "a6": "Langganan dikelola di App Store: Pengaturan → Apple ID-mu → Langganan. Menghapus akun tidak membatalkan langganan, jadi batalkan di sana lebih dulu.",
+    "a7": "Profil → Hapus akun. Akun, perjalanan, dokumen, dan pesanmu dihapus permanen.",
+    "a8": "Bukan. Ini panduan umum yang disusun dengan AI; selalu konfirmasi ke kedutaan atau situs resmi pemerintah sebelum bepergian."
   }
 }

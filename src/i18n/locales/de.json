@@ -1970,5 +1970,26 @@
       "suspended": "14 Tage sperren",
       "banned": "Dauerhaft bannen"
     }
+  },
+  "faq": {
+    "title": "Häufige Fragen",
+    "notFound": "Antwort nicht gefunden?",
+    "email": "Schreib uns",
+    "q1": "Wie plant Yola meine Reise?",
+    "q2": "Ist es kostenlos?",
+    "q3": "Funktioniert es offline?",
+    "q4": "Wie ändere ich die Sprache?",
+    "q5": "Wie funktioniert Reisende und ist es sicher?",
+    "q6": "Wie kündige ich mein Abo?",
+    "q7": "Wie lösche ich mein Konto und meine Daten?",
+    "q8": "Sind die Visa- und Einreiseinformationen offiziell?",
+    "a1": "Lade dein Ticket oder deine Hotelbuchung hoch oder lege die Reise manuell an. Yola erstellt einen Tages- und Stundenplan rund um deine Buchungen und plant bei Regen oder Verspätung mit einem Tipp neu.",
+    "a2": "Du kannst kostenlos starten; Planung, Übersetzung und weitere Funktionen haben Tageslimits und es wird Werbung angezeigt. Yola Pro oder ein einmaliger Trip Pass hebt die Limits auf.",
+    "a3": "Speichere die Reise offline in den Reiseeinstellungen (⋯): Plan, Tickets und Notfallsätze funktionieren ohne Internet. KI und Live-Übersetzung brauchen Internet.",
+    "a4": "Profil → Sprache. Zuvor erstellte Routen, Berichte und Notizen werden automatisch in die neue Sprache übersetzt.",
+    "a5": "Reisende ist für Personen ab 18; dein Standort wird auf etwa 1 km genau angezeigt und Treffen finden nur an öffentlichen Orten statt. Du kannst jeden blockieren, Nachrichten löschen und melden; unser Team prüft jede Meldung.",
+    "a6": "Abos verwaltest du im App Store: Einstellungen → deine Apple-ID → Abonnements. Das Löschen des Kontos kündigt das Abo nicht, kündige es zuerst dort.",
+    "a7": "Profil → Konto löschen. Konto, Reisen, Dokumente und Nachrichten werden dauerhaft gelöscht.",
+    "a8": "Nein. Es sind allgemeine, mit KI erstellte Hinweise; bestätige sie vor der Reise immer bei der Botschaft oder einer offiziellen Regierungsseite."
   }
 }

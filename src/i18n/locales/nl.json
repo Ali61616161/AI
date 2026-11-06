@@ -1970,5 +1970,26 @@
       "suspended": "14 dagen schorsen",
       "banned": "Permanent verbannen"
     }
+  },
+  "faq": {
+    "title": "Veelgestelde vragen",
+    "notFound": "Antwoord niet gevonden?",
+    "email": "Mail ons",
+    "q1": "Hoe plant Yola mijn reis?",
+    "q2": "Is het gratis?",
+    "q3": "Werkt het offline?",
+    "q4": "Hoe wijzig ik de taal?",
+    "q5": "Hoe werkt Reizigers en is het veilig?",
+    "q6": "Hoe zeg ik mijn abonnement op?",
+    "q7": "Hoe verwijder ik mijn account en gegevens?",
+    "q8": "Is de visum- en toegangsinformatie officieel?",
+    "a1": "Upload je ticket of hotelboeking, of maak de reis handmatig aan. Yola bouwt een plan per dag en per uur rond je boekingen en plant bij regen of vertraging met één tik opnieuw.",
+    "a2": "Je kunt gratis beginnen; plannen, vertalen en andere functies hebben dagelijkse limieten en er worden advertenties getoond. Yola Pro of een eenmalige Reispas heft de limieten op.",
+    "a3": "Sla de reis offline op via de reisinstellingen (⋯): plan, tickets en noodzinnen werken zonder internet. AI en live vertalen hebben internet nodig.",
+    "a4": "Profiel → Taal. Eerder gemaakte routes, verslagen en notities worden automatisch naar de nieuwe taal vertaald.",
+    "a5": "Reizigers is voor mensen van 18 en ouder; je locatie wordt op ongeveer 1 km nauwkeurig getoond en afspraken zijn alleen op openbare plekken. Je kunt iedereen blokkeren, een bericht verwijderen en melden; ons team beoordeelt elke melding.",
+    "a6": "Abonnementen beheer je in de App Store: Instellingen → je Apple ID → Abonnementen. Je account verwijderen zegt het abonnement niet op, zeg het eerst daar op.",
+    "a7": "Profiel → Account verwijderen. Je account, reizen, documenten en berichten worden definitief verwijderd.",
+    "a8": "Nee. Het is algemene, met AI opgestelde informatie; controleer het vóór je reist altijd bij de ambassade of een officiële overheidswebsite."
   }
 }

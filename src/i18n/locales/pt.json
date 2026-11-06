@@ -2009,5 +2009,26 @@
       "suspended": "Suspender por 14 dias",
       "banned": "Banir permanentemente"
     }
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "notFound": "Não achou a resposta?",
+    "email": "Envie um e-mail",
+    "q1": "Como o Yola planeja minha viagem?",
+    "q2": "É gratuito?",
+    "q3": "Funciona offline?",
+    "q4": "Como mudo o idioma?",
+    "q5": "Como funciona Viajantes e é seguro?",
+    "q6": "Como cancelo minha assinatura?",
+    "q7": "Como excluo minha conta e meus dados?",
+    "q8": "As informações de visto e entrada são oficiais?",
+    "a1": "Envie sua passagem ou reserva de hotel, ou crie a viagem manualmente. O Yola monta um plano dia a dia e hora a hora em torno das suas reservas e, se chover ou houver atraso, replaneja com um toque.",
+    "a2": "Você pode começar de graça; planejamento, tradução e outros recursos têm limites diários e anúncios são exibidos. O Yola Pro ou um Trip Pass avulso remove os limites.",
+    "a3": "Salve a viagem offline nas configurações da viagem (⋯): o plano, as passagens e as frases de emergência funcionam sem internet. A IA e a tradução ao vivo precisam de internet.",
+    "a4": "Perfil → Idioma. Roteiros, relatórios e notas criados antes são traduzidos automaticamente para o novo idioma.",
+    "a5": "Viajantes é para maiores de 18 anos; sua localização aparece com cerca de 1 km de precisão e os encontros são só em lugares públicos. Você pode bloquear qualquer pessoa, excluir uma mensagem e denunciar; nossa equipe analisa cada denúncia.",
+    "a6": "As assinaturas são gerenciadas na App Store: Ajustes → seu ID Apple → Assinaturas. Excluir a conta não cancela a assinatura, então cancele lá primeiro.",
+    "a7": "Perfil → Excluir conta. Sua conta, viagens, documentos e mensagens são excluídos permanentemente.",
+    "a8": "Não. São orientações gerais preparadas com IA; confirme sempre com a embaixada ou um site oficial do governo antes de viajar."
   }
 }

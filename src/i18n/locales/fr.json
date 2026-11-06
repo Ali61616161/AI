@@ -1970,5 +1970,26 @@
       "suspended": "Suspendre 14 jours",
       "banned": "Bannir définitivement"
     }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "notFound": "Pas de réponse ?",
+    "email": "Écrivez-nous",
+    "q1": "Comment Yola planifie-t-il mon voyage ?",
+    "q2": "Est-ce gratuit ?",
+    "q3": "Cela fonctionne-t-il hors ligne ?",
+    "q4": "Comment changer la langue ?",
+    "q5": "Comment fonctionne Voyageurs et est-ce sûr ?",
+    "q6": "Comment annuler mon abonnement ?",
+    "q7": "Comment supprimer mon compte et mes données ?",
+    "q8": "Les informations de visa et d’entrée sont-elles officielles ?",
+    "a1": "Importez votre billet ou réservation d’hôtel, ou créez le voyage à la main. Yola construit un plan jour par jour, heure par heure autour de vos réservations et, s’il pleut ou en cas de retard, le replanifie en un geste.",
+    "a2": "Vous pouvez commencer gratuitement ; la planification, la traduction et d’autres fonctions ont des limites quotidiennes et des publicités s’affichent. Yola Pro ou un Trip Pass unique lève les limites.",
+    "a3": "Enregistrez le voyage hors ligne depuis les réglages du voyage (⋯) : le plan, les billets et les phrases d’urgence fonctionnent sans internet. L’IA et la traduction en direct nécessitent internet.",
+    "a4": "Profil → Langue. Les itinéraires, bilans et notes créés auparavant sont traduits automatiquement dans la nouvelle langue.",
+    "a5": "Voyageurs est réservé aux plus de 18 ans ; votre position est affichée à environ 1 km près et les rencontres ont lieu uniquement dans des lieux publics. Vous pouvez bloquer quiconque, supprimer un message et signaler ; notre équipe examine chaque signalement.",
+    "a6": "Les abonnements se gèrent dans l’App Store : Réglages → votre identifiant Apple → Abonnements. Supprimer le compte ne l’annule pas, annulez-le d’abord là-bas.",
+    "a7": "Profil → Supprimer le compte. Votre compte, vos voyages, documents et messages sont supprimés définitivement.",
+    "a8": "Non. Ce sont des informations générales préparées avec l’IA ; vérifiez toujours auprès de l’ambassade ou d’un site officiel avant de voyager."
   }
 }

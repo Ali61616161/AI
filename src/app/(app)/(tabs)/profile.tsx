@@ -1,13 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Constants from 'expo-constants';
-import * as Linking from 'expo-linking';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, type ComponentProps } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import brand from '@/config/brand.json';
 import { Features } from '@/config/features';
 import { LanguagePicker } from '@/components/settings/language-picker';
 import { Button } from '@/components/ui/button';
@@ -216,11 +214,7 @@ export default function ProfileScreen() {
           <ListRow icon="pricetag-outline" label={t('priceWatch.title')} onPress={() => router.push('/price-watch')} />
           <ListRow icon="earth-outline" label={t('visited.title')} onPress={() => router.push('/visited')} />
           <ListRow icon="document-text-outline" label={t('docs.title')} onPress={() => router.push('/my-docs')} />
-          <ListRow
-            icon="help-buoy-outline"
-            label={t('profile.help')}
-            onPress={() => Linking.openURL(`mailto:${brand.legal.supportEmail}?subject=${encodeURIComponent(t('profile.helpSubject'))}`).catch(() => undefined)}
-          />
+          <ListRow icon="help-buoy-outline" label={t('profile.help')} onPress={() => router.push('/faq')} />
           <ListRow icon="shield-checkmark-outline" label={t('legal.privacy')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'privacy' } })} />
           <ListRow icon="document-text-outline" label={t('legal.terms')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'terms' } })} />
           <ListRow icon="reader-outline" label={t('legal.kvkk')} onPress={() => router.push({ pathname: '/legal', params: { doc: 'kvkk' } })} />

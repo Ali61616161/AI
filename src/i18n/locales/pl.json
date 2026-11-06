@@ -2048,5 +2048,26 @@
       "suspended": "Zawieś na 14 dni",
       "banned": "Zbanuj na stałe"
     }
+  },
+  "faq": {
+    "title": "Najczęstsze pytania",
+    "notFound": "Nie znalazłeś(-aś) odpowiedzi?",
+    "email": "Napisz do nas",
+    "q1": "Jak Yola planuje moją podróż?",
+    "q2": "Czy to jest darmowe?",
+    "q3": "Czy działa offline?",
+    "q4": "Jak zmienić język?",
+    "q5": "Jak działają Podróżnicy i czy to bezpieczne?",
+    "q6": "Jak anulować subskrypcję?",
+    "q7": "Jak usunąć konto i dane?",
+    "q8": "Czy informacje o wizach i wjeździe są oficjalne?",
+    "a1": "Prześlij bilet lub rezerwację hotelu albo utwórz podróż ręcznie. Yola buduje plan dzień po dniu i godzina po godzinie wokół twoich rezerwacji, a przy deszczu lub opóźnieniu przeplanowuje go jednym dotknięciem.",
+    "a2": "Możesz zacząć za darmo; planowanie, tłumaczenie i inne funkcje mają dzienne limity i wyświetlane są reklamy. Yola Pro lub jednorazowa Przepustka na podróż znosi limity.",
+    "a3": "Zapisz podróż offline w ustawieniach podróży (⋯): plan, bilety i zwroty alarmowe działają bez internetu. AI i tłumaczenie na żywo wymagają internetu.",
+    "a4": "Profil → Język. Wcześniej utworzone trasy, raporty i notatki są automatycznie tłumaczone na nowy język.",
+    "a5": "Podróżnicy są dla osób od 18 lat; twoja lokalizacja jest pokazywana z dokładnością ok. 1 km, a spotkania odbywają się tylko w miejscach publicznych. Możesz zablokować każdego, usunąć wiadomość i zgłosić; nasz zespół sprawdza każde zgłoszenie.",
+    "a6": "Subskrypcjami zarządza się w App Store: Ustawienia → twoje Apple ID → Subskrypcje. Usunięcie konta nie anuluje subskrypcji, więc najpierw anuluj ją tam.",
+    "a7": "Profil → Usuń konto. Konto, podróże, dokumenty i wiadomości zostaną trwale usunięte.",
+    "a8": "Nie. To ogólne wskazówki przygotowane z pomocą AI; przed podróżą zawsze potwierdź je w ambasadzie lub na oficjalnej stronie rządowej."
   }
 }

@@ -1970,5 +1970,26 @@
       "suspended": "Suspender 14 días",
       "banned": "Expulsar"
     }
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "notFound": "¿No encuentras tu respuesta?",
+    "email": "Escríbenos",
+    "q1": "¿Cómo planifica Yola mi viaje?",
+    "q2": "¿Es gratis?",
+    "q3": "¿Funciona sin conexión?",
+    "q4": "¿Cómo cambio el idioma?",
+    "q5": "¿Cómo funciona Viajeros y es seguro?",
+    "q6": "¿Cómo cancelo mi suscripción?",
+    "q7": "¿Cómo elimino mi cuenta y mis datos?",
+    "q8": "¿La información de visados y entrada es oficial?",
+    "a1": "Sube tu billete o reserva de hotel, o crea el viaje a mano. Yola crea un plan día a día y hora a hora alrededor de tus reservas y, si llueve o hay retrasos, lo replanifica con un toque.",
+    "a2": "Puedes empezar gratis; la planificación, la traducción y otras funciones tienen límites diarios y se muestran anuncios. Yola Pro o un Trip Pass único quita los límites.",
+    "a3": "Guarda el viaje sin conexión desde los ajustes del viaje (⋯): el plan, los billetes y las frases de emergencia funcionan sin internet. La IA y la traducción en vivo necesitan internet.",
+    "a4": "Perfil → Idioma. Las rutas, informes y notas creados antes se traducen automáticamente al nuevo idioma.",
+    "a5": "Viajeros es para mayores de 18 años; tu ubicación se muestra con unos 1 km de precisión y las quedadas son solo en lugares públicos. Puedes bloquear a cualquiera, borrar un mensaje y denunciar; nuestro equipo revisa cada denuncia.",
+    "a6": "Las suscripciones se gestionan en el App Store: Ajustes → tu ID de Apple → Suscripciones. Borrar la cuenta no la cancela, así que cancélala allí primero.",
+    "a7": "Perfil → Eliminar cuenta. Tu cuenta, viajes, documentos y mensajes se eliminan de forma permanente.",
+    "a8": "No. Es una orientación general preparada con IA; confirma siempre con la embajada o una web oficial del gobierno antes de viajar."
   }
 }

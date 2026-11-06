@@ -1970,5 +1970,26 @@
       "suspended": "Suspend 14 days",
       "banned": "Ban permanently"
     }
+  },
+  "faq": {
+    "title": "FAQ",
+    "notFound": "Didn't find your answer?",
+    "email": "Email us",
+    "q1": "How does Yola plan my trip?",
+    "q2": "Is it free?",
+    "q3": "Does it work offline?",
+    "q4": "How do I change the language?",
+    "q5": "How do Travelers work, and is it safe?",
+    "q6": "How do I cancel my subscription?",
+    "q7": "How do I delete my account and data?",
+    "q8": "Is the visa and entry information official?",
+    "a1": "Upload your ticket or hotel booking, or create the trip manually. Yola builds a day-by-day, hour-by-hour plan around your bookings and, if it rains or you are delayed, replans in a tap.",
+    "a2": "You can start free; planning, translation and other features have daily limits and ads are shown. Yola Pro or a one-time Trip Pass removes the limits.",
+    "a3": "Save the trip offline from trip settings (⋯): the plan, tickets and emergency phrases work without internet. AI and live translation need internet.",
+    "a4": "Profile → Language. Routes, reports and notes created earlier are translated into the new language automatically.",
+    "a5": "Travelers is for people 18 and over; your location is shown to about 1 km accuracy and meetups are only at public places. You can block anyone, delete a message and report; our team reviews every report.",
+    "a6": "Subscriptions are managed in the App Store: Settings → your Apple ID → Subscriptions. Deleting your account does not cancel it, so cancel there first.",
+    "a7": "Profile → Delete account. Your account, trips, documents and messages are permanently deleted.",
+    "a8": "No. It is general guidance prepared with AI; always confirm with the embassy or an official government website before you travel."
   }
 }

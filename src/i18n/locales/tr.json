@@ -1970,5 +1970,26 @@
       "suspended": "14 gün askı",
       "banned": "Kalıcı yasak"
     }
+  },
+  "faq": {
+    "title": "Sık sorulan sorular",
+    "notFound": "Cevabı bulamadın mı?",
+    "email": "Bize e-posta gönder",
+    "q1": "Yola seyahatimi nasıl planlıyor?",
+    "q2": "Ücretsiz mi?",
+    "q3": "İnternet olmadan çalışır mı?",
+    "q4": "Dili nasıl değiştiririm?",
+    "q5": "Gezginler nasıl çalışır, güvenli mi?",
+    "q6": "Aboneliğimi nasıl iptal ederim?",
+    "q7": "Hesabımı ve verilerimi nasıl silerim?",
+    "q8": "Vize ve giriş bilgileri resmi mi?",
+    "a1": "Biletini ya da otel rezervasyonunu yükle ya da seyahati elle oluştur. Yola, rezervasyonlarının etrafında gün gün, saat saat bir plan kurar; yağmur ya da rötar olursa planı tek dokunuşla yeniden düzenler.",
+    "a2": "Ücretsiz başlarsın; planlama, çeviri ve diğer özelliklerde günlük sınırlar vardır ve reklam gösterilir. Yola Pro veya tek seferlik Trip Pass sınırları kaldırır.",
+    "a3": "Seyahat ayarlarından (⋯) çevrimdışı kaydet: plan, biletler ve acil durum cümleleri internetsiz çalışır. Yapay zekâ ve canlı çeviri internet ister.",
+    "a4": "Profil → Dil. Daha önce oluşturulan rota, rapor ve notların otomatik olarak yeni dile çevrilir.",
+    "a5": "Gezginler 18 yaş ve üzeri içindir; konumun yaklaşık 1 km hassasiyetle gösterilir, buluşmalar yalnızca halka açık yerlerde olur. İstediğin kişiyi engelleyebilir, mesajı silebilir ve şikayet edebilirsin; ekibimiz her şikayeti inceler.",
+    "a6": "Abonelik App Store'dan yönetilir: Ayarlar → Apple Kimliğin → Abonelikler. Hesabı silmek aboneliği iptal etmez, önce oradan iptal et.",
+    "a7": "Profil → Hesabı sil. Hesabın, seyahatlerin, belgelerin ve mesajların kalıcı olarak silinir.",
+    "a8": "Hayır. Bunlar yapay zekâ ile hazırlanmış genel bilgilerdir; seyahatten önce mutlaka büyükelçilik ya da resmî devlet sitesinden doğrula."
   }
 }

@@ -1970,5 +1970,26 @@
       "suspended": "Sospendi 14 giorni",
       "banned": "Banna per sempre"
     }
+  },
+  "faq": {
+    "title": "Domande frequenti",
+    "notFound": "Non trovi la risposta?",
+    "email": "Scrivici",
+    "q1": "Come pianifica Yola il mio viaggio?",
+    "q2": "È gratuito?",
+    "q3": "Funziona offline?",
+    "q4": "Come cambio lingua?",
+    "q5": "Come funziona Viaggiatori ed è sicuro?",
+    "q6": "Come annullo l’abbonamento?",
+    "q7": "Come elimino account e dati?",
+    "q8": "Le informazioni su visti e ingresso sono ufficiali?",
+    "a1": "Carica il biglietto o la prenotazione dell’hotel, oppure crea il viaggio a mano. Yola costruisce un piano giorno per giorno e ora per ora attorno alle tue prenotazioni e, se piove o c’è un ritardo, lo ripianifica con un tocco.",
+    "a2": "Puoi iniziare gratis; pianificazione, traduzione e altre funzioni hanno limiti giornalieri e vengono mostrati annunci. Yola Pro o un Trip Pass una tantum toglie i limiti.",
+    "a3": "Salva il viaggio offline dalle impostazioni del viaggio (⋯): piano, biglietti e frasi di emergenza funzionano senza internet. IA e traduzione live richiedono internet.",
+    "a4": "Profilo → Lingua. Itinerari, resoconti e note creati prima vengono tradotti automaticamente nella nuova lingua.",
+    "a5": "Viaggiatori è per maggiorenni; la tua posizione è mostrata con circa 1 km di precisione e gli incontri avvengono solo in luoghi pubblici. Puoi bloccare chiunque, eliminare un messaggio e segnalare; il nostro team esamina ogni segnalazione.",
+    "a6": "Gli abbonamenti si gestiscono nell’App Store: Impostazioni → il tuo ID Apple → Abbonamenti. Eliminare l’account non lo annulla, quindi annullalo prima lì.",
+    "a7": "Profilo → Elimina account. Account, viaggi, documenti e messaggi vengono eliminati definitivamente.",
+    "a8": "No. Sono indicazioni generali preparate con l’IA; verifica sempre con l’ambasciata o un sito ufficiale del governo prima di partire."
   }
 }
