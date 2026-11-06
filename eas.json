@@ -24,7 +24,10 @@
     "production": {
       "extends": "base",
       "environment": "production",
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_SENTRY_DSN": "https://be98120cebdd983b23332e77104cc785@o4512386039218177.ingest.de.sentry.io/4512386054291536"
+      }
     },
     "production-widget": {
       "extends": "production",
