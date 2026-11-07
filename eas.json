@@ -26,7 +26,9 @@
       "environment": "production",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_SENTRY_DSN": "https://be98120cebdd983b23332e77104cc785@o4512386039218177.ingest.de.sentry.io/4512386054291536",
+        "EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID": "268481849394-rr46l8auggvr4ckp1cvf6jg2sioe9prn.apps.googleusercontent.com",
+      "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "268481849394-6obabsh1lmg7io1v1gpo1s5qj2rkcf8d.apps.googleusercontent.com",
+      "EXPO_PUBLIC_SENTRY_DSN": "https://be98120cebdd983b23332e77104cc785@o4512386039218177.ingest.de.sentry.io/4512386054291536",
         "ADMOB_IOS_APP_ID": "ca-app-pub-2101968191056508~1381475711",
         "EXPO_PUBLIC_ADMOB_IOS_NATIVE": "ca-app-pub-2101968191056508/2469382016",
         "EXPO_PUBLIC_ADMOB_IOS_REWARDED": "ca-app-pub-2101968191056508/9225315872"
