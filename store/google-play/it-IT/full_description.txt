@@ -12,10 +12,6 @@ Yola è il tuo compagno di viaggio con IA. Pianifica attorno alle tue prenotazio
 
 Non sei in viaggio? Yola funziona anche nella tua città:
 • La mia città: piani per stasera e il weekend con luoghi reali e aperti vicino a te
-• "Decidi tu": indeciso? Ricevi una sola buona proposta, solo posti nuovi se vuoi
-• Le mie liste e Passaporto cittadino: salva luoghi, segui le tue scoperte, ottieni badge
-• Gite: brevi viaggi low cost vicino a te, per distanza e budget
-• Gira la ruota: lascia che la fortuna scelga il tuo prossimo paese e condividi la scheda
 
 Il tuo passaporto e la tua storia di viaggio:
 • Il mio passaporto: scopri dove puoi andare con il tuo passaporto e i tuoi visti (Schengen, USA, Regno Unito e altri)

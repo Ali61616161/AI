@@ -12,10 +12,6 @@ Yola ist dein KI-Reisebegleiter. Es plant rund um deine echten Buchungen, passt 
 
 Nicht auf Reisen? Yola funktioniert auch in deiner Stadt:
 • Meine Stadt: Pläne für heute Abend und das Wochenende mit echten, geöffneten Orten in deiner Nähe
-• „Entscheide für mich“: Unentschlossen? Ein guter Vorschlag, auf Wunsch nur neue Orte
-• Meine Listen und Stadtpass: Orte speichern, Entdeckungen festhalten, Abzeichen sammeln
-• Kurztrips: günstige Ausflüge in deiner Nähe, nach Entfernung und Budget
-• Dreh am Rad: Lass den Zufall dein nächstes Land wählen und teile die Karte
 
 Dein Pass und deine Reisegeschichte:
 • Mein Pass: Sieh, wohin dich dein Pass und deine Visa (Schengen, USA, UK und mehr) bringen

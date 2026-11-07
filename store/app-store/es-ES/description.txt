@@ -12,10 +12,6 @@ Yola es tu compañero de viaje con IA. Planifica en torno a tus reservas reales,
 
 ¿No estás de viaje? Yola también funciona en tu ciudad:
 • Mi ciudad: planes para esta noche y el fin de semana con lugares reales y abiertos cerca de ti
-• "Decide por mí": ¿no te decides? Recibe una sola buena idea, solo sitios nuevos si quieres
-• Mis listas y Pasaporte de ciudad: guarda lugares, sigue lo que descubres y gana insignias
-• Escapadas: viajes cortos y económicos cerca de ti, por distancia y presupuesto
-• Gira la ruleta: deja que la suerte elija tu próximo país y comparte la tarjeta
 
 Tu pasaporte y tu historial de viajes:
 • Mi pasaporte: descubre adónde puedes ir con tu pasaporte y tus visados (Schengen, EE. UU., Reino Unido y más)

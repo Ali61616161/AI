@@ -12,10 +12,6 @@ Yola, yapay zeka destekli seyahat arkadaşın. Seyahatini gerçek rezervasyonlar
 
 Seyahatte değil misin? Yola kendi şehrinde de çalışır:
 • Şehrim: yakınındaki gerçek ve açık mekanlarla bu akşam ve hafta sonu planı
-• "Kararsızım": seçemiyor musun? Tek bir güzel öneri al, istersen sadece yeni yerler
-• Listelerim ve Şehir pasaportu: mekanları kaydet, keşfettiklerini takip et, rozet kazan
-• Kaçamaklar: yakınındaki bütçe dostu kısa tatiller, mesafe ve bütçeye göre
-• Çarkı çevir: sıradaki ülkeni şansa bırak, kartını paylaş
 
 Pasaportun ve seyahat geçmişin:
 • Pasaportum: pasaportun ve ek vizelerinle (Schengen, ABD, İngiltere ve daha fazlası) nerelere gidebileceğini gör

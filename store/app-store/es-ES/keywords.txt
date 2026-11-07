@@ -1,1 +1,1 @@
-viaje,planificador,itinerario,ia,traductor,visado,pasaporte,schengen,escapada,vacaciones,guía
+viaje,planificador,itinerario,ia,traductor,visado,pasaporte,schengen,vacaciones,guía

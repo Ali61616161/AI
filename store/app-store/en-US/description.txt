@@ -12,10 +12,6 @@ Yola is your AI travel companion. It plans your trip around your real bookings, 
 
 Not traveling? Yola works in your own city too:
 • My City: plans for tonight and the weekend with real, open places near you
-• "Decide for me": can't choose? Get one great pick, new places only if you like
-• My lists and City passport: save places, track what you discovered, earn badges
-• Getaways: budget-friendly short trips near you, by distance and budget
-• Spin the wheel: let luck pick your next country and share the card
 
 Your passport and travel history:
 • My passport: see where your passport and extra visas (Schengen, US, UK and more) let you go

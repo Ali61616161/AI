@@ -1,1 +1,1 @@
-seyahat,gezi planı,rota,yapay zeka,çeviri,vize,pasaport,schengen,kaçamak,tatil,şehir rehberi
+seyahat,gezi planı,rota,yapay zeka,çeviri,vize,pasaport,schengen,tatil,şehir rehberi
