@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
+import { DateField } from '@/components/ui/date-field';
 import { EmptyState } from '@/components/ui/empty-state';
 import { ModalHeader } from '@/components/ui/modal-header';
 import { Screen } from '@/components/ui/screen';
@@ -27,7 +28,8 @@ import {
 import { SafetyActions } from '@/features/social/safety-actions';
 import { TranslatableText } from '@/features/social/translatable-text';
 import { useTrips } from '@/features/trips/queries';
-import { formatLocalDateTime, todayIsoDate } from '@/lib/format';
+import { shiftIsoYears } from '@/lib/date-input';
+import { formatDayShort, formatLocalDateTime, todayIsoDate } from '@/lib/format';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSessionStore } from '@/stores/session-store';
 import { Radius, Spacing, Typography } from '@/theme/tokens';
@@ -45,17 +47,18 @@ function Setup({ me }: { me: SocialMe }) {
   const { data: trips } = useTrips();
   const goVisible = useGoVisible();
   const [name, setName] = useState(me.display_name ?? '');
-  const [year, setYear] = useState(me.birth_year ? String(me.birth_year) : '');
+  const [birthDate, setBirthDate] = useState(me.birth_date ?? '');
   const [bio, setBio] = useState(me.bio ?? '');
   const [lookingFor, setLookingFor] = useState<string[]>(me.social?.looking_for.length ? me.social.looking_for : ['coffee']);
   const [accepted, setAccepted] = useState(false);
   const [locationDenied, setLocationDenied] = useState(false);
   const today = todayIsoDate();
   const trip = trips?.find((x) => x.start_date && x.end_date && x.start_date <= today && x.end_date >= today);
-  const birthYear = Number(year);
-  // Güvenlik için doğum yılı bir kez belirlenince değiştirilemez.
-  const yearLocked = me.birth_year != null;
-  const valid = name.trim().length > 0 && Number.isInteger(birthYear) && birthYear > 1900 && accepted && lookingFor.length > 0;
+  // Güvenlik için doğum tarihi bir kez belirlenince değiştirilemez. Eski kayıtta yalnız yıl varsa tarih yeniden girilir ve o yılla uyumlu olmalıdır.
+  const dateLocked = me.birth_date != null;
+  const adultCutoff = shiftIsoYears(today, -18);
+  const isAdult = birthDate !== '' && birthDate <= adultCutoff;
+  const valid = name.trim().length > 0 && isAdult && accepted && lookingFor.length > 0;
 
   async function submit() {
     const location = await getCurrentLocation();
@@ -63,7 +66,7 @@ function Setup({ me }: { me: SocialMe }) {
     if (!location) return;
     goVisible.mutate({
       displayName: name,
-      birthYear,
+      birthDate,
       bio,
       lookingFor,
       location,
@@ -79,7 +82,16 @@ function Setup({ me }: { me: SocialMe }) {
     <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <Text variant="subtitle">{t('social.setupTitle')}</Text>
       <TextInput value={name} onChangeText={setName} maxLength={60} placeholder={t('social.displayName')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.displayName')} style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]} />
-      <TextInput value={year} editable={!yearLocked} onChangeText={(v) => setYear(v.replace(/\D/g, '').slice(0, 4))} keyboardType="number-pad" placeholder={t('social.birthYear')} placeholderTextColor={colors.textMuted} accessibilityLabel={t('social.birthYear')} style={[Typography.body, styles.input, { color: colors.text, borderColor: colors.border }]} />
+      {dateLocked ? (
+        <View style={[styles.input, { borderColor: colors.border }]}>
+          <Text variant="caption" color="textMuted">
+            {t('social.birthYear')}
+          </Text>
+          <Text variant="body">{formatDayShort(birthDate)}</Text>
+        </View>
+      ) : (
+        <DateField label={t('social.birthYear')} value={birthDate} onChange={setBirthDate} min="1900-01-01" max={today} initial={shiftIsoYears(today, -25)} error={birthDate !== '' && !isAdult ? t('social.errors.age_required') : null} />
+      )}
       <Text variant="caption" color="textMuted">
         {t('social.identityNote')}
       </Text>

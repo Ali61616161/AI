@@ -80,17 +80,20 @@ function toReservation(item: DraftItem): ReservationPayload {
 /**
  * @param homeCity Kullanıcının yaşadığı şehir. Verilmezse ilk ulaşım kaleminin
  *   kalkış şehri ev kabul edilir; ev şehri seyahat durağı olarak eklenmez.
+ * @param endDate Kullanıcının elle verdiği dönüş/bitiş günü (tek yönlü biletlerde). Bilet tarihlerinden
+ *   hesaplanan bitişten önceyse yok sayılır.
  */
-export function buildTripDraft(input: DraftItem[], options: { homeCity?: string | null } = {}): TripDraft {
+export function buildTripDraft(input: DraftItem[], options: { homeCity?: string | null; endDate?: string | null } = {}): TripDraft {
   const items = input
     .filter((i) => i.start.local_datetime)
     .sort((a, b) => a.start.local_datetime!.localeCompare(b.start.local_datetime!));
   if (items.length === 0) throw new Error('no items with a start date');
 
   const startDate = dateOf(items[0].start.local_datetime)!;
-  const endDate = items
+  const computedEnd = items
     .map((i) => dateOf(i.end?.local_datetime) ?? dateOf(i.start.local_datetime)!)
     .reduce((max, d) => (d > max ? d : max), startDate);
+  const endDate = options.endDate && options.endDate > computedEnd ? options.endDate : computedEnd;
 
   const firstTransport = items.find((i) => TRANSPORT.has(i.type));
   const home = options.homeCity ?? (items[0] === firstTransport ? firstTransport.start.city : null);

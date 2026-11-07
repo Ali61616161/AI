@@ -201,7 +201,7 @@
     "safetyBlock": "Możesz zablokować i zgłosić każdego.",
     "setupTitle": "Twój profil podróżnika",
     "displayName": "Imię widoczne dla innych",
-    "birthYear": "Rok urodzenia (18+)",
+    "birthYear": "Data urodzenia (18+)",
     "bio": "Jedno zdanie o tobie (opcjonalnie)",
     "lookingFor": "Mam ochotę na",
     "looking": {
@@ -218,7 +218,8 @@
       "name_required": "Wpisz imię widoczne dla innych.",
       "unknown": "Coś poszło nie tak. Spróbuj ponownie.",
       "identity_locked": "Roku urodzenia nie można zmienić. Skontaktuj się z pomocą techniczną, aby go poprawić.",
-      "suspended": "Poznawanie podróżników jest tymczasowo wyłączone dla twojego konta z powodu wielu zgłoszeń. Jeśli uważasz, że to pomyłka, skontaktuj się z pomocą techniczną."
+      "suspended": "Poznawanie podróżników jest tymczasowo wyłączone dla twojego konta z powodu wielu zgłoszeń. Jeśli uważasz, że to pomyłka, skontaktuj się z pomocą techniczną.",
+      "invalid_birth_date": "Podaj prawidłową datę urodzenia."
     },
     "traveler": "Podróżnik",
     "accept": "Akceptuj",
@@ -270,7 +271,7 @@
     "blockOnly": "Tylko zablokuj",
     "reportNote": "Ta osoba zostanie zablokowana i nie zobaczy cię ponownie. Nasz zespół sprawdza każde zgłoszenie.",
     "chatSafety": "Spotykaj się w miejscach publicznych, powiedz znajomemu, gdzie jesteś, i trzymaj się własnych planów. W każdej chwili możesz zablokować lub zgłosić każdego.",
-    "identityNote": "Dla twojego bezpieczeństwa rok urodzenia nie może być zmieniony po zapisaniu. Jeśli to pomyłka, skontaktuj się z pomocą techniczną.",
+    "identityNote": "Dla twojego bezpieczeństwa daty urodzenia nie można zmienić po zapisaniu. Jeśli jest błąd, skontaktuj się z pomocą.",
     "translate": "Przetłumacz",
     "translating": "Tłumaczenie…",
     "showOriginal": "Pokaż oryginał",
@@ -412,7 +413,9 @@
     "nothingSelected": "Wybierz co najmniej jedną rezerwację.",
     "fixDates": "Popraw nieprawidłowe daty.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Godzina"
+    "fieldTime": "Godzina",
+    "tripEnd": "Koniec podróży (opcjonalnie)",
+    "tripEndHint": "Nie masz biletu powrotnego? Wybierz dzień powrotu, a Yola zaplanuje całą podróż."
   },
   "reservationType": {
     "flight": "Lot",

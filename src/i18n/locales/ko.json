@@ -195,7 +195,7 @@
     "safetyBlock": "누구든 차단하고 신고할 수 있어요.",
     "setupTitle": "여행자 프로필",
     "displayName": "다른 사람에게 보이는 이름",
-    "birthYear": "출생 연도 (18세 이상)",
+    "birthYear": "생년월일 (만 18세 이상)",
     "bio": "나를 한 줄로 소개 (선택)",
     "lookingFor": "하고 싶은 것",
     "looking": {
@@ -212,7 +212,8 @@
       "name_required": "다른 사람에게 보일 이름을 입력하세요.",
       "unknown": "문제가 발생했어요. 다시 시도해 주세요.",
       "identity_locked": "출생 연도는 변경할 수 없어요. 수정하려면 고객 지원에 문의하세요.",
-      "suspended": "여러 건의 신고로 인해 계정의 여행자 매칭이 일시적으로 중지되었어요. 오류라고 생각되면 고객 지원에 문의하세요."
+      "suspended": "여러 건의 신고로 인해 계정의 여행자 매칭이 일시적으로 중지되었어요. 오류라고 생각되면 고객 지원에 문의하세요.",
+      "invalid_birth_date": "올바른 생년월일을 입력해 주세요."
     },
     "traveler": "여행자",
     "accept": "수락",
@@ -264,7 +265,7 @@
     "blockOnly": "차단만 하기",
     "reportNote": "상대방은 차단되며 다시는 나를 볼 수 없어요. 모든 신고는 우리 팀이 검토해요.",
     "chatSafety": "공공장소에서 만나고, 친구에게 어디에 있는지 알리고, 내 일정은 지키세요. 언제든 누구든 차단하거나 신고할 수 있어요.",
-    "identityNote": "안전을 위해 출생 연도는 저장 후 변경할 수 없어요. 잘못된 경우 고객 지원에 문의하세요.",
+    "identityNote": "안전을 위해 생년월일은 저장 후 변경할 수 없어요. 잘못 입력했다면 고객지원에 문의해 주세요.",
     "translate": "번역",
     "translating": "번역하는 중…",
     "showOriginal": "원문 보기",
@@ -403,7 +404,9 @@
     "nothingSelected": "예약을 하나 이상 선택하세요.",
     "fixDates": "잘못된 날짜를 수정하세요.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "시간"
+    "fieldTime": "시간",
+    "tripEnd": "여행 종료일 (선택)",
+    "tripEndHint": "돌아오는 항공권이 없나요? 돌아오는 날을 고르면 Yola가 전체 여행을 계획해요."
   },
   "reservationType": {
     "flight": "항공편",

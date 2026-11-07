@@ -195,7 +195,7 @@
     "safetyBlock": "你可以屏蔽和举报任何人。",
     "setupTitle": "你的旅行者资料",
     "displayName": "向他人显示的名字",
-    "birthYear": "出生年份（18+）",
+    "birthYear": "出生日期（18+）",
     "bio": "一句话介绍自己（可选）",
     "lookingFor": "想一起",
     "looking": {
@@ -212,7 +212,8 @@
       "name_required": "请输入向他人显示的名字。",
       "unknown": "出错了，请重试。",
       "identity_locked": "出生年份无法更改。如需更正，请联系客服。",
-      "suspended": "由于收到多项举报，你的账号已暂时关闭旅伴功能。如果你认为有误，请联系客服。"
+      "suspended": "由于收到多项举报，你的账号已暂时关闭旅伴功能。如果你认为有误，请联系客服。",
+      "invalid_birth_date": "请输入有效的出生日期。"
     },
     "traveler": "旅行者",
     "accept": "接受",
@@ -264,7 +265,7 @@
     "blockOnly": "仅拉黑",
     "reportNote": "对方将被拉黑且无法再看到你。我们的团队会审核每一条举报。",
     "chatSafety": "在公共场所见面，告诉朋友你在哪里，并保持自己的计划。你可以随时拉黑或举报任何人。",
-    "identityNote": "为了你的安全，出生年份保存后无法更改。如有错误，请联系客服。",
+    "identityNote": "为了你的安全，出生日期保存后无法修改。如有错误，请联系客服。",
     "translate": "翻译",
     "translating": "翻译中…",
     "showOriginal": "显示原文",
@@ -403,7 +404,9 @@
     "nothingSelected": "请至少选择一项预订。",
     "fixDates": "请修正无效日期。",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "时间"
+    "fieldTime": "时间",
+    "tripEnd": "行程结束日期（可选）",
+    "tripEndHint": "没有返程票？选择返回的日期，Yola 会规划整个行程。"
   },
   "reservationType": {
     "flight": "航班",

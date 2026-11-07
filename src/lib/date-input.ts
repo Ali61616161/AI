@@ -38,3 +38,12 @@ export function clampIsoDate(value: string, min?: string | null, max?: string | 
   if (max && value > max) return max;
   return value;
 }
+
+/** "YYYY-AA-GG" tarihini yıl kadar kaydırır (29 Şubat artık yıl değilse 28 Şubat olur). */
+export function shiftIsoYears(iso: string, years: number): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  const target = y + years;
+  const leap = (target % 4 === 0 && target % 100 !== 0) || target % 400 === 0;
+  const day = m === 2 && d === 29 && !leap ? 28 : d;
+  return `${String(target).padStart(4, '0')}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}

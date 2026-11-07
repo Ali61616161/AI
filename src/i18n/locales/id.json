@@ -195,7 +195,7 @@
     "safetyBlock": "Kamu bisa memblokir dan melaporkan siapa pun.",
     "setupTitle": "Profil pelancongmu",
     "displayName": "Nama yang terlihat orang lain",
-    "birthYear": "Tahun lahir (18+)",
+    "birthYear": "Tanggal lahir (18+)",
     "bio": "Satu kalimat tentangmu (opsional)",
     "lookingFor": "Mau",
     "looking": {
@@ -212,7 +212,8 @@
       "name_required": "Masukkan nama yang terlihat orang lain.",
       "unknown": "Terjadi kesalahan. Silakan coba lagi.",
       "identity_locked": "Tahun lahirmu tidak dapat diubah. Hubungi dukungan untuk memperbaikinya.",
-      "suspended": "Pertemuan pelancong dinonaktifkan sementara untuk akunmu karena beberapa laporan. Jika menurutmu ini keliru, hubungi dukungan."
+      "suspended": "Pertemuan pelancong dinonaktifkan sementara untuk akunmu karena beberapa laporan. Jika menurutmu ini keliru, hubungi dukungan.",
+      "invalid_birth_date": "Masukkan tanggal lahir yang valid."
     },
     "traveler": "Pelancong",
     "accept": "Terima",
@@ -264,7 +265,7 @@
     "blockOnly": "Blokir saja",
     "reportNote": "Mereka akan diblokir dan tidak akan melihatmu lagi. Tim kami meninjau setiap laporan.",
     "chatSafety": "Bertemulah di tempat umum, beri tahu teman di mana kamu berada, dan tetap pegang rencanamu sendiri. Kamu bisa memblokir atau melaporkan siapa pun kapan saja.",
-    "identityNote": "Demi keamananmu, tahun lahir tidak dapat diubah setelah disimpan. Hubungi dukungan jika ada kesalahan.",
+    "identityNote": "Demi keamananmu, tanggal lahir tidak bisa diubah setelah disimpan. Jika ada kesalahan, hubungi dukungan.",
     "translate": "Terjemahkan",
     "translating": "Menerjemahkan…",
     "showOriginal": "Tampilkan asli",
@@ -403,7 +404,9 @@
     "nothingSelected": "Pilih minimal satu pemesanan.",
     "fixDates": "Perbaiki tanggal yang tidak valid.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Waktu"
+    "fieldTime": "Waktu",
+    "tripEnd": "Tanggal akhir perjalanan (opsional)",
+    "tripEndHint": "Tidak ada tiket pulang? Pilih hari kepulanganmu dan Yola merencanakan seluruh perjalanan."
   },
   "reservationType": {
     "flight": "Penerbangan",

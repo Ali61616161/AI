@@ -851,6 +851,7 @@ export type Database = {
         Row: {
           avatar_url: string | null;
           bio: string | null;
+          birth_date: string | null;
           birth_year: number | null;
           created_at: string;
           default_budget: Database['public']['Enums']['budget_tier'] | null;
@@ -878,6 +879,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null;
           bio?: string | null;
+          birth_date?: string | null;
           birth_year?: number | null;
           created_at?: string;
           default_budget?: Database['public']['Enums']['budget_tier'] | null;
@@ -903,6 +905,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null;
           bio?: string | null;
+          birth_date?: string | null;
           birth_year?: number | null;
           created_at?: string;
           default_budget?: Database['public']['Enums']['budget_tier'] | null;

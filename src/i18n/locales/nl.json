@@ -197,7 +197,7 @@
     "safetyBlock": "Je kunt iedereen blokkeren en melden.",
     "setupTitle": "Je reizigersprofiel",
     "displayName": "Naam die anderen zien",
-    "birthYear": "Geboortejaar (18+)",
+    "birthYear": "Geboortedatum (18+)",
     "bio": "Een zin over jezelf (optioneel)",
     "lookingFor": "Zin in",
     "looking": {
@@ -214,7 +214,8 @@
       "name_required": "Vul de naam in die anderen zien.",
       "unknown": "Er ging iets mis. Probeer het opnieuw.",
       "identity_locked": "Je geboortejaar kan niet worden gewijzigd. Neem contact op met support om het te corrigeren.",
-      "suspended": "Reizigers ontmoeten is tijdelijk uitgeschakeld voor je account vanwege meerdere meldingen. Denk je dat dit een vergissing is, neem dan contact op met support."
+      "suspended": "Reizigers ontmoeten is tijdelijk uitgeschakeld voor je account vanwege meerdere meldingen. Denk je dat dit een vergissing is, neem dan contact op met support.",
+      "invalid_birth_date": "Voer een geldige geboortedatum in."
     },
     "traveler": "Reiziger",
     "accept": "Accepteren",
@@ -266,7 +267,7 @@
     "blockOnly": "Alleen blokkeren",
     "reportNote": "De persoon wordt geblokkeerd en ziet je niet meer. Ons team beoordeelt elke melding.",
     "chatSafety": "Spreek op een openbare plek af, laat een vriend weten waar je bent en houd je eigen plannen aan. Je kunt altijd iedereen blokkeren of melden.",
-    "identityNote": "Voor je veiligheid kan je geboortejaar niet meer worden gewijzigd nadat het is opgeslagen. Neem contact op met support als er een fout is.",
+    "identityNote": "Voor je veiligheid kan je geboortedatum na opslaan niet meer worden gewijzigd. Is er een fout, neem dan contact op met support.",
     "translate": "Vertalen",
     "translating": "Vertalen…",
     "showOriginal": "Origineel tonen",
@@ -406,7 +407,9 @@
     "nothingSelected": "Selecteer minstens één reservering.",
     "fixDates": "Corrigeer de ongeldige data.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Tijd"
+    "fieldTime": "Tijd",
+    "tripEnd": "Einddatum reis (optioneel)",
+    "tripEndHint": "Geen retourticket? Kies de dag van terugkeer en Yola plant de hele reis."
   },
   "reservationType": {
     "flight": "Vlucht",

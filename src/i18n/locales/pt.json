@@ -199,7 +199,7 @@
     "safetyBlock": "Você pode bloquear e denunciar qualquer pessoa.",
     "setupTitle": "Seu perfil de viajante",
     "displayName": "Nome exibido para os outros",
-    "birthYear": "Ano de nascimento (18+)",
+    "birthYear": "Data de nascimento (18+)",
     "bio": "Uma frase sobre você (opcional)",
     "lookingFor": "Topo",
     "looking": {
@@ -216,7 +216,8 @@
       "name_required": "Digite o nome exibido para os outros.",
       "unknown": "Algo deu errado. Tente novamente.",
       "identity_locked": "Seu ano de nascimento não pode ser alterado. Fale com o suporte para corrigi-lo.",
-      "suspended": "O encontro de viajantes está temporariamente desativado para sua conta por causa de várias denúncias. Se acha que é um engano, fale com o suporte."
+      "suspended": "O encontro de viajantes está temporariamente desativado para sua conta por causa de várias denúncias. Se acha que é um engano, fale com o suporte.",
+      "invalid_birth_date": "Informe uma data de nascimento válida."
     },
     "traveler": "Viajante",
     "accept": "Aceitar",
@@ -268,7 +269,7 @@
     "blockOnly": "Só bloquear",
     "reportNote": "A pessoa será bloqueada e não verá você de novo. Nossa equipe analisa cada denúncia.",
     "chatSafety": "Encontre-se em local público, avise um amigo onde você está e mantenha seus próprios planos. Você pode bloquear ou denunciar qualquer pessoa a qualquer momento.",
-    "identityNote": "Para sua segurança, o ano de nascimento não pode ser alterado depois de salvo. Fale com o suporte se houver algum erro.",
+    "identityNote": "Para sua segurança, a data de nascimento não pode ser alterada depois de salva. Se houver um erro, fale com o suporte.",
     "translate": "Traduzir",
     "translating": "Traduzindo…",
     "showOriginal": "Mostrar original",
@@ -409,7 +410,9 @@
     "nothingSelected": "Selecione pelo menos uma reserva.",
     "fixDates": "Corrija as datas inválidas.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Horário"
+    "fieldTime": "Horário",
+    "tripEnd": "Fim da viagem (opcional)",
+    "tripEndHint": "Sem passagem de volta? Escolha o dia da volta e o Yola planeja a viagem toda."
   },
   "reservationType": {
     "flight": "Voo",

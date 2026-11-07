@@ -197,7 +197,7 @@
     "safetyBlock": "Puedes bloquear y denunciar a cualquier persona.",
     "setupTitle": "Tu perfil de viajero",
     "displayName": "Nombre visible para otros",
-    "birthYear": "Año de nacimiento (18+)",
+    "birthYear": "Fecha de nacimiento (18+)",
     "bio": "Una frase sobre ti (opcional)",
     "lookingFor": "Me apetece",
     "looking": {
@@ -214,7 +214,8 @@
       "name_required": "Escribe el nombre visible para otros.",
       "unknown": "Algo salió mal. Inténtalo de nuevo.",
       "identity_locked": "El año de nacimiento no se puede cambiar. Contacta con soporte para corregirlo.",
-      "suspended": "Viajeros está desactivado temporalmente en tu cuenta por varias denuncias. Si crees que es un error, contacta con soporte."
+      "suspended": "Viajeros está desactivado temporalmente en tu cuenta por varias denuncias. Si crees que es un error, contacta con soporte.",
+      "invalid_birth_date": "Introduce una fecha de nacimiento válida."
     },
     "traveler": "Viajero",
     "accept": "Aceptar",
@@ -266,7 +267,7 @@
     "blockOnly": "Solo bloquear",
     "reportNote": "Quedará bloqueado y no volverá a verte. Nuestro equipo revisa cada denuncia.",
     "chatSafety": "Queda en público, avisa a alguien de dónde estás y mantén tus planes. Puedes bloquear o denunciar a cualquiera en cualquier momento.",
-    "identityNote": "Por tu seguridad, el año de nacimiento no se puede cambiar una vez guardado. Si hay un error, contacta con soporte.",
+    "identityNote": "Por tu seguridad, la fecha de nacimiento no se puede cambiar una vez guardada. Si hay un error, contacta con soporte.",
     "translate": "Traducir",
     "translating": "Traduciendo…",
     "showOriginal": "Mostrar original",
@@ -406,7 +407,9 @@
     "nothingSelected": "Elige al menos una reserva.",
     "fixDates": "Corrige las fechas no válidas.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Hora"
+    "fieldTime": "Hora",
+    "tripEnd": "Fin del viaje (opcional)",
+    "tripEndHint": "¿Sin billete de vuelta? Elige el día de regreso y Yola planifica todo el viaje."
   },
   "reservationType": {
     "flight": "Vuelo",

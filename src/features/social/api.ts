@@ -14,7 +14,7 @@ function useUser() {
 const enabled = (userId: string | null) => Boolean(userId) && isSupabaseConfigured();
 
 export type SocialProfile = { is_visible: boolean; looking_for: string[]; city: string | null; available_until: string | null };
-export type SocialMe = { display_name: string | null; birth_year: number | null; bio: string | null; social: SocialProfile | null };
+export type SocialMe = { display_name: string | null; birth_year: number | null; birth_date: string | null; bio: string | null; social: SocialProfile | null };
 
 export function useSocialMe() {
   const userId = useUser();
@@ -24,7 +24,7 @@ export function useSocialMe() {
     queryFn: async (): Promise<SocialMe> => {
       const supabase = getSupabase();
       const [{ data: profile, error }, { data: social }] = await Promise.all([
-        supabase.from('profiles').select('display_name, birth_year, bio').eq('id', userId!).single(),
+        supabase.from('profiles').select('display_name, birth_year, birth_date, bio').eq('id', userId!).single(),
         supabase.from('social_profiles').select('is_visible, looking_for, city, available_until').eq('user_id', userId!).maybeSingle(),
       ]);
       if (error) throw error;
@@ -35,7 +35,8 @@ export function useSocialMe() {
 
 export type GoVisibleInput = {
   displayName: string;
-  birthYear: number;
+  /** Doğum tarihi (YYYY-AA-GG). */
+  birthDate: string;
   bio: string;
   lookingFor: string[];
   location: { lat: number; lng: number };
@@ -44,7 +45,7 @@ export type GoVisibleInput = {
   until: string | null;
 };
 
-export type SocialErrorCode = 'age_required' | 'name_required' | 'identity_locked' | 'suspended' | 'unknown';
+export type SocialErrorCode = 'age_required' | 'name_required' | 'identity_locked' | 'suspended' | 'invalid_birth_date' | 'unknown';
 
 export class SocialError extends Error {
   constructor(readonly code: SocialErrorCode) {
@@ -61,10 +62,12 @@ export function useGoVisible() {
       const supabase = getSupabase();
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({ display_name: input.displayName.trim().slice(0, 60), birth_year: input.birthYear, bio: input.bio.trim().slice(0, 300) || null })
+        .update({ display_name: input.displayName.trim().slice(0, 60), birth_date: input.birthDate, bio: input.bio.trim().slice(0, 300) || null })
         .eq('id', userId!);
       if (profileError) {
-        if ((profileError as { hint?: string }).hint === 'identity_locked') throw new SocialError('identity_locked');
+        const hint = (profileError as { hint?: string }).hint;
+        if (hint === 'identity_locked') throw new SocialError('identity_locked');
+        if (hint === 'invalid_birth_date') throw new SocialError('invalid_birth_date');
         throw profileError;
       }
       const { error: consentError } = await supabase.from('consents').insert([

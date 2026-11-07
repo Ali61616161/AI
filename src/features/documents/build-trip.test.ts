@@ -103,3 +103,16 @@ Deno.test('buildTripDraft: ev şehri verilirse dönüş varışı durak sayılma
 Deno.test('buildTripDraft: tarihsiz liste hata verir', () => {
   assertThrows(() => buildTripDraft([]));
 });
+
+Deno.test('buildTripDraft: tek yönlü bilette elle verilen bitiş günü kullanılır, önceki tarih yok sayılır', () => {
+  const oneWay = [outbound];
+  const base = buildTripDraft(oneWay);
+  assertEquals(base.end_date, base.start_date);
+
+  const longer = buildTripDraft(oneWay, { endDate: '2026-11-10' });
+  assertEquals(longer.start_date, '2026-11-01');
+  assertEquals(longer.end_date, '2026-11-10');
+  assertEquals(longer.destinations[longer.destinations.length - 1].depart_on, '2026-11-10');
+
+  assertEquals(buildTripDraft(oneWay, { endDate: '2026-10-01' }).end_date, base.end_date);
+});

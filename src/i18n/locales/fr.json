@@ -197,7 +197,7 @@
     "safetyBlock": "Tu peux bloquer et signaler n’importe qui.",
     "setupTitle": "Ton profil voyageur",
     "displayName": "Nom visible par les autres",
-    "birthYear": "Année de naissance (18+)",
+    "birthYear": "Date de naissance (18+)",
     "bio": "Une phrase sur toi (facultatif)",
     "lookingFor": "Envie de",
     "looking": {
@@ -214,7 +214,8 @@
       "name_required": "Saisis le nom visible par les autres.",
       "unknown": "Une erreur s’est produite. Réessaie.",
       "identity_locked": "L’année de naissance ne peut pas être modifiée. Contacte le support pour la corriger.",
-      "suspended": "Voyageurs est temporairement désactivé sur ton compte à cause de plusieurs signalements. Si tu penses à une erreur, contacte le support."
+      "suspended": "Voyageurs est temporairement désactivé sur ton compte à cause de plusieurs signalements. Si tu penses à une erreur, contacte le support.",
+      "invalid_birth_date": "Saisis une date de naissance valide."
     },
     "traveler": "Voyageur",
     "accept": "Accepter",
@@ -266,7 +267,7 @@
     "blockOnly": "Bloquer seulement",
     "reportNote": "Cette personne sera bloquée et ne te verra plus. Notre équipe examine chaque signalement.",
     "chatSafety": "Donne rendez-vous dans un lieu public, dis à un proche où tu es et garde tes propres projets. Tu peux bloquer ou signaler quelqu’un à tout moment.",
-    "identityNote": "Pour ta sécurité, l’année de naissance ne peut plus être modifiée une fois enregistrée. En cas d’erreur, contacte le support.",
+    "identityNote": "Pour ta sécurité, la date de naissance ne peut plus être modifiée une fois enregistrée. En cas d’erreur, contacte le support.",
     "translate": "Traduire",
     "translating": "Traduction…",
     "showOriginal": "Afficher l'original",
@@ -406,7 +407,9 @@
     "nothingSelected": "Sélectionne au moins une réservation.",
     "fixDates": "Corrige les dates invalides.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Heure"
+    "fieldTime": "Heure",
+    "tripEnd": "Fin du voyage (facultatif)",
+    "tripEndHint": "Pas de billet retour ? Choisis le jour du retour et Yola planifie tout le voyage."
   },
   "reservationType": {
     "flight": "Vol",

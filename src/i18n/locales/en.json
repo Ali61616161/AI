@@ -197,7 +197,7 @@
     "safetyBlock": "You can block and report anyone.",
     "setupTitle": "Your traveler profile",
     "displayName": "Name shown to others",
-    "birthYear": "Birth year (18+)",
+    "birthYear": "Date of birth (18+)",
     "bio": "A line about you (optional)",
     "lookingFor": "Up for",
     "looking": {
@@ -214,7 +214,8 @@
       "name_required": "Please enter the name shown to others.",
       "unknown": "Something went wrong. Please try again.",
       "identity_locked": "Your birth year can't be changed. Contact support to correct it.",
-      "suspended": "Traveler matching is temporarily off for your account because of multiple reports. If you think this is a mistake, contact support."
+      "suspended": "Traveler matching is temporarily off for your account because of multiple reports. If you think this is a mistake, contact support.",
+      "invalid_birth_date": "Enter a valid date of birth."
     },
     "traveler": "Traveler",
     "accept": "Accept",
@@ -266,7 +267,7 @@
     "blockOnly": "Just block",
     "reportNote": "They'll be blocked and won't see you again. Our team reviews every report.",
     "chatSafety": "Meet in public, tell a friend where you are and keep your own plans. You can block or report anyone at any time.",
-    "identityNote": "For your safety, your birth year can't be changed once saved. Contact support if there's a mistake.",
+    "identityNote": "For your safety, your date of birth can't be changed once saved. Contact support if there's a mistake.",
     "translate": "Translate",
     "translating": "Translating…",
     "showOriginal": "Show original",
@@ -406,7 +407,9 @@
     "nothingSelected": "Select at least one reservation.",
     "fixDates": "Fix the invalid dates.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Time"
+    "fieldTime": "Time",
+    "tripEnd": "Trip end date (optional)",
+    "tripEndHint": "No return ticket? Pick the day you come back and Yola plans the whole trip."
   },
   "reservationType": {
     "flight": "Flight",

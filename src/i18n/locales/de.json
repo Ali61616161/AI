@@ -197,7 +197,7 @@
     "safetyBlock": "Du kannst jede Person blockieren und melden.",
     "setupTitle": "Dein Reiseprofil",
     "displayName": "Für andere sichtbarer Name",
-    "birthYear": "Geburtsjahr (18+)",
+    "birthYear": "Geburtsdatum (18+)",
     "bio": "Ein Satz über dich (optional)",
     "lookingFor": "Lust auf",
     "looking": {
@@ -214,7 +214,8 @@
       "name_required": "Bitte gib den für andere sichtbaren Namen ein.",
       "unknown": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
       "identity_locked": "Das Geburtsjahr kann nicht geändert werden. Wende dich zur Korrektur an den Support.",
-      "suspended": "Reisende treffen ist für dein Konto vorübergehend gesperrt, weil mehrere Meldungen vorliegen. Wenn du das für einen Fehler hältst, kontaktiere den Support."
+      "suspended": "Reisende treffen ist für dein Konto vorübergehend gesperrt, weil mehrere Meldungen vorliegen. Wenn du das für einen Fehler hältst, kontaktiere den Support.",
+      "invalid_birth_date": "Gib ein gültiges Geburtsdatum ein."
     },
     "traveler": "Reisende(r)",
     "accept": "Annehmen",
@@ -266,7 +267,7 @@
     "blockOnly": "Nur blockieren",
     "reportNote": "Die Person wird blockiert und sieht dich nicht mehr. Unser Team prüft jede Meldung.",
     "chatSafety": "Triff dich öffentlich, sag jemandem, wo du bist, und behalte deine eigenen Pläne. Du kannst jederzeit jemanden blockieren oder melden.",
-    "identityNote": "Zu deiner Sicherheit kann das Geburtsjahr nach dem Speichern nicht mehr geändert werden. Wende dich bei einem Fehler an den Support.",
+    "identityNote": "Zu deiner Sicherheit kann das Geburtsdatum nach dem Speichern nicht mehr geändert werden. Bei einem Fehler wende dich an den Support.",
     "translate": "Übersetzen",
     "translating": "Übersetze…",
     "showOriginal": "Original anzeigen",
@@ -406,7 +407,9 @@
     "nothingSelected": "Wähle mindestens eine Buchung aus.",
     "fixDates": "Korrigiere die ungültigen Datumsangaben.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Uhrzeit"
+    "fieldTime": "Uhrzeit",
+    "tripEnd": "Reiseende (optional)",
+    "tripEndHint": "Kein Rückflugticket? Wähle den Tag deiner Rückkehr, dann plant Yola die ganze Reise."
   },
   "reservationType": {
     "flight": "Flug",

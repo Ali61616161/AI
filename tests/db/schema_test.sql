@@ -1151,6 +1151,43 @@ end $$;
 reset role;
 
 -- ---------------------------------------------------------------------------
+\echo '18k. Doğum tarihi: tam tarihle 18 kontrolü, değiştirilemez, gelecek tarih reddedilir'
+reset role;
+do $$ begin
+  assert public.is_adult((current_date - interval '18 years')::date, null), '18 yaşını bugün dolduran yetişkindir';
+  assert not public.is_adult((current_date - interval '18 years' + interval '1 day')::date, null), 'doğum günü yarın olan 17 yaşındadır (yıl farkı 18 olsa bile)';
+  assert public.is_adult(null::date, (extract(year from now())::int - 30)::smallint), 'eski kayıt: yıl ile kontrol';
+  assert not public.is_adult(null::date, null::smallint), 'bilgi yoksa yetişkin sayılmaz';
+end $$;
+delete from public.social_profiles where user_id = '00000000-0000-0000-0000-00000000000c';
+update public.profiles set birth_year = null, birth_date = (current_date - interval '18 years' + interval '1 day')::date where id = '00000000-0000-0000-0000-00000000000c';
+do $$ begin
+  assert (select birth_year from public.profiles where id = '00000000-0000-0000-0000-00000000000c') = extract(year from (current_date - interval '18 years' + interval '1 day'))::int, 'birth_year tarihten türetilmeli';
+end $$;
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$ begin
+  assert tests.throws($q$ insert into public.social_profiles (user_id, is_visible, approx_location) values (auth.uid(), true, 'SRID=4326;POINT(12.49 41.89)') $q$),
+    'yarın 18 olacak kullanıcı görünür olamaz (yalnız yıla bakılsaydı geçerdi)';
+end $$;
+reset role;
+update public.profiles set birth_date = (current_date - interval '25 years')::date where id = '00000000-0000-0000-0000-00000000000c';
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000c');
+do $$ begin
+  insert into public.social_profiles (user_id, is_visible, approx_location) values (auth.uid(), true, 'SRID=4326;POINT(12.49 41.89)');
+  assert tests.throws($q$ update public.profiles set birth_date = date '1980-01-01' where id = auth.uid() $q$), 'doğum tarihi sonradan değiştirilememeli';
+end $$;
+reset role;
+delete from public.social_profiles where user_id = '00000000-0000-0000-0000-00000000000c';
+update public.profiles set birth_date = null, birth_year = 1995 where id = '00000000-0000-0000-0000-00000000000c';
+set role authenticated;
+call tests.login('00000000-0000-0000-0000-00000000000b');
+do $$ begin
+  assert tests.throws($q$ update public.profiles set birth_date = current_date + 1 where id = auth.uid() $q$), 'gelecekteki doğum tarihi reddedilmeli';
+end $$;
+reset role;
+
 \echo '19. Hesap silinince tüm veri silinir (KVKK/GDPR)'
 reset role;
 delete from auth.users where id = '00000000-0000-0000-0000-00000000000a';

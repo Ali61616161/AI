@@ -197,7 +197,7 @@
     "safetyBlock": "İstediğin kişiyi engelleyebilir ve şikayet edebilirsin.",
     "setupTitle": "Gezgin profilin",
     "displayName": "Diğerlerinin göreceği ad",
-    "birthYear": "Doğum yılı (18+)",
+    "birthYear": "Doğum tarihi (18+)",
     "bio": "Kendinden bir cümle (isteğe bağlı)",
     "lookingFor": "Neye varsın",
     "looking": {
@@ -214,7 +214,8 @@
       "name_required": "Diğerlerinin göreceği adı yaz.",
       "unknown": "Bir şeyler ters gitti. Tekrar dene.",
       "identity_locked": "Doğum yılı değiştirilemez. Düzeltme için destekle iletişime geç.",
-      "suspended": "Hesabın birden fazla şikayet aldığı için Gezginler geçici olarak kapatıldı. Hata olduğunu düşünüyorsan destekle iletişime geç."
+      "suspended": "Hesabın birden fazla şikayet aldığı için Gezginler geçici olarak kapatıldı. Hata olduğunu düşünüyorsan destekle iletişime geç.",
+      "invalid_birth_date": "Geçerli bir doğum tarihi gir."
     },
     "traveler": "Gezgin",
     "accept": "Kabul et",
@@ -266,7 +267,7 @@
     "blockOnly": "Sadece engelle",
     "reportNote": "Engellenecek ve seni bir daha göremeyecek. Ekibimiz her şikayeti inceler.",
     "chatSafety": "Halka açık yerde buluş, bir arkadaşına nerede olduğunu söyle ve kendi planına sadık kal. Herkesi istediğin an engelleyebilir veya şikayet edebilirsin.",
-    "identityNote": "Güvenliğin için doğum yılı kaydedildikten sonra değiştirilemez. Hata varsa destekle iletişime geç.",
+    "identityNote": "Güvenliğin için doğum tarihin kaydedildikten sonra değiştirilemez. Hata varsa destekle iletişime geç.",
     "translate": "Çevir",
     "translating": "Çevriliyor…",
     "showOriginal": "Özgününü göster",
@@ -406,7 +407,9 @@
     "nothingSelected": "En az bir rezervasyon seç.",
     "fixDates": "Hatalı tarihleri düzelt.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Saat"
+    "fieldTime": "Saat",
+    "tripEnd": "Seyahat bitiş günü (isteğe bağlı)",
+    "tripEndHint": "Dönüş biletin yok mu? Döneceğin günü seç, Yola tüm seyahati planlasın."
   },
   "reservationType": {
     "flight": "Uçuş",

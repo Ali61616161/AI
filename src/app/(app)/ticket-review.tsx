@@ -190,13 +190,24 @@ export default function TicketReviewScreen() {
   const selected = useMemo(() => items.filter((i) => !excluded.includes(i.key)), [items, excluded]);
   const hasDateErrors = selected.some((i) => dateErrors[i.key]?.start || dateErrors[i.key]?.end);
 
+  // Tek yönlü bilette dönüş günü bilinmez; kullanıcı isterse seyahatin bitiş gününü buradan verir.
+  const [tripEnd, setTripEnd] = useState('');
   const draft = useMemo(() => {
     try {
-      return selected.length && !hasDateErrors ? buildTripDraft(selected) : null;
+      return selected.length && !hasDateErrors ? buildTripDraft(selected, { endDate: tripEnd || null }) : null;
     } catch {
       return null;
     }
-  }, [selected, hasDateErrors]);
+  }, [selected, hasDateErrors, tripEnd]);
+  const noReturn = useMemo(() => {
+    if (tripId || !selected.length || hasDateErrors) return false;
+    try {
+      const base = buildTripDraft(selected);
+      return base.start_date === base.end_date;
+    } catch {
+      return false;
+    }
+  }, [selected, hasDateErrors, tripId]);
 
   function onDateText(item: DraftItem, field: DateField, text: string) {
     const trimmed = text.trim();
@@ -256,6 +267,9 @@ export default function TicketReviewScreen() {
             cities: draft.destinations.map((d) => d.city).join(', ') || draft.title,
           })}
         </Text>
+      )}
+      {noReturn && draft && (
+        <DatePickerField label={t('review.tripEnd')} hint={t('review.tripEndHint')} value={tripEnd} onChange={setTripEnd} min={draft.start_date} initial={draft.start_date} optional />
       )}
       {items.map((item) => (
         <ItemCard

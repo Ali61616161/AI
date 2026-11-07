@@ -197,7 +197,7 @@
     "safetyBlock": "Puoi bloccare e segnalare chiunque.",
     "setupTitle": "Il tuo profilo viaggiatore",
     "displayName": "Nome visibile agli altri",
-    "birthYear": "Anno di nascita (18+)",
+    "birthYear": "Data di nascita (18+)",
     "bio": "Una frase su di te (facoltativo)",
     "lookingFor": "Mi va di",
     "looking": {
@@ -214,7 +214,8 @@
       "name_required": "Inserisci il nome visibile agli altri.",
       "unknown": "Qualcosa è andato storto. Riprova.",
       "identity_locked": "L’anno di nascita non può essere modificato. Contatta l’assistenza per correggerlo.",
-      "suspended": "Viaggiatori è temporaneamente disattivato sul tuo account per più segnalazioni. Se pensi sia un errore, contatta il supporto."
+      "suspended": "Viaggiatori è temporaneamente disattivato sul tuo account per più segnalazioni. Se pensi sia un errore, contatta il supporto.",
+      "invalid_birth_date": "Inserisci una data di nascita valida."
     },
     "traveler": "Viaggiatore",
     "accept": "Accetta",
@@ -266,7 +267,7 @@
     "blockOnly": "Blocca soltanto",
     "reportNote": "Verrà bloccato e non potrà più vederti. Il nostro team esamina ogni segnalazione.",
     "chatSafety": "Incontra le persone in luoghi pubblici, di’ a qualcuno dove sei e mantieni i tuoi piani. Puoi bloccare o segnalare chiunque in qualsiasi momento.",
-    "identityNote": "Per la tua sicurezza, l’anno di nascita non può essere modificato dopo il salvataggio. Se c’è un errore, contatta l’assistenza.",
+    "identityNote": "Per la tua sicurezza, la data di nascita non può essere modificata dopo il salvataggio. In caso di errore contatta il supporto.",
     "translate": "Traduci",
     "translating": "Traduzione…",
     "showOriginal": "Mostra originale",
@@ -406,7 +407,9 @@
     "nothingSelected": "Seleziona almeno una prenotazione.",
     "fixDates": "Correggi le date non valide.",
     "summary": "{{dates}} · {{cities}}",
-    "fieldTime": "Ora"
+    "fieldTime": "Ora",
+    "tripEnd": "Fine del viaggio (facoltativo)",
+    "tripEndHint": "Niente biglietto di ritorno? Scegli il giorno del rientro e Yola pianifica tutto il viaggio."
   },
   "reservationType": {
     "flight": "Volo",
