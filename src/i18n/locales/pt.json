@@ -1702,6 +1702,12 @@
       "departed": "Partiu",
       "now": "Agora",
       "leavesIn": "até partir"
+    },
+    "ride": {
+      "riding": "Na linha {{line}}",
+      "toward": "Sentido {{headsign}}",
+      "exit": "Cerca de {{distance}} até descer em {{stop}}",
+      "waiting": "Esperando a linha {{line}} em {{stop}}"
     }
   },
   "tripQuestions": {

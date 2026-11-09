@@ -1816,6 +1816,12 @@
       "departed": "غادرت",
       "now": "الآن",
       "leavesIn": "حتى تغادر"
+    },
+    "ride": {
+      "riding": "أنت على الخط {{line}}",
+      "toward": "باتجاه {{headsign}}",
+      "exit": "حوالي {{distance}} حتى النزول في {{stop}}",
+      "waiting": "تنتظر الخط {{line}} في {{stop}}"
     }
   },
   "tripQuestions": {

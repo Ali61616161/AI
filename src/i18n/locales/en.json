@@ -1664,6 +1664,12 @@
       "departed": "Left",
       "now": "Now",
       "leavesIn": "until it leaves"
+    },
+    "ride": {
+      "riding": "On {{line}}",
+      "toward": "Toward {{headsign}}",
+      "exit": "About {{distance}} to get off at {{stop}}",
+      "waiting": "Waiting for {{line}} at {{stop}}"
     }
   },
   "tripQuestions": {

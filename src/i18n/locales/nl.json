@@ -1664,6 +1664,12 @@
       "departed": "Vertrokken",
       "now": "Nu",
       "leavesIn": "tot vertrek"
+    },
+    "ride": {
+      "riding": "In lijn {{line}}",
+      "toward": "Richting {{headsign}}",
+      "exit": "Nog ongeveer {{distance}} tot je uitstapt bij {{stop}}",
+      "waiting": "Wachten op lijn {{line}} bij {{stop}}"
     }
   },
   "tripQuestions": {

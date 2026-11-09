@@ -1664,6 +1664,12 @@
       "departed": "Salió",
       "now": "Ahora",
       "leavesIn": "para que salga"
+    },
+    "ride": {
+      "riding": "En la línea {{line}}",
+      "toward": "Hacia {{headsign}}",
+      "exit": "A unos {{distance}} de tu bajada en {{stop}}",
+      "waiting": "Esperando la línea {{line}} en {{stop}}"
     }
   },
   "tripQuestions": {

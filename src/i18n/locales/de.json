@@ -1664,6 +1664,12 @@
       "departed": "Abgefahren",
       "now": "Jetzt",
       "leavesIn": "bis zur Abfahrt"
+    },
+    "ride": {
+      "riding": "In Linie {{line}}",
+      "toward": "Richtung {{headsign}}",
+      "exit": "Noch ca. {{distance}} bis zum Ausstieg an der Haltestelle {{stop}}",
+      "waiting": "Warten auf Linie {{line}} an der Haltestelle {{stop}}"
     }
   },
   "tripQuestions": {

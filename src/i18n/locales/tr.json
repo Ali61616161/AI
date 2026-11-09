@@ -1664,6 +1664,12 @@
       "departed": "Kalktı",
       "now": "Şimdi",
       "leavesIn": "sonra kalkıyor"
+    },
+    "ride": {
+      "riding": "{{line}} hattındasın",
+      "toward": "Yön: {{headsign}}",
+      "exit": "{{stop}} durağında inmene yaklaşık {{distance}} var",
+      "waiting": "{{stop}} durağında {{line}} bekliyorsun"
     }
   },
   "tripQuestions": {

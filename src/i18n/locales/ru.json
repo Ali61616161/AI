@@ -1740,6 +1740,12 @@
       "departed": "Ушёл",
       "now": "Сейчас",
       "leavesIn": "до отправления"
+    },
+    "ride": {
+      "riding": "Вы едете: {{line}}",
+      "toward": "В сторону: {{headsign}}",
+      "exit": "До выхода на остановке «{{stop}}» около {{distance}}",
+      "waiting": "Ждёте {{line}} на остановке «{{stop}}»"
     }
   },
   "tripQuestions": {

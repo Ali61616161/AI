@@ -1740,6 +1740,12 @@
       "departed": "Odjechał",
       "now": "Teraz",
       "leavesIn": "do odjazdu"
+    },
+    "ride": {
+      "riding": "Linia {{line}}",
+      "toward": "Kierunek {{headsign}}",
+      "exit": "Około {{distance}} do wysiadki na przystanku {{stop}}",
+      "waiting": "Czekasz na linię {{line}} na przystanku {{stop}}"
     }
   },
   "tripQuestions": {

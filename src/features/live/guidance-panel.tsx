@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Text } from '@/components/ui/text';
 import { useCrisisReplan } from '@/features/plan/replan';
+import { VEHICLE_ICONS } from '@/features/transport/api';
+import { formatDistance } from '@/features/transport/navigation-logic';
 import { formatTime } from '@/lib/format';
 import { Spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/use-theme';
@@ -29,7 +31,7 @@ export function GuidancePanel({ tripId, guidance, timezone, nowMs, canEdit = tru
   const mark = useLiveStore((s) => s.mark);
   const replan = useCrisisReplan();
   const [done, setDone] = useState(false);
-  const { overdue, upcoming, late, flight, leaveAt, airportName, airportTravelMin } = guidance;
+  const { overdue, upcoming, late, flight, leaveAt, airportName, airportTravelMin, ride, rideExitM } = guidance;
 
   const fix = async (stop: DriftStop, reason: 'overdue' | 'late') => {
     setDone(false);
@@ -48,6 +50,31 @@ export function GuidancePanel({ tripId, guidance, timezone, nowMs, canEdit = tru
   };
 
   const cards: React.ReactNode[] = [];
+
+  if (ride.kind === 'riding' || ride.kind === 'waiting') {
+    const step = ride.step;
+    const line = step.line ?? step.headsign ?? '';
+    cards.push(
+      <Card key="ride" variant="glow" padding={Spacing.md}>
+        <View style={styles.row}>
+          <Ionicons name={VEHICLE_ICONS[step.vehicle]} size={22} color={colors.primary} />
+          <View style={styles.flex}>
+            <Text variant="bodyStrong">{ride.kind === 'riding' ? t('live.ride.riding', { line }) : t('live.ride.waiting', { line, stop: step.from ?? '' })}</Text>
+            {ride.kind === 'riding' && step.headsign ? (
+              <Text variant="caption" color="textSecondary">
+                {t('live.ride.toward', { headsign: step.headsign })}
+              </Text>
+            ) : null}
+            {ride.kind === 'riding' && rideExitM !== null && step.to ? (
+              <Text variant="caption" color="textSecondary">
+                {t('live.ride.exit', { distance: formatDistance(rideExitM), stop: step.to })}
+              </Text>
+            ) : null}
+          </View>
+        </View>
+      </Card>,
+    );
+  }
 
   if (flight && leaveAt !== null && leaveAt - nowMs < 8 * 3_600_000) {
     const minutesLeft = Math.round((leaveAt - nowMs) / 60_000);

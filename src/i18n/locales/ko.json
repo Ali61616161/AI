@@ -1626,6 +1626,12 @@
       "departed": "출발함",
       "now": "지금",
       "leavesIn": "출발까지"
+    },
+    "ride": {
+      "riding": "{{line}} 탑승 중",
+      "toward": "방면: {{headsign}}",
+      "exit": "{{stop}} 하차까지 약 {{distance}}",
+      "waiting": "{{stop}}에서 {{line}} 대기 중"
     }
   },
   "tripQuestions": {

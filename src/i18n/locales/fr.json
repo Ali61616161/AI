@@ -1664,6 +1664,12 @@
       "departed": "Parti",
       "now": "Maintenant",
       "leavesIn": "avant le départ"
+    },
+    "ride": {
+      "riding": "Sur la ligne {{line}}",
+      "toward": "Direction {{headsign}}",
+      "exit": "Environ {{distance}} avant ta descente à {{stop}}",
+      "waiting": "En attente de la ligne {{line}} à {{stop}}"
     }
   },
   "tripQuestions": {

@@ -1664,6 +1664,12 @@
       "departed": "Partito",
       "now": "Ora",
       "leavesIn": "alla partenza"
+    },
+    "ride": {
+      "riding": "Sulla linea {{line}}",
+      "toward": "Direzione {{headsign}}",
+      "exit": "Circa {{distance}} alla tua fermata {{stop}}",
+      "waiting": "In attesa della linea {{line}} a {{stop}}"
     }
   },
   "tripQuestions": {

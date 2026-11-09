@@ -2,11 +2,13 @@ import * as Location from 'expo-location';
 import { useEffect, useMemo, useState } from 'react';
 
 import { useRoute, type RouteMode } from '@/features/transport/api';
+import { decodePolyline, thin } from '@/features/transport/polyline';
 import type { TripDetail, TripReservation } from '@/features/trips/queries';
 
 import { leaveByMs, minutesLate, nextStop, overdueStop, freeDayKey, type DriftStop, type StopMark } from './drift-logic';
 import { arrivedStop, distanceKm, leaveInMin, stableOrigin, WALK_MODE_KM } from './live-logic';
 import { useLiveStore } from './live-store';
+import { matchRide, metersToExit, type RideFix, type RideStep } from './ride-logic';
 
 type Coords = { lat: number; lng: number };
 
@@ -15,8 +17,9 @@ type Coords = { lat: number; lng: number };
  * 300 m'den fazla hareket edilince değişir (her adımda yeni rota istenmez, kota korunur).
  * İzin bir kez istenir; verilmezse ikisi de null kalır.
  */
-export function useHere(enabled: boolean): { here: Coords | null; origin: Coords | null } {
+export function useHere(enabled: boolean): { here: Coords | null; origin: Coords | null; fixes: RideFix[] } {
   const [here, setHere] = useState<Coords | null>(null);
+  const [fixes, setFixes] = useState<RideFix[]>([]);
   const [origin, setOrigin] = useState<Coords | null>(null);
   useEffect(() => {
     if (!enabled) return;
@@ -30,6 +33,7 @@ export function useHere(enabled: boolean): { here: Coords | null; origin: Coords
         sub = await Location.watchPositionAsync({ accuracy: Location.Accuracy.Balanced, distanceInterval: 25, timeInterval: 15_000 }, (p) => {
           const c = { lat: p.coords.latitude, lng: p.coords.longitude };
           setHere(c);
+          setFixes((prev) => [...prev.slice(-3), { ...c, speed: p.coords.speed !== null && p.coords.speed >= 0 ? p.coords.speed : null, at: p.timestamp }]);
           setOrigin((prev) => stableOrigin(prev, c));
         });
         if (!alive) sub.remove();
@@ -42,7 +46,7 @@ export function useHere(enabled: boolean): { here: Coords | null; origin: Coords
       sub?.remove();
     };
   }, [enabled]);
-  return { here, origin };
+  return { here, origin, fixes };
 }
 
 type Stop = DriftStop & { lat: number; lng: number };
@@ -60,7 +64,7 @@ export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: s
   const marks = useLiveStore((s) => s.marks) as Record<string, StopMark>;
   const freeDays = useLiveStore((s) => s.freeDays);
   const freeDay = date ? Boolean(freeDays[freeDayKey(tripId, date)]) : false;
-  const { here, origin } = useHere(isToday);
+  const { here, origin, fixes } = useHere(isToday);
   const tripMode: RouteMode = trip?.local_transport === 'car' ? 'drive' : 'transit';
 
   const overdue = isToday ? overdueStop(stops, nowMs, marks, freeDay) : null;
@@ -78,7 +82,7 @@ export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: s
     countryCode: null,
     departAt: null,
   });
-  const etaRoutes = etaQuery.data?.routes ?? [];
+  const etaRoutes = useMemo(() => etaQuery.data?.routes ?? [], [etaQuery.data]);
   const etaRoute = etaRoutes[0] ?? null;
   const etaMin = etaRoute?.durationMin ?? null;
   const leaveIn = dest ? leaveInMin(nowMs, etaMin, dest.starts_at) : null;
@@ -107,5 +111,20 @@ export function useLiveGuidance(input: { trip: TripDetail | undefined; tripId: s
   const airportTravelMin = airportQuery.data?.routes[0]?.durationMin ?? null;
   const leaveAt = flight && airportTravelMin !== null ? leaveByMs(Date.parse(flight.starts_at), airportTravelMin) : null;
 
-  return { marks, freeDay, here, overdue, upcoming, etaMin, etaRoute, etaRoutes, etaMode: mode, leaveIn, arrived, late, flight, airportName, airportTravelMin, leaveAt };
+  // "Şu an hangi araçtasın?": önerilen rotaların toplu taşıma adımlarıyla konum ve hız eşleştirilir.
+  const rideSteps = useMemo<RideStep[]>(
+    () =>
+      etaRoutes.flatMap((route) =>
+        route.steps.flatMap((step, index) =>
+          step.mode === 'transit' && step.transit
+            ? [{ index, vehicle: step.transit.vehicle, line: step.transit.lineShort ?? step.transit.line, headsign: step.transit.headsign, from: step.transit.from, to: step.transit.to, path: thin(step.polylines.flatMap((pl) => decodePolyline(pl)), 300) }]
+            : [],
+        ),
+      ),
+    [etaRoutes],
+  );
+  const ride = useMemo(() => (isToday ? matchRide(fixes, rideSteps) : ({ kind: 'unknown' } as const)), [isToday, fixes, rideSteps]);
+  const rideExitM = ride.kind === 'riding' && here ? metersToExit(here, ride.step) : null;
+
+  return { marks, freeDay, here, ride, rideExitM, overdue, upcoming, etaMin, etaRoute, etaRoutes, etaMode: mode, leaveIn, arrived, late, flight, airportName, airportTravelMin, leaveAt };
 }

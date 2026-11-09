@@ -1626,6 +1626,12 @@
       "departed": "Sudah berangkat",
       "now": "Sekarang",
       "leavesIn": "sampai berangkat"
+    },
+    "ride": {
+      "riding": "Di jalur {{line}}",
+      "toward": "Arah {{headsign}}",
+      "exit": "Sekitar {{distance}} lagi untuk turun di {{stop}}",
+      "waiting": "Menunggu {{line}} di {{stop}}"
     }
   },
   "tripQuestions": {

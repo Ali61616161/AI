@@ -1664,6 +1664,12 @@
       "departed": "निकल गया",
       "now": "अभी",
       "leavesIn": "छूटने तक"
+    },
+    "ride": {
+      "riding": "आप {{line}} में हैं",
+      "toward": "दिशा: {{headsign}}",
+      "exit": "{{stop}} पर उतरने में लगभग {{distance}}",
+      "waiting": "{{stop}} पर {{line}} का इंतज़ार"
     }
   },
   "tripQuestions": {

@@ -1626,6 +1626,12 @@
       "departed": "已出发",
       "now": "现在",
       "leavesIn": "后出发"
+    },
+    "ride": {
+      "riding": "正在乘坐 {{line}}",
+      "toward": "开往 {{headsign}}",
+      "exit": "距离 {{stop}} 下车约 {{distance}}",
+      "waiting": "在 {{stop}} 等候 {{line}}"
     }
   },
   "tripQuestions": {
