@@ -9,7 +9,8 @@ import { useTheme } from '@/theme/use-theme';
 
 import { Text } from './text';
 
-type Option = { value: string; label: string };
+/** `short` verilirse düğmede (kapalıyken) o gösterilir; listede `label` görünür. */
+type Option = { value: string; label: string; short?: string };
 
 /** Uzun listelerden seçim: düğmeye dokununca aranabilir liste açılır. */
 export function SelectSheet({ label, value, options, placeholder, onChange }: { label: string; value: string | null; options: Option[]; placeholder: string; onChange: (value: string) => void }) {
@@ -30,7 +31,7 @@ export function SelectSheet({ label, value, options, placeholder, onChange }: { 
         onPress={() => setOpen(true)}
         style={[styles.button, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <Text variant="bodyStrong" numberOfLines={1} color={current ? 'text' : 'textMuted'} style={styles.flex}>
-          {current?.label ?? placeholder}
+          {current ? (current.short ?? current.label) : placeholder}
         </Text>
         <Ionicons name="chevron-down" size={16} color={colors.textSecondary} />
       </Pressable>

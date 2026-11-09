@@ -42,7 +42,7 @@ export type TripDraft = {
   reservations: ReservationPayload[];
 };
 
-const TRANSPORT = new Set<ParsedItem['type']>(['flight', 'train', 'bus']);
+const TRANSPORT = new Set<ParsedItem['type']>(['flight', 'train', 'bus', 'ferry']);
 
 const dateOf = (local: string | null | undefined) => (local ? local.slice(0, 10) : null);
 const sameCity = (a: string | null | undefined, b: string | null | undefined) =>

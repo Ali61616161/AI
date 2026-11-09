@@ -100,6 +100,8 @@ export default function ExploreScreen() {
   const query = useOpenNow(category, searchCenter, { radius: 2000, limit: 20 });
   const places = useMemo(() => (query.data ?? []).filter((p) => p.lat !== null && p.lng !== null), [query.data]);
   const icon = NEARBY_CATEGORY_LIST.find((c) => c.key === category)?.icon.replace('-outline', '') as 'restaurant';
+  // "Konuma dön" düğmesi yalnız harita konumundan uzaklaşınca görünür; ortalıyken gizlenir.
+  const offCenter = user && mapCenter ? distanceM(user, mapCenter) > 120 : false;
   const moved = mapCenter && searchCenter ? distanceM(mapCenter, searchCenter) > MOVE_THRESHOLD_M : false;
   const errorCode = query.error instanceof PlacesError ? query.error.code : query.error ? 'network' : null;
 
@@ -196,7 +198,7 @@ export default function ExploreScreen() {
       </View>
 
       {/* Konuma dön */}
-      {Platform.OS !== 'web' && (
+      {Platform.OS !== 'web' && offCenter && (
         <Tap
           accessibilityRole="button"
           accessibilityLabel={t('explore.locate')}

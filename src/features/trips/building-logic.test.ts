@@ -3,7 +3,7 @@ import { test } from 'node:test';
 
 import { asBuildError, MIN_BUILD_MS, progressFraction, remainingHoldMs, stepIndex } from './building-logic.ts';
 
-test('en az 10 sn bekletir; hata olduysa beklemez', () => {
+test('en az 5 sn bekletir; hata olduysa beklemez', () => {
   assert.equal(remainingHoldMs(0, 3_000, false), MIN_BUILD_MS - 3_000);
   assert.equal(remainingHoldMs(0, 12_000, false), 0);
   assert.equal(remainingHoldMs(0, 1_000, true), 0);
@@ -11,7 +11,7 @@ test('en az 10 sn bekletir; hata olduysa beklemez', () => {
 
 test('adım sırası son adımda kalır', () => {
   assert.equal(stepIndex(0, 5), 0);
-  assert.equal(stepIndex(4_100, 5), 1);
+  assert.equal(stepIndex(1_700, 5), 1);
   assert.equal(stepIndex(99_000, 5), 4);
 });
 

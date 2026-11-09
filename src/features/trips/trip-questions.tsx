@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getLocales } from 'expo-localization';
-import { useState, type ComponentProps } from 'react';
+import { useMemo, useState, type ComponentProps } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -9,9 +9,13 @@ import { Chip } from '@/components/ui/chip';
 import { Tap } from '@/components/ui/tap';
 import { Text } from '@/components/ui/text';
 import { DateField, TimeField } from '@/components/ui/date-field';
+import { SelectSheet } from '@/components/ui/select-sheet';
 import { TextField } from '@/components/ui/text-field';
 import { BUDGETS, COMPANIONS, INTERESTS } from '@/features/profile/options';
 import { useFlightLookup } from '@/features/travel/flight-lookup';
+import { currentLanguage } from '@/i18n';
+import { currencyOption } from '@/lib/currency-label';
+import { CURRENCIES } from '@/lib/fx-logic';
 import { formatTime } from '@/lib/format';
 import { useSessionStore } from '@/stores/session-store';
 import { Spacing } from '@/theme/tokens';
@@ -130,6 +134,9 @@ type Props = {
  * ulaşım, oteller ve serbest not. Doldurulmayanlar profildeki tercihlerle devam eder.
  */
 export function TripQuestions({ value, onChange, tripStart, tripEnd, errors, askFlights = true }: Props) {
+  const language = currentLanguage();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const currencyOptions = useMemo(() => CURRENCIES.map(currencyOption), [language]);
   const { t } = useTranslation();
   const { colors } = useTheme();
   const set = (patch: Partial<TripAnswers>) => onChange({ ...value, ...patch });
@@ -191,7 +198,7 @@ export function TripQuestions({ value, onChange, tripStart, tripEnd, errors, ask
             />
           </View>
           <View style={styles.currency}>
-            <TextField label={t('tripQuestions.currency')} value={value.currency} onChangeText={(c) => set({ currency: c.toUpperCase().slice(0, 3) })} autoCapitalize="characters" maxLength={3} />
+            <SelectSheet label={t('tripQuestions.currency')} value={value.currency} options={currencyOptions} placeholder={value.currency || 'USD'} onChange={(currency) => set({ currency })} />
           </View>
         </View>
       )}
@@ -295,7 +302,7 @@ const styles = StyleSheet.create({
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm },
   row: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
   flex: { flex: 1 },
-  currency: { width: 96 },
+  currency: { width: 128 },
   hotel: { gap: Spacing.md, padding: Spacing.md, borderRadius: 16, borderWidth: 1 },
   notes: { minHeight: 140, textAlignVertical: 'top' },
   timeRow: { flexDirection: 'row', gap: Spacing.md },
