@@ -133,7 +133,12 @@ do $$
 declare r record;
 begin
   select * into r from public.consume_quota('replan', '10000000-0000-0000-0000-000000000001');
-  assert r.allowed and r.plan = 'pro_yearly' and r.remaining is null, 'Pro ile sınırsız olmalı';
+  assert r.allowed and r.plan = 'pro_yearly', 'Pro ile limit yok (yalnızca adil kullanım üst sınırı) olmalı';
+  -- Adil kullanım (bugün 3 ücretsiz + 1 Pro kullanıldı): günde 40 yeniden planlamadan sonra Pro'da da durur (otomasyonla kötüye kullanımı sınırlar).
+  select * into r from public.consume_quota('replan', '10000000-0000-0000-0000-000000000001', 36);
+  assert r.allowed, 'Pro günlük sınıra kadar (40) izinli olmalı';
+  select * into r from public.consume_quota('replan', '10000000-0000-0000-0000-000000000001');
+  assert not r.allowed, 'Pro 41. replan günlük adil kullanım sınırında reddedilmeli';
 end $$;
 
 call tests.login('00000000-0000-0000-0000-00000000000b');
@@ -598,12 +603,12 @@ begin
   end loop;
   select * into r from public.consume_quota('weather');
   assert not r.allowed, '41. hava durumu isteği reddedilmeli';
-  for i in 1..3 loop
+  for i in 1..2 loop
     select * into r from public.consume_quota('trip_report', '10000000-0000-0000-0000-0000000000c1');
     assert r.allowed;
   end loop;
   select * into r from public.consume_quota('trip_report', '10000000-0000-0000-0000-0000000000c1');
-  assert not r.allowed, 'ücretsizde seyahat başına 3 AI raporu';
+  assert not r.allowed, 'ücretsizde haftada 2 AI raporu';
 end $$;
 reset role;
 do $$ begin
