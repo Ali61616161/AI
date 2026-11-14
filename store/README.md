@@ -49,6 +49,7 @@ Play Console → App access bölümüne yazın.
 |---|---|---|---|---|
 | E-posta adresi | Evet | Evet | Hayır | Uygulama işlevi, hesap |
 | Ad (görünen ad) | Evet (sosyal mod) | Evet | Hayır | Uygulama işlevi |
+| Diğer veri türü: doğum tarihi (sosyal mod; yalnızca 18+ doğrulaması, başkalarına gösterilmez) | Evet (sosyal mod) | Evet | Hayır | Uygulama işlevi |
 | Hassas konum | Evet (yakında açık yerler, Planı Değiştir) | Evet | Hayır | Uygulama işlevi |
 | Yaklaşık konum | Evet (sosyal mod) | Evet | Hayır | Uygulama işlevi |
 | Fotoğraflar | Evet (bilet, menü, seyahat günlüğü) | Evet | Hayır | Uygulama işlevi |

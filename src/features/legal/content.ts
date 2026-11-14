@@ -22,7 +22,7 @@ const privacyEn: LegalDoc = {
     {
       heading: 'What we collect',
       body: [
-        '• Account: your email address and, if you choose, a display name, birth year and a short bio (needed only for social mode).',
+        '• Account: your email address and, if you choose, a display name, date of birth (used only to confirm you are 18+) and a short bio (needed only for social mode).',
         '• Travel profile: your citizenship(s), the visas or residence permits you choose to add and your home city (stored only at city level, about 1 km). We use them to show where you can travel, to filter the destination wheel and for My City suggestions.',
         '• Places: places you save to your lists and places you mark as visited (your city passport).',
         '• Trips: destinations, dates, travel preferences, plans, expenses, packing lists, ratings and notes you create.',
@@ -49,8 +49,10 @@ const privacyEn: LegalDoc = {
       body: [
         'We share data only with providers that help us run Yola, under contracts that require them to protect it:',
         '• Supabase (database, authentication, file storage, server functions)',
-        '• Google (Gemini AI for reading documents, planning and photo translation; Maps Platform for places and weather; Cloud Translation)',
+        '• Google (Gemini AI for reading documents, planning and photo translation; Maps Platform for places and weather; Cloud Translation for your plan, trip report and journal notes when you change the app language, and for a traveler\'s message only when you tap “Translate” — chat translations are not stored)',
+        '• Sentry (crash and error reports, without your email, name or content)',
         '• Travelpayouts / Aviasales (flight price data for price watches, and city search: the city name you type is sent to them)',
+        '• RapidAPI / AeroDataBox (flight number and date you enter, to fill in airports and times and to track flight status)',
         '• Airalo, Holafly, Saily (eSIM providers; only if you open their websites from the app)',
         '• RevenueCat, Apple App Store and Google Play (purchases and subscriptions)',
         '• Your phone’s speech recognition provider (Apple or Google) for conversation translation',
@@ -66,7 +68,7 @@ const privacyEn: LegalDoc = {
     },
     {
       heading: 'What other travelers see',
-      body: 'Only if you turn on social mode: your display name, short bio, interests, what you are up for, verification status and an approximate distance. Your exact location, email and birth year are never shown. You can hide yourself, block or report anyone at any time.',
+      body: 'Only if you turn on social mode: your display name, short bio, interests, what you are up for, verification status and an approximate distance. Your exact location, email and date of birth are never shown. You can hide yourself, block or report anyone at any time. If you report someone, the report, your reason and the most recent messages of that conversation are sent to our moderation team to review it (we do not read chats otherwise). A message you delete disappears for both of you and is permanently erased after 30 days; a report keeps its own copy of the evidence until it is handled.',
     },
     {
       heading: 'How long we keep data',
@@ -133,7 +135,7 @@ const privacyTr: LegalDoc = {
     {
       heading: 'Hangi verileri topluyoruz',
       body: [
-        '• Hesap: e-posta adresin ve istersen görünen adın, doğum yılın ve kısa tanıtımın (sadece sosyal mod için gerekir).',
+        '• Hesap: e-posta adresin ve istersen görünen adın, doğum tarihin (yalnızca 18 yaşını doldurduğunu doğrulamak için) ve kısa tanıtımın (sadece sosyal mod için gerekir).',
         '• Seyahat profili: vatandaşlık(lar)ın, eklemeyi seçtiğin vize ve oturum izinlerin ve yaşadığın şehir (sadece şehir düzeyinde, ~1 km). Nereye gidebileceğini göstermek, ülke çarkını filtrelemek ve Şehrim önerileri için kullanılır.',
         '• Yerler: listelerine kaydettiğin ve gittim olarak işaretlediğin yerler (şehir pasaportun).',
         '• Seyahatler: oluşturduğun varış yerleri, tarihler, seyahat tercihleri, planlar, harcamalar, bavul listeleri, puanlar ve notlar.',
@@ -160,8 +162,10 @@ const privacyTr: LegalDoc = {
       body: [
         'Verileri sadece Yola’yı çalıştırmamıza yardım eden ve verileri korumakla sözleşmeyle yükümlü sağlayıcılarla paylaşırız:',
         '• Supabase (veritabanı, kimlik doğrulama, dosya depolama, sunucu fonksiyonları)',
-        '• Google (belge okuma, planlama ve fotoğraf çevirisi için Gemini; mekanlar ve hava durumu için Maps Platform; Cloud Translation)',
+        '• Google (belge okuma, planlama ve fotoğraf çevirisi için Gemini; mekanlar ve hava durumu için Maps Platform; uygulama dilini değiştirdiğinde planın, seyahat raporun ve günlük notların için, ayrıca yalnızca “Çevir”e dokunduğunda bir gezginin mesajı için Cloud Translation — sohbet çevirileri saklanmaz)',
+        '• Sentry (çökme ve hata raporları; e-postan, adın ve içeriklerin olmadan)',
         '• Travelpayouts / Aviasales (fiyat takibi için uçak bileti fiyat verisi ve şehir arama: yazdığın şehir adı onlara gönderilir)',
+        '• RapidAPI / AeroDataBox (girdiğin uçuş numarası ve tarih; havalimanı, saat bilgisi ve uçuş durumu takibi için)',
         '• Airalo, Holafly, Saily (eSIM sağlayıcıları; yalnızca uygulamadan sitelerini açarsan)',
         '• RevenueCat, Apple App Store ve Google Play (satın alımlar ve abonelikler)',
         '• Konuşma çevirisi için telefonunun ses tanıma sağlayıcısı (Apple veya Google)',
@@ -177,7 +181,7 @@ const privacyTr: LegalDoc = {
     },
     {
       heading: 'Diğer gezginler neyi görür',
-      body: 'Sadece sosyal modu açarsan: görünen adın, kısa tanıtımın, ilgi alanların, ne için buluşmak istediğin, doğrulama durumun ve yaklaşık mesafe. Tam konumun, e-postan ve doğum yılın asla gösterilmez. İstediğin an kendini gizleyebilir, herkesi engelleyebilir veya şikayet edebilirsin.',
+      body: 'Sadece sosyal modu açarsan: görünen adın, kısa tanıtımın, ilgi alanların, ne için buluşmak istediğin, doğrulama durumun ve yaklaşık mesafe. Tam konumun, e-postan ve doğum tarihin asla gösterilmez. İstediğin an kendini gizleyebilir, herkesi engelleyebilir veya şikayet edebilirsin. Birini şikayet edersen şikayetin, nedenin ve o sohbetin son mesajları incelenmek üzere moderasyon ekibimize iletilir (aksi hâlde sohbetleri okumayız). Sildiğin mesaj iki taraf için de kaybolur ve 30 gün sonra kalıcı olarak silinir; şikayetler ele alınana kadar kendi delil kopyasını taşır.',
     },
     {
       heading: 'Saklama süresi',
@@ -238,7 +242,7 @@ const kvkkTr: LegalDoc = {
     {
       heading: 'İşlenen kişisel veriler',
       body: [
-        '• Kimlik ve iletişim: e-posta adresi, görünen ad, doğum yılı.',
+        '• Kimlik ve iletişim: e-posta adresi, görünen ad, doğum tarihi (yalnızca 18 yaşını doğrulamak için).',
         '• Seyahat profili: vatandaşlık, ek vize ve oturum izni türleri, yaşanan şehir (şehir düzeyinde).',
         '• Müşteri işlem: seyahatler, rezervasyon belgeleri ve bunlardan okunan bilgiler, planlar, harcamalar, kayıtlı ve ziyaret edilen yerler, abonelik durumu.',
         '• Konum: sadece gerektiren özellikleri kullanırken (yakındaki yerler, plan değiştirme, acil durum, sosyal mod).',
@@ -284,7 +288,7 @@ const kvkkEn: LegalDoc = {
     {
       heading: 'Data we process',
       body: [
-        '• Identity and contact: email address, display name, birth year.',
+        '• Identity and contact: email address, display name, date of birth (only to confirm you are 18+).',
         '• Travel profile: citizenship, types of extra visas and residence permits, home city (city level).',
         '• Customer transactions: trips, booking documents and the details read from them, plans, expenses, saved and visited places, subscription status.',
         '• Location: only while you use features that need it.',
